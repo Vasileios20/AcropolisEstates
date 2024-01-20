@@ -21,6 +21,16 @@ class Listing(models.Model):
         ("commercial", "Commercial"),
     ]
 
+    energy_class_filter_choices = [
+        ("A", "A"),
+        ("B", "B"),
+        ("C", "C"),
+        ("D", "D"),
+        ("E", "E"),
+        ("F", "F"),
+        ("G", "G"),
+    ]
+
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(
         choices=type_filter_choices, default="apartment", max_length=255
@@ -42,7 +52,9 @@ class Listing(models.Model):
     bathrooms = models.IntegerField()
     living_rooms = models.IntegerField()
     heating_system = models.CharField(max_length=255)
-    energy_class = models.CharField(max_length=255)
+    energy_class = models.CharField(
+        choices=energy_class_filter_choices, default="A", max_length=255
+    )
     construction_year = models.IntegerField(
         choices=[(i, i) for i in range(1900, datetime.now().year + 1)]
     )
