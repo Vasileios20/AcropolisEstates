@@ -46,8 +46,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "cloudinary",
     "rest_framework",
-    "profiles",
     "phonenumber_field",
+    "django_filters",
+    "profiles",
+    "listings",
 ]
 
 MIDDLEWARE = [
