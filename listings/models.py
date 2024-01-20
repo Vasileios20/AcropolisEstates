@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 
 class Listing(models.Model):
@@ -13,8 +14,17 @@ class Listing(models.Model):
         ("rent", "Rent"),
     ]
 
+    type_filter_choices = [
+        ("apartment", "Apartment"),
+        ("house", "House"),
+        ("land", "Land"),
+        ("commercial", "Commercial"),
+    ]
+
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255)
+    type = models.CharField(
+        choices=type_filter_choices, default="apartment", max_length=255
+    )
     sale_type = models.CharField(
         choices=sale_type_filter_choices, default="sale", max_length=255
     )
@@ -33,7 +43,9 @@ class Listing(models.Model):
     living_rooms = models.IntegerField()
     heating_system = models.CharField(max_length=255)
     energy_class = models.CharField(max_length=255)
-    construction_year = models.IntegerField()
+    construction_year = models.IntegerField(
+        choices=[(i, i) for i in range(1900, datetime.now().year + 1)]
+    )
     availability = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
