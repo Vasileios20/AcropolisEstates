@@ -6,7 +6,7 @@ from datetime import datetime
 class Listing(models.Model):
     """
     Listing model
-    Filters: By type, by price
+    Filters: By type, by sale type, by energy class
     """
 
     sale_type_filter_choices = [
