@@ -67,12 +67,12 @@ class Listing(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"{self.owner}'s listing"
+        return f"{self.owner}'s listing {self.id}"
 
 
 class Images(models.Model):
     """
-    Image model
+    Images model
     """
 
     listing = models.ForeignKey(
@@ -84,3 +84,6 @@ class Images(models.Model):
 
     def __str__(self):
         return f"{self.listing}'s image"
+
+    class Meta:
+        verbose_name_plural = "Images"

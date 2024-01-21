@@ -22,4 +22,5 @@ urlpatterns = [
     path("", include("profiles.urls")),
     path("", include("listings.urls")),
     path("", include("wishlist.urls")),
+    path("", include("contact.urls")),
 ]
