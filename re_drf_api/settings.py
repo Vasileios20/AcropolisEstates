@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import re
 
 if os.path.exists("env.py"):
     import env
@@ -63,6 +64,7 @@ DEBUG = "DEV" in os.environ
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    os.environ.get("ALLOWED_HOST"),
 ]
 
 if "CLIENT_ORIGIN" in os.environ:
