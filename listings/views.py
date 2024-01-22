@@ -17,13 +17,8 @@ class ListingList(generics.ListCreateAPIView):
     serializer_class = ListingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["owner", "type", "price"]
-    search_fields = [
-        "owner__username",
-        "type",
-        "city",
-        "price",
-    ]
+    filterset_fields = ["owner", "type", "price", "sale_type"]
+    search_fields = ["owner__username", "city", "price", "postcode"]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -39,10 +34,5 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["owner", "type", "city", "price"]
-    search_fields = [
-        "owner__username",
-        "type",
-        "city",
-        "price",
-    ]
+    filterset_fields = ["owner", "type", "price", "sale_type"]
+    search_fields = ["owner__username", "city", "price", "postcode"]
