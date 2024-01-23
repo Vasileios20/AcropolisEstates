@@ -12,7 +12,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=255, blank=True)
     email_address = models.EmailField(max_length=255, blank=True)
     phone = PhoneNumberField(blank=True)
-    profile_picture = models.ImageField(
+    image = models.ImageField(
         upload_to="images/", default="../default_profile_nsltq7", blank=True
     )
 

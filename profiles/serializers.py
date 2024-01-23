@@ -20,6 +20,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             "last_name",
             "email_address",
             "phone",
-            "profile_picture",
+            "image",
             "is_owner",
         ]
