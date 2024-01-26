@@ -1,15 +1,18 @@
 from rest_framework import serializers
 from .models import Listing, Images
+from django.core.files.images import get_image_dimensions
 
 
 class ImagesSerializer(serializers.ModelSerializer):
-    def validate_image(self, value):
-        if value.size > 1024 * 1024 * 2:
-            raise serializers.ValidationError("Image too large")
-        if value.images.width > 4096:
-            raise serializers.ValidationError("Image dimensions too large")
-        if value.images.height > 4096:
-            raise serializers.ValidationError("Image dimensions too large")
+    def validate_images(self, value):
+        for image in value:
+            if image.size > 1024 * 1024 * 2:
+                raise serializers.ValidationError("Image size can't exceed 2MB")
+            width, height = get_image_dimensions(image)
+            if width > 4096:
+                raise serializers.ValidationError("Image width can't exceed 4096px")
+            if height > 4096:
+                raise serializers.ValidationError("Image height can't exceed 4096px")
         return value
 
     class Meta:
@@ -21,12 +24,16 @@ class ListingSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source="owner.username")
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source="owner.profile.id")
-    images = ImagesSerializer(many=True, read_only=True)
+    images = ImagesSerializer(
+        many=True,
+        read_only=True,
+    )
     uploaded_images = serializers.ListField(
         child=serializers.ImageField(
             max_length=100000, use_url=False, allow_empty_file=False
         ),
         write_only=True,
+        validators=[ImagesSerializer().validate_images],
     )
 
     def get_is_owner(self, obj):
