@@ -31,6 +31,8 @@ class Listing(models.Model):
         ("G", "G"),
     ]
 
+    construction_year_choices = [(i, i) for i in range(1900, datetime.now().year + 1)]
+
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(
         choices=type_filter_choices, default="apartment", max_length=255
@@ -56,7 +58,7 @@ class Listing(models.Model):
         choices=energy_class_filter_choices, default="A", max_length=255
     )
     construction_year = models.IntegerField(
-        choices=[(i, i) for i in range(1900, datetime.now().year + 1)]
+        choices=construction_year_choices, default=datetime.now().year
     )
     availability = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
