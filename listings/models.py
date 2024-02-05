@@ -80,7 +80,7 @@ class Images(models.Model):
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="images"
     )
-    images = models.ImageField(
+    url = models.ImageField(
         upload_to="images/", default="../default_post_vnf7ym", null=True
     )
 

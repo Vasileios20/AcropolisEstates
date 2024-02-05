@@ -17,7 +17,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Images
-        fields = ["id", "listing", "images"]
+        fields = ["id", "listing", "url"]
 
 
 class ListingSerializer(serializers.ModelSerializer):
@@ -43,14 +43,14 @@ class ListingSerializer(serializers.ModelSerializer):
         uploaded_images = validated_data.pop("uploaded_images")
         listing = Listing.objects.create(**validated_data)
         for uploaded_image in uploaded_images:
-            Images.objects.create(listing=listing, images=uploaded_image)
+            Images.objects.create(listing=listing, url=uploaded_image)
         return listing
 
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop("uploaded_images")
         if uploaded_images:
             listing_image_model_instance = [
-                Images(listing=instance, images=image) for image in uploaded_images
+                Images(listing=instance, url=image) for image in uploaded_images
             ]
             Images.objects.bulk_create(listing_image_model_instance)
         return super().update(instance, validated_data)
