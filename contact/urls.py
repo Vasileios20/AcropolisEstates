@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import ContactFormList
+from .views import ContactFormCreate, ContactFormList
 
 
 urlpatterns = [
-    path("contact/", ContactFormList.as_view(), name="contact-form-list"),
+    path("contact/", ContactFormCreate.as_view(), name="contact-form-list"),
+    path("contact_list/", ContactFormList.as_view()),
 ]
