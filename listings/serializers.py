@@ -88,4 +88,5 @@ class ListingSerializer(serializers.ModelSerializer):
             "availability",
             "images",
             "uploaded_images",
+            "approved",
         ]
