@@ -3,7 +3,7 @@ from rest_framework import generics, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Listing
 from .serializers import ListingSerializer
-from re_drf_api.permissions import IsOwnerOrReadOnly
+from re_drf_api.permissions import IsOwnerOrReadOnly, IsAdminUserorReadOnly
 from django_filters import rest_framework as filter
 
 
@@ -36,7 +36,7 @@ class ListingList(generics.ListCreateAPIView):
         "-listing_count"
     )
     serializer_class = ListingSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminUserorReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_class = ListingFilter
     search_fields = [
@@ -56,7 +56,7 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Listing.objects.all()
     serializer_class = ListingSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsAdminUserorReadOnly]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ["owner", "type", "price", "sale_type"]
