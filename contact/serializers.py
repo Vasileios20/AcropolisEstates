@@ -15,15 +15,10 @@ class ContactFormSerializer(serializers.ModelSerializer):
             "email",
             "subject",
             "message",
+            "created_at",
         ]
 
-    # def validate(self, data):
-    #     """
-    #     Checks if email is valid.
-    #     """
-    #     if not data["email"].endswith(".com"):
-    #         raise serializers.ValidationError("Invalid email address")
-    #     return data
+        read_only_fields = ["id", "created_at"]
 
     def create(self, validated_data):
         """
