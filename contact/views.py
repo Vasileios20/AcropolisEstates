@@ -34,3 +34,9 @@ class ContactFormList(generics.ListAPIView):
         "subject",
         "created_at",
     ]
+
+
+class ContactFormDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ContactForm.objects.all()
+    serializer_class = ContactFormSerializer
+    permission_classes = [permissions.IsAdminUser]
