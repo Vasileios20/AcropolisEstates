@@ -49,8 +49,6 @@ class ListingSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop("uploaded_images")
 
-        Images.objects.filter(listing=instance).delete()
-
         if uploaded_images:
             listing_image_model_instance = [
                 Images(listing=instance, url=image) for image in uploaded_images

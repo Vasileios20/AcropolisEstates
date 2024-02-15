@@ -1,10 +1,11 @@
 from django.db.models import Count
-from rest_framework import generics, permissions, filters
+from rest_framework import generics, permissions, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Listing
-from .serializers import ListingSerializer
+from .models import Listing, Images
+from .serializers import ListingSerializer, ImagesSerializer
 from re_drf_api.permissions import IsOwnerOrReadOnly, IsAdminUserorReadOnly
 from django_filters import rest_framework as filter
+from rest_framework.response import Response
 
 
 class ListingFilter(filter.FilterSet):
@@ -68,3 +69,31 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
         "sale_type",
         "type",
     ]
+
+
+class DeleteImageView(generics.RetrieveDestroyAPIView):
+    queryset = Images.objects.all()
+    serializer_class = ImagesSerializer
+    permission_classes = [IsAdminUserorReadOnly]
+
+    def delete(self, request, *args, **kwargs):
+        image_id = self.kwargs.get("pk")
+        listing_id = self.kwargs.get("listing_id")
+        print(image_id, listing_id)
+
+        if not image_id or not listing_id:
+            return Response(
+                {"error": "Image or listing not found"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            image = Images.objects.get(id=image_id, listing=listing_id)
+            image.delete()
+            return Response(
+                {"message": "Image deleted"}, status=status.HTTP_204_NO_CONTENT
+            )
+        except Images.DoesNotExist:
+            return Response(
+                {"error": "Image not found"}, status=status.HTTP_404_NOT_FOUND
+            )
