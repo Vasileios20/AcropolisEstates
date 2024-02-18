@@ -1,6 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
+
+def validate_zero(value):
+    """
+    Validate that the value is not zero
+    """
+    if value < 0:
+        raise ValidationError(_("This field must be a positive number"))
 
 
 class Listing(models.Model):
@@ -41,18 +51,18 @@ class Listing(models.Model):
         choices=sale_type_filter_choices, default="sale", max_length=255
     )
     description = models.CharField(max_length=255, blank=True)
-    address_number = models.IntegerField()
+    address_number = models.IntegerField(validators=[validate_zero])
     address_street = models.CharField(max_length=255)
     postcode = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    price = models.IntegerField()
-    surface = models.IntegerField()
-    levels = models.IntegerField()
-    bedrooms = models.IntegerField()
+    price = models.IntegerField(validators=[validate_zero])
+    surface = models.IntegerField(validators=[validate_zero])
+    levels = models.IntegerField(validators=[validate_zero])
+    bedrooms = models.IntegerField(validators=[validate_zero])
     floor = models.IntegerField()
-    kitchens = models.IntegerField()
-    bathrooms = models.IntegerField()
-    living_rooms = models.IntegerField()
+    kitchens = models.IntegerField(validators=[validate_zero])
+    bathrooms = models.IntegerField(validators=[validate_zero])
+    living_rooms = models.IntegerField(validators=[validate_zero])
     heating_system = models.CharField(max_length=255)
     energy_class = models.CharField(
         choices=energy_class_filter_choices, default="A", max_length=255
