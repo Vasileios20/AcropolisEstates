@@ -5,6 +5,9 @@ from re_drf_api.permissions import IsOwnerOrReadOnly
 
 
 class ProfileList(generics.ListCreateAPIView):
+    """
+    API view for listing and creating profiles.
+    """
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -14,6 +17,9 @@ class ProfileList(generics.ListCreateAPIView):
 
 
 class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a profile instance.
+    """
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsOwnerOrReadOnly]

@@ -16,7 +16,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj.owner == request.user
 
 
-class IsAdminUserorReadOnly(permissions.BasePermission):
+class IsAdminUserOrReadOnly(permissions.BasePermission):
     """
     Custom permission to only allow admin users to edit it.
     """

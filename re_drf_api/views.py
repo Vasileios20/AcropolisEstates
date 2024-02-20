@@ -16,16 +16,28 @@ def root_route(request):
 
 @api_view(["GET"])
 def get_user_status(request):
+    """
+    Get the status of the user.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        Response: The response containing the user status and a message.
+
+    """
     user_status = {
         "is_authenticated": request.user.is_authenticated,
         "is_staff": request.user.is_staff,
     }
 
     if request.user.is_staff:
-        data = {"staff_status": user_status, "message": "You are a staff member"}
+        data = {"staff_status": user_status,
+                "message": "You are a staff member"}
         return Response(data, status=200)
     else:
-        data = {"staff_status": user_status, "message": "You are not a staff member"}
+        data = {"staff_status": user_status,
+                "message": "You are not a staff member"}
         return Response(data, status=200)
 
 

@@ -41,7 +41,8 @@ class Listing(models.Model):
         ("G", "G"),
     ]
 
-    construction_year_choices = [(i, i) for i in range(1900, datetime.now().year + 1)]
+    construction_year_choices = [(i, i)
+                                 for i in range(1900, datetime.now().year + 1)]
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(

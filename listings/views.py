@@ -1,19 +1,25 @@
 from django.db.models import Count
-from rest_framework import generics, permissions, filters, status
+from rest_framework import generics, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Listing, Images
 from .serializers import ListingSerializer, ImagesSerializer
-from re_drf_api.permissions import IsOwnerOrReadOnly, IsAdminUserorReadOnly
+from re_drf_api.permissions import IsAdminUserOrReadOnly
 from django_filters import rest_framework as filter
 from rest_framework.response import Response
 
 
 class ListingFilter(filter.FilterSet):
+    """
+    Filter class for filtering listings based on various criteria.
+    """
+
     min_price = filter.NumberFilter(field_name="price", lookup_expr="gte")
     max_price = filter.NumberFilter(field_name="price", lookup_expr="lte")
 
-    min_bedrooms = filter.NumberFilter(field_name="bedrooms", lookup_expr="gte")
-    max_bedrooms = filter.NumberFilter(field_name="bedrooms", lookup_expr="lte")
+    min_bedrooms = filter.NumberFilter(
+        field_name="bedrooms", lookup_expr="gte")
+    max_bedrooms = filter.NumberFilter(
+        field_name="bedrooms", lookup_expr="lte")
 
     min_surface = filter.NumberFilter(field_name="surface", lookup_expr="gte")
     max_surface = filter.NumberFilter(field_name="surface", lookup_expr="lte")
@@ -33,11 +39,13 @@ class ListingList(generics.ListCreateAPIView):
     List all listings, or create a new listing.
     """
 
-    queryset = Listing.objects.annotate(listing_count=Count("owner__listing")).order_by(
+    queryset = Listing.objects.annotate(
+        listing_count=Count("owner__listing")
+    ).order_by(
         "-listing_count"
     )
     serializer_class = ListingSerializer
-    permission_classes = [IsAdminUserorReadOnly]
+    permission_classes = [IsAdminUserOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_class = ListingFilter
     search_fields = [
@@ -57,7 +65,7 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Listing.objects.all()
     serializer_class = ListingSerializer
-    permission_classes = [IsAdminUserorReadOnly]
+    permission_classes = [IsAdminUserOrReadOnly]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ["owner", "type", "price", "sale_type"]
@@ -72,14 +80,17 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class DeleteImageView(generics.RetrieveDestroyAPIView):
+    """
+    API view for deleting an image associated with a listing.
+    """
+
     queryset = Images.objects.all()
     serializer_class = ImagesSerializer
-    permission_classes = [IsAdminUserorReadOnly]
+    permission_classes = [IsAdminUserOrReadOnly]
 
     def delete(self, request, *args, **kwargs):
         image_id = self.kwargs.get("pk")
         listing_id = self.kwargs.get("listing_id")
-        print(image_id, listing_id)
 
         if not image_id or not listing_id:
             return Response(

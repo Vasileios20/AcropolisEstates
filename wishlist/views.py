@@ -5,6 +5,9 @@ from re_drf_api.permissions import IsOwnerOrReadOnly
 
 
 class WishlistList(generics.ListCreateAPIView):
+    """
+    API view for listing and creating wishlists.
+    """
     queryset = Wishlist.objects.all()
     serializer_class = WishlistSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -14,6 +17,9 @@ class WishlistList(generics.ListCreateAPIView):
 
 
 class WishlistDetail(generics.RetrieveDestroyAPIView):
+    """
+    Retrieve or delete a specific wishlist item.
+    """
     queryset = Wishlist.objects.all()
     serializer_class = WishlistSerializer
     permission_classes = [IsOwnerOrReadOnly]

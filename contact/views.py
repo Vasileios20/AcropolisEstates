@@ -6,8 +6,16 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 class ContactFormFilter(filter.FilterSet):
-    min_created_at = filter.DateFilter(field_name="created_at", lookup_expr="gte")
-    max_created_at = filter.DateFilter(field_name="created_at", lookup_expr="lte")
+    """
+    This class is used to filter the contact form by name, email, subject
+    and created_at
+    It also allows to filter the contact form by the date it was created
+    """
+
+    min_created_at = filter.DateFilter(
+        field_name="created_at", lookup_expr="gte")
+    max_created_at = filter.DateFilter(
+        field_name="created_at", lookup_expr="lte")
 
     class Meta:
         model = ContactForm
