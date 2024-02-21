@@ -44,7 +44,7 @@ class ContactFormList(generics.ListAPIView):
     ]
 
 
-class ContactFormDetail(generics.RetrieveUpdateDestroyAPIView):
+class ContactFormDetail(generics.RetrieveAPIView):
     queryset = ContactForm.objects.all()
     serializer_class = ContactFormSerializer
     permission_classes = [permissions.IsAdminUser]
