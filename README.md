@@ -98,7 +98,11 @@ To clone the repository :
 
 ### Deployment
 
-The site has been deployed using Heroku. Deployed [API link](https://re-drf-api-f69fb4705742.herokuapp.com/). Follow these steps:
+The site has been deployed using Heroku. Deployed [API link](https://re-drf-api-f69fb4705742.herokuapp.com/).
+
+I have used VSCode for developement so I'll describe the steps I took.
+
+Follow these steps:
 
 #### ElephantSQL
 
@@ -114,6 +118,30 @@ If you don't already have an account to ElephantSQL, create one [here](https://w
   * Return to the Dashboard and click on the database instance name
   * Copy the database URL
 
+* Create a new repository
+* Clone the repository from VSCode
+* In VSC open the terminal and install the following using the ```pip install``` command.
+
+```text
+'django<4'
+django-cloudinary-storage==0.3.0
+Pillow==8.2.0
+djangorestframework
+django-filter
+dj-rest-auth
+'dj-rest-auth[with_social]'
+djangorestframework-simplejwt
+dj_database_url psycopg2
+gunicorn
+django-cors-headers
+```
+
+* Create a Django project
+
+```text
+django-admin startproject project_name .
+```
+
 #### Heroku App
 
 If you don't already have an account to Heroku, create one [here](https://www.heroku.com/).
@@ -123,8 +151,6 @@ If you don't already have an account to Heroku, create one [here](https://www.he
   * Name the app. Each app name on Heroku has to be unique.
   * Then select your region.
   * And then click "Create app".
-
-#### Attach the Database
 
 * In the IDE file explorer or terminal
   * Create new env.py file on top level directory
@@ -149,7 +175,163 @@ If you don't already have an account to Cloudinary, create one [here](https://cl
 * Cloudinary
   * Go to the Cloudinary dashboard and copy the API Environment variable.
   * Paste in env.py variable CLOUDINARY_URL(see above)
-  
+
+* In settings.py and to the INSTALLED_APPS add :
+
+```python
+'cloudinary_storage',
+'django.contrib.staticfiles',
+'cloudinary',
+'rest_framework',
+'django_filters',
+'rest_framework.authtoken',
+'dj_rest_auth',
+'django.contrib.sites',
+'allauth',
+'allauth.account',
+'allauth.socialaccount',
+'dj_rest_auth.registration',
+'corsheaders',
+```
+
+* Import the database, the regular expression module & the env.py
+
+```python
+import dj_database_url
+import re
+import os
+if os.path.exists('env.py')
+    import env
+Below the import statements, add the following variable for Cloudinary:
+CLOUDINARY_STORAGE = {
+    'CLOUDINARY_URL': os.environ.ger('CLOUDINARY_URL')
+}
+
+MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinartStorage'
+```
+
+* Below INSTALLED_APPS, set site ID:
+
+```python
+SITE_ID = 1
+```
+
+* Below BASE_DIR, create the REST_FRAMEWORK, and include page pagination to improve app loading times, pagination count, and date/time format:
+
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [(
+        'rest_framework.authentication.SessionAuthentication'
+        if 'DEV' in os.environ
+        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    )],
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DATETIME_FORMAT': '%d %b %Y',
+}
+```
+
+* Set the default renderer to JSON:
+
+```python
+if 'DEV' not in os.environ:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+```
+
+* Beneath that, add the following:
+
+```python
+REST_USE_JWT = True
+JWT_AUTH_SECURE = True
+JWT_AUTH_COOKIE = 'my-app-auth'
+JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+JWT_AUTH_SAMESITE = 'None'
+```
+
+* Then add:
+
+```python
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'project_name.serializers.CurrentUserSerializer'
+}
+```
+
+* Update DEBUG variable to:
+
+```python
+DEBUG = 'DEV' in os.environ
+```
+
+* Update the DATABASES variable to:
+
+```python
+DATABASES = {
+    'default': ({
+       'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    } if 'DEV' in os.environ else dj_database_url.parse(
+        os.environ.get('DATABASE_URL')
+    )
+    )
+}
+```
+
+* Add the Heroku app to the ALLOWED_HOSTS variable:
+
+```python
+os.environ.get('ALLOWED_HOST'),
+'localhost',
+```
+
+* Below ALLOWED_HOST, add the CORS_ALLOWED variable:
+
+```python
+if 'CLIENT_ORIGIN' in os.environ:
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN')
+    ]
+
+if "CLIENT_ORIGIN_DEV" in os.environ:
+    extracted_url = re.match(
+        r"^.+-", os.environ.get("CLIENT_ORIGIN_DEV", ""), re.IGNORECASE
+    )
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^http:\/\/localhost:*([0-9]+)?$",
+    ]
+```
+
+* Also add to the top of MIDDLEWARE:
+
+```python
+'corsheaders.middleware.CorsMiddleware',
+```
+
+Final requirements:
+
+* Create a Procfile, & add the following two lines:
+
+```text
+release: python manage.py makemigrations && python manage.py migrate
+web: gunicorn project_name.wsgi
+```
+
+* Migrate the database:
+
+```text
+python3 manage.py makemigrations
+python3 manage.py migrate
+```
+
+* Freeze requirements:
+
+```text
+pip3 freeze --local > requirements.txt
+```
+
 * In heroku app
   * Go to the settings tab.
   * In the settings click the button "Reveal Config Vars".

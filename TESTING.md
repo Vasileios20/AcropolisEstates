@@ -3,6 +3,9 @@
 * [Manual Testing](#manual-testing)
 * [Bugs](#bugs)
 
+During developement I had enabled the autopep8 extension to format the files on save.
+I also had enabled the flake8 linter and I had no errors or warnings.
+
 ## Manual Testing
 
 | # | Endpoint | Method | Expected outcome | Pass/Fail |
