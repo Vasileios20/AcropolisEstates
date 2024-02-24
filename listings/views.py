@@ -79,7 +79,7 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
     ]
 
 
-class DeleteImageView(generics.RetrieveDestroyAPIView):
+class DeleteImageView(generics.DestroyAPIView):
     """
     API view for deleting an image associated with a listing.
     """
@@ -101,6 +101,8 @@ class DeleteImageView(generics.RetrieveDestroyAPIView):
         try:
             image = Images.objects.get(id=image_id, listing=listing_id)
             image.delete()
+            listing = Listing.objects.get(id=listing_id)
+            listing.save()
             return Response(
                 {"message": "Image deleted"}, status=status.HTTP_204_NO_CONTENT
             )
