@@ -1,10 +1,13 @@
 # Contents
 
+* [PEP8](#pep8)
 * [Manual Testing](#manual-testing)
 * [Bugs](#bugs)
 
+## PEP8
+
 During developement I had enabled the autopep8 extension to format the files on save.
-I also had enabled the flake8 linter and I had no errors or warnings.
+I also had enabled the Flake8 linter and I had no errors or warnings.
 
 ## Manual Testing
 
