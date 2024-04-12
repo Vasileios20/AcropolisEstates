@@ -75,6 +75,8 @@ class Listing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     approved = models.BooleanField(default=False)
+    longitude = models.FloatField(default=0.0)
+    latitude = models.FloatField(default=0.0)
 
     class Meta:
         ordering = ["-created_at"]

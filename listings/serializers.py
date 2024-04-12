@@ -135,4 +135,6 @@ class ListingSerializer(serializers.ModelSerializer):
             "images",
             "uploaded_images",
             "approved",
+            "longitude",
+            "latitude",
         ]
