@@ -20,6 +20,27 @@ class ContactFormSerializer(serializers.ModelSerializer):
             "created_at",
         ]
 
+        extra_kwargs = {
+            "first_name": {
+                "error_messages": {"blank":  "This field is required"}
+            },
+            "last_name": {
+                "error_messages": {"blank": "This field is required"}
+            },
+            "email": {
+                "error_messages": {"blank": "This field is required"}
+            },
+            "phone_number": {
+                "error_messages": {"blank": "This field is required"}
+            },
+            "subject": {
+                "error_messages": {"blank": "This field is required"}
+            },
+            "message": {
+                "error_messages": {"blank": "This field is required"}
+            },
+        }
+
         read_only_fields = ["id", "created_at"]
 
     def create(self, validated_data):
