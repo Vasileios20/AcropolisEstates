@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import EmailValidator
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class ContactForm(models.Model):
@@ -13,7 +14,7 @@ class ContactForm(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=255)
+    phone_number = PhoneNumberField()
 
     class Meta:
         ordering = ["-created_at"]
