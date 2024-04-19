@@ -8,13 +8,13 @@ class ContactForm(models.Model):
     Contact model that allows users to contact the site owner.
     """
 
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, validators=[EmailValidator()])
+    phone_number = PhoneNumberField()
     subject = models.CharField(max_length=255)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    phone_number = PhoneNumberField()
 
     class Meta:
         ordering = ["-created_at"]
