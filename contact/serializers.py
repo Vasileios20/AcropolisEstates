@@ -12,7 +12,7 @@ class ContactFormSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "first_name",
-            "last_mame",
+            "last_name",
             "email",
             "phone_number",
             "subject",
