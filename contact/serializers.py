@@ -11,8 +11,10 @@ class ContactFormSerializer(serializers.ModelSerializer):
         model = ContactForm
         fields = [
             "id",
-            "name",
+            "first_name",
+            "last_mame",
             "email",
+            "phone_number",
             "subject",
             "message",
             "created_at",
@@ -24,13 +26,16 @@ class ContactFormSerializer(serializers.ModelSerializer):
         """
         Creates contact form.
         """
-        name = validated_data["name"]
+        first_name = validated_data["first_name"]
+        last_name = validated_data["last_name"]
         email = validated_data["email"]
+        phone_number = validated_data["phone_number"]
         subject = validated_data["subject"]
         message = validated_data["message"]
 
         contact = ContactForm.objects.create(
-            name=name, email=email, subject=subject, message=message
+            first_name=first_name, last_name=last_name, email=email,
+            phone_number=phone_number, subject=subject, message=message
         )
 
         return contact
