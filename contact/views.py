@@ -19,7 +19,8 @@ class ContactFormFilter(filter.FilterSet):
 
     class Meta:
         model = ContactForm
-        fields = ["name", "email", "subject", "created_at"]
+        fields = ["first_name", "last_name", "email",
+                  "phone_number", "subject", "created_at"]
 
 
 class ContactFormCreate(generics.CreateAPIView):
@@ -37,8 +38,10 @@ class ContactFormList(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_class = ContactFormFilter
     search_fields = [
-        "name",
+        "first_name",
+        "last_name",
         "email",
+        "phone_number",
         "subject",
         "created_at",
     ]
