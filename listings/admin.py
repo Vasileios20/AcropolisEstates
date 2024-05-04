@@ -1,5 +1,5 @@
 from django.contrib import admin
-from listings.models import Listing, Images
+from listings.models import Listing, Images, amenities
 
 
 class ListingAdmin(admin.ModelAdmin):
@@ -14,5 +14,20 @@ class ListingAdmin(admin.ModelAdmin):
         queryset.update(approved=True)
 
 
+class ImagesAdmin(admin.ModelAdmin):
+    list_display = ("listing", "url")
+    list_filter = ("listing", "url")
+    search_fields = ("listing", "url")
+    list_per_page = 25
+
+
+class amenitiesAdmin(admin.ModelAdmin):
+    list_display = ("name", "description")
+    list_filter = ("name", "description")
+    search_fields = ("name", "description")
+    list_per_page = 25
+
+
 admin.site.register(Listing, ListingAdmin)
-admin.site.register(Images)
+admin.site.register(Images, ImagesAdmin)
+admin.site.register(amenities)

@@ -1,6 +1,23 @@
 from rest_framework import serializers
-from .models import Listing, Images
+from .models import Listing, Images, amenities
 from django.core.files.images import get_image_dimensions
+
+
+class amenitiesSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for the amenities model.
+
+    This serializer is used to serialize and deserialize amenities
+    objects. It defines the fields that should be included in the serialized
+    representation of an amenities object.
+
+    Attributes:
+        class Meta: The Meta class that defines the model and fields to include
+        in the serialized representation of an amenities object.
+    """
+    class Meta:
+        model = amenities
+        fields = [all_fields.name for all_fields in amenities._meta.fields]
 
 
 class ImagesSerializer(serializers.ModelSerializer):
@@ -80,6 +97,10 @@ class ListingSerializer(serializers.ModelSerializer):
         write_only=True,
         validators=[ImagesSerializer().validate_images],
     )
+    amenities = amenitiesSerializer(
+        many=True,
+        read_only=True,
+    )
 
     def get_is_owner(self, obj):
         return self.context["request"].user == obj.owner
@@ -137,4 +158,5 @@ class ListingSerializer(serializers.ModelSerializer):
             "approved",
             "longitude",
             "latitude",
+            "amenities"
         ]
