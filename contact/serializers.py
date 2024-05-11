@@ -1,5 +1,9 @@
 from rest_framework import serializers
 from .models import ContactForm
+from django.core.mail import send_mail
+import os
+
+ADMIN_EMAIL = os.environ.get("EMAIL_ADDRESS")
 
 
 class ContactFormSerializer(serializers.ModelSerializer):
@@ -45,7 +49,7 @@ class ContactFormSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-        Creates contact form.
+        Creates contact form and send it via email to the admin.
         """
         first_name = validated_data["first_name"]
         last_name = validated_data["last_name"]
@@ -57,6 +61,17 @@ class ContactFormSerializer(serializers.ModelSerializer):
         contact = ContactForm.objects.create(
             first_name=first_name, last_name=last_name, email=email,
             phone_number=phone_number, subject=subject, message=message
+        )
+        print(email)
+
+        send_mail(
+            subject=subject,
+            message=f"New contact form from {first_name} {last_name}.\n\n"
+            f"Message: {message}\n\n"
+            f"Phone number: {phone_number}\nEmail: {email}",
+            from_email=email,
+            recipient_list=[ADMIN_EMAIL],
+            fail_silently=False,
         )
 
         return contact
