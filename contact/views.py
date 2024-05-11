@@ -12,15 +12,15 @@ class ContactFormFilter(filter.FilterSet):
     It also allows to filter the contact form by the date it was created
     """
 
-    min_created_at = filter.DateFilter(
-        field_name="created_at", lookup_expr="gte")
-    max_created_at = filter.DateFilter(
-        field_name="created_at", lookup_expr="lte")
+    min_created_on = filter.DateFilter(
+        field_name="created_on", lookup_expr="gte")
+    max_created_on = filter.DateFilter(
+        field_name="created_on", lookup_expr="lte")
 
     class Meta:
         model = ContactForm
         fields = ["first_name", "last_name", "email",
-                  "phone_number", "subject", "created_at"]
+                  "phone_number", "subject", "created_on"]
 
 
 class ContactFormCreate(generics.CreateAPIView):
@@ -43,7 +43,7 @@ class ContactFormList(generics.ListAPIView):
         "email",
         "phone_number",
         "subject",
-        "created_at",
+        "created_on",
     ]
 
 

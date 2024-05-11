@@ -14,10 +14,10 @@ class ContactForm(models.Model):
     phone_number = PhoneNumberField()
     subject = models.CharField(max_length=255)
     message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ["-created_on"]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}'s message"

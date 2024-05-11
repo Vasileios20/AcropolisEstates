@@ -21,7 +21,7 @@ class ContactFormSerializer(serializers.ModelSerializer):
             "phone_number",
             "subject",
             "message",
-            "created_at",
+            "created_on",
         ]
 
         extra_kwargs = {
@@ -45,7 +45,7 @@ class ContactFormSerializer(serializers.ModelSerializer):
             },
         }
 
-        read_only_fields = ["id", "created_at"]
+        read_only_fields = ["id", "created_on"]
 
     def create(self, validated_data):
         """
