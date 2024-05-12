@@ -62,7 +62,6 @@ class ContactFormSerializer(serializers.ModelSerializer):
             first_name=first_name, last_name=last_name, email=email,
             phone_number=phone_number, subject=subject, message=message
         )
-        print(email)
 
         send_mail(
             subject=subject,
