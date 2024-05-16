@@ -136,15 +136,16 @@ class Listing(models.Model):
         choices=construction_year_choices, default=datetime.now().year
     )
     availability = models.DateField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
     approved = models.BooleanField(default=False)
     longitude = models.FloatField(default=0.0)
     latitude = models.FloatField(default=0.0)
     amenities = models.ManyToManyField(amenities)
+    featured = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ["-created_on"]
 
     def __str__(self):
         return f"{self.owner}'s listing {self.id}"

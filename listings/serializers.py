@@ -130,8 +130,8 @@ class ListingSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "owner",
-            "created_at",
-            "updated_at",
+            "created_on",
+            "updated_on",
             "is_owner",
             "profile_id",
             "sale_type",
