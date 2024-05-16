@@ -3,15 +3,19 @@ from listings.models import Listing, Images, amenities
 
 
 class ListingAdmin(admin.ModelAdmin):
-    list_display = ("type", "sale_type", "price", "approved", "owner")
+    list_display = ("type", "sale_type", "price",
+                    "approved", "owner", "featured")
     list_filter = ("owner", "type", "sale_type", "price", "approved")
     search_fields = ("type", "description", "city",
                      "price", "owner", "sale_type")
     list_per_page = 25
-    actions = ["approve_listings"]
+    actions = ["approve_listings", "approve_featured_listings"]
 
     def approve_listings(self, request, queryset):
         queryset.update(approved=True)
+
+    def approve_featured_listings(self, request, queryset):
+        queryset.update(featured=True)
 
 
 class ImagesAdmin(admin.ModelAdmin):
