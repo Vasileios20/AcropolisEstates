@@ -16,8 +16,8 @@ class amenities(models.Model):
     parking = models.BooleanField(default=False)
     garden = models.BooleanField(default=False)
     fireplace = models.BooleanField(default=False)
-    alarm = models.BooleanField(default=False)
     air_conditioning = models.BooleanField(default=False)
+    underfloor_heating = models.BooleanField(default=False)
     attic = models.BooleanField(default=False)
     veranda = models.BooleanField(default=False)
     terrace = models.BooleanField(default=False)
@@ -45,22 +45,29 @@ class amenities(models.Model):
     CCTV = models.BooleanField(default=False)
     storage = models.BooleanField(default=False)
     basement = models.BooleanField(default=False)
+    night_electricity = models.BooleanField(default=False)
     no_shared_expenses = models.BooleanField(default=False)
     investment = models.BooleanField(default=False)
     student_apartment = models.BooleanField(default=False)
     luxurious = models.BooleanField(default=False)
-    for_office_use = models.BooleanField(default=False)
-    for_commercial_use = models.BooleanField(default=False)
-    for_residential_use = models.BooleanField(default=False)
-    for_tourist_use = models.BooleanField(default=False)
-    for_warehouse_use = models.BooleanField(default=False)
-    for_industrial_use = models.BooleanField(default=False)
-    for_agricultural_use = models.BooleanField(default=False)
-    distance_from_sea = models.BooleanField(default=False)
-    distance_from_city = models.BooleanField(default=False)
-    distance_from_airport = models.BooleanField(default=False)
-    distance_from_village = models.BooleanField(default=False)
-    distance_from_port = models.BooleanField(default=False)
+    suitable_for_development = models.BooleanField(default=False)
+    suitable_for_office_use = models.BooleanField(default=False)
+    suitable_for_commercial_use = models.BooleanField(default=False)
+    suitable_for_residential_use = models.BooleanField(default=False)
+    suitable_for_tourist_use = models.BooleanField(default=False)
+    suitable_for_warehouse_use = models.BooleanField(default=False)
+    suitable_for_industrial_use = models.BooleanField(default=False)
+    suitable_for_agricultural_use = models.BooleanField(default=False)
+    access_for_disabled = models.BooleanField(default=False)
+    part_complete = models.BooleanField(default=False)
+    need_renovation = models.BooleanField(default=False)
+    landmark_building = models.BooleanField(default=False)
+    insect_screen = models.BooleanField(default=False)
+    ev_charger = models.BooleanField(default=False)
+    elevator_in_building = models.BooleanField(default=False)
+    currently_rented = models.BooleanField(default=False)
+    under_construction = models.BooleanField(default=False)
+    loft = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Amenities {self.name}"
@@ -105,6 +112,31 @@ class Listing(models.Model):
         ("G", "G"),
     ]
 
+    opening_frames_filter_choices = [
+        ("aluminiun", "Aluminiun"),
+        ("wooden", "Wooden"),
+        ("iron", "Iron"),
+        ("PVC", "PVC"),
+    ]
+
+    type_of_glass_filter_choices = [
+        ("single", "Single"),
+        ("double", "Double"),
+        ("triple", "Triple"),
+        ("quadruple", "Quadruple"),
+    ]
+
+    orientation_choices = [
+        ("north", "North"),
+        ("north_east", "North East"),
+        ("east", "East"),
+        ("south_east", "South East"),
+        ("south", "South"),
+        ("south_west", "South West"),
+        ("west", "West"),
+        ("north_west", "North West"),
+    ]
+
     construction_year_choices = [(i, i)
                                  for i in range(1900, datetime.now().year + 1)]
 
@@ -120,6 +152,7 @@ class Listing(models.Model):
     address_street = models.CharField(max_length=255)
     postcode = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
+    region = models.CharField(max_length=255, default="")
     price = models.IntegerField(validators=[validate_zero])
     surface = models.IntegerField(validators=[validate_zero])
     levels = models.IntegerField(validators=[validate_zero])
@@ -143,6 +176,27 @@ class Listing(models.Model):
     latitude = models.FloatField(default=0.0)
     amenities = models.ManyToManyField(amenities)
     featured = models.BooleanField(default=False)
+    distance_from_sea = models.FloatField(default=0.0)
+    distance_from_city = models.FloatField(default=0.0)
+    distance_from_airport = models.FloatField(default=0.0)
+    distance_from_village = models.FloatField(default=0.0)
+    distance_from_port = models.FloatField(default=0.0)
+    renovation_year = models.IntegerField(
+        choices=construction_year_choices, default=datetime.now().year
+    )
+    opening_frames = models.CharField(
+        choices=opening_frames_filter_choices,
+        default="aluminiun",
+        max_length=255
+    )
+    type_of_glass = models.CharField(
+        choices=type_of_glass_filter_choices,
+        default="single",
+        max_length=255
+    )
+    orientation = models.CharField(
+        choices=orientation_choices, default="north", max_length=255
+    )
 
     class Meta:
         ordering = ["-created_on"]
