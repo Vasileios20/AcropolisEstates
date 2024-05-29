@@ -29,6 +29,7 @@ class ListingFilter(filter.FilterSet):
         fields = [
             "owner",
             "type",
+            "sub_type",
             "price",
             "sale_type",
         ]
@@ -68,7 +69,7 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminUserOrReadOnly]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["owner", "type", "price", "sale_type"]
+    filterset_fields = ["owner", "type", "price", "sale_type", "sub_type"]
     search_fields = [
         "owner__username",
         "city",
@@ -76,6 +77,7 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
         "postcode",
         "sale_type",
         "type",
+        "sub_type",
     ]
 
 
