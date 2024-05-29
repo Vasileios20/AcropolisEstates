@@ -101,10 +101,28 @@ class Listing(models.Model):
     ]
 
     type_filter_choices = [
-        ("apartment", "Apartment"),
-        ("house", "House"),
+        ("residential", "Residential"),
         ("land", "Land"),
         ("commercial", "Commercial"),
+    ]
+
+    sub_type_filter_choices = [
+        ("apartment", "Apartment"),
+        ("maisonette", "Maisonette"),
+        ("detached", "Detached"),
+        ("semi_detached", "Semi Detached"),
+        ("terraced", "Terraced"),
+        ("bungalow", "Bungalow"),
+        ("villa", "Villa"),
+        ("farmhouse", "Farmhouse"),
+        ("building", "Building"),
+        ("shop", "Shop"),
+        ("office", "Office"),
+        ("warehouse", "Warehouse"),
+        ("hotel", "Hotel"),
+        ("industrial", "Industrial"),
+        ("agricultural", "Agricultural"),
+        ("other", "Other"),
     ]
 
     energy_class_filter_choices = [
@@ -188,7 +206,10 @@ class Listing(models.Model):
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(
-        choices=type_filter_choices, default="apartment", max_length=255
+        choices=type_filter_choices, default="residential", max_length=255
+    )
+    sub_type = models.CharField(
+        choices=sub_type_filter_choices, default="apartment", max_length=255
     )
     sale_type = models.CharField(
         choices=sale_type_filter_choices, default="sale", max_length=255
@@ -196,6 +217,7 @@ class Listing(models.Model):
     description = models.CharField(max_length=255, blank=True)
     address_number = models.IntegerField(validators=[validate_zero])
     address_street = models.CharField(max_length=255)
+    municipality = models.CharField(max_length=255)
     postcode = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     region = models.CharField(max_length=255, default="")
