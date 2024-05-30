@@ -141,6 +141,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "municipality",
             "postcode",
             "city",
+            "county",
             "region",
             "price",
             "floor_area",
@@ -180,4 +181,5 @@ class ListingSerializer(serializers.ModelSerializer):
             "floor_type",
             "images",
             "uploaded_images",
+            "currency",
         ]

@@ -104,24 +104,16 @@ class Listing(models.Model):
         ("residential", "Residential"),
         ("land", "Land"),
         ("commercial", "Commercial"),
+        ("industrial", "Industrial"),
     ]
 
     sub_type_filter_choices = [
         ("apartment", "Apartment"),
         ("maisonette", "Maisonette"),
-        ("detached", "Detached"),
-        ("semi_detached", "Semi Detached"),
-        ("terraced", "Terraced"),
         ("bungalow", "Bungalow"),
         ("villa", "Villa"),
-        ("farmhouse", "Farmhouse"),
-        ("building", "Building"),
-        ("shop", "Shop"),
-        ("office", "Office"),
         ("warehouse", "Warehouse"),
         ("hotel", "Hotel"),
-        ("industrial", "Industrial"),
-        ("agricultural", "Agricultural"),
         ("other", "Other"),
     ]
 
@@ -217,9 +209,10 @@ class Listing(models.Model):
     description = models.CharField(max_length=255, blank=True)
     address_number = models.IntegerField(validators=[validate_zero])
     address_street = models.CharField(max_length=255)
-    municipality = models.CharField(max_length=255)
     postcode = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
+    municipality = models.CharField(max_length=255)
+    county = models.CharField(max_length=255, default="")
     region = models.CharField(max_length=255, default="")
     price = models.IntegerField(validators=[validate_zero])
     floor_area = models.IntegerField(validators=[validate_zero])
@@ -283,6 +276,7 @@ class Listing(models.Model):
     floor_type = models.CharField(
         choices=floor_choices, default="marble", max_length=255
     )
+    currency = models.CharField(max_length=255, default="€")
 
     class Meta:
         ordering = ["-created_on"]
