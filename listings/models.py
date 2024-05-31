@@ -115,10 +115,6 @@ class Listing(models.Model):
         ("bungalow", "Bungalow"),
         ("villa", "Villa"),
         ("hotel", "Hotel"),
-        ("other", "Other"),
-    ]
-
-    sub_type_commercial_filter_choices = [
         ("office", "Office"),
         ("retail", "Retail"),
         ("warehouse", "Warehouse"),
@@ -208,19 +204,16 @@ class Listing(models.Model):
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(
-        choices=type_filter_choices, default="residential", max_length=255, blank=True
+        choices=type_filter_choices, default="residential",
+        max_length=255, blank=True
     )
     sub_type = models.CharField(
-        choices=sub_type_filter_choices, default="apartment", max_length=255, blank=True
-    )
-    sub_type_commercial = models.CharField(
-        choices=sub_type_commercial_filter_choices,
-        default="office",
-        max_length=255,
-        blank=True
+        choices=sub_type_filter_choices, default="apartment",
+        max_length=255, blank=True
     )
     sale_type = models.CharField(
-        choices=sale_type_filter_choices, default="sale", max_length=255, blank=True
+        choices=sale_type_filter_choices, default="sale",
+        max_length=255, blank=True
     )
     description = models.CharField(max_length=255, blank=True)
     address_number = models.IntegerField(
@@ -257,10 +250,12 @@ class Listing(models.Model):
     power_type = models.CharField(max_length=255, blank=True)
     heating_system = models.CharField(max_length=255, blank=True)
     energy_class = models.CharField(
-        choices=energy_class_filter_choices, default="A", max_length=255, blank=True
+        choices=energy_class_filter_choices, default="A", max_length=255,
+        blank=True
     )
     construction_year = models.IntegerField(
-        choices=construction_year_choices, default=datetime.now().year, null=True, blank=True
+        choices=construction_year_choices, default=datetime.now().year,
+        null=True, blank=True
     )
     availability = models.DateField(null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -288,7 +283,8 @@ class Listing(models.Model):
     length_of_facade = models.IntegerField(
         validators=[validate_zero], default=0, null=True, blank=True)
     renovation_year = models.IntegerField(
-        choices=construction_year_choices, default=datetime.now().year, null=True, blank=True
+        choices=construction_year_choices, default=datetime.now().year,
+        null=True, blank=True
     )
     opening_frames = models.CharField(
         choices=opening_frames_filter_choices,
@@ -303,7 +299,8 @@ class Listing(models.Model):
         blank=True
     )
     orientation = models.CharField(
-        choices=orientation_choices, default="north", max_length=255, blank=True
+        choices=orientation_choices, default="north", max_length=255,
+        blank=True
     )
     zone = models.CharField(
         choices=zone_choices, default="residential", max_length=255, blank=True

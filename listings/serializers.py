@@ -5,7 +5,7 @@ from django.core.files.images import get_image_dimensions
 
 class AmenitiesSerializer(serializers.ModelSerializer):
     """
-    Serializer class for the Amenities model.
+    Serializer class for the Amenities model.s
 
     This serializer is used to serialize and deserialize Amenities
     objects. It defines the fields that should be included in the serialized
@@ -134,7 +134,6 @@ class ListingSerializer(serializers.ModelSerializer):
             "owner",
             "type",
             "sub_type",
-            "sub_type_commercial",
             "sale_type",
             "description",
             "address_number",
