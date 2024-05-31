@@ -97,7 +97,7 @@ class ListingSerializer(serializers.ModelSerializer):
         write_only=True,
         validators=[ImagesSerializer().validate_images],
     )
-    Amenities = AmenitiesSerializer(
+    amenities = AmenitiesSerializer(
         many=True,
         read_only=True,
     )
@@ -106,14 +106,14 @@ class ListingSerializer(serializers.ModelSerializer):
         return self.context["request"].user == obj.owner
 
     def create(self, validated_data):
-        uploaded_images = validated_data.pop("uploaded_images")
+        uploaded_images = validated_data.pop("uploaded_images", [])
         listing = Listing.objects.create(**validated_data)
         for uploaded_image in uploaded_images:
             Images.objects.create(listing=listing, url=uploaded_image)
         return listing
 
     def update(self, instance, validated_data):
-        uploaded_images = validated_data.pop("uploaded_images")
+        uploaded_images = validated_data.pop("uploaded_images", [])
 
         if uploaded_images:
             listing_image_model_instance = [
@@ -164,7 +164,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "longitude",
             "latitude",
             "service_charge",
-            "Amenities",
+            "amenities",
             "featured",
             "distance_from_sea",
             "distance_from_city",
@@ -183,4 +183,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "images",
             "uploaded_images",
             "currency",
+            "rooms",
+            "storage",
+            "power_type",
         ]
