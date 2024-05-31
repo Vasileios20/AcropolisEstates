@@ -1,23 +1,23 @@
 from rest_framework import serializers
-from .models import Listing, Images, amenities
+from .models import Listing, Images, Amenities
 from django.core.files.images import get_image_dimensions
 
 
-class amenitiesSerializer(serializers.ModelSerializer):
+class AmenitiesSerializer(serializers.ModelSerializer):
     """
-    Serializer class for the amenities model.
+    Serializer class for the Amenities model.
 
-    This serializer is used to serialize and deserialize amenities
+    This serializer is used to serialize and deserialize Amenities
     objects. It defines the fields that should be included in the serialized
-    representation of an amenities object.
+    representation of an Amenities object.
 
     Attributes:
         class Meta: The Meta class that defines the model and fields to include
-        in the serialized representation of an amenities object.
+        in the serialized representation of an Amenities object.
     """
     class Meta:
-        model = amenities
-        fields = [all_fields.name for all_fields in amenities._meta.fields]
+        model = Amenities
+        fields = [all_fields.name for all_fields in Amenities._meta.fields]
 
 
 class ImagesSerializer(serializers.ModelSerializer):
@@ -97,7 +97,7 @@ class ListingSerializer(serializers.ModelSerializer):
         write_only=True,
         validators=[ImagesSerializer().validate_images],
     )
-    amenities = amenitiesSerializer(
+    Amenities = AmenitiesSerializer(
         many=True,
         read_only=True,
     )
@@ -134,6 +134,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "owner",
             "type",
             "sub_type",
+            "sub_type_commercial",
             "sale_type",
             "description",
             "address_number",
@@ -163,7 +164,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "longitude",
             "latitude",
             "service_charge",
-            "amenities",
+            "Amenities",
             "featured",
             "distance_from_sea",
             "distance_from_city",

@@ -1,9 +1,9 @@
 from django.contrib import admin
-from listings.models import Listing, Images, amenities
+from listings.models import Listing, Images, Amenities
 
 
 class ListingAdmin(admin.ModelAdmin):
-    list_display = ("type", "sale_type", "price",
+    list_display = ("id", "type", "sub_type", "sale_type", "price",
                     "approved", "owner", "featured")
     list_filter = ("owner", "type", "sale_type", "price", "approved")
     search_fields = ("type", "description", "city",
@@ -34,4 +34,4 @@ class amenitiesAdmin(admin.ModelAdmin):
 
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(Images, ImagesAdmin)
-admin.site.register(amenities)
+admin.site.register(Amenities)
