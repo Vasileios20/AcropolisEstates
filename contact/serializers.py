@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from .models import ContactForm
+import os
+
+ADMIN_EMAIL = os.environ.get("EMAIL_ADDRESS")
 
 
 class ContactFormSerializer(serializers.ModelSerializer):
@@ -17,7 +20,7 @@ class ContactFormSerializer(serializers.ModelSerializer):
             "phone_number",
             "subject",
             "message",
-            "created_at",
+            "created_on",
         ]
 
         extra_kwargs = {
@@ -41,11 +44,11 @@ class ContactFormSerializer(serializers.ModelSerializer):
             },
         }
 
-        read_only_fields = ["id", "created_at"]
+        read_only_fields = ["id", "created_on"]
 
     def create(self, validated_data):
         """
-        Creates contact form.
+        Creates contact form and send it via email to the admin.
         """
         first_name = validated_data["first_name"]
         last_name = validated_data["last_name"]

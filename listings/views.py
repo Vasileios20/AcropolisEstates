@@ -21,14 +21,17 @@ class ListingFilter(filter.FilterSet):
     max_bedrooms = filter.NumberFilter(
         field_name="bedrooms", lookup_expr="lte")
 
-    min_surface = filter.NumberFilter(field_name="surface", lookup_expr="gte")
-    max_surface = filter.NumberFilter(field_name="surface", lookup_expr="lte")
+    min_floor_area = filter.NumberFilter(
+        field_name="floor_area", lookup_expr="gte")
+    max_floor_area = filter.NumberFilter(
+        field_name="floor_area", lookup_expr="lte")
 
     class Meta:
         model = Listing
         fields = [
             "owner",
             "type",
+            "sub_type",
             "price",
             "sale_type",
         ]
@@ -68,7 +71,8 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminUserOrReadOnly]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["owner", "type", "price", "sale_type"]
+    filterset_fields = ["owner", "type", "price", "sale_type", "sub_type"]
+
     search_fields = [
         "owner__username",
         "city",
@@ -76,6 +80,7 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
         "postcode",
         "sale_type",
         "type",
+        "sub_type",
     ]
 
 

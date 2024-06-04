@@ -1,6 +1,23 @@
 from rest_framework import serializers
-from .models import Listing, Images
+from .models import Listing, Images, Amenities
 from django.core.files.images import get_image_dimensions
+
+
+class AmenitiesSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for the Amenities model.s
+
+    This serializer is used to serialize and deserialize Amenities
+    objects. It defines the fields that should be included in the serialized
+    representation of an Amenities object.
+
+    Attributes:
+        class Meta: The Meta class that defines the model and fields to include
+        in the serialized representation of an Amenities object.
+    """
+    class Meta:
+        model = Amenities
+        fields = [all_fields.name for all_fields in Amenities._meta.fields]
 
 
 class ImagesSerializer(serializers.ModelSerializer):
@@ -80,19 +97,23 @@ class ListingSerializer(serializers.ModelSerializer):
         write_only=True,
         validators=[ImagesSerializer().validate_images],
     )
+    amenities = AmenitiesSerializer(
+        many=True,
+        read_only=True,
+    )
 
     def get_is_owner(self, obj):
         return self.context["request"].user == obj.owner
 
     def create(self, validated_data):
-        uploaded_images = validated_data.pop("uploaded_images")
+        uploaded_images = validated_data.pop("uploaded_images", [])
         listing = Listing.objects.create(**validated_data)
         for uploaded_image in uploaded_images:
             Images.objects.create(listing=listing, url=uploaded_image)
         return listing
 
     def update(self, instance, validated_data):
-        uploaded_images = validated_data.pop("uploaded_images")
+        uploaded_images = validated_data.pop("uploaded_images", [])
 
         if uploaded_images:
             listing_image_model_instance = [
@@ -108,33 +129,60 @@ class ListingSerializer(serializers.ModelSerializer):
         model = Listing
         fields = [
             "id",
-            "owner",
-            "created_at",
-            "updated_at",
             "is_owner",
             "profile_id",
-            "sale_type",
+            "owner",
             "type",
+            "sub_type",
+            "sale_type",
             "description",
             "address_number",
             "address_street",
+            "municipality",
             "postcode",
             "city",
+            "county",
+            "region",
             "price",
-            "surface",
+            "floor_area",
+            "land_area",
             "levels",
             "bedrooms",
             "floor",
             "kitchens",
             "bathrooms",
+            "wc",
             "living_rooms",
             "heating_system",
             "energy_class",
             "construction_year",
             "availability",
-            "images",
-            "uploaded_images",
+            "created_on",
+            "updated_on",
             "approved",
             "longitude",
             "latitude",
+            "service_charge",
+            "amenities",
+            "featured",
+            "distance_from_sea",
+            "distance_from_city",
+            "distance_from_airport",
+            "distance_from_village",
+            "distance_from_port",
+            "cover_coefficient",
+            "building_coefficient",
+            "length_of_facade",
+            "renovation_year",
+            "opening_frames",
+            "type_of_glass",
+            "orientation",
+            "zone",
+            "floor_type",
+            "images",
+            "uploaded_images",
+            "currency",
+            "rooms",
+            "storage",
+            "power_type",
         ]
