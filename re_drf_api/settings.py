@@ -59,7 +59,7 @@ REST_AUTH_SERIALIZERS = {
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "DEV" in os.environ
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -162,11 +162,9 @@ if "DEV" in os.environ:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-    print("sqlite3")
 else:
     DATABASES = {"default": dj_database_url.parse(
         os.environ.get("DATABASE_URL"))}
-    print("SQL")
 
 
 # Password validation
