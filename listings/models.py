@@ -313,7 +313,7 @@ class Listing(models.Model):
         ordering = ["-created_on"]
 
     def __str__(self):
-        return f"{self.owner}'s listing {self.id}"
+        return f"{self.agent_name}'s listing {self.id}"
 
 
 class Images(models.Model):

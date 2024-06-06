@@ -11,7 +11,7 @@ from .settings import (
 
 @api_view()
 def root_route(request):
-    return Response({"message": "Welcome to my drf API!"})
+    return Response({"message": "Welcome to Acropolis Estates API!"})
 
 
 @api_view(["GET"])
