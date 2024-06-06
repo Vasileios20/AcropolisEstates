@@ -204,7 +204,7 @@ class Listing(models.Model):
     construction_year_choices = [(i, i)
                                  for i in range(1900, datetime.now().year + 1)]
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    agent_name = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(
         choices=type_filter_choices, default="residential",
         max_length=255, blank=True
@@ -246,8 +246,6 @@ class Listing(models.Model):
     living_rooms = models.IntegerField(
         validators=[validate_zero], null=True, blank=True)
     rooms = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    storage = models.IntegerField(
         validators=[validate_zero], default=0, null=True, blank=True)
     power_type = models.CharField(max_length=255, blank=True)
     heating_system = models.CharField(max_length=255, blank=True)

@@ -83,9 +83,9 @@ class ListingSerializer(serializers.ModelSerializer):
         fields: The fields that should be included in the serialized
         representation of a Listing object.
     """
-    owner = serializers.ReadOnlyField(source="owner.username")
+    agent_name = serializers.ReadOnlyField(source="agent_name.username")
     is_owner = serializers.SerializerMethodField()
-    profile_id = serializers.ReadOnlyField(source="owner.profile.id")
+    profile_id = serializers.ReadOnlyField(source="agent_name.profile.id")
     images = ImagesSerializer(
         many=True,
         read_only=True,
@@ -103,7 +103,7 @@ class ListingSerializer(serializers.ModelSerializer):
     )
 
     def get_is_owner(self, obj):
-        return self.context["request"].user == obj.owner
+        return self.context["request"].user == obj.agent_name
 
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
@@ -138,7 +138,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "id",
             "is_owner",
             "profile_id",
-            "owner",
+            "agent_name",
             "type",
             "sub_type",
             "sale_type",
@@ -190,6 +190,5 @@ class ListingSerializer(serializers.ModelSerializer):
             "uploaded_images",
             "currency",
             "rooms",
-            "storage",
             "power_type",
         ]

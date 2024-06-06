@@ -26,16 +26,15 @@ Filter class for filtering listings based on various criteria.
     max_floor_area = filter.NumberFilter(
         field_name="floor_area", lookup_expr="lte")
 
-
-class Meta:
-    model = Listing
-    fields = [
-        "owner",
-        "type",
-        "sub_type",
-        "price",
-        "sale_type",
-    ]
+    class Meta:
+        model = Listing
+        fields = [
+            "agent_name",
+            "type",
+            "sub_type",
+            "price",
+            "sale_type",
+        ]
 
 
 class ListingList(generics.ListCreateAPIView):
@@ -44,7 +43,7 @@ class ListingList(generics.ListCreateAPIView):
     """
 
     queryset = Listing.objects.annotate(
-        listing_count=Count("owner__listing")
+        listing_count=Count("agent_name__listing")
     ).order_by(
         "-listing_count"
     )
@@ -59,7 +58,7 @@ class ListingList(generics.ListCreateAPIView):
     ]
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(agent_name=self.request.user)
 
 
 class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -72,10 +71,10 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminUserOrReadOnly]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["owner", "type", "price", "sale_type", "sub_type"]
+    filterset_fields = ["agent_name", "type", "price", "sale_type", "sub_type"]
 
     search_fields = [
-        "owner__username",
+        "agent_name__username",
         "city",
         "price",
         "postcode",
