@@ -17,7 +17,7 @@ class AmenitiesSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Amenities
-        fields = [all_fields.name for all_fields in Amenities._meta.fields]
+        fields = "__all__"
 
 
 class ImagesSerializer(serializers.ModelSerializer):
@@ -107,9 +107,16 @@ class ListingSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
+        amenities_data = validated_data.pop("amenities", [])
         listing = Listing.objects.create(**validated_data)
+
         for uploaded_image in uploaded_images:
             Images.objects.create(listing=listing, url=uploaded_image)
+
+        for amenity_data in amenities_data:
+
+            Amenities.objects.create(listing=listing, **amenity_data)
+
         return listing
 
     def update(self, instance, validated_data):
@@ -160,10 +167,10 @@ class ListingSerializer(serializers.ModelSerializer):
             "created_on",
             "updated_on",
             "approved",
+            "amenities",
             "longitude",
             "latitude",
             "service_charge",
-            "amenities",
             "featured",
             "distance_from_sea",
             "distance_from_city",

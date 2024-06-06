@@ -9,7 +9,9 @@ class Amenities(models.Model):
     """
     Amenities model
     """
-    name = models.CharField(max_length=255, default="", blank=True)
+    listing = models.ForeignKey(
+        "Listing", on_delete=models.CASCADE, related_name="amenities"
+    )
     solar_water_heating = models.BooleanField(default=False)
     storage_room = models.BooleanField(default=False)
     parking = models.BooleanField(default=False)
@@ -77,7 +79,7 @@ class Amenities(models.Model):
     auction = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Amenities {self.name}"
+        return f"Amenities {self.listing}"
 
     class Meta:
         verbose_name_plural = "Amenities building"
@@ -265,7 +267,6 @@ class Listing(models.Model):
     latitude = models.FloatField(default=0.0, null=True, blank=True)
     service_charge = models.FloatField(
         validators=[validate_zero], default=0, null=True, blank=True)
-    amenities = models.ManyToManyField(Amenities, blank=True)
     featured = models.BooleanField(default=False)
     distance_from_sea = models.IntegerField(
         validators=[validate_zero], default=0, null=True, blank=True)

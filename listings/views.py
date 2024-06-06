@@ -1,16 +1,16 @@
+from rest_framework.response import Response
+from django_filters import rest_framework as filter
+from re_drf_api.permissions import IsAdminUserOrReadOnly
 from django.db.models import Count
 from rest_framework import generics, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Listing, Images
-from .serializers import ListingSerializer, ImagesSerializer
-from re_drf_api.permissions import IsAdminUserOrReadOnly
-from django_filters import rest_framework as filter
-from rest_framework.response import Response
+from .models import Listing, Images, Amenities
+from .serializers import ListingSerializer, ImagesSerializer, AmenitiesSerializer
 
 
 class ListingFilter(filter.FilterSet):
     """
-    Filter class for filtering listings based on various criteria.
+Filter class for filtering listings based on various criteria.
     """
 
     min_price = filter.NumberFilter(field_name="price", lookup_expr="gte")
@@ -26,15 +26,16 @@ class ListingFilter(filter.FilterSet):
     max_floor_area = filter.NumberFilter(
         field_name="floor_area", lookup_expr="lte")
 
-    class Meta:
-        model = Listing
-        fields = [
-            "owner",
-            "type",
-            "sub_type",
-            "price",
-            "sale_type",
-        ]
+
+class Meta:
+    model = Listing
+    fields = [
+        "owner",
+        "type",
+        "sub_type",
+        "price",
+        "sale_type",
+    ]
 
 
 class ListingList(generics.ListCreateAPIView):
@@ -115,3 +116,16 @@ class DeleteImageView(generics.DestroyAPIView):
             return Response(
                 {"error": "Image not found"}, status=status.HTTP_404_NOT_FOUND
             )
+
+
+class AmenitiesList(generics.ListCreateAPIView):
+    """
+    List all amenities, or create a new amenity.
+    """
+
+    queryset = Amenities.objects.all()
+    serializer_class = AmenitiesSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["listing"]
+    search_fields = ["listing"]
