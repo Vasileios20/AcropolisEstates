@@ -4,10 +4,10 @@ from listings.models import Listing, Images, Amenities
 
 class ListingAdmin(admin.ModelAdmin):
     list_display = ("id", "type", "sub_type", "sale_type", "price",
-                    "approved", "owner", "featured")
-    list_filter = ("owner", "type", "sale_type", "price", "approved")
+                    "approved", "agent_name", "featured")
+    list_filter = ("agent_name", "type", "sale_type", "price", "approved")
     search_fields = ("type", "description", "city",
-                     "price", "owner", "sale_type")
+                     "price", "agent_name", "sale_type")
     list_per_page = 25
     actions = ["approve_listings", "approve_featured_listings"]
 
@@ -32,6 +32,6 @@ class amenitiesAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
-admin.site.register(Listing, ListingAdmin)
-admin.site.register(Images, ImagesAdmin)
 admin.site.register(Amenities)
+admin.site.register(Images, ImagesAdmin)
+admin.site.register(Listing, ListingAdmin)
