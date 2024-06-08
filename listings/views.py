@@ -6,6 +6,7 @@ from rest_framework import generics, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Listing, Images, Amenities
 from .serializers import ListingSerializer, ImagesSerializer, AmenitiesSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class ListingFilter(filter.FilterSet):
@@ -50,6 +51,7 @@ class ListingList(generics.ListCreateAPIView):
     serializer_class = ListingSerializer
     permission_classes = [IsAdminUserOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    parser_classes = [MultiPartParser, FormParser]
     filterset_class = ListingFilter
     search_fields = [
         "city",
