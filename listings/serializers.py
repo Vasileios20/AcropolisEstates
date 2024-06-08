@@ -116,7 +116,6 @@ class ListingSerializer(serializers.ModelSerializer):
             Images.objects.create(listing=listing, url=uploaded_image)
 
         for amenity_data in amenities_data:
-
             Amenities.objects.create(listing=listing, **amenity_data)
 
         return listing
@@ -136,7 +135,7 @@ class ListingSerializer(serializers.ModelSerializer):
 
         instance = super().update(instance, validated_data)
 
-        if "amenities" in validated_data:
+        if amenities_data:
             instance.amenities.all().delete()
             for amenity_data in amenities_data:
                 Amenities.objects.create(listing=instance, **amenity_data)
