@@ -6,7 +6,7 @@ class ListingAdmin(admin.ModelAdmin):
     list_display = ("id", "type", "sub_type", "sale_type", "price",
                     "approved", "agent_name", "featured")
     list_filter = ("agent_name", "type", "sale_type", "price", "approved")
-    search_fields = ("type", "description", "city",
+    search_fields = ("type", "description",
                      "price", "agent_name", "sale_type")
     list_per_page = 25
     actions = ["approve_listings", "approve_featured_listings"]

@@ -157,7 +157,6 @@ class ListingSerializer(serializers.ModelSerializer):
             "address_street",
             "municipality",
             "postcode",
-            "city",
             "county",
             "region",
             "price",
