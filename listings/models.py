@@ -217,12 +217,11 @@ class Listing(models.Model):
         choices=sale_type_filter_choices, default="sale",
         max_length=255, blank=True
     )
-    description = models.CharField(max_length=255, blank=True)
+    description = models.CharField(max_length=2000, blank=True)
     address_number = models.IntegerField(
         validators=[validate_zero], null=True, blank=True)
     address_street = models.CharField(max_length=255, blank=True)
     postcode = models.CharField(max_length=255, blank=True)
-    city = models.CharField(max_length=255, blank=True)
     municipality = models.CharField(max_length=255, blank=True)
     county = models.CharField(max_length=255, default="", blank=True)
     region = models.CharField(max_length=255, default="", blank=True)
@@ -313,7 +312,7 @@ class Listing(models.Model):
         ordering = ["-created_on"]
 
     def __str__(self):
-        return f"{self.agent_name}'s listing {self.id}"
+        return f" listing AE000{self.id}"
 
 
 class Images(models.Model):
