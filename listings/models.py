@@ -218,13 +218,18 @@ class Listing(models.Model):
         max_length=255, blank=True
     )
     description = models.CharField(max_length=2000, blank=True)
+    description_gr = models.CharField(max_length=2000, blank=True)
     address_number = models.IntegerField(
         validators=[validate_zero], null=True, blank=True)
     address_street = models.CharField(max_length=255, blank=True)
+    address_street_gr = models.CharField(max_length=255, blank=True)
     postcode = models.CharField(max_length=255, blank=True)
     municipality = models.CharField(max_length=255, blank=True)
+    municipality_gr = models.CharField(max_length=255, blank=True)
     county = models.CharField(max_length=255, default="", blank=True)
+    county_gr = models.CharField(max_length=255, default="", blank=True)
     region = models.CharField(max_length=255, default="", blank=True)
+    region_gr = models.CharField(max_length=255, default="", blank=True)
     price = models.FloatField(
         validators=[validate_zero], null=True, blank=True)
     floor_area = models.FloatField(
@@ -247,7 +252,9 @@ class Listing(models.Model):
     rooms = models.IntegerField(
         validators=[validate_zero], default=0, null=True, blank=True)
     power_type = models.CharField(max_length=255, blank=True)
+    power_type_gr = models.CharField(max_length=255, blank=True)
     heating_system = models.CharField(max_length=255, blank=True)
+    heating_system_gr = models.CharField(max_length=255, blank=True)
     energy_class = models.CharField(
         choices=energy_class_filter_choices, default="A", max_length=255,
         blank=True
