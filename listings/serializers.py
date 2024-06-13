@@ -207,4 +207,5 @@ class ListingSerializer(serializers.ModelSerializer):
             "rooms",
             "power_type",
             "power_type_gr",
+            "view",
         ]
