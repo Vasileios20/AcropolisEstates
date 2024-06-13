@@ -217,8 +217,8 @@ class Listing(models.Model):
         choices=sale_type_filter_choices, default="sale",
         max_length=255, blank=True
     )
-    description = models.CharField(max_length=2000, blank=True)
-    description_gr = models.CharField(max_length=2000, blank=True)
+    description = models.TextField(max_length=2000, blank=True)
+    description_gr = models.TextField(max_length=2000, blank=True)
     address_number = models.IntegerField(
         validators=[validate_zero], null=True, blank=True)
     address_street = models.CharField(max_length=255, blank=True)
