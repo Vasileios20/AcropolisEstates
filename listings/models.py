@@ -139,7 +139,7 @@ class Listing(models.Model):
     ]
 
     opening_frames_filter_choices = [
-        ("aluminiun", "Aluminiun"),
+        ("aluminium", "Aluminium"),
         ("wooden", "Wooden"),
         ("iron", "Iron"),
         ("PVC", "PVC"),
