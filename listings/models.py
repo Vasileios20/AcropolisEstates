@@ -307,6 +307,9 @@ class Listing(models.Model):
         choices=orientation_choices, default="north", max_length=255,
         blank=True
     )
+    view = models.CharField(
+        choices=view_choices, default="sea", max_length=255, blank=True
+    )
     zone = models.CharField(
         choices=zone_choices, default="residential", max_length=255, blank=True
     )
