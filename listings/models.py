@@ -310,6 +310,9 @@ class Listing(models.Model):
     view = models.CharField(
         choices=view_choices, default="sea", max_length=255, blank=True
     )
+    slope = models.CharField(
+        choices=slope_choices, default="level", max_length=255, blank=True
+    )
     zone = models.CharField(
         choices=zone_choices, default="residential", max_length=255, blank=True
     )
