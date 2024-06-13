@@ -208,4 +208,5 @@ class ListingSerializer(serializers.ModelSerializer):
             "power_type",
             "power_type_gr",
             "view",
+            "slope",
         ]
