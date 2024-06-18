@@ -217,6 +217,9 @@ class Listing(models.Model):
         choices=sale_type_filter_choices, default="sale",
         max_length=255, blank=True
     )
+    price = models.FloatField(
+        validators=[validate_zero], null=True, blank=True)
+    currency = models.CharField(max_length=255, default="€", blank=True)
     description = models.TextField(blank=True)
     description_gr = models.TextField(blank=True)
     address_number = models.IntegerField(
@@ -230,8 +233,6 @@ class Listing(models.Model):
     county_gr = models.CharField(max_length=255, default="", blank=True)
     region = models.CharField(max_length=255, default="", blank=True)
     region_gr = models.CharField(max_length=255, default="", blank=True)
-    price = models.FloatField(
-        validators=[validate_zero], null=True, blank=True)
     floor_area = models.FloatField(
         validators=[validate_zero], null=True, blank=True)
     land_area = models.FloatField(
@@ -259,33 +260,18 @@ class Listing(models.Model):
         choices=energy_class_filter_choices, default="A", max_length=255,
         blank=True
     )
+    floor_type = models.CharField(
+        choices=floor_choices, default="marble", max_length=255, blank=True
+    )
     construction_year = models.IntegerField(
         choices=construction_year_choices, default=datetime.now().year,
         null=True, blank=True
     )
     availability = models.DateField(null=True, blank=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-    approved = models.BooleanField(default=False)
+
     longitude = models.FloatField(default=0.0, null=True, blank=True)
     latitude = models.FloatField(default=0.0, null=True, blank=True)
     service_charge = models.FloatField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    featured = models.BooleanField(default=False)
-    distance_from_sea = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    distance_from_city = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    distance_from_airport = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    distance_from_village = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    distance_from_port = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    cover_coefficient = models.FloatField(default=0.0, null=True, blank=True)
-    building_coefficient = models.FloatField(
-        default=0.0, null=True, blank=True)
-    length_of_facade = models.IntegerField(
         validators=[validate_zero], default=0, null=True, blank=True)
     renovation_year = models.IntegerField(
         choices=construction_year_choices, default=datetime.now().year,
@@ -303,6 +289,11 @@ class Listing(models.Model):
         max_length=255,
         blank=True
     )
+    building_coefficient = models.IntegerField(
+        default=0, null=True, blank=True)
+    cover_coefficient = models.IntegerField(default=0, null=True, blank=True)
+    length_of_facade = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
     orientation = models.CharField(
         choices=orientation_choices, default="north", max_length=255,
         blank=True
@@ -316,10 +307,20 @@ class Listing(models.Model):
     zone = models.CharField(
         choices=zone_choices, default="residential", max_length=255, blank=True
     )
-    floor_type = models.CharField(
-        choices=floor_choices, default="marble", max_length=255, blank=True
-    )
-    currency = models.CharField(max_length=255, default="€", blank=True)
+    distance_from_sea = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_city = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_airport = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_village = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_port = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    approved = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-created_on"]
