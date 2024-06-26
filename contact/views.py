@@ -58,7 +58,7 @@ def contact_form_create(request):
                 message=f"New contact form from {first_name} {last_name}.\n\n"
                 f"Message: {message}\n\n"
                 f"Phone number: {phone_number}\nEmail: {email}",
-                from_email=email,
+                from_email=ADMIN_EMAIL,
                 recipient_list=[ADMIN_EMAIL],
                 fail_silently=False,
             )
