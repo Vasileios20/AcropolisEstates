@@ -9,7 +9,9 @@ class Amenities(models.Model):
     """
     Amenities model
     """
-    name = models.CharField(max_length=255, default="", blank=True)
+    listing = models.ForeignKey(
+        "Listing", on_delete=models.CASCADE, related_name="amenities"
+    )
     solar_water_heating = models.BooleanField(default=False)
     storage_room = models.BooleanField(default=False)
     parking = models.BooleanField(default=False)
@@ -77,7 +79,7 @@ class Amenities(models.Model):
     auction = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Amenities {self.name}"
+        return f"Amenities {self.listing}"
 
     class Meta:
         verbose_name_plural = "Amenities building"
@@ -137,7 +139,7 @@ class Listing(models.Model):
     ]
 
     opening_frames_filter_choices = [
-        ("aluminiun", "Aluminiun"),
+        ("aluminium", "Aluminium"),
         ("wooden", "Wooden"),
         ("iron", "Iron"),
         ("PVC", "PVC"),
@@ -202,7 +204,7 @@ class Listing(models.Model):
     construction_year_choices = [(i, i)
                                  for i in range(1900, datetime.now().year + 1)]
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    agent_name = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(
         choices=type_filter_choices, default="residential",
         max_length=255, blank=True
@@ -215,17 +217,22 @@ class Listing(models.Model):
         choices=sale_type_filter_choices, default="sale",
         max_length=255, blank=True
     )
-    description = models.CharField(max_length=255, blank=True)
+    price = models.FloatField(
+        validators=[validate_zero], null=True, blank=True)
+    currency = models.CharField(max_length=255, default="€", blank=True)
+    description = models.TextField(blank=True)
+    description_gr = models.TextField(blank=True)
     address_number = models.IntegerField(
         validators=[validate_zero], null=True, blank=True)
     address_street = models.CharField(max_length=255, blank=True)
+    address_street_gr = models.CharField(max_length=255, blank=True)
     postcode = models.CharField(max_length=255, blank=True)
-    city = models.CharField(max_length=255, blank=True)
     municipality = models.CharField(max_length=255, blank=True)
+    municipality_gr = models.CharField(max_length=255, blank=True)
     county = models.CharField(max_length=255, default="", blank=True)
+    county_gr = models.CharField(max_length=255, default="", blank=True)
     region = models.CharField(max_length=255, default="", blank=True)
-    price = models.FloatField(
-        validators=[validate_zero], null=True, blank=True)
+    region_gr = models.CharField(max_length=255, default="", blank=True)
     floor_area = models.FloatField(
         validators=[validate_zero], null=True, blank=True)
     land_area = models.FloatField(
@@ -245,42 +252,26 @@ class Listing(models.Model):
         validators=[validate_zero], null=True, blank=True)
     rooms = models.IntegerField(
         validators=[validate_zero], default=0, null=True, blank=True)
-    storage = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
     power_type = models.CharField(max_length=255, blank=True)
+    power_type_gr = models.CharField(max_length=255, blank=True)
     heating_system = models.CharField(max_length=255, blank=True)
+    heating_system_gr = models.CharField(max_length=255, blank=True)
     energy_class = models.CharField(
         choices=energy_class_filter_choices, default="A", max_length=255,
         blank=True
+    )
+    floor_type = models.CharField(
+        choices=floor_choices, default="marble", max_length=255, blank=True
     )
     construction_year = models.IntegerField(
         choices=construction_year_choices, default=datetime.now().year,
         null=True, blank=True
     )
     availability = models.DateField(null=True, blank=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-    approved = models.BooleanField(default=False)
+
     longitude = models.FloatField(default=0.0, null=True, blank=True)
     latitude = models.FloatField(default=0.0, null=True, blank=True)
     service_charge = models.FloatField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    amenities = models.ManyToManyField(Amenities, blank=True)
-    featured = models.BooleanField(default=False)
-    distance_from_sea = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    distance_from_city = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    distance_from_airport = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    distance_from_village = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    distance_from_port = models.IntegerField(
-        validators=[validate_zero], default=0, null=True, blank=True)
-    cover_coefficient = models.FloatField(default=0.0, null=True, blank=True)
-    building_coefficient = models.FloatField(
-        default=0.0, null=True, blank=True)
-    length_of_facade = models.IntegerField(
         validators=[validate_zero], default=0, null=True, blank=True)
     renovation_year = models.IntegerField(
         choices=construction_year_choices, default=datetime.now().year,
@@ -298,23 +289,44 @@ class Listing(models.Model):
         max_length=255,
         blank=True
     )
+    building_coefficient = models.IntegerField(
+        default=0, null=True, blank=True)
+    cover_coefficient = models.IntegerField(default=0, null=True, blank=True)
+    length_of_facade = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
     orientation = models.CharField(
         choices=orientation_choices, default="north", max_length=255,
         blank=True
     )
+    view = models.CharField(
+        choices=view_choices, default="sea", max_length=255, blank=True
+    )
+    slope = models.CharField(
+        choices=slope_choices, default="level", max_length=255, blank=True
+    )
     zone = models.CharField(
         choices=zone_choices, default="residential", max_length=255, blank=True
     )
-    floor_type = models.CharField(
-        choices=floor_choices, default="marble", max_length=255, blank=True
-    )
-    currency = models.CharField(max_length=255, default="€", blank=True)
+    distance_from_sea = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_city = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_airport = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_village = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_port = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    approved = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-created_on"]
 
     def __str__(self):
-        return f"{self.owner}'s listing {self.id}"
+        return f" listing AE000{self.id}"
 
 
 class Images(models.Model):

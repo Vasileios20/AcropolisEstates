@@ -3,6 +3,21 @@ from .models import Listing, Images, Amenities
 from django.core.files.images import get_image_dimensions
 
 
+def validate_images(value):
+    for image in value:
+        if image.size > 1024 * 1024 * 2:
+            raise serializers.ValidationError(
+                "Image size can't exceed 2MB")
+        width, height = get_image_dimensions(image)
+        if width > 4096:
+            raise serializers.ValidationError(
+                "Image width can't exceed 4096px")
+        if height > 4096:
+            raise serializers.ValidationError(
+                "Image height can't exceed 4096px")
+    return value
+
+
 class AmenitiesSerializer(serializers.ModelSerializer):
     """
     Serializer class for the Amenities model.s
@@ -17,7 +32,7 @@ class AmenitiesSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Amenities
-        fields = [all_fields.name for all_fields in Amenities._meta.fields]
+        fields = "__all__"
 
 
 class ImagesSerializer(serializers.ModelSerializer):
@@ -31,20 +46,6 @@ class ImagesSerializer(serializers.ModelSerializer):
         model (class): The model class associated with the serializer.
         fields (list): The fields to include in the serialized output.
     """
-
-    def validate_images(self, value):
-        for image in value:
-            if image.size > 1024 * 1024 * 2:
-                raise serializers.ValidationError(
-                    "Image size can't exceed 2MB")
-            width, height = get_image_dimensions(image)
-            if width > 4096:
-                raise serializers.ValidationError(
-                    "Image width can't exceed 4096px")
-            if height > 4096:
-                raise serializers.ValidationError(
-                    "Image height can't exceed 4096px")
-        return value
 
     class Meta:
         model = Images
@@ -83,9 +84,9 @@ class ListingSerializer(serializers.ModelSerializer):
         fields: The fields that should be included in the serialized
         representation of a Listing object.
     """
-    owner = serializers.ReadOnlyField(source="owner.username")
+    agent_name = serializers.ReadOnlyField(source="agent_name.username")
     is_owner = serializers.SerializerMethodField()
-    profile_id = serializers.ReadOnlyField(source="owner.profile.id")
+    profile_id = serializers.ReadOnlyField(source="agent_name.profile.id")
     images = ImagesSerializer(
         many=True,
         read_only=True,
@@ -95,25 +96,33 @@ class ListingSerializer(serializers.ModelSerializer):
             max_length=100000, use_url=False, allow_empty_file=False
         ),
         write_only=True,
-        validators=[ImagesSerializer().validate_images],
+        validators=[validate_images],
+        required=False,
     )
     amenities = AmenitiesSerializer(
         many=True,
-        read_only=True,
+        required=False,
     )
 
     def get_is_owner(self, obj):
-        return self.context["request"].user == obj.owner
+        return self.context["request"].user == obj.agent_name
 
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
+        amenities_data = validated_data.pop("amenities", [])
         listing = Listing.objects.create(**validated_data)
+
         for uploaded_image in uploaded_images:
             Images.objects.create(listing=listing, url=uploaded_image)
+
+        for amenity_data in amenities_data:
+            Amenities.objects.create(listing=listing, **amenity_data)
+
         return listing
 
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
+        amenities_data = validated_data.pop("amenities", [])
 
         if uploaded_images:
             listing_image_model_instance = [
@@ -123,7 +132,15 @@ class ListingSerializer(serializers.ModelSerializer):
                 for image in uploaded_images
             ]
             Images.objects.bulk_create(listing_image_model_instance)
-        return super().update(instance, validated_data)
+
+        instance = super().update(instance, validated_data)
+
+        if amenities_data:
+            instance.amenities.all().delete()
+            for amenity_data in amenities_data:
+                Amenities.objects.create(listing=instance, **amenity_data)
+
+        return instance
 
     class Meta:
         model = Listing
@@ -131,18 +148,22 @@ class ListingSerializer(serializers.ModelSerializer):
             "id",
             "is_owner",
             "profile_id",
-            "owner",
+            "agent_name",
             "type",
             "sub_type",
             "sale_type",
             "description",
+            "description_gr",
             "address_number",
             "address_street",
+            "address_street_gr",
             "municipality",
+            "municipality_gr",
             "postcode",
-            "city",
             "county",
+            "county_gr",
             "region",
+            "region_gr",
             "price",
             "floor_area",
             "land_area",
@@ -154,16 +175,17 @@ class ListingSerializer(serializers.ModelSerializer):
             "wc",
             "living_rooms",
             "heating_system",
+            "heating_system_gr",
             "energy_class",
             "construction_year",
             "availability",
             "created_on",
             "updated_on",
             "approved",
+            "amenities",
             "longitude",
             "latitude",
             "service_charge",
-            "amenities",
             "featured",
             "distance_from_sea",
             "distance_from_city",
@@ -183,6 +205,8 @@ class ListingSerializer(serializers.ModelSerializer):
             "uploaded_images",
             "currency",
             "rooms",
-            "storage",
             "power_type",
+            "power_type_gr",
+            "view",
+            "slope",
         ]

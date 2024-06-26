@@ -1,16 +1,17 @@
+from rest_framework.response import Response
+from django_filters import rest_framework as filter
+from re_drf_api.permissions import IsAdminUserOrReadOnly
 from django.db.models import Count
 from rest_framework import generics, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Listing, Images
-from .serializers import ListingSerializer, ImagesSerializer
-from re_drf_api.permissions import IsAdminUserOrReadOnly
-from django_filters import rest_framework as filter
-from rest_framework.response import Response
+from .models import Listing, Images, Amenities
+from .serializers import ListingSerializer, ImagesSerializer, AmenitiesSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class ListingFilter(filter.FilterSet):
     """
-    Filter class for filtering listings based on various criteria.
+Filter class for filtering listings based on various criteria.
     """
 
     min_price = filter.NumberFilter(field_name="price", lookup_expr="gte")
@@ -29,7 +30,7 @@ class ListingFilter(filter.FilterSet):
     class Meta:
         model = Listing
         fields = [
-            "owner",
+            "agent_name",
             "type",
             "sub_type",
             "price",
@@ -43,13 +44,14 @@ class ListingList(generics.ListCreateAPIView):
     """
 
     queryset = Listing.objects.annotate(
-        listing_count=Count("owner__listing")
+        listing_count=Count("agent_name__listing")
     ).order_by(
         "-listing_count"
     )
     serializer_class = ListingSerializer
     permission_classes = [IsAdminUserOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    parser_classes = [MultiPartParser, FormParser]
     filterset_class = ListingFilter
     search_fields = [
         "city",
@@ -58,7 +60,7 @@ class ListingList(generics.ListCreateAPIView):
     ]
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(agent_name=self.request.user)
 
 
 class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -71,10 +73,10 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminUserOrReadOnly]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["owner", "type", "price", "sale_type", "sub_type"]
+    filterset_fields = ["agent_name", "type", "price", "sale_type", "sub_type"]
 
     search_fields = [
-        "owner__username",
+        "agent_name__username",
         "city",
         "price",
         "postcode",
@@ -115,3 +117,16 @@ class DeleteImageView(generics.DestroyAPIView):
             return Response(
                 {"error": "Image not found"}, status=status.HTTP_404_NOT_FOUND
             )
+
+
+class AmenitiesList(generics.ListCreateAPIView):
+    """
+    List all amenities, or create a new amenity.
+    """
+
+    queryset = Amenities.objects.all()
+    serializer_class = AmenitiesSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["listing"]
+    search_fields = ["listing"]
