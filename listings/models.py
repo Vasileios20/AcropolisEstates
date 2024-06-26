@@ -268,9 +268,8 @@ class Listing(models.Model):
         null=True, blank=True
     )
     availability = models.DateField(null=True, blank=True)
-
-    longitude = models.FloatField(default=0.0, null=True, blank=True)
     latitude = models.FloatField(default=0.0, null=True, blank=True)
+    longitude = models.FloatField(default=0.0, null=True, blank=True)
     service_charge = models.FloatField(
         validators=[validate_zero], default=0, null=True, blank=True)
     renovation_year = models.IntegerField(
