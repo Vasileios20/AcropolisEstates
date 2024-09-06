@@ -64,13 +64,13 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
     power_type,
     floor_type,
     opening_frames,
+    power_type_gr,
   } = props;
 
   useEffect(() => {
     if (latitude !== undefined && longitude !== undefined) {
       setMapReady(true);
     }
-    // i18n.changeLanguage(lng);
   }, [i18n, latitude, longitude]);
 
   const lng = i18n.language;
@@ -109,6 +109,8 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
   const energy_classValue = energy_class === "to_be_issued" ? t("propertyDetails.energyClassTypes.toBeIssued") : energy_class;
 
   const land_areaValue = land_area === "" || land_area === null || land_area === 0 ? "N/A" : `${land_area} m²`;
+
+  const power_typeValue = lng === "el" ? power_type_gr : power_type;
 
   const floorValue =
     floor < 0
@@ -197,7 +199,7 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
           { label: t("propertyDetails.wc"), value: wc },
           { label: t("propertyDetails.heating"), value: heating_system },
           { label: t("propertyDetails.energyClass"), value: energy_class },
-          { label: t("propertyDetails.powerType"), value: power_type },
+          { label: t("propertyDetails.powerType"), value: power_typeValue },
           { label: t("propertyDetails.yearBuilt"), value: construction_year },
           { label: t("propertyDetails.serviceCharge"), value: `${currency} ${service_charge}` },
           { label: t("propertyDetails.availability"), value: availability },
