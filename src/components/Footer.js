@@ -7,7 +7,7 @@ import styles from "../styles/Footer.module.css";
 import { axiosReq } from "../api/axiosDefaults";
 import { Form } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
-import { useEffect } from "react";
+
 
 const Footer = () => {
   /**
@@ -15,13 +15,8 @@ const Footer = () => {
    */
 
   const history = useHistory();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  const lng = navigator.language || navigator.userLanguage;
-
-  useEffect(() => {
-    i18n.changeLanguage(lng);
-  }, [i18n, lng]);
 
   const handleSubmit = async (selectedType) => {
     // Fetch the listings from the API using the search parameters.
@@ -89,6 +84,9 @@ const Footer = () => {
                 {t("footer.contact.address")}
               </p>
               <p className="m-0">
+                {t("footer.contact.city")}
+              </p>
+              <p className="m-0">
                 <Trans i18nKey="footer.contact.email" components={{
                   1: <Link to="/contact" className={`${styles.link}`} />
                 }} />
@@ -102,17 +100,22 @@ const Footer = () => {
         </Row>
         <Row className={`text-center mt-2 align-items-center`}>
           <hr />
-          <Col sm={4}>
+          <Col sm={3}>
             <p className="text-muted">
               &copy; {new Date().getFullYear()} {t("footer.copyRight")}
             </p>
           </Col>
-          <Col sm={4}>
+          <Col sm={3}>
+            <p className="text-muted">
+              {t("footer.companyReg")}
+            </p>
+          </Col>
+          <Col sm={3}>
             <p className="text-muted">
               <Link to="/cookies" className={`${styles.link}`}>Cookies </Link> | <Link to="/privacyPolicy" className={`${styles.link}`}>{t("footer.privacyPolicy")}</Link> | <Link to="/terms" className={`${styles.link}`}>{t("footer.terms")}</Link>
             </p>
           </Col>
-          <Col sm={4}>
+          <Col sm={3}>
             <>
               <p className="text-muted">Developed by <a href="https://www.linkedin.com/in/vasileios-tsimourdagkas/" target="_blank" rel="noreferrer" className={`${styles.link}`}>VasileiosT</a>
               </p>
