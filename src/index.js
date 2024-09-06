@@ -8,14 +8,17 @@ import { CurrentUserProvider } from "./contexts/CurrentUserContext";
 
 // import i18n (needs to be bundled ;))
 import "./i18n";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Router>
-    <CurrentUserProvider>
-      <App />
-    </CurrentUserProvider>
-  </Router>
+  <LanguageProvider>
+    <Router>
+      <CurrentUserProvider>
+        <App />
+      </CurrentUserProvider>
+    </Router>
+  </LanguageProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
