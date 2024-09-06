@@ -36,8 +36,6 @@ const NavBar = () => {
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    // const lng = navigator.language || navigator.userLanguage;
-    // i18n.changeLanguage(lng);
     const isMobileDevice = /Mobi/i.test(window.navigator.userAgent);
     setIsMobile(isMobileDevice);
   }, [i18n]);
@@ -189,12 +187,15 @@ const NavBar = () => {
 
             {userStatus ? staffIcons : userIcons}
           </Nav>
+          <div className={`${styles.LngBtnContainer} d-md-none d-flex`}>
+            <button type="submit" onClick={() => changeLanguage('el')} className={`${styles.LngBtn} ${styles.LngBtnGR}`}></button>
+            <button type="submit" onClick={() => changeLanguage('en')} className={`${styles.LngBtn} ${styles.LngBtnEN}`}></button>
+          </div>
         </Navbar.Collapse>
       </Container>
-      <div className={styles.LngBtnContainer}>
+      <div className={`${styles.LngBtnContainer} d-none d-md-flex`}>
         <button type="submit" onClick={() => changeLanguage('el')} className={`${styles.LngBtn} ${styles.LngBtnGR}`}></button>
         <button type="submit" onClick={() => changeLanguage('en')} className={`${styles.LngBtn} ${styles.LngBtnEN}`}></button>
-
       </div>
     </Navbar >
   );
