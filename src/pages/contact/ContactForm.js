@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
@@ -27,15 +27,7 @@ function ContactForm({ listing_id }) {
    * @returns {JSX.Element} - The JSX for the component.
    */
 
-
-  const { t, i18n } = useTranslation();
-
-  const lng = navigator.language || navigator.userLanguage;
-
-  useEffect(() => {
-
-    i18n.changeLanguage(lng);
-  }, [i18n, lng]);
+  const { t } = useTranslation();
 
   const [contactData, setContactData] = useState({
     first_name: "",

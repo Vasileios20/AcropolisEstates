@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
@@ -16,6 +16,7 @@ import logo from "../assets/logo.png";
 import { removeTokenTimestamp } from "../utils/utils";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useTranslation } from "react-i18next";
+import LanguageContext from '../contexts/LanguageContext';
 
 const NavBar = () => {
   /**
@@ -30,12 +31,13 @@ const NavBar = () => {
   const [servicesExpanded, setServicesExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [scroll, setScroll] = useState(false);
+  const { changeLanguage } = useContext(LanguageContext);
 
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    const lng = navigator.language || navigator.userLanguage;
-    i18n.changeLanguage(lng);
+    // const lng = navigator.language || navigator.userLanguage;
+    // i18n.changeLanguage(lng);
     const isMobileDevice = /Mobi/i.test(window.navigator.userAgent);
     setIsMobile(isMobileDevice);
   }, [i18n]);
@@ -190,8 +192,8 @@ const NavBar = () => {
         </Navbar.Collapse>
       </Container>
       <div className={styles.LngBtnContainer}>
-        <button type="submit" onClick={() => i18n.changeLanguage('el')} className={`${styles.LngBtn} ${styles.LngBtnGR}`}></button>
-        <button type="submit" onClick={() => i18n.changeLanguage('en')} className={`${styles.LngBtn} ${styles.LngBtnEN}`}></button>
+        <button type="submit" onClick={() => changeLanguage('el')} className={`${styles.LngBtn} ${styles.LngBtnGR}`}></button>
+        <button type="submit" onClick={() => changeLanguage('en')} className={`${styles.LngBtn} ${styles.LngBtnEN}`}></button>
 
       </div>
     </Navbar >

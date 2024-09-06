@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "../../styles/ServicesPages.module.css";
 
 import Container from "react-bootstrap/Container";
@@ -13,11 +13,7 @@ export default function AssetManagementPage() {
    * It contains information about the company and its values.
    * @returns {JSX.Element}
    */
-  const { t, i18n } = useTranslation();
-  useEffect(() => {
-    const lng = navigator.language || navigator.userLanguage;
-    i18n.changeLanguage(lng);
-  }, [i18n]);
+  const { t } = useTranslation();
 
   return (
     <>

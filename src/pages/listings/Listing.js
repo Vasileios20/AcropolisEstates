@@ -67,11 +67,10 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
   } = props;
 
   useEffect(() => {
-    const lng = navigator.language || navigator.userLanguage;
     if (latitude !== undefined && longitude !== undefined) {
       setMapReady(true);
     }
-    i18n.changeLanguage(lng);
+    // i18n.changeLanguage(lng);
   }, [i18n, latitude, longitude]);
 
   const lng = i18n.language;

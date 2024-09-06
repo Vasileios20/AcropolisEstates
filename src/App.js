@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState } from "react";
 import Container from "react-bootstrap/Container";
 import styles from "./App.module.css";
 import NavBar from "./components/NavBar";
@@ -40,12 +40,9 @@ function App() {
   const [cookieConsent, setCookieConsent] = useState(getCookieConsentValue("cookieConsent"));
   const [showCookieBanner, setShowCookieBanner] = useState("byCookieValue");
   const [nonEssentialConsent, setNonEssentialConsent] = useState(getCookieConsentValue("nonEssentialCookies") === "true");
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  useEffect(() => {
-    const lng = navigator.language || navigator.userLanguage;
-    i18n.changeLanguage(lng);
-  }, [i18n]);
+
 
 
   if (cookieConsent === "false") {
@@ -134,8 +131,8 @@ function App() {
           <>
             <CookieConsent
               location="bottom"
-              buttonText="Accept All Cookies"
-              declineButtonText="Decline Non-Essential Cookies"
+              buttonText={t("cookies.acceptAll")}
+              declineButtonText={t("cookies.decline")}
               enableDeclineButton
               visible={showCookieBanner}
               onAccept={() => {

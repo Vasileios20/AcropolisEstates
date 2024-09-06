@@ -37,13 +37,13 @@ const SearchBar = () => {
       Please choose rent or buy.
     </Tooltip>
   );
-  const lng = navigator.language || navigator.userLanguage;
-  const { t, i18n } = useTranslation();
+  // const lng = navigator.language || navigator.userLanguage;
+  const { t } = useTranslation();
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    i18n.changeLanguage(lng);
-  }, [i18n, lng]);
+  //   i18n.changeLanguage(lng);
+  // }, [i18n, lng]);
 
   // Fetch the search parameters from the URL and set the state.
   useMemo(() => {

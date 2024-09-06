@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ContactForm from "./ContactForm";
 import styles from "../../styles/ServicesPages.module.css";
 import Container from "react-bootstrap/Container";
@@ -8,13 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 
 const ContactPage = () => {
-  const { t, i18n } = useTranslation();
-
-  const lng = navigator.language || navigator.userLanguage;
-
-  useEffect(() => {
-    i18n.changeLanguage(lng);
-  }, [i18n, lng]);
+  const { t } = useTranslation();
 
   return (
     <>

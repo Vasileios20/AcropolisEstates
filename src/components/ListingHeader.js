@@ -9,13 +9,12 @@ const ListingHeader = (props) => {
 
   const { t, i18n } = useTranslation();
 
-  const lng = navigator.language || navigator.userLanguage;
+  const lng = i18n.language;
 
   useEffect(() => {
     if (props.type !== undefined && props.sub_type !== undefined) {
       setTypeReady(true);
     }
-    i18n.changeLanguage(lng);
   }, [i18n, lng, props.type, props.sub_type]);
 
   const saleType = typeReady && props.sale_type === "rent" ? `${t("propertyDetails.typeRent")}` : `${t("propertyDetails.typeSale")}`;
