@@ -281,14 +281,15 @@
         "properties": "Properties",
         "contact": {
             "title": "Contact us",
-            "address": "Office Address: 28is Octovriou, 211",
-            "city": "City: Nea Peramos, Attikis",
+            "address": "Office Address: 28is Octovriou, 211,",
+            "city": "Nea Peramos, Attikis",
             "email": "Email: <1>info@acropolisestates.com</1>",
             "phone": "Phone Number: +30 229 640 0420"
         },
         "copyRight": "Acropolis Estates. All rights reserved.",
         "privacyPolicy": "Privacy Policy",
-        "terms": "Terms and Conditions"
+        "terms": "Terms and Conditions",
+        "companyReg": "Company Registration Number: 178164109000"
     },
     "terms": {
         "title": "Terms and Conditions",
