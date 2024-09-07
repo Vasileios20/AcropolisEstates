@@ -21,6 +21,12 @@ const ListingHeader = (props) => {
 
   const translatedType = typeReady && t(`propertyDetails.types.${props.type}`);
 
+  console.log("props.type", props.type);
+  console.log("translatedType", translatedType);
+
+
+
+
   const translatedSubType = typeReady && t(`propertyDetails.subTypes.${props.sub_type}`);
   const municipality = lng === "el" ? props.municipality_gr : props.municipality;
   const county = lng === "el" ? props.county_gr : props.county;
@@ -60,7 +66,7 @@ const ListingHeader = (props) => {
           {t("propertyDetails.title", {
 
             sale_type: saleType,
-            type: translatedType === "Land" ? translatedType : translatedSubType,
+            type: props.type === "land" ? translatedType : translatedSubType,
           })}, {municipality}, {county}, {props.postcode}
         </div>
         {props.type !== "residential" ? land : not_land}
