@@ -93,7 +93,8 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
 
   const amenitiesList = amenitiesArray.map((amenity, id) => (
     <div key={id} className={`${styles.Amenity}`}>
-      <span>{amenity.charAt(0).toUpperCase() + amenity.replace(/_/g, " ").slice(1)} </span>
+      {/* <span>{amenity.charAt(0).toUpperCase() + amenity.replace(/_/g, " ").slice(1)} </span> */}
+      <span>{t(`amenities.${amenity}`)} </span>
       <i className={`fa-solid fa-square-check ${styles.AmenityChecked}`}></i>
     </div>
   ));
@@ -111,6 +112,8 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
   const land_areaValue = land_area === "" || land_area === null || land_area === 0 ? "N/A" : `${land_area} m²`;
 
   const power_typeValue = lng === "el" ? power_type_gr : power_type;
+
+  const heating_systemValue = lng === "el" ? props.heating_system_gr : heating_system;
 
   const floorValue =
     floor < 0
@@ -141,7 +144,7 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
           { label: t("propertyDetails.livingRooms"), value: living_rooms },
           { label: t("propertyDetails.floorLevel"), value: floorValue },
           { label: t("propertyDetails.levels"), value: levels },
-          { label: t("propertyDetails.heating"), value: heating_system },
+          { label: t("propertyDetails.heating"), value: heating_systemValue },
           { label: t("propertyDetails.energyClass"), value: energy_classValue },
           { label: t("propertyDetails.floorTypes.title"), value: t(`propertyDetails.floorTypes.${floor_type}`) },
           { label: t("propertyDetails.openingFrames.title"), value: t(`propertyDetails.openingFrames.${opening_frames}`) },
@@ -197,7 +200,7 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
           { label: t("propertyDetails.rooms"), value: rooms },
           { label: t("propertyDetails.bathrooms"), value: bathrooms },
           { label: t("propertyDetails.wc"), value: wc },
-          { label: t("propertyDetails.heating"), value: heating_system },
+          { label: t("propertyDetails.heating"), value: heating_systemValue },
           { label: t("propertyDetails.energyClass"), value: energy_class },
           { label: t("propertyDetails.powerType"), value: power_typeValue },
           { label: t("propertyDetails.yearBuilt"), value: construction_year },
@@ -271,14 +274,14 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
             </div>
           </Col>
 
-          <h5>Features</h5>
+          <h5>{t("propertiesPage.header1")}</h5>
           <Col md={8} lg={8}>
             {props.type === "residential" && residentialTableData}
             {props.type === "commercial" && commercialTableData}
             {props.type === "land" && landTableData}
 
             <Col className="my-5">
-              <h5 className="ps-2 pb-1">Amenities</h5>
+              <h5 className="ps-2 pb-1">{t("propertiesPage.header2")}</h5>
               <div className={`${styles.AmenitiesBox}`}>{amenitiesList}</div>
             </Col>
             <Col className="mx-auto my-5">{mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} />}</Col>
