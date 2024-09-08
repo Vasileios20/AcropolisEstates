@@ -113,6 +113,7 @@
         "btnClear": "Clear"
     },
     "propertyDetails": {
+        "propertyId": "Listing ID",
         "typeRent": "To Rent",
         "typeSale": "For Sale",
         "title": "{{sale_type}} {{type}}",
@@ -402,7 +403,7 @@
         "renovated": "Renovated",
         "corner": "Corner",
         "penthouse": "Penthouse",
-        "bright": "Bright",
+        "bright": "Φωτεινό",
         "painted": "Painted",
         "pets_allowed": "Pets Allowed",
         "satellite": "Satellite",
