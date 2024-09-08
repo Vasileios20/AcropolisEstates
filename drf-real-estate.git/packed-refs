@@ -1,0 +1,26 @@
+# pack-refs with: peeled fully-peeled sorted 
+628059df7cb9e1c05e71b44d6347ca6ca5e9f10b refs/heads/cb-real-estate
+861d4d07f0044d70151d5f9c5656ee5895b21067 refs/heads/main
+a3126c823f5a712ff7e752e90e03e32eb4696686 refs/heads/vasilis
+9852122eac427a8016639c4e6f1a6bcdb4c1287a refs/pull/13/head
+4a21e61ca9b33c63cdecac8b0a132fe93c7dbfa8 refs/pull/14/head
+bfae28a8939b8ead2eeba9878de4bb2a24d02f10 refs/pull/15/head
+5833d2b8e1f1fa2fdb4a79248a8bc31db9addd93 refs/pull/16/head
+fd5dc608bbaf7ba02f556dd0e19b350fb998e246 refs/pull/17/head
+c23df3f2c2484d96b66fb524d2cfaf9a4d88cfda refs/pull/18/head
+d31288ad70f9fe0cf36601fe100c5ffc1ea69185 refs/pull/19/head
+6d2c4973e597275742a0ee1e0640280dba320436 refs/pull/20/head
+221dc63dbe770f648d8ae84acb68196f7831218a refs/pull/21/head
+bf1d1f01e712865d04489cc2cc516d12a855e492 refs/pull/22/head
+dea895013e011cd2807b6520b92d0dadc53ac409 refs/pull/23/head
+be812c743a1f7dbe06278f3a303601798342f57f refs/pull/24/head
+9a8cbbab4be63ac75fda9fabeb1686b2f87feca8 refs/pull/25/head
+a803baa8b318bd6478177bbee516c43b707e0296 refs/pull/26/head
+06fa9603068725505914b8cd4866a6b454c8f545 refs/pull/27/head
+5fe8b4c1e36b2d30bb1b8eeb33724eb02c89fdd5 refs/pull/28/head
+30193fea73278e58f764e6fa8ee9c01b04a7ca35 refs/pull/29/head
+6f18af73230574a0024bf8320667bece2a2f9051 refs/pull/30/head
+fa721dbf4104e67151a499c2e3d3e77bdd85eca9 refs/pull/31/head
+5f97d8562f529be22fb480d133a1642c6b4027d0 refs/pull/32/head
+1a119280b25ed68d4e2edd9cc94a0834228a0f60 refs/pull/33/head
+a3126c823f5a712ff7e752e90e03e32eb4696686 refs/pull/34/head
