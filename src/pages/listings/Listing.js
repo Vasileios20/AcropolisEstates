@@ -151,7 +151,7 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
           { label: t("propertyDetails.yearBuilt"), value: construction_year },
           { label: t("propertyDetails.serviceCharge"), value: `${currency} ${service_charge}` },
           { label: t("propertyDetails.availability"), value: availability },
-          { label: "Listing id", value: `AE000${id}` },
+          { label: t("propertyDetails.propertyId"), value: `AE000${id}` },
         ].map((feature, index) => (
           <tr key={index}>
             <td className={styles.tdWidth}>{feature.label}</td>
