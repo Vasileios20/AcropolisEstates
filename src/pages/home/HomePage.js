@@ -146,7 +146,7 @@ export default function HomePage() {
                         .map((listing) => (
                           <Col key={listing.id} xs={12} md={6} lg={3} className="mb-3">
                             <Card style={{ height: "100%" }}>
-
+                              <div className={homeStyles.FeaturedLabel}>Featured</div>
                               <Carousel interval={null}>
                                 {listing.images.map((image, id) => (
                                   <Carousel.Item key={id}>
@@ -156,7 +156,6 @@ export default function HomePage() {
                                         alt={image?.id}
                                         className={`img-fluid ${imageStyles.Listings__Image}`}
                                       />
-                                      <div className={homeStyles.FeaturedLabel}>Featured</div>
                                     </div>
                                   </Carousel.Item>
                                 ))}
