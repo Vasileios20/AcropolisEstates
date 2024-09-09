@@ -4,6 +4,7 @@ import { axiosReq } from "../../api/axiosDefaults";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import styles from "../../styles/ContactForm.module.css";
 
 const ContactMessage = () => {
   /**
@@ -34,7 +35,7 @@ const ContactMessage = () => {
   }, [history, id]);
 
   return (
-    <Row>
+    <Row className={styles.FormMargin}>
       <Col>
         <Card>
           <Card.Header>

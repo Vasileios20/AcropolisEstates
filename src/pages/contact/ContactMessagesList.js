@@ -10,6 +10,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 import btnStyles from "../../styles/Button.module.css";
+import styles from "../../styles/ContactForm.module.css";
 import { Link, useHistory } from "react-router-dom";
 import useUserStatus from "../../hooks/useUserStatus";
 import Forbidden403 from "../errors/Forbidden403";
@@ -88,7 +89,7 @@ const ContactMessagesList = () => {
       {status ? (
         <>
           <Form
-            className={`d-flex justify-content-center border p-4 p-md-2 bg-light mt-2`}
+            className={`d-flex justify-content-center border p-4 bg-light ${styles.FormMargin}`}
             onSubmit={handleSubmit}
           >
             <Row>
