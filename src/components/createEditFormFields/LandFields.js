@@ -9,6 +9,7 @@ import styles from '../../styles/ListingCreateEditForm.module.css';
 const LandFields = ({ listingData, handleChange, history, errors, renderTextField }) => {
     return (
         <>
+            <h1>Land Features</h1>
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="cover_coefficient">

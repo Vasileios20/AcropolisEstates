@@ -6,10 +6,10 @@ import Alert from 'react-bootstrap/Alert';
 import styles from '../../styles/ListingCreateEditForm.module.css';
 
 
-const ResidentialFields = ({ listingData, handleChange, history, errors, renderTextField }) => {
+const CommercialFields = ({ listingData, handleChange, history, errors, renderTextField }) => {
     return (
         <>
-            <h1>Residential Features</h1>
+            <h1>Commercial Features</h1>
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="floor_area">
@@ -50,13 +50,11 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             </Row>
             {Object.entries(listingData).map(([fieldName, fieldValue]) => {
                 if (
-                    fieldName === "bedrooms" ||
-                    fieldName === "kitchens" ||
+                    fieldName === "levels" ||
+                    fieldName === "floor" ||
+                    fieldName === "rooms" ||
                     fieldName === "bathrooms" ||
                     fieldName === "wc" ||
-                    fieldName === "living_rooms" ||
-                    fieldName === "floor" ||
-                    fieldName === "levels" ||
                     fieldName === "heating_system" ||
                     fieldName === "heating_system_gr"
                 ) {
@@ -96,31 +94,17 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             </Row>
             <Row className="justify-content-center">
                 <Col md={6}>
-                    <Form.Group controlId="floor_type">
-                        <Form.Label>floor_type</Form.Label>
+                    <Form.Group controlId="power_type">
+                        <Form.Label>Power Type</Form.Label>
                         <Form.Control
                             className={styles.Input}
-                            as="select"
-                            name="floor_type"
-                            value={listingData.floor_type}
+                            type="text"
+                            name="power_type"
+                            value={listingData.power_type}
                             onChange={handleChange}
-                        >
-                            <option>---</option>
-                            <option value="marble">Marble</option>
-                            <option value="tile">Tile</option>
-                            <option value="wooden">Wooden</option>
-                            <option value="granite">Granite</option>
-                            <option value="mosaic">Mosaic</option>
-                            <option value="stone">Stone</option>
-                            <option value="laminate">Laminate</option>
-                            <option value="parquet">Parquet</option>
-                            <option value="carpet">Carpet</option>
-                            <option value="cement">Cement</option>
-                            <option value="other">Other</option>
-
-                        </Form.Control>
+                        />
                     </Form.Group>
-                    {errors?.view?.map((message, idx) => (
+                    {errors?.power_type?.map((message, idx) => (
                         <Alert className={styles.Input} variant="warning" key={idx}>
                             {message}
                         </Alert>
@@ -129,47 +113,17 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             </Row>
             <Row className="justify-content-center">
                 <Col md={6}>
-                    <Form.Group controlId="type_of_glass">
-                        <Form.Label>Type of Glass</Form.Label>
+                    <Form.Group controlId="power_type_gr">
+                        <Form.Label>Power Type gr</Form.Label>
                         <Form.Control
                             className={styles.Input}
-                            as="select"
-                            name="type_of_glass"
-                            value={listingData.type_of_glass}
+                            type="text"
+                            name="power_type_gr"
+                            value={listingData.power_type_gr}
                             onChange={handleChange}
-                        >
-                            <option>---</option>
-                            <option value="single">Single</option>
-                            <option value="double">Double</option>
-                            <option value="triple">Triple</option>
-                        </Form.Control>
+                        />
                     </Form.Group>
-                    {errors?.type_of_glass?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
-                </Col>
-            </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="opening_frames">
-                        <Form.Label>Opening Frames</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="opening_frames"
-                            value={listingData.opening_frames}
-                            onChange={handleChange}
-                        >
-                            <option>---</option>
-                            <option value="aluminium">Aluminium</option>
-                            <option value="wooden">Wooden</option>
-                            <option value="pvc">PVC</option>
-                            <option value="iron">Iron</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.opening_frames?.map((message, idx) => (
+                    {errors?.power_type_gr?.map((message, idx) => (
                         <Alert className={styles.Input} variant="warning" key={idx}>
                             {message}
                         </Alert>
@@ -202,27 +156,8 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                     ))}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="service_charge">
-                        <Form.Label>Service Charge {listingData.currency}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="service_charge"
-                            value={listingData.service_charge}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                    {errors?.service_charge?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
-                </Col>
-            </Row>
         </>
     )
 }
 
-export default ResidentialFields;
+export default CommercialFields;
