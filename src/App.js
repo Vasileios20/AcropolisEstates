@@ -28,9 +28,11 @@ import Footer from "./components/Footer";
 import ContactPage from "./pages/contact/ContactPage";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 import Terms from "./pages/legal/Terms";
+import AdminPage from "./pages/admin/AdminPage";
 import CookieConsent, { getCookieConsentValue } from "react-cookie-consent";
 import { HelmetProvider } from "react-helmet-async";
 import { useTranslation, Trans } from "react-i18next";
+import AdminListings from "./pages/admin/AdminListings";
 
 
 function App() {
@@ -41,6 +43,9 @@ function App() {
   const [showCookieBanner, setShowCookieBanner] = useState("byCookieValue");
   const [nonEssentialConsent, setNonEssentialConsent] = useState(getCookieConsentValue("nonEssentialCookies") === "true");
   const { t } = useTranslation();
+
+  console.log(path);
+
 
 
 
@@ -123,8 +128,11 @@ function App() {
               <Route exact path="/privacyPolicy" render={() => <PrivacyPolicy />} />
               <Route exact path="/terms" render={() => <Terms />} />
               <Route exact path="/forbidden" render={() => <Forbidden403 />} />
+              <Route exact path="/admin" render={() => <AdminPage />} />
+              <Route exact path="/admin/listings" render={() => <AdminListings />} />
               <Route exact path="/notfound" render={() => <NotFound />} />
               <Route render={() => <NotFound />} />
+
             </Switch>
           </Container>
           <Footer />
