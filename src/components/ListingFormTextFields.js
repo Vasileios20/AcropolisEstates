@@ -1,5 +1,6 @@
 import React from "react";
 
+import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
@@ -9,17 +10,26 @@ import Alert from "react-bootstrap/Alert";
 import styles from "../styles/ListingCreateEditForm.module.css";
 import btnStyles from "../styles/Button.module.css";
 
-/**
-   * This component is used to render the text fields of the listing form.
-   * It receives the following props:
-   * - listingData: object
-   * - handleChange: function
-   * - history: object
-   * - errors: object
-   * - create: boolean
-   */
-const ListingTextFields = ({ listingData, handleChange, history, errors, create }
-) => {
+const ListingTextFields = ({ listingData, handleChange, history, errors, create }) => {
+  const renderTextField = (fieldName, label, type = "text", rows = 1) => (
+    <Form.Group controlId={fieldName}>
+      <Form.Label>{label}</Form.Label>
+      <Form.Control
+        className={styles.Input}
+        type={type}
+        name={fieldName}
+        value={listingData[fieldName]}
+        onChange={handleChange}
+        as={type === "textarea" ? "textarea" : undefined}
+        rows={rows}
+      />
+      {errors?.[fieldName]?.map((message, idx) => (
+        <Alert className={styles.Input} variant="warning" key={idx}>
+          {message}
+        </Alert>
+      ))}
+    </Form.Group>
+  );
 
   return (
     <div className="text-center">
@@ -45,7 +55,6 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
           ))}
         </Col>
       </Row>
-
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="type">
@@ -69,112 +78,44 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
           ))}
         </Col>
       </Row>
-
       <Row className="justify-content-center">
         <Col md={6}>
-          <Form.Group controlId="description">
-            <Form.Label>Description</Form.Label>
+          <Form.Group controlId="sub_type">
+            <Form.Label>Sub type</Form.Label>
             <Form.Control
-              className={styles.Input}
-              as="textarea"
-              rows={6}
-              name="description"
-              value={listingData.description}
+              className={`${styles.Input}`}
+              as="select"
+              name="sub_type"
+              value={listingData.sub_type}
               onChange={handleChange}
-            />
+            >
+              <option>---</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="maisonette">Maisonette</option>
+              <option value="bungalow">Bungalow</option>
+              <option value="villa">Villa</option>
+              <option value="hotel">Hotel</option>
+              <option value="office">Office</option>
+              <option value="retail">Retail</option>
+              <option value="warehouse">Warehouse</option>
+              <option value="mixed_use">Mixed use</option>
+              <option value="industrial">Industrial</option>
+              <option value="other">Other</option>
+
+            </Form.Control>
           </Form.Group>
-          {errors?.description?.map((message, idx) => (
+          {errors?.sub_type?.map((message, idx) => (
             <Alert variant="warning" key={idx}>
               {message}
             </Alert>
           ))}
         </Col>
       </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="address_number">
-            <Form.Label>Address number</Form.Label>
-            <Form.Control
-              type="number"
-              className={styles.Input}
-              name="address_number"
-              value={listingData.address_number}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.address_number?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="address_street">
-            <Form.Label>Address Street</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="text"
-              name="address_street"
-              value={listingData.address_street}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.address_street?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="postcode">
-            <Form.Label>Postcode</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="text"
-              name="postcode"
-              value={listingData.postcode}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.postcode?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="city">
-            <Form.Label>City</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="text"
-              name="city"
-              value={listingData.city}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.city?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="price">
-            <Form.Label>Price</Form.Label>
+            <Form.Label>{listingData.currency} Price</Form.Label>
             <Form.Control
               className={styles.Input}
               type="number"
@@ -188,215 +129,633 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               {message}
             </Alert>
           ))}
-
-          <Form.Group controlId="surface">
-            <Form.Label>Floor Area</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="floor_area"
-              value={listingData.floor_area}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.surface?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
         </Col>
       </Row>
-
       <Row className="justify-content-center">
         <Col md={6}>
-          <Form.Group controlId="levels">
-            <Form.Label>Levels</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="levels"
-              value={listingData.levels}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.levels?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="bedrooms">
-            <Form.Label>Bedrooms</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="bedrooms"
-              value={listingData.bedrooms}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.bedrooms?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="floor">
-            <Form.Label>Floor</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="floor"
-              value={listingData.floor}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.floor?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="kitchens">
-            <Form.Label>Kitchens</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="kitchens"
-              value={listingData.kitchens}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.kitchens?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="bathrooms">
-            <Form.Label>Bathrooms</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="bathrooms"
-              value={listingData.bathrooms}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.bathrooms?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="living_rooms">
-            <Form.Label>Living Rooms</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="living_rooms"
-              value={listingData.living_rooms}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.living_rooms?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="heating_system">
-            <Form.Label>Heating System</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="text"
-              name="heating_system"
-              value={listingData.heating_system}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.heating_system?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="construction_year">
-            <Form.Label>Construction Year</Form.Label>
+          <Form.Group controlId="currency">
+            <Form.Label>Currency</Form.Label>
             <Form.Control
               className={styles.Input}
               as="select"
-              name="construction_year"
-              value={listingData.construction_year}
+              name="currency"
+              value={listingData.currency}
               onChange={handleChange}
             >
-              {Array.from(
-                { length: new Date().getFullYear() - 1899 },
-                (_, i) => i + 1900
-              ).map((year) => (
-                <option key={year}>{year}</option>
-              ))}
+              <option value="€">€ EUR</option>
+              <option value="$">$ USD</option>
+              <option value="£">£ GBP</option>
             </Form.Control>
           </Form.Group>
-          {errors?.construction_year?.map((message, idx) => (
+          {errors?.currency?.map((message, idx) => (
             <Alert className={styles.Input} variant="warning" key={idx}>
               {message}
             </Alert>
           ))}
         </Col>
       </Row>
-
-      <Row className="justify-content-center">
+      <Row className="justify-content-center mt-2">
         <Col md={6}>
-          <Form.Group controlId="energy_class">
-            <Form.Label>Energy class</Form.Label>
+          <Form.Group controlId="description">
+            <Form.Label>Description</Form.Label>
             <Form.Control
               className={styles.Input}
-              as="select"
-              name="energy_class"
-              value={listingData.energy_class}
+              as="textarea"
+              rows={3}
+              name="description"
+              value={listingData.description}
               onChange={handleChange}
-            >
-              {Array.from("ABCDEFG").map((letter) => (
-                <option key={letter}>{letter}</option>
-              ))}
-            </Form.Control>
+            />
           </Form.Group>
-          {errors?.energy_class?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
+          {errors?.description?.map((message, idx) => (
+            <Alert variant="warning" key={idx}>
+              {message}
+            </Alert>
+          ))}
+        </Col>
+        <Col md={6}>
+          <Form.Group controlId="description_gr">
+            <Form.Label>Description GR</Form.Label>
+            <Form.Control
+              className={styles.Input}
+              as="textarea"
+              rows={3}
+              name="description_gr"
+              value={listingData.description_gr}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          {errors?.description?.map((message, idx) => (
+            <Alert variant="warning" key={idx}>
               {message}
             </Alert>
           ))}
         </Col>
       </Row>
+      <hr />
+      <Container fluid>
+        <Row>
+          <h1>Address</h1>
+          {Object.entries(listingData).map(([fieldName, fieldValue]) => {
+            if (
+              fieldName === "address_street" ||
+              fieldName === "address_street_gr" ||
+              fieldName === "address_number" ||
+              fieldName === "address_postal_code" ||
+              fieldName === "city" ||
+              fieldName === "city_gr" ||
+              fieldName === "region" ||
+              fieldName === "region_gr" ||
+              fieldName === "county" ||
+              fieldName === "county_gr" ||
+              fieldName === "municipality" ||
+              fieldName === "municipality_gr"
+            ) {
+              return (
+                <Row className="justify-content-center" key={fieldName}>
+                  <Col md={6}>
+                    {renderTextField(fieldName, fieldName.charAt(0).toUpperCase() + fieldName.slice(1))}
+                  </Col>
+                </Row>
+
+              );
+            }
+            return null;
+          })}
+        </Row>
+      </Container>
+      <hr />
+      <h1>Features</h1>
+
+      {/* // RESIDENTIAL FIELDS */}
+
+      {listingData.type === "residential" && (
+        <>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="floor_area">
+                <Form.Label>Floor Area (m²)</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="number"
+                  name="floor_area"
+                  value={listingData.floor_area}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.floor_area?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="land_area">
+                <Form.Label>Land Area (m²)</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="number"
+                  name="land_area"
+                  value={listingData.land_area}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.land_area?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          {Object.entries(listingData).map(([fieldName, fieldValue]) => {
+            if (
+              fieldName === "bedrooms" ||
+              fieldName === "kitchens" ||
+              fieldName === "bathrooms" ||
+              fieldName === "wc" ||
+              fieldName === "living_rooms" ||
+              fieldName === "floor" ||
+              fieldName === "levels" ||
+              fieldName === "heating_system" ||
+              fieldName === "heating_system_gr"
+            ) {
+              return (
+                <Row className="justify-content-center" key={fieldName}>
+                  <Col md={6}>
+                    {renderTextField(fieldName, fieldName.charAt(0).toUpperCase() + fieldName.slice(1))}
+                  </Col>
+                </Row>
+              );
+            }
+            return null;
+          })}
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="energy_class">
+                <Form.Label>Energy class</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  as="select"
+                  name="energy_class"
+                  value={listingData.energy_class}
+                  onChange={handleChange}
+                >
+                  <option>---</option>
+                  {Array.from("ABCDEFG").map((letter) => (
+                    <option key={letter}>{letter}</option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              {errors?.energy_class?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="floor_type">
+                <Form.Label>floor_type</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  as="select"
+                  name="floor_type"
+                  value={listingData.floor_type}
+                  onChange={handleChange}
+                >
+                  <option>---</option>
+                  <option value="marble">Marble</option>
+                  <option value="tile">Tile</option>
+                  <option value="wooden">Wooden</option>
+                  <option value="granite">Granite</option>
+                  <option value="mosaic">Mosaic</option>
+                  <option value="stone">Stone</option>
+                  <option value="laminate">Laminate</option>
+                  <option value="parquet">Parquet</option>
+                  <option value="carpet">Carpet</option>
+                  <option value="cement">Cement</option>
+                  <option value="other">Other</option>
+
+                </Form.Control>
+              </Form.Group>
+              {errors?.view?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="type_of_glass">
+                <Form.Label>Type of Glass</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  as="select"
+                  name="type_of_glass"
+                  value={listingData.type_of_glass}
+                  onChange={handleChange}
+                >
+                  <option>---</option>
+                  <option value="single">Single</option>
+                  <option value="double">Double</option>
+                  <option value="triple">Triple</option>
+                </Form.Control>
+              </Form.Group>
+              {errors?.type_of_glass?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="opening_frames">
+                <Form.Label>Opening Frames</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  as="select"
+                  name="opening_frames"
+                  value={listingData.opening_frames}
+                  onChange={handleChange}
+                >
+                  <option>---</option>
+                  <option value="aluminium">Aluminium</option>
+                  <option value="wooden">Wooden</option>
+                  <option value="pvc">PVC</option>
+                  <option value="iron">Iron</option>
+                </Form.Control>
+              </Form.Group>
+              {errors?.opening_frames?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="construction_year">
+                <Form.Label>Construction Year</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  as="select"
+                  name="construction_year"
+                  value={listingData.construction_year}
+                  onChange={handleChange}
+                >
+                  {Array.from(
+                    { length: new Date().getFullYear() - 1899 },
+                    (_, i) => i + 1900
+                  ).map((year) => (
+                    <option key={year}>{year}</option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              {errors?.construction_year?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="service_charge">
+                <Form.Label>Service Charge {listingData.currency}</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="number"
+                  name="service_charge"
+                  value={listingData.service_charge}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.service_charge?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+        </>
+      )}
+
+      {/* // LAND FIELDS */}
+
+      {listingData.type === "land" &&
+        <>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="cover_coefficient">
+                <Form.Label>Cover Coefficient (%)</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="number"
+                  name="cover_coefficient"
+                  value={listingData.cover_coefficient}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.cover_coefficient?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="building_coefficient">
+                <Form.Label>Building Coefficient (%)</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="number"
+                  name="building_coefficient"
+                  value={listingData.building_coefficient}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.building_coefficient?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="length_of_facade">
+                <Form.Label>Length of Facade (m)</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="number"
+                  name="length_of_facade"
+                  value={listingData.length_of_facade}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.length_of_facade?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="orientation">
+                <Form.Label>Orientation</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  as="select"
+                  name="orientation"
+                  value={listingData.orientation}
+                  onChange={handleChange}
+                >
+                  <option>---</option>
+                  <option value="north">North</option>
+                  <option value="north_east">North East</option>
+                  <option value="east">East</option>
+                  <option value="south_east">South East</option>
+                  <option value="south">South</option>
+                  <option value="south_west">South West</option>
+                  <option value="west">West</option>
+                  <option value="north_west">North West</option>
+                </Form.Control>
+              </Form.Group>
+              {errors?.orientation?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="view">
+                <Form.Label>View</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  as="select"
+                  name="view"
+                  value={listingData.view}
+                  onChange={handleChange}
+                >
+                  <option>---</option>
+                  <option value="sea">Sea</option>
+                  <option value="mountain">Mountain</option>
+                  <option value="city">City</option>
+                  <option value="other">Other</option>
+                </Form.Control>
+              </Form.Group>
+              {errors?.view?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="slope">
+                <Form.Label>Slope</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  as="select"
+                  name="slope"
+                  value={listingData.slope}
+                  onChange={handleChange}
+                >
+                  <option>---</option>
+                  <option value="level">Level</option>
+                  <option value="view">View</option>
+                  <option value="incline">Incline</option>
+                </Form.Control>
+              </Form.Group>
+              {errors?.slope?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="distance_from_sea">
+                <Form.Label>Distance from sea (m)</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="number"
+                  name="distance_from_sea"
+                  value={listingData.distance_from_sea}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.distance_from_sea?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+        </>}
+
+      {/* // COMMERCIAL FIELDS */}
+
+      {listingData.type === "commercial" &&
+        <>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="floor_area">
+                <Form.Label>Floor Area (m²)</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="number"
+                  name="floor_area"
+                  value={listingData.floor_area}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.floor_area?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="land_area">
+                <Form.Label>Land Area (m²)</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="number"
+                  name="land_area"
+                  value={listingData.land_area}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.land_area?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          {Object.entries(listingData).map(([fieldName, fieldValue]) => {
+            if (
+              fieldName === "levels" ||
+              fieldName === "floor" ||
+              fieldName === "rooms" ||
+              fieldName === "bathrooms" ||
+              fieldName === "wc" ||
+              fieldName === "heating_system" ||
+              fieldName === "heating_system_gr"
+            ) {
+              return (
+                <Row className="justify-content-center" key={fieldName}>
+                  <Col md={6}>
+                    {renderTextField(fieldName, fieldName.charAt(0).toUpperCase() + fieldName.slice(1))}
+                  </Col>
+                </Row>
+              );
+            }
+            return null;
+          })}
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="energy_class">
+                <Form.Label>Energy class</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  as="select"
+                  name="energy_class"
+                  value={listingData.energy_class}
+                  onChange={handleChange}
+                >
+                  <option>---</option>
+                  {Array.from("ABCDEFG").map((letter) => (
+                    <option key={letter}>{letter}</option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              {errors?.energy_class?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="power_type">
+                <Form.Label>Power Type</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="text"
+                  name="power_type"
+                  value={listingData.power_type}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.power_type?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="power_type_gr">
+                <Form.Label>Power Type gr</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  type="text"
+                  name="power_type_gr"
+                  value={listingData.power_type_gr}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              {errors?.power_type_gr?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Form.Group controlId="construction_year">
+                <Form.Label>Construction Year</Form.Label>
+                <Form.Control
+                  className={styles.Input}
+                  as="select"
+                  name="construction_year"
+                  value={listingData.construction_year}
+                  onChange={handleChange}
+                >
+                  {Array.from(
+                    { length: new Date().getFullYear() - 1899 },
+                    (_, i) => i + 1900
+                  ).map((year) => (
+                    <option key={year}>{year}</option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              {errors?.construction_year?.map((message, idx) => (
+                <Alert className={styles.Input} variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
+            </Col>
+          </Row>
+        </>}
 
       <Row className="justify-content-center">
         <Col md={6}>
@@ -417,249 +776,6 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
           ))}
         </Col>
       </Row>
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="latitude">
-            <Form.Label>Latitude</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="decimal"
-              name="latitude"
-              value={listingData.latitude}
-              onChange={handleChange}
-            />
-
-            {errors?.latitude?.map((message, idx) => (
-              <Alert className={styles.Input} variant="warning" key={idx}>
-                {message}
-              </Alert>
-            ))}
-          </Form.Group>
-
-          <Form.Group controlId="longitude">
-            <Form.Label>Longitude</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="decimal"
-              name="longitude"
-              value={listingData.longitude}
-              onChange={handleChange}
-            />
-            {errors?.longitude?.map((message, idx) => (
-              <Alert className={styles.Input} variant="warning" key={idx}>
-                {message}
-              </Alert>
-            ))}
-          </Form.Group>
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="land_area">
-            <Form.Label>Land Area</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="land_area"
-              value={listingData.land_area}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.land_area?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="wc">
-            <Form.Label>WC</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="wc"
-              value={listingData.wc}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.wc?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="power_type">
-            <Form.Label>Power Type</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="text"
-              name="power_type"
-              value={listingData.power_type}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.power_type?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="cover_coefficient">
-            <Form.Label>Cover Coefficient</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="cover_coefficient"
-              value={listingData.cover_coefficient}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.cover_coefficient?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="building_coefficient">
-            <Form.Label>Building Coefficient</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="building_coefficient"
-              value={listingData.building_coefficient}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.building_coefficient?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="opening_frames">
-            <Form.Label>Opening Frames</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              as="select"
-              name="opening_frames"
-              value={listingData.opening_frames}
-              onChange={handleChange}
-            >
-              <option value="aluminium">Aluminium</option>
-              <option value="wooden">Wooden</option>
-            </Form.Control>
-          </Form.Group>
-          {errors?.opening_frames?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="type_of_glass">
-            <Form.Label>Type of Glass</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              as="select"
-              name="type_of_glass"
-              value={listingData.type_of_glass}
-              onChange={handleChange}
-            >
-              <option value="single">Single</option>
-              <option value="double">Double</option>
-              <option value="triple">Triple</option>
-            </Form.Control>
-          </Form.Group>
-          {errors?.type_of_glass?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="orientation">
-            <Form.Label>Orientation</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="text"
-              name="orientation"
-              value={listingData.orientation}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.orientation?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="view">
-            <Form.Label>View</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="text"
-              name="view"
-              value={listingData.view}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.view?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="slope">
-            <Form.Label>Slope</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="text"
-              name="slope"
-              value={listingData.slope}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.slope?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
 
       <Button
         className={`${btnStyles.Button} ${btnStyles.Remove} m-3`}
@@ -667,17 +783,11 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       >
         Cancel
       </Button>
-      <Button
-        className={`${btnStyles.Button} ${btnStyles.Black} m-3`}
-        type="submit"
-      >
+      <Button className={`${btnStyles.Button} ${btnStyles.Black} m-3`} type="submit">
         {create ? "Create" : "Update"}
       </Button>
     </div>
-
   );
-
-
 };
 
 export default ListingTextFields;
