@@ -27,7 +27,6 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
 
   const {
     id,
-    owner,
     profile_id,
     price,
     floor_area,
@@ -93,7 +92,6 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
 
   const amenitiesList = amenitiesArray.map((amenity, id) => (
     <div key={id} className={`${styles.Amenity}`}>
-      {/* <span>{amenity.charAt(0).toUpperCase() + amenity.replace(/_/g, " ").slice(1)} </span> */}
       <span>{t(`amenities.${amenity}`)} </span>
       <i className={`fa-solid fa-square-check ${styles.AmenityChecked}`}></i>
     </div>
@@ -221,7 +219,7 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
     <>
       <Card.Body>
         <Card.Text>
-          <Link to={`/profiles/${profile_id}`}>Owner: {owner}</Link>
+          <Link to={`/profiles/${profile_id}`}>Agent: {props.agent_name}</Link>
         </Card.Text>
 
         <Card.Text>Created on: {created_on}</Card.Text>
