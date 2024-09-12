@@ -16,36 +16,73 @@ import { useHistory } from "react-router-dom";
 import { axiosReq } from "../../api/axiosDefaults";
 import Asset from "../../components/Asset";
 import { useRedirect } from "../../hooks/useRedirect";
-import ListingTextFields from "../../components/ListingFormTextFields";
+import ListingTextFields from "../../components/createEditFormFields/ListingFormTextFields";
 import useUserStatus from "../../hooks/useUserStatus";
 import Forbidden403 from "../errors/Forbidden403";
 
 function ListingCreateForm() {
   useRedirect("loggedOut");
   const userStatus = useUserStatus();
+
   const [listingData, setListingData] = useState({
     type: "",
-    sale_type: "rent",
+    sub_type: "",
+    sale_type: "",
+    price: "",
+    currency: "",
     description: "",
+    description_gr: "",
     address_number: "",
     address_street: "",
+    address_street_gr: "",
     postcode: "",
-    city: "",
-    price: "",
-    surface: "",
+    municipality: "",
+    municipality_gr: "",
+    county: "",
+    county_gr: "",
+    region: "",
+    region_gr: "",
+    floor_area: "",
+    land_area: "",
     levels: "",
     bedrooms: "",
+    wc: "",
     floor: "",
     kitchens: "",
     bathrooms: "",
     living_rooms: "",
+    rooms: "",
+    power_type: "",
+    power_type_gr: "",
     heating_system: "",
-    energy_class: "A",
+    heating_system_gr: "",
+    energy_class: "",
+    floor_type: "",
     construction_year: "",
     availability: "",
+    latitude: "0.0",
+    longitude: "0.0",
+    service_charge: "",
+    renovation_year: "",
+    opening_frames: "",
+    type_of_glass: "",
+    building_coefficient: "",
+    cover_coefficient: "",
+    length_of_facade: "",
+    orientation: "",
+    view: "",
+    slope: "",
+    zone: "",
+    distance_from_sea: "",
+    distance_from_city: "",
+    distance_from_airport: "",
+    distance_from_village: "",
+    distance_from_port: "",
     images: "",
     uploaded_images: [],
     amenities: [],
+    approved: false,
+    featured: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -145,7 +182,7 @@ function ListingCreateForm() {
       </Row>
       <Row>
         <Col md={12} className="d-none d-md-block p-0 p-md-2">
-          <Container className={appStyles.Content}>
+          <Container fluid className={appStyles.Content}>
             <ListingTextFields listingData={listingData} handleChange={handleChange} history={history} errors={errors} create={true} />
           </Container>
         </Col>
