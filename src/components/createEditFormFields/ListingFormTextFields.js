@@ -48,6 +48,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               value={listingData.sale_type}
               onChange={handleChange}
             >
+              <option>---</option>
               <option value="rent">Rent</option>
               <option value="sale">Sale</option>
             </Form.Control>
@@ -70,6 +71,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               value={listingData.type}
               onChange={handleChange}
             >
+              <option>---</option>
               <option value="land">Land</option>
               <option value="commercial">Commercial</option>
               <option value="residential">Residential</option>
@@ -119,7 +121,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="price">
-            <Form.Label>{listingData.currency} Price</Form.Label>
+            <Form.Label>{listingData.currency === "---" ? "" : listingData.currency} Price</Form.Label>
             <Form.Control
               className={styles.Input}
               type="number"
@@ -146,6 +148,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               value={listingData.currency}
               onChange={handleChange}
             >
+              <option>---</option>
               <option value="€">€ EUR</option>
               <option value="$">$ USD</option>
               <option value="£">£ GBP</option>
