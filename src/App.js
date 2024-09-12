@@ -44,12 +44,6 @@ function App() {
   const [nonEssentialConsent, setNonEssentialConsent] = useState(getCookieConsentValue("nonEssentialCookies") === "true");
   const { t } = useTranslation();
 
-  console.log(path);
-
-
-
-
-
   if (cookieConsent === "false") {
     setCookieConsent(false);
   }
