@@ -18,7 +18,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                             className={styles.Input}
                             type="number"
                             name="floor_area"
-                            value={listingData.floor_area}
+                            value={listingData.floor_area || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -37,7 +37,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                             className={styles.Input}
                             type="number"
                             name="land_area"
-                            value={listingData.land_area}
+                            value={listingData.land_area || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -76,7 +76,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                             className={styles.Input}
                             as="select"
                             name="energy_class"
-                            value={listingData.energy_class}
+                            value={listingData.energy_class || ""}
                             onChange={handleChange}
                         >
                             <option>---</option>
@@ -100,7 +100,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                             className={styles.Input}
                             type="text"
                             name="power_type"
-                            value={listingData.power_type}
+                            value={listingData.power_type || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -119,7 +119,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                             className={styles.Input}
                             type="text"
                             name="power_type_gr"
-                            value={listingData.power_type_gr}
+                            value={listingData.power_type_gr || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -138,7 +138,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                             className={styles.Input}
                             as="select"
                             name="construction_year"
-                            value={listingData.construction_year}
+                            value={listingData.construction_year || ""}
                             onChange={handleChange}
                         >
                             {Array.from(
