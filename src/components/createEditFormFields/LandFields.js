@@ -12,13 +12,32 @@ const LandFields = ({ listingData, handleChange, history, errors, renderTextFiel
             <h1>Land Features</h1>
             <Row className="justify-content-center">
                 <Col md={6}>
+                    <Form.Group controlId="land_area">
+                        <Form.Label>Land Area (m²)</Form.Label>
+                        <Form.Control
+                            className={styles.Input}
+                            type="number"
+                            name="land_area"
+                            value={listingData.land_area || ""}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                    {errors?.land_area?.map((message, idx) => (
+                        <Alert className={styles.Input} variant="warning" key={idx}>
+                            {message}
+                        </Alert>
+                    ))}
+                </Col>
+            </Row>
+            <Row className="justify-content-center">
+                <Col md={6}>
                     <Form.Group controlId="cover_coefficient">
                         <Form.Label>Cover Coefficient (%)</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             type="number"
                             name="cover_coefficient"
-                            value={listingData.cover_coefficient}
+                            value={listingData.cover_coefficient || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -37,7 +56,7 @@ const LandFields = ({ listingData, handleChange, history, errors, renderTextFiel
                             className={styles.Input}
                             type="number"
                             name="building_coefficient"
-                            value={listingData.building_coefficient}
+                            value={listingData.building_coefficient || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -56,7 +75,7 @@ const LandFields = ({ listingData, handleChange, history, errors, renderTextFiel
                             className={styles.Input}
                             type="number"
                             name="length_of_facade"
-                            value={listingData.length_of_facade}
+                            value={listingData.length_of_facade || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -75,7 +94,7 @@ const LandFields = ({ listingData, handleChange, history, errors, renderTextFiel
                             className={styles.Input}
                             as="select"
                             name="orientation"
-                            value={listingData.orientation}
+                            value={listingData.orientation || ""}
                             onChange={handleChange}
                         >
                             <option>---</option>
@@ -104,7 +123,7 @@ const LandFields = ({ listingData, handleChange, history, errors, renderTextFiel
                             className={styles.Input}
                             as="select"
                             name="view"
-                            value={listingData.view}
+                            value={listingData.view || ""}
                             onChange={handleChange}
                         >
                             <option>---</option>
@@ -129,7 +148,7 @@ const LandFields = ({ listingData, handleChange, history, errors, renderTextFiel
                             className={styles.Input}
                             as="select"
                             name="slope"
-                            value={listingData.slope}
+                            value={listingData.slope || ""}
                             onChange={handleChange}
                         >
                             <option>---</option>
@@ -153,7 +172,7 @@ const LandFields = ({ listingData, handleChange, history, errors, renderTextFiel
                             className={styles.Input}
                             as="select"
                             name="zone"
-                            value={listingData.zone}
+                            value={listingData.zone || ""}
                             onChange={handleChange}
                         >
                             <option>---</option>
@@ -182,7 +201,7 @@ const LandFields = ({ listingData, handleChange, history, errors, renderTextFiel
                             className={styles.Input}
                             type="number"
                             name="distance_from_sea"
-                            value={listingData.distance_from_sea}
+                            value={listingData.distance_from_sea || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
