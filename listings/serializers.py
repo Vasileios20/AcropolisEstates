@@ -49,7 +49,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Images
-        fields = ["id", "listing", "url"]
+        fields = ["id", "listing", "url", "is_first"]
 
 
 class ListingSerializer(serializers.ModelSerializer):
@@ -113,7 +113,11 @@ class ListingSerializer(serializers.ModelSerializer):
         listing = Listing.objects.create(**validated_data)
 
         for uploaded_image in uploaded_images:
-            Images.objects.create(listing=listing, url=uploaded_image)
+            is_first = uploaded_image.get('is_first', False)
+            Images.objects.create(
+                listing=listing,
+                url=uploaded_image,
+                is_first=is_first)
 
         for amenity_data in amenities_data:
             Amenities.objects.create(listing=listing, **amenity_data)
@@ -127,7 +131,8 @@ class ListingSerializer(serializers.ModelSerializer):
         if uploaded_images:
             listing_image_model_instance = [
                 Images(
-                    listing=instance, url=image
+                    listing=instance, url=image, is_first=image.get(
+                        'is_first', False)
                 )
                 for image in uploaded_images
             ]

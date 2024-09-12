@@ -339,9 +339,16 @@ class Images(models.Model):
     url = models.ImageField(
         upload_to="images/", default="../default_post_vnf7ym", null=True
     )
+    is_first = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.listing}'s image"
+
+    def save(self, *args, **kwargs):
+        if self.is_first:
+            Images.objects.filter(listing=self.listing,
+                                  is_first=True).update(is_first=False)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "Images"
