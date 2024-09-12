@@ -272,7 +272,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               className={styles.Input}
               type="date"
               name="availability"
-              value={listingData.availability}
+              value={listingData.availability || ""}
               onChange={handleChange}
             />
           </Form.Group>
@@ -281,6 +281,70 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               {message}
             </Alert>
           ))}
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <Form.Group controlId="longitude">
+            <Form.Label>Longitude</Form.Label>
+            <Form.Control
+              className={styles.Input}
+              type="decimal"
+              name="longitude"
+              value={listingData.longitude}
+              onChange={handleChange}
+            />
+            {errors?.longitude?.map((message, idx) => (
+              <Alert className={styles.Input} variant="warning" key={idx}>
+                {message}
+              </Alert>
+            ))}
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <Form.Group controlId="latitude">
+            <Form.Label>Latitude</Form.Label>
+            <Form.Control
+              className={styles.Input}
+              type="decimal"
+              name="latitude"
+              value={listingData.latitude}
+              onChange={handleChange}
+            />
+            {errors?.latitude?.map((message, idx) => (
+              <Alert className={styles.Input} variant="warning" key={idx}>
+                {message}
+              </Alert>
+            ))}
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Approved</Form.Label>
+            <Form.Check
+              type="checkbox"
+              name="approved"
+              checked={listingData.approved}
+              onChange={handleChange}
+            />
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Featured</Form.Label>
+            <Form.Check
+              type="checkbox"
+              name="featured"
+              checked={listingData.featured}
+              onChange={handleChange}
+            />
+          </Form.Group>
         </Col>
       </Row>
 
