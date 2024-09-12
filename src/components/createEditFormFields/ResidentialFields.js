@@ -18,7 +18,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             className={styles.Input}
                             type="number"
                             name="floor_area"
-                            value={listingData.floor_area}
+                            value={listingData.floor_area || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -37,7 +37,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             className={styles.Input}
                             type="number"
                             name="land_area"
-                            value={listingData.land_area}
+                            value={listingData.land_area || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -48,7 +48,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                     ))}
                 </Col>
             </Row>
-            {Object.entries(listingData).map(([fieldName, fieldValue]) => {
+            {Object.entries(listingData).map(([fieldName]) => {
                 if (
                     fieldName === "bedrooms" ||
                     fieldName === "kitchens" ||
@@ -78,7 +78,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             className={styles.Input}
                             as="select"
                             name="energy_class"
-                            value={listingData.energy_class}
+                            value={listingData.energy_class || ""}
                             onChange={handleChange}
                         >
                             <option>---</option>
@@ -97,12 +97,12 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="floor_type">
-                        <Form.Label>floor_type</Form.Label>
+                        <Form.Label>Floor type</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             as="select"
                             name="floor_type"
-                            value={listingData.floor_type}
+                            value={listingData.floor_type || ""}
                             onChange={handleChange}
                         >
                             <option>---</option>
@@ -120,7 +120,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
 
                         </Form.Control>
                     </Form.Group>
-                    {errors?.view?.map((message, idx) => (
+                    {errors?.floor_type?.map((message, idx) => (
                         <Alert className={styles.Input} variant="warning" key={idx}>
                             {message}
                         </Alert>
@@ -135,7 +135,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             className={styles.Input}
                             as="select"
                             name="type_of_glass"
-                            value={listingData.type_of_glass}
+                            value={listingData.type_of_glass || ""}
                             onChange={handleChange}
                         >
                             <option>---</option>
@@ -159,7 +159,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             className={styles.Input}
                             as="select"
                             name="opening_frames"
-                            value={listingData.opening_frames}
+                            value={listingData.opening_frames || ""}
                             onChange={handleChange}
                         >
                             <option>---</option>
@@ -184,7 +184,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             className={styles.Input}
                             as="select"
                             name="construction_year"
-                            value={listingData.construction_year}
+                            value={listingData.construction_year || ""}
                             onChange={handleChange}
                         >
                             {Array.from(
@@ -205,12 +205,12 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="service_charge">
-                        <Form.Label>Service Charge {listingData.currency}</Form.Label>
+                        <Form.Label>Service Charge {listingData.currency || ""}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             type="number"
                             name="service_charge"
-                            value={listingData.service_charge}
+                            value={listingData.service_charge || ""}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -222,7 +222,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                 </Col>
             </Row>
         </>
-    )
-}
+    );
+};
 
 export default ResidentialFields;
