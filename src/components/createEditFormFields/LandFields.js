@@ -147,6 +147,35 @@ const LandFields = ({ listingData, handleChange, history, errors, renderTextFiel
             </Row>
             <Row className="justify-content-center">
                 <Col md={6}>
+                    <Form.Group controlId="zone">
+                        <Form.Label>Zone</Form.Label>
+                        <Form.Control
+                            className={styles.Input}
+                            as="select"
+                            name="zone"
+                            value={listingData.zone}
+                            onChange={handleChange}
+                        >
+                            <option>---</option>
+                            <option value="residential">Residential</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="industrial">Industrial</option>
+                            <option value="agricultural">Agricultural</option>
+                            <option value="tourist">Tourist</option>
+                            <option value="mixed">Mixed</option>
+                            <option value="redevelopment">Redevelopment</option>
+                            <option value="other">Other</option>
+                        </Form.Control>
+                    </Form.Group>
+                    {errors?.zone?.map((message, idx) => (
+                        <Alert className={styles.Input} variant="warning" key={idx}>
+                            {message}
+                        </Alert>
+                    ))}
+                </Col>
+            </Row>
+            <Row className="justify-content-center">
+                <Col md={6}>
                     <Form.Group controlId="distance_from_sea">
                         <Form.Label>Distance from sea (m)</Form.Label>
                         <Form.Control
