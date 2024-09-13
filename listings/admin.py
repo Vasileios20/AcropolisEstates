@@ -19,7 +19,7 @@ class ListingAdmin(admin.ModelAdmin):
 
 
 class ImagesAdmin(admin.ModelAdmin):
-    list_display = ("listing", "url")
+    list_display = ("listing", "url", "is_first")
     list_filter = ("listing", "url")
     search_fields = ("listing", "url")
     list_per_page = 25

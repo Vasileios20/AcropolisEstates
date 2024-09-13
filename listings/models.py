@@ -339,7 +339,7 @@ class Images(models.Model):
     url = models.ImageField(
         upload_to="images/", default="../default_post_vnf7ym", null=True
     )
-    is_first = models.BooleanField(default=False)
+    is_first = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return f"{self.listing}'s image"
