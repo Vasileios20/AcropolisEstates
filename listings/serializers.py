@@ -110,14 +110,20 @@ class ListingSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
         amenities_data = validated_data.pop("amenities", [])
+        is_first_image_idx = int(
+            self.context['request'].data.get('is_first', 0))
         listing = Listing.objects.create(**validated_data)
 
         for uploaded_image in uploaded_images:
-            is_first = uploaded_image.get('is_first', False)
+            if is_first_image_idx == uploaded_images.index(uploaded_image):
+                is_first = True
+            else:
+                is_first = False
             Images.objects.create(
                 listing=listing,
                 url=uploaded_image,
-                is_first=is_first)
+                is_first=is_first,
+            )
 
         for amenity_data in amenities_data:
             Amenities.objects.create(listing=listing, **amenity_data)
