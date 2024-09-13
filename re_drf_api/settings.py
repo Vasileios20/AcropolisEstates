@@ -68,8 +68,12 @@ ALLOWED_HOSTS = [
 ]
 
 if "CLIENT_ORIGIN" in os.environ:
-    CORS_ALLOWED_ORIGINS = [os.environ.get(
-        "CLIENT_ORIGIN"), os.environ.get("CLIENT_ORIGIN_CUSTOM_DOMAIN")]
+    CORS_ALLOWED_ORIGINS = []
+    allowed_origins = list(filter(None, [
+        os.environ.get("CLIENT_ORIGIN"),
+        os.environ.get("CLIENT_ORIGIN_CUSTOM_DOMAIN")
+    ]))
+    CORS_ALLOWED_ORIGINS.extend(allowed_origins)
 if "CLIENT_ORIGIN_DEV" in os.environ:
     extracted_url = re.match(
         r"^.+-", os.environ.get("CLIENT_ORIGIN_DEV", ""), re.IGNORECASE
@@ -162,9 +166,11 @@ if "DEV" in os.environ:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+    print("sqlite DEV")
 else:
     DATABASES = {"default": dj_database_url.parse(
         os.environ.get("DATABASE_URL"))}
+    print("postgres")
 
 
 # Password validation
