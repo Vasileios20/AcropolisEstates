@@ -35,6 +35,15 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
     </Form.Group>
   );
 
+  const handleChecked = (e) => {
+    handleChange({
+      target: {
+        name: e.target.name,
+        value: e.target.checked,
+      },
+    });
+  }
+
   return (
     <div className="text-center">
       <Row className="justify-content-center">
@@ -332,7 +341,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               type="checkbox"
               name="approved"
               checked={listingData.approved}
-              onChange={handleChange}
+              onChange={handleChecked}
             />
           </Form.Group>
         </Col>
@@ -345,7 +354,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               type="checkbox"
               name="featured"
               checked={listingData.featured}
-              onChange={handleChange}
+              onChange={handleChecked}
             />
           </Form.Group>
         </Col>
