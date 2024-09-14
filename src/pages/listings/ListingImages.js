@@ -28,6 +28,10 @@ const ListingImages = ({ images = [{}], listing_id }) => {
     <i className={`fa-solid fa-arrow-left ${styles.PrevIcon}`}> </i>
   );
 
+  // Find any image is_first: true and put it first in the array
+  const imageIsFirst = images.filter((image) => image.is_first === true);
+  // Concat the imageIsFirst array with the rest of the images
+  const imagesArray = imageIsFirst.concat(images.filter((image) => image.is_first !== true));
 
   const renderTooltip = (props) => (
     <Tooltip
@@ -45,7 +49,7 @@ const ListingImages = ({ images = [{}], listing_id }) => {
     return (
       <Col xs={12} className="mx-auto m-0">
         <Carousel nextIcon={nextIcon} prevIcon={prevIcon} className="d-md-none mx-auto">
-          {images.map((image, id) => (
+          {imagesArray.map((image, id) => (
             <Carousel.Item key={id}>
               <OverlayTrigger
                 placement="bottom"
@@ -55,7 +59,7 @@ const ListingImages = ({ images = [{}], listing_id }) => {
               >
                 <div className={styles.ImageWrapper}>
                   <img
-                    src={image.url}
+                    src={image?.is_first ? image.url : images[0].url}
                     alt={image.id}
                     className={styles.Image}
                     onClick={handleShow}
@@ -77,7 +81,7 @@ const ListingImages = ({ images = [{}], listing_id }) => {
         <Col xs={12} md={6} className="d-none d-md-block">
           <div className={styles.ImageWrapper}>
             <img
-              src={images[0]?.url}
+              src={imagesArray[0]?.is_first ? imagesArray[0].url : images[0].url}
               alt={images[0]?.id}
               className={`img-fluid ${styles.Image}`}
               onClick={handleShow}
@@ -87,7 +91,7 @@ const ListingImages = ({ images = [{}], listing_id }) => {
         <Col>
           <Row className="justify-content-start d-none d-md-flex gx-1">
             {/* Map the images and Display 4 images , 2 on top 2 bellow */}
-            {images?.slice(1, 5).map((image, id) => (
+            {imagesArray?.slice(1, 5).map((image, id) => (
               <Col key={id} xs={6} md={6} lg={6} xl={6} style={{ paddingBottom: "3px" }}>
                 <div className={styles.ImageWrapper}>
                   <img
@@ -130,7 +134,7 @@ const ListingImages = ({ images = [{}], listing_id }) => {
           <Row>
 
             <Carousel nextIcon={nextIcon} prevIcon={prevIcon}>
-              {images.map((image, id) => (
+              {imagesArray.map((image, id) => (
                 <Carousel.Item key={id}>
                   <div className={styles.ModalImageWrapper}>
                     <Image
