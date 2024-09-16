@@ -63,6 +63,11 @@ input[type="file"] {
   display: none;
 }
 
+figure {
+  text-align: center;
+  display: inline-block;
+}
+
 /* scrollbar */
 *::-webkit-scrollbar {
   width: 5px;

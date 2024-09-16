@@ -3,6 +3,13 @@
   min-height: 343px;
 }
 
+.ImageWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
 .Image {
   max-height: 15vh;
   max-width: 100%;
@@ -12,4 +19,9 @@
 
 .ImageUpload:hover {
   cursor: pointer;
+}
+
+.SelectedImage {
+  border-radius: 5px;
+  box-shadow: 0 0 5px 2px #847c3d;
 }

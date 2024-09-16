@@ -83,11 +83,13 @@ function ListingCreateForm() {
     amenities: [],
     approved: false,
     featured: false,
+    is_first: "",
   });
 
   const [errors, setErrors] = useState({});
   const imageInput = useRef(null);
   const history = useHistory();
+  const [selectedImageIdx, setSelectedImageIdx] = useState(null);
 
   const handleChange = (e) => {
     setListingData({
@@ -106,18 +108,91 @@ function ListingCreateForm() {
     }
   };
 
+
+  const handleSelectedImage = (index) => {
+    if (index !== null) {
+      const imageIndex = index;
+      setSelectedImageIdx(index);
+
+      setListingData({
+        ...listingData,
+        is_first: imageIndex === "" || null ? "0" : imageIndex,
+      });
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formData = new FormData();
-    Object.keys(listingData).forEach((key) => {
-      if (key === "uploaded_images") {
-        Array.from(imageInput.current.files).forEach((file) => {
-          formData.append("uploaded_images", file);
-        });
-      } else {
-        formData.append(key, listingData[key]);
-      }
-    });
+    formData.append("type", listingData.type);
+    formData.append("sub_type", listingData.sub_type);
+    formData.append("sale_type", listingData.sale_type);
+    formData.append("price", listingData.price || "0");
+    formData.append("currency", listingData.currency);
+    formData.append("description", listingData.description);
+    formData.append("description_gr", listingData.description_gr);
+    formData.append("address_number", listingData.address_number || "0");
+    formData.append("address_street", listingData.address_street);
+    formData.append("address_street_gr", listingData.address_street_gr);
+    formData.append("postcode", listingData.postcode);
+    formData.append("municipality", listingData.municipality);
+    formData.append("municipality_gr", listingData.municipality_gr);
+    formData.append("county", listingData.county);
+    formData.append("county_gr", listingData.county_gr);
+    formData.append("region", listingData.region);
+    formData.append("region_gr", listingData.region_gr);
+    formData.append("surface", listingData.floor_area || "0");
+    formData.append("land_area", listingData.land_area || "0");
+    formData.append("levels", listingData.levels || "0");
+    formData.append("bedrooms", listingData.bedrooms || "0");
+    formData.append("wc", listingData.wc || "0");
+    formData.append("floor", listingData.floor || "0");
+    formData.append("kitchens", listingData.kitchens || "0");
+    formData.append("bathrooms", listingData.bathrooms || "0");
+    formData.append("living_rooms", listingData.living_rooms || "0");
+    formData.append("rooms", listingData.rooms || "0");
+    formData.append("power_type", listingData.power_type);
+    formData.append("power_type_gr", listingData.power_type_gr);
+    formData.append("heating_system", listingData.heating_system);
+    formData.append("heating_system_gr", listingData.heating_system_gr);
+    formData.append("energy_class", listingData.energy_class);
+    formData.append("floor_type", listingData.floor_type);
+    formData.append("construction_year", listingData.construction_year || "1900");
+    formData.append("availability", listingData.availability || "");
+    formData.append("latitude", listingData.latitude);
+    formData.append("longitude", listingData.longitude);
+    formData.append("service_charge", listingData.service_charge || "0");
+    formData.append("renovation_year", listingData.renovation_year || "2024");
+    formData.append("opening_frames", listingData.opening_frames);
+    formData.append("type_of_glass", listingData.type_of_glass);
+    formData.append("building_coefficient", listingData.building_coefficient || "0");
+    formData.append("cover_coefficient", listingData.cover_coefficient || "0");
+    formData.append("length_of_facade", listingData.length_of_facade || "0");
+    formData.append("orientation", listingData.orientation);
+    formData.append("view", listingData.view);
+    formData.append("slope", listingData.slope);
+    formData.append("zone", listingData.zone);
+    formData.append("distance_from_sea", listingData.distance_from_sea || "0");
+    formData.append("distance_from_city", listingData.distance_from_city || "0");
+    formData.append("distance_from_airport", listingData.distance_from_airport || "0");
+    formData.append("distance_from_village", listingData.distance_from_village || "0");
+    formData.append("distance_from_port", listingData.distance_from_port || "0");
+    formData.append("amenities", listingData.amenities);
+    formData.append("approved", listingData.approved);
+    formData.append("featured", listingData.featured);
+    formData.append("is_first", listingData.is_first || "0");
+
+    formData.append("images", imageInput.current.files[0]);
+    // Append the selected images to delete to the form data.
+    if (imageInput.current.files.length > 0) {
+      Array.from(imageInput.current.files).forEach((file) => {
+        formData.append("uploaded_images", file);
+      });
+    } else {
+      setErrors({ images: ["Please add an image"] });
+    }
 
     try {
       const { data } = await axiosReq.post("/listings/", formData);
@@ -143,11 +218,36 @@ function ListingCreateForm() {
             <Form.Group className="text-center justify-content-between">
               {listingData.images ? (
                 <>
-                  {Array.from(imageInput.current.files).map((file, idx) => (
-                    <figure key={idx}>
-                      <Image className={`"my-2 px-2" ${styles.Image}`} src={URL.createObjectURL(file)} rounded />
-                    </figure>
-                  ))}
+                  <Row>
+                    {Array.from(imageInput.current.files).map((file, idx) => (
+                      <>
+                        <Col md={3} key={file.id}>
+                          <div
+                            className={`my-2 ${styles.ImageWrapper} ${selectedImageIdx === idx ? styles.SelectedImage : ""}`}
+                            onClick={() => handleSelectedImage(idx)}
+                            style={{ cursor: 'pointer' }}>
+                            <figure>
+                              <Image
+                                className={`"my-2 px-2" ${styles.Image}`}
+                                src={URL.createObjectURL(file)}
+                                rounded
+                              />
+                            </figure>
+
+                            <Form.Check
+                              type="radio"
+                              id={`radio-${idx}`}
+                              name="is_first"
+                              value={listingData.is_first}
+                              checked={selectedImageIdx === idx}
+                              onChange={() => handleSelectedImage(idx)}
+                              style={{ display: 'none' }}
+                            />
+                          </div>
+                        </Col>
+                      </>
+                    ))}
+                  </Row>
 
                   <div>
                     <Form.Label className={`${btnStyles.Button} ${btnStyles.Bright} btn`} htmlFor="image-upload">
