@@ -14,6 +14,8 @@ import ResidentialFields from "./ResidentialFields";
 import LandFields from "./LandFields";
 import CommercialFields from "./CommercialFields";
 
+import { useTranslation } from "react-i18next";
+
 const ListingTextFields = ({ listingData, handleChange, history, errors, create }) => {
   const renderTextField = (fieldName, label, type = "text", rows = 1) => (
     <Form.Group controlId={fieldName}>
@@ -35,6 +37,8 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
     </Form.Group>
   );
 
+  const { t } = useTranslation();
+
   const handleChecked = (e) => {
     handleChange({
       target: {
@@ -49,7 +53,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="sale_type">
-            <Form.Label>Sale type</Form.Label>
+            <Form.Label>{t("propertyDetails.typeField")}</Form.Label>
             <Form.Control
               className={`${styles.Input}`}
               as="select"
@@ -58,8 +62,8 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               onChange={handleChange}
             >
               <option>---</option>
-              <option value="rent">Rent</option>
-              <option value="sale">Sale</option>
+              <option value="rent">{t("propertyDetails.typeRent")}</option>
+              <option value="sale">{t("propertyDetails.typeSale")}</option>
             </Form.Control>
           </Form.Group>
           {errors?.sale_type?.map((message, idx) => (
@@ -72,7 +76,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="type">
-            <Form.Label>Property type</Form.Label>
+            <Form.Label>{t("propertyDetails.types.title")}</Form.Label>
             <Form.Control
               className={styles.Input}
               as="select"
@@ -81,9 +85,9 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               onChange={handleChange}
             >
               <option>---</option>
-              <option value="land">Land</option>
-              <option value="commercial">Commercial</option>
-              <option value="residential">Residential</option>
+              <option value="land">{t("propertyDetails.types.land")}</option>
+              <option value="commercial">{t("propertyDetails.types.commercial")}</option>
+              <option value="residential">{t("propertyDetails.types.residential")}</option>
             </Form.Control>
           </Form.Group>
           {errors?.type?.map((message, idx) => (
@@ -96,7 +100,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="sub_type">
-            <Form.Label>Sub type</Form.Label>
+            <Form.Label>{t("propertyDetails.subTypes.title")}</Form.Label>
             <Form.Control
               className={`${styles.Input}`}
               as="select"
@@ -105,19 +109,18 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               onChange={handleChange}
             >
               <option>---</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="maisonette">Maisonette</option>
-              <option value="bungalow">Bungalow</option>
-              <option value="villa">Villa</option>
-              <option value="hotel">Hotel</option>
-              <option value="office">Office</option>
-              <option value="retail">Retail</option>
-              <option value="warehouse">Warehouse</option>
-              <option value="mixed_use">Mixed use</option>
-              <option value="industrial">Industrial</option>
-              <option value="other">Other</option>
-
+              <option value="apartment">{t("propertyDetails.subTypes.apartment")}</option>
+              <option value="house">{t("propertyDetails.subTypes.house")}</option>
+              <option value="maisonette">{t("propertyDetails.subTypes.maisonette")}</option>
+              <option value="bungalow">{t("propertyDetails.subTypes.bungalow")}</option>
+              <option value="villa">{t("propertyDetails.subTypes.villa")}</option>
+              <option value="hotel">{t("propertyDetails.subTypes.hotel")}</option>
+              <option value="office">{t("propertyDetails.subTypes.office")}</option>
+              <option value="retail">{t("propertyDetails.subTypes.retail")}</option>
+              <option value="warehouse">{t("propertyDetails.subTypes.warehouse")}</option>
+              <option value="mixed_use">{t("propertyDetails.subTypes.mixed_use")}</option>
+              <option value="industrial">{t("propertyDetails.subTypes.industrial")}</option>
+              <option value="other">{t("propertyDetails.subTypes.other")}</option>
             </Form.Control>
           </Form.Group>
           {errors?.sub_type?.map((message, idx) => (
@@ -130,7 +133,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="price">
-            <Form.Label>{listingData.currency === "---" ? "" : listingData.currency} Price</Form.Label>
+            <Form.Label>{t("propertyDetails.price")} {listingData.currency === "---" ? "" : listingData.currency}</Form.Label>
             <Form.Control
               className={styles.Input}
               type="number"
@@ -149,7 +152,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="currency">
-            <Form.Label>Currency</Form.Label>
+            <Form.Label>{t("propertyDetails.currency")}</Form.Label>
             <Form.Control
               className={styles.Input}
               as="select"
@@ -173,7 +176,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       <Row className="justify-content-center mt-2">
         <Col md={6}>
           <Form.Group controlId="description">
-            <Form.Label>Description</Form.Label>
+            <Form.Label>{t("propertyDetails.description")}</Form.Label>
             <Form.Control
               className={styles.Input}
               as="textarea"
@@ -191,7 +194,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
         </Col>
         <Col md={6}>
           <Form.Group controlId="description_gr">
-            <Form.Label>Description GR</Form.Label>
+            <Form.Label>{t("propertyDetails.description_gr")}</Form.Label>
             <Form.Control
               className={styles.Input}
               as="textarea"
@@ -211,13 +214,13 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       <hr />
       <Container fluid>
         <Row>
-          <h1>Address</h1>
+          <h1>{t("propertyDetails.address")}</h1>
           {Object.entries(listingData).map(([fieldName, fieldValue]) => {
             if (
               fieldName === "address_street" ||
               fieldName === "address_street_gr" ||
               fieldName === "address_number" ||
-              fieldName === "address_postal_code" ||
+              fieldName === "postcode" ||
               fieldName === "city" ||
               fieldName === "city_gr" ||
               fieldName === "region" ||
@@ -230,7 +233,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
               return (
                 <Row className="justify-content-center" key={fieldName}>
                   <Col md={6}>
-                    {renderTextField(fieldName, fieldName.charAt(0).toUpperCase() + fieldName.slice(1))}
+                    {renderTextField(fieldName, t(`propertyDetails.${fieldName.charAt(0).toLowerCase()}${fieldName.slice(1)}`))}
                   </Col>
                 </Row>
 
@@ -241,7 +244,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
         </Row>
       </Container>
       <hr />
-      <h1>Features</h1>
+      <h1>{t("propertiesPage.header1")}</h1>
 
       {/* // RESIDENTIAL FIELDS */}
 
@@ -279,7 +282,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="availability">
-            <Form.Label>Availability</Form.Label>
+            <Form.Label>{t("propertyDetails.availability")}</Form.Label>
             <Form.Control
               className={styles.Input}
               type="date"
@@ -297,27 +300,8 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       </Row>
       <Row className="justify-content-center">
         <Col md={6}>
-          <Form.Group controlId="longitude">
-            <Form.Label>Longitude</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="decimal"
-              name="longitude"
-              value={listingData.longitude}
-              onChange={handleChange}
-            />
-            {errors?.longitude?.map((message, idx) => (
-              <Alert className={styles.Input} variant="warning" key={idx}>
-                {message}
-              </Alert>
-            ))}
-          </Form.Group>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md={6}>
           <Form.Group controlId="latitude">
-            <Form.Label>Latitude</Form.Label>
+            <Form.Label>{t("propertyDetails.latitude")}</Form.Label>
             <Form.Control
               className={styles.Input}
               type="decimal"
@@ -335,8 +319,28 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       </Row>
       <Row className="justify-content-center">
         <Col md={6}>
+          <Form.Group controlId="longitude">
+            <Form.Label>{t("propertyDetails.longitude")}</Form.Label>
+            <Form.Control
+              className={styles.Input}
+              type="decimal"
+              name="longitude"
+              value={listingData.longitude}
+              onChange={handleChange}
+            />
+            {errors?.longitude?.map((message, idx) => (
+              <Alert className={styles.Input} variant="warning" key={idx}>
+                {message}
+              </Alert>
+            ))}
+          </Form.Group>
+        </Col>
+      </Row>
+
+      <Row className="justify-content-center">
+        <Col md={6}>
           <Form.Group>
-            <Form.Label>Approved</Form.Label>
+            <Form.Label>{t("propertyDetails.approved")}</Form.Label>
             <Form.Check
               type="checkbox"
               name="approved"
@@ -349,7 +353,7 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group>
-            <Form.Label>Featured</Form.Label>
+            <Form.Label>{t("propertyDetails.featured")}</Form.Label>
             <Form.Check
               type="checkbox"
               name="featured"
@@ -364,10 +368,10 @@ const ListingTextFields = ({ listingData, handleChange, history, errors, create 
         className={`${btnStyles.Button} ${btnStyles.Remove} m-3`}
         onClick={() => history.goBack()}
       >
-        Cancel
+        {t("createEditForm.button.cancel")}
       </Button>
       <Button className={`${btnStyles.Button} ${btnStyles.Black} m-3`} type="submit">
-        {create ? "Create" : "Update"}
+        {create ? t("createEditForm.button.create") : t("createEditForm.button.update")}
       </Button>
     </div>
   );
