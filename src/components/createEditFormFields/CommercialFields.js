@@ -4,16 +4,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
 import styles from '../../styles/ListingCreateEditForm.module.css';
+import { useTranslation } from 'react-i18next';
 
 
 const CommercialFields = ({ listingData, handleChange, history, errors, renderTextField }) => {
+    const { t } = useTranslation();
     return (
         <>
             <h1>Commercial Features</h1>
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="floor_area">
-                        <Form.Label>Floor Area (m²)</Form.Label>
+                        <Form.Label>{t("propertyDetails.floorArea")} (m²)</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             type="number"
@@ -32,7 +34,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="land_area">
-                        <Form.Label>Land Area (m²)</Form.Label>
+                        <Form.Label>{t("propertyDetails.landArea")} (m²)</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             type="number"
@@ -61,7 +63,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                     return (
                         <Row className="justify-content-center" key={fieldName}>
                             <Col md={6}>
-                                {renderTextField(fieldName, fieldName.charAt(0).toUpperCase() + fieldName.slice(1))}
+                                {renderTextField(fieldName, t(`propertyDetails.${fieldName.charAt(0).toLowerCase()}${fieldName.slice(1)}`))}
                             </Col>
                         </Row>
                     );
@@ -71,7 +73,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="energy_class">
-                        <Form.Label>Energy class</Form.Label>
+                        <Form.Label>{t("propertyDetails.energyClass")}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             as="select"
@@ -95,7 +97,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="power_type">
-                        <Form.Label>Power Type</Form.Label>
+                        <Form.Label>{t("propertyDetails.powerType")}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             type="text"
@@ -114,7 +116,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="power_type_gr">
-                        <Form.Label>Power Type gr</Form.Label>
+                        <Form.Label>{t("propertyDetails.powerType_gr")}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             type="text"
@@ -133,7 +135,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="construction_year">
-                        <Form.Label>Construction Year</Form.Label>
+                        <Form.Label>{t("propertyDetails.yearBuilt")}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             as="select"
