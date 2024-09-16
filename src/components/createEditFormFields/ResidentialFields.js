@@ -4,16 +4,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
 import styles from '../../styles/ListingCreateEditForm.module.css';
+import { useTranslation } from 'react-i18next';
 
 
 const ResidentialFields = ({ listingData, handleChange, history, errors, renderTextField }) => {
+    const { t } = useTranslation();
     return (
         <>
             <h1>Residential Features</h1>
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="floor_area">
-                        <Form.Label>Floor Area (m²)</Form.Label>
+                        <Form.Label>{t("propertyDetails.floorArea")} (m²)</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             type="number"
@@ -32,7 +34,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="land_area">
-                        <Form.Label>Land Area (m²)</Form.Label>
+                        <Form.Label>{t("propertyDetails.landArea")} </Form.Label>
                         <Form.Control
                             className={styles.Input}
                             type="number"
@@ -63,7 +65,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                     return (
                         <Row className="justify-content-center" key={fieldName}>
                             <Col md={6}>
-                                {renderTextField(fieldName, fieldName.charAt(0).toUpperCase() + fieldName.slice(1))}
+                                {renderTextField(fieldName, t(`propertyDetails.${fieldName.charAt(0).toLowerCase()}${fieldName.slice(1)}`))}
                             </Col>
                         </Row>
                     );
@@ -73,7 +75,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="energy_class">
-                        <Form.Label>Energy class</Form.Label>
+                        <Form.Label>{t("propertyDetails.energyClass")}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             as="select"
@@ -97,7 +99,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="floor_type">
-                        <Form.Label>Floor type</Form.Label>
+                        <Form.Label>{t("propertyDetails.floorTypes.title")}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             as="select"
@@ -106,18 +108,17 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             onChange={handleChange}
                         >
                             <option>---</option>
-                            <option value="marble">Marble</option>
-                            <option value="tile">Tile</option>
-                            <option value="wooden">Wooden</option>
-                            <option value="granite">Granite</option>
-                            <option value="mosaic">Mosaic</option>
-                            <option value="stone">Stone</option>
-                            <option value="laminate">Laminate</option>
-                            <option value="parquet">Parquet</option>
-                            <option value="carpet">Carpet</option>
-                            <option value="cement">Cement</option>
-                            <option value="other">Other</option>
-
+                            <option value="marble">{t("propertyDetails.floorTypes.marble")}</option>
+                            <option value="tile">{t("propertyDetails.floorTypes.tile")}</option>
+                            <option value="wooden">{t("propertyDetails.floorTypes.wooden")}</option>
+                            <option value="granite">{t("propertyDetails.floorTypes.granite")}</option>
+                            <option value="mosaic">{t("propertyDetails.floorTypes.mosaic")}</option>
+                            <option value="stone">{t("propertyDetails.floorTypes.stone")}</option>
+                            <option value="laminate">{t("propertyDetails.floorTypes.laminate")}</option>
+                            <option value="parquet">{t("propertyDetails.floorTypes.parquet")}</option>
+                            <option value="carpet">{t("propertyDetails.floorTypes.carpet")}</option>
+                            <option value="cement">{t("propertyDetails.floorTypes.cement")}</option>
+                            <option value="other">{t("propertyDetails.floorTypes.other")}</option>
                         </Form.Control>
                     </Form.Group>
                     {errors?.floor_type?.map((message, idx) => (
@@ -130,7 +131,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="type_of_glass">
-                        <Form.Label>Type of Glass</Form.Label>
+                        <Form.Label>{t("propertyDetails.glassType.title")}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             as="select"
@@ -139,9 +140,9 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             onChange={handleChange}
                         >
                             <option>---</option>
-                            <option value="single">Single</option>
-                            <option value="double">Double</option>
-                            <option value="triple">Triple</option>
+                            <option value="single">{t("propertyDetails.glassType.single")}</option>
+                            <option value="double">{t("propertyDetails.glassType.double")}</option>
+                            <option value="triple">{t("propertyDetails.glassType.triple")}</option>
                         </Form.Control>
                     </Form.Group>
                     {errors?.type_of_glass?.map((message, idx) => (
@@ -154,7 +155,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="opening_frames">
-                        <Form.Label>Opening Frames</Form.Label>
+                        <Form.Label>{t("propertyDetails.openingFrames.title")}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             as="select"
@@ -163,10 +164,10 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             onChange={handleChange}
                         >
                             <option>---</option>
-                            <option value="aluminium">Aluminium</option>
-                            <option value="wooden">Wooden</option>
-                            <option value="pvc">PVC</option>
-                            <option value="iron">Iron</option>
+                            <option value="aluminium">{t("propertyDetails.openingFrames.aluminium")}</option>
+                            <option value="wooden">{t("propertyDetails.openingFrames.wooden")}</option>
+                            <option value="pvc">{t("propertyDetails.openingFrames.pvc")}</option>
+                            <option value="iron">{t("propertyDetails.openingFrames.iron")}</option>
                         </Form.Control>
                     </Form.Group>
                     {errors?.opening_frames?.map((message, idx) => (
@@ -179,7 +180,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="construction_year">
-                        <Form.Label>Construction Year</Form.Label>
+                        <Form.Label>{t("propertyDetails.yearBuilt")}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             as="select"
@@ -205,7 +206,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="service_charge">
-                        <Form.Label>Service Charge {listingData.currency || ""}</Form.Label>
+                        <Form.Label>{t("propertyDetails.serviceCharge")} {listingData.currency === "---" ? "" : listingData.currency}</Form.Label>
                         <Form.Control
                             className={styles.Input}
                             type="number"
