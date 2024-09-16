@@ -133,16 +133,29 @@ class ListingSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
         amenities_data = validated_data.pop("amenities", [])
+        is_first_image_idx = self.context['request'].data.get('is_first', None)
+
+        if is_first_image_idx is not None:
+            try:
+                is_first_image_idx = int(is_first_image_idx)
+            except (ValueError, TypeError):
+                is_first_image_idx = None
 
         if uploaded_images:
-            listing_image_model_instance = [
-                Images(
-                    listing=instance, url=image, is_first=image.get(
-                        'is_first', False)
+            if is_first_image_idx is not None:
+                listing_images = instance.images.all()
+                listing_images.update(is_first=False)
+
+            for uploaded_image in uploaded_images:
+                if is_first_image_idx == uploaded_images.index(uploaded_image):
+                    is_first = True
+                else:
+                    is_first = False
+                Images.objects.create(
+                    listing=instance,
+                    url=uploaded_image,
+                    is_first=is_first,
                 )
-                for image in uploaded_images
-            ]
-            Images.objects.bulk_create(listing_image_model_instance)
 
         instance = super().update(instance, validated_data)
 
