@@ -114,11 +114,23 @@
     },
     "propertyDetails": {
         "propertyId": "Κωδικός Ακινήτου",
+        "typeField": "Τύπος",
         "typeRent": "Ενοικίαση",
         "typeSale": "Πώληση",
         "title": "{{sale_type}} {{type}}",
-        "description": "Περιγραφή",
+        "description_gr": "Περιγραφή",
         "address": "Διεύθυνση",
+        "address_street": "Address street",
+        "address_street_gr": "Οδός",
+        "address_number": "Αριθμός",
+        "postcode": "Τ.Κ.",
+        "city": "Πόλη",
+        "region": "Region",
+        "region_gr": "Περιοχή",
+        "county": "County",
+        "county_gr": "Νομός",
+        "municipality": "Municipality",
+        "municipality_gr": "Δήμος",
         "price": "Τιμή",
         "floorArea": "Εμβαδόν Ακινήτου",
         "landArea": "Εμβαδόν Γης",
@@ -128,9 +140,13 @@
         "wc": "WC",
         "levels": "Επίπεδα",
         "floorLevel": "Όροφος",
+        "floor": "Όροφος",
         "livingRooms": "Σαλόνια",
+        "living_rooms": "Σαλόνια",
         "kitchens": "Κουζίνες",
         "heating": "Θέρμανση",
+        "heating_system": "Heating System",
+        "heating_system_gr": "Θέρμανση",
         "energyClass": "Ενεργειακή Κλάση",
         "serviceCharge": "Κοινόχρηστα Έξοδα",
         "yearBuilt": "Έτος Κατασκευής",
@@ -140,13 +156,21 @@
         "lengthOfFacade": "Μήκος Προσόψεως",
         "distanceFromSea": "Απόσταση από τη Θάλασσα",
         "storage": "Αποθήκη",
-        "powerType": "Τύπος Ρεύματος",
+        "powerType_gr": "Τύπος Ρεύματος",
+        "powerType": "Power Type",
+        "approved": "Εγκεκριμένο",
+        "featured": "Προβεβλημένο",
+        "longitude": "Γεωγραφικό Μήκος",
+        "latitude": "Γεωγραφικό Πλάτος",
+        "currency": "Νόμισμα",
         "types": {
+            "title": "Τύπος Ακινήτου",
             "residential": "Κατοικία",
             "land": "Γη",
             "commercial": "Εμπορικό"
         },
         "subTypes": {
+            "title": "Υποτύπος",
             "apartment": "Διαμέρισμα",
             "house": "Κατοικία",
             "maisonette": "Μεζονέτα",
@@ -452,5 +476,12 @@
         "consierge": "Θυρορός",
         "inside_zone_area": "Εντός Ζώνης",
         "auction": "Πληστηριασμός"
+    },
+    "createEditForm": {
+        "button": {
+            "create": "Δημιουργία",
+            "update": "Ενημέρωση",
+            "cancel": "Ακύρωση"
+        }
     }
 }

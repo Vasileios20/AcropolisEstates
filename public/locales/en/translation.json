@@ -114,11 +114,24 @@
     },
     "propertyDetails": {
         "propertyId": "Listing ID",
+        "typeField": "Sale Type",
         "typeRent": "To Rent",
         "typeSale": "For Sale",
         "title": "{{sale_type}} {{type}}",
         "description": "Description",
+        "description_gr": "Περιγραφή",
         "address": "Address",
+        "address_street": "Address street",
+        "address_street_gr": "Οδός",
+        "address_number": "Number",
+        "postcode": "Postcode",
+        "city": "City",
+        "region": "Region",
+        "region_gr": "Περιοχή",
+        "county": "County",
+        "county_gr": "Νομός",
+        "municipality": "Municipality",
+        "municipality_gr": "Δήμος",
         "price": "Price",
         "floorArea": "Floor Area",
         "landArea": "Land Area",
@@ -128,9 +141,13 @@
         "wc": "WC",
         "levels": "Levels",
         "floorLevel": "Floor Level",
+        "floor": "Floor Level",
         "livingRooms": "Living Rooms",
+        "living_rooms": "Living Rooms",
         "kitchens": "Kitchens",
         "heating": "Heating",
+        "heating_system": "Heating System",
+        "heating_system_gr": "Θέρμανση",
         "energyClass": "Energy Class",
         "serviceCharge": "Service Charges",
         "yearBuilt": "Year Built",
@@ -141,12 +158,20 @@
         "distanceFromSea": "Distance from Sea",
         "storage": "Storage",
         "powerType": "Power Type",
+        "powerType_gr": "Τύπος Ρεύματος",
+        "currency": "Currency",
+        "longitude": "Longitude",
+        "latitude": "Latitude",
+        "approved": "Approved",
+        "featured": "Featured",
         "types": {
+            "title": "Type",
             "residential": "Residential",
             "land": "Land",
             "commercial": "Commercial"
         },
         "subTypes": {
+            "title": "Subtype",
             "apartment": "Apartment",
             "house": "House",
             "maisonette": "Maisonette",
@@ -452,5 +477,12 @@
         "consierge": "Consierge",
         "inside_zone_area": "Inside Zone Area",
         "auction": "Auction"
+    },
+    "createEditForm": {
+        "button": {
+            "create": "Create",
+            "update": "Update",
+            "cancel": "Cancel"
+        }
     }
 }
