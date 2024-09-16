@@ -87,6 +87,7 @@ function ListingEditForm() {
   const { id } = useParams();
   const userStatus = useUserStatus();
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImageIdx, setSelectedImageIdx] = useState(null);
 
   useEffect(() => {
     // Fetch the listing data from the API.
@@ -285,35 +286,58 @@ function ListingEditForm() {
     }
   };
 
+  // Function to get the selected image index.
+  const handleSelectedImage = (index) => {
+    if (index !== null) {
+      const imageIndex = index;
+      setSelectedImageIdx(index);
+
+      setListingData({
+        ...listingData,
+        is_first: imageIndex === "" || null ? "0" : imageIndex,
+      });
+    }
+  };
+
   // Function to handle the submit event for the form.
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("type", listingData.type);
-    formData.append("sale_type", listingData.sale_type);
     formData.append("sub_type", listingData.sub_type);
+    formData.append("sale_type", listingData.sale_type);
+    formData.append("price", listingData.price || "0");
+    formData.append("currency", listingData.currency);
     formData.append("description", listingData.description);
-    formData.append("description", listingData.description_gr);
+    formData.append("description_gr", listingData.description_gr);
     formData.append("address_number", listingData.address_number || "0");
     formData.append("address_street", listingData.address_street);
+    formData.append("address_street_gr", listingData.address_street_gr);
     formData.append("postcode", listingData.postcode);
-    formData.append("price", listingData.price || "0");
+    formData.append("municipality", listingData.municipality);
+    formData.append("municipality_gr", listingData.municipality_gr);
+    formData.append("county", listingData.county);
+    formData.append("county_gr", listingData.county_gr);
+    formData.append("region", listingData.region);
+    formData.append("region_gr", listingData.region_gr);
     formData.append("surface", listingData.floor_area || "0");
+    formData.append("land_area", listingData.land_area || "0");
     formData.append("levels", listingData.levels || "0");
     formData.append("bedrooms", listingData.bedrooms || "0");
+    formData.append("wc", listingData.wc || "0");
     formData.append("floor", listingData.floor || "0");
     formData.append("kitchens", listingData.kitchens || "0");
     formData.append("bathrooms", listingData.bathrooms || "0");
     formData.append("living_rooms", listingData.living_rooms || "0");
-    formData.append("heating_system", listingData.heating_system);
-    formData.append("energy_class", listingData.energy_class);
-    formData.append("construction_year", listingData.construction_year || "1900");
-    formData.append("availability", listingData.availability || "");
-    formData.append("land_area", listingData.land_area || "0");
-    formData.append("wc", listingData.wc || "0");
     formData.append("rooms", listingData.rooms || "0");
     formData.append("power_type", listingData.power_type);
+    formData.append("power_type_gr", listingData.power_type_gr);
+    formData.append("heating_system", listingData.heating_system);
+    formData.append("heating_system_gr", listingData.heating_system_gr);
+    formData.append("energy_class", listingData.energy_class);
     formData.append("floor_type", listingData.floor_type);
+    formData.append("construction_year", listingData.construction_year || "1900");
+    formData.append("availability", listingData.availability || "");
     formData.append("latitude", listingData.latitude);
     formData.append("longitude", listingData.longitude);
     formData.append("service_charge", listingData.service_charge || "0");
@@ -335,8 +359,7 @@ function ListingEditForm() {
     formData.append("amenities", listingData.amenities);
     formData.append("approved", listingData.approved);
     formData.append("featured", listingData.featured);
-    formData.append("currency", listingData.currency);
-
+    formData.append("is_first", listingData.is_first);
 
     formData.append("images", imageInput.current.files[0]);
     // Append the selected images to delete to the form data.
@@ -410,16 +433,37 @@ function ListingEditForm() {
               </button>
               <div>
                 {imageInput.current &&
-                  Array.from(imageInput.current.files).map((file, idx) => (
-                    <figure key={idx}>
-                      <Image
-                        className={`my-2 px-2 ${styles.Image}`}
-                        src={URL.createObjectURL(file)}
-                        rounded
-                      />
-                    </figure>
-                  ))}
+                  <Row>
+                    {Array.from(imageInput.current.files).map((file, idx) => (
+                      <>
+                        <Col md={3} key={file.id}>
+                          <div
+                            className={`my- ${styles.ImageWrapper} ${selectedImageIdx === idx ? styles.SelectedImage : ""}`}
+                            onClick={() => handleSelectedImage(idx)}
+                            style={{ cursor: 'pointer' }}>
+                            <figure>
+                              <Image
+                                className={`my-2 px-2 ${styles.Image}`}
+                                src={URL.createObjectURL(file)}
+                                rounded
+                              />
+                            </figure>
 
+                            <Form.Check
+                              type="radio"
+                              id={`radio-${idx}`}
+                              name="is_first"
+                              value={listingData.is_first}
+                              checked={selectedImageIdx === idx}
+                              onChange={() => handleSelectedImage(idx)}
+                              style={{ display: 'none' }}
+                            />
+                          </div>
+                        </Col>
+                      </>
+                    ))}
+                  </Row>
+                }
                 <Form.Label
                   htmlFor="image-upload"
                   className={styles.ImageUpload}
