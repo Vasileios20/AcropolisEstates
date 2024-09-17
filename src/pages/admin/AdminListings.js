@@ -24,7 +24,13 @@ export default function AdminListings() {
         const direction = sortConfig.key === sortType && sortConfig.direction === 'asc' ? 'desc' : 'asc';
 
         sortedListings.sort((a, b) => {
-            if (sortType === 'price' || sortType === 'id' || sortType === 'approved' || sortType === 'featured') {
+            if (sortType === 'price' ||
+                sortType === 'id' ||
+                sortType === 'approved' ||
+                sortType === 'featured' ||
+                sortType === 'floor_area' ||
+                sortType === 'land_area'
+            ) {
                 // Sorting numeric or boolean values
                 return direction === 'asc' ? a[sortType] - b[sortType] : b[sortType] - a[sortType];
             } else {
@@ -53,14 +59,16 @@ export default function AdminListings() {
                                 <Table>
                                     <thead>
                                         <tr>
-                                            <th onClick={() => handleSort('agent_name')} style={{ cursor: 'pointer' }}>Agent Name</th>
-                                            <th onClick={() => handleSort('id')} style={{ cursor: 'pointer' }}>ID</th>
-                                            <th onClick={() => handleSort('type')} style={{ cursor: 'pointer' }}>Type</th>
-                                            <th onClick={() => handleSort('sub_type')} style={{ cursor: 'pointer' }}>Sub Type</th>
-                                            <th onClick={() => handleSort('sale_type')} style={{ cursor: 'pointer' }}>Sale Type</th>
-                                            <th onClick={() => handleSort('price')} style={{ cursor: 'pointer' }}>Price</th>
-                                            <th onClick={() => handleSort('approved')} style={{ cursor: 'pointer' }}>Approved</th>
-                                            <th onClick={() => handleSort('featured')} style={{ cursor: 'pointer' }}>Featured</th>
+                                            <th onClick={() => handleSort('agent_name')} style={{ cursor: 'pointer' }} className={sortConfig.key === 'agent_name' ? 'bg-dark text-white' : ''}>Agent Name</th>
+                                            <th onClick={() => handleSort('id')} style={{ cursor: 'pointer' }} className={sortConfig.key === 'id' ? 'bg-dark text-white' : ''}>ID</th>
+                                            <th onClick={() => handleSort('type')} style={{ cursor: 'pointer' }} className={sortConfig.key === 'type' ? 'bg-dark text-white' : ''}>Type</th>
+                                            <th onClick={() => handleSort('sub_type')} style={{ cursor: 'pointer' }} className={sortConfig.key === 'sub_type' ? 'bg-dark text-white' : ''}>Sub Type</th>
+                                            <th onClick={() => handleSort('sale_type')} style={{ cursor: 'pointer' }} className={sortConfig.key === 'sale_type' ? 'bg-dark text-white' : ''}>Sale Type</th>
+                                            <th onClick={() => handleSort('floor_area')} style={{ cursor: 'pointer' }} className={sortConfig.key === 'floor_area' ? 'bg-dark text-white' : ''}>Floor Area</th>
+                                            <th onClick={() => handleSort('land_area')} style={{ cursor: 'pointer' }} className={sortConfig.key === 'land_area' ? 'bg-dark text-white' : ''}>Land Area</th>
+                                            <th onClick={() => handleSort('price')} style={{ cursor: 'pointer' }} className={sortConfig.key === 'price' ? 'bg-dark text-white' : ''}>Price</th>
+                                            <th onClick={() => handleSort('approved')} style={{ cursor: 'pointer' }} className={sortConfig.key === 'approved' ? 'bg-dark text-white' : ''}>Approved</th>
+                                            <th onClick={() => handleSort('featured')} style={{ cursor: 'pointer' }} className={sortConfig.key === 'featured' ? 'bg-dark text-white' : ''}>Featured</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -71,6 +79,8 @@ export default function AdminListings() {
                                                 <td>{listing.type}</td>
                                                 <td>{listing.sub_type}</td>
                                                 <td>{listing.sale_type}</td>
+                                                <td>{listing.floor_area}</td>
+                                                <td>{listing.land_area}</td>
                                                 <td>{listing.price}</td>
                                                 {listing.approved ? <td><i className={`fa-solid fa-square-check ${amenitiesStyles.AmenityChecked}`}></i></td> : <td></td>}
                                                 {listing.featured ? <td><i className={`fa-solid fa-square-check ${amenitiesStyles.AmenityChecked}`}></i></td> : <td></td>}
