@@ -24,7 +24,6 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
   const userStatus = useUserStatus();
   const { t, i18n } = useTranslation();
 
-
   const {
     id,
     profile_id,
@@ -77,18 +76,8 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
   const description = lng === "el" ? props.description_gr : props.description;
 
   const amenitiesArray = [];
-  if (amenities) {
-    Object.entries(amenities).forEach(([key, value]) => {
-      if (value) {
-        Object.entries(value).forEach(([key, value]) => {
-          if (value === true) {
-            amenitiesArray.push(key);
-          }
-        });
-      }
-    }
-    );
-  }
+
+  amenities?.map((amenity) => amenitiesArray.push(amenity.name));
 
   const amenitiesList = amenitiesArray.map((amenity, id) => (
     <div key={id} className={`${styles.Amenity}`}>
@@ -267,7 +256,7 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
               <ListingHeader {...props} listingPage={listingPage} />
             </div>
             <div className="my-4">
-              <h5>{t("propertyDetails.description")}</h5>
+              <h5>{lng === "el" ? t("propertyDetails.description_gr") : t("propertyDetails.description")}</h5>
               <p>{description}</p>
             </div>
           </Col>
