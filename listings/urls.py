@@ -7,4 +7,5 @@ urlpatterns = [
     path("listings/<int:listing_id>/images/<int:pk>/",
          views.DeleteImageView.as_view()),
     path("amenities/", views.AmenitiesList.as_view()),
+    path("amenities/bulk/", views.BulkCreateAmenitiesView.as_view()),
 ]
