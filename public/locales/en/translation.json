@@ -476,7 +476,8 @@
         "facade": "Facade",
         "consierge": "Consierge",
         "inside_zone_area": "Inside Zone Area",
-        "auction": "Auction"
+        "auction": "Auction",
+        "under_offer": "Under Offer"
     },
     "createEditForm": {
         "button": {

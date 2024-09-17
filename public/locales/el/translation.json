@@ -475,7 +475,8 @@
         "facade": "Προσώψεος",
         "consierge": "Θυρορός",
         "inside_zone_area": "Εντός Ζώνης",
-        "auction": "Πληστηριασμός"
+        "auction": "Πληστηριασμός",
+        "under_offer": "Υπό Προσφορά"
     },
     "createEditForm": {
         "button": {
