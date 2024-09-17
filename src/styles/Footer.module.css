@@ -41,10 +41,13 @@
   border-radius: 0.5rem 0.5rem 0 0;
 }
 
+.CompanyReg {
+  font-size: 0.8rem;
+  margin-top: -15px;
+}
 
 @media screen and (max-width: 576px) {
   .MobileMarginTop {
     margin-top: 1rem;
   }
-  
 }

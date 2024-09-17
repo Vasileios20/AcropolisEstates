@@ -100,26 +100,29 @@ const Footer = () => {
         </Row>
         <Row className={`text-center mt-2 align-items-center`}>
           <hr />
-          <Col sm={3}>
+          <Col sm={4}>
             <p className="text-muted">
               &copy; {new Date().getFullYear()} {t("footer.copyRight")}
             </p>
           </Col>
-          <Col sm={3}>
-            <p className="text-muted">
-              {t("footer.companyReg")}
-            </p>
-          </Col>
-          <Col sm={3}>
+
+          <Col sm={4}>
             <p className="text-muted">
               <Link to="/cookies" className={`${styles.link}`}>Cookies </Link> | <Link to="/privacyPolicy" className={`${styles.link}`}>{t("footer.privacyPolicy")}</Link> | <Link to="/terms" className={`${styles.link}`}>{t("footer.terms")}</Link>
             </p>
           </Col>
-          <Col sm={3}>
+          <Col sm={4}>
             <>
               <p className="text-muted">Developed by <a href="https://www.linkedin.com/in/vasileios-tsimourdagkas/" target="_blank" rel="noreferrer" className={`${styles.link}`}>VasileiosT</a>
               </p>
             </>
+          </Col>
+        </Row>
+        <Row className={`text-center align-items-center justify-content-center ${styles.CompanyReg}`}>
+          <Col>
+            <p className="text-muted">
+              {t("footer.companyReg")}
+            </p>
           </Col>
         </Row>
       </Container>
