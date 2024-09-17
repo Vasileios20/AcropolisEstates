@@ -105,7 +105,10 @@ class ListingSerializer(serializers.ModelSerializer):
     )
 
     amenities_ids = serializers.PrimaryKeyRelatedField(
-        many=True, write_only=True, queryset=Amenities.objects.all(), source='amenities'
+        many=True,
+        write_only=True,
+        queryset=Amenities.objects.all(),
+        source='amenities'
     )
 
     def get_is_owner(self, obj):
