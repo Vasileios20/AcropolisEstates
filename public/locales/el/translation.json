@@ -411,6 +411,7 @@
         "cookiePolicy": "Πολιτική Cookies"
     },
     "amenities": {
+        "title": "Παροχές",
         "solar_water_heating": "Ηλιακός θερμοσίφωνας",
         "storage_room": "Αποθήκη",
         "parking": "Θέση Σταύθμευσης",

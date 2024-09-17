@@ -412,6 +412,7 @@
         "cookiePolicy": "Cookie Policy"
     },
     "amenities": {
+        "title": "Amenities",
         "solar_water_heating": "Solar Water Heating",
         "storage_room": "Storage Room",
         "parking": "Parking",
