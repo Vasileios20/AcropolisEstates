@@ -15,7 +15,7 @@ class Amenities(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = "Amenities building"
+        verbose_name_plural = "Amenities"
 
 
 def validate_zero(value):
