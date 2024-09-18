@@ -146,8 +146,6 @@
         "living_rooms": "Living Rooms",
         "kitchens": "Kitchens",
         "heating": "Heating",
-        "heating_system": "Heating System",
-        "heating_system_gr": "Θέρμανση",
         "energyClass": "Energy Class",
         "serviceCharge": "Service Charges",
         "yearBuilt": "Year Built",
@@ -157,8 +155,6 @@
         "lengthOfFacade": "Length of Facade",
         "distanceFromSea": "Distance from Sea",
         "storage": "Storage",
-        "powerType": "Power Type",
-        "powerType_gr": "Τύπος Ρεύματος",
         "currency": "Currency",
         "longitude": "Longitude",
         "latitude": "Latitude",
@@ -190,7 +186,7 @@
             "title": "Opening Frames",
             "aluminium": "Aluminium",
             "wooden": "Wooden",
-            "pvc": "PVC",
+            "PVC": "PVC",
             "iron": "Iron",
             "": "N/A"
         },
@@ -275,6 +271,26 @@
             "g": "G",
             "toBeIssued": "To be issued",
             "": "N/A"
+        },
+        "heating_system": {
+            "title": "Heating System",
+            "central": "Central",
+            "autonomous": "Autonomous",
+            "geothermal": "Geothermal",
+            "solar": "Solar",
+            "air_condition": "Air Condition",
+            "fireplace": "Fireplace",
+            "other": "Other",
+            "n/a": "N/A"
+        },
+        "powerType": {
+            "title": "Power Type",
+            "electricity": "Electricity",
+            "gas": "Gas",
+            "natural_gas": "Natural Gas",
+            "heat_pump": "Heat Pump",
+            "other": "Other",
+            "n/a": "N/A"
         }
     },
     "contactFormPage": {
@@ -429,7 +445,7 @@
         "renovated": "Renovated",
         "corner": "Corner",
         "penthouse": "Penthouse",
-        "bright": "Φωτεινό",
+        "bright": "Bright",
         "painted": "Painted",
         "pets_allowed": "Pets Allowed",
         "satellite": "Satellite",

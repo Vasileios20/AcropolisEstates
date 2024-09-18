@@ -145,8 +145,6 @@
         "living_rooms": "Σαλόνια",
         "kitchens": "Κουζίνες",
         "heating": "Θέρμανση",
-        "heating_system": "Heating System",
-        "heating_system_gr": "Θέρμανση",
         "energyClass": "Ενεργειακή Κλάση",
         "serviceCharge": "Κοινόχρηστα Έξοδα",
         "yearBuilt": "Έτος Κατασκευής",
@@ -156,8 +154,6 @@
         "lengthOfFacade": "Μήκος Προσόψεως",
         "distanceFromSea": "Απόσταση από τη Θάλασσα",
         "storage": "Αποθήκη",
-        "powerType_gr": "Τύπος Ρεύματος",
-        "powerType": "Power Type",
         "approved": "Εγκεκριμένο",
         "featured": "Προβεβλημένο",
         "longitude": "Γεωγραφικό Μήκος",
@@ -189,7 +185,7 @@
             "title": "Κουφώματα",
             "aluminium": "Αλουμίνιο",
             "wooden": "Ξύλινο",
-            "pvc": "PVC",
+            "PVC": "PVC",
             "iron": "Σίδερο",
             "": "N/A"
         },
@@ -274,6 +270,26 @@
             "g": "G",
             "toBeIssued": "Υπό εκδοση",
             "": "N/A"
+        },
+        "heating_system": {
+            "title": "Θέρμανση",
+            "central": "Κεντρική",
+            "autonomous": "Αυτόνομη",
+            "geothermal": "Γεωθερμική",
+            "solar": "Ηλιακό",
+            "air_condition": "Κλιματισμός",
+            "fireplace": "Τζάκι",
+            "other": "Άλλο",
+            "n/a": "N/A"
+        },
+        "powerType": {
+            "title": "Τύπος Ρεύματος",
+            "electricity": "Ηλεκτρικό",
+            "gas": "Αέριο",
+            "natural_gas": "Φυσικό Αέριο",
+            "heat_pump": "Αντλία Θερμότητας",
+            "other": "Άλλο",
+            "n/a": "N/A"
         }
     },
     "contactFormPage": {
