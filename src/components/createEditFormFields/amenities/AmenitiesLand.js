@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { AmenitiesTypeOfUse } from './AmenitiesTypeOfUse';
+import { AmenitiesTypeOfUse } from './AmenitiesStatusTypeOfUse';
+import { AmenitiesStatus } from './AmenitiesStatusTypeOfUse';
 
 
 export const AmenitiesLand = (
@@ -63,6 +64,13 @@ export const AmenitiesLand = (
                 </Row>
                 <hr />
                 <AmenitiesTypeOfUse
+                    amenities={amenities}
+                    create={create}
+                    selectedAmenities={selectedAmenities}
+                    handleAmenityChange={handleAmenityChange}
+                />
+                <hr />
+                <AmenitiesStatus
                     amenities={amenities}
                     create={create}
                     selectedAmenities={selectedAmenities}

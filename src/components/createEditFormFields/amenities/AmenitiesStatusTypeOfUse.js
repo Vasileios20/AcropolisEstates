@@ -68,3 +68,66 @@ export const AmenitiesTypeOfUse = ({ amenities, create, selectedAmenities, handl
         </>
     )
 }
+
+export const AmenitiesStatus = ({ amenities, create, selectedAmenities, handleAmenityChange }) => {
+    const { t } = useTranslation();
+    const amenitiesStatus = amenities.map(amenity => {
+        if (amenity.name === 'auction' ||
+            amenity.name === 'under_offer' ||
+            amenity.name === 'rented' ||
+            amenity.name === 'sold' ||
+            amenity.name === 'under_construction'
+        ) {
+            return amenity;
+        }
+        return null;
+    }).filter(amenity => amenity !== null);
+
+    const amenitiesStatusTranslated = amenitiesStatus.map(amenity => {
+        return {
+            ...amenity,
+            name: t(`amenities.${amenity.name}`)
+        }
+    }
+    )
+
+    const amenitiesStatusTranslatedSorted = amenitiesStatusTranslated.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+    }
+    )
+
+    const renderLabels = (amenities) => {
+        const columns = [[], [], [], []]; // Assuming 4 columns
+        amenities.forEach((amenity, index) => {
+            columns[index % 4].push(amenity);
+        });
+        return columns.map((column, colIndex) => (
+            <Col key={colIndex} className="mx-auto p-2 text-start">
+                {column.slice(0, 10).map((amenity) => (
+                    <div key={amenity.id} className="ms-5 p-2">
+                        <label className="p-2 border">
+                            <input
+                                className="m-1"
+                                type="checkbox"
+                                value={amenity.id}
+                                checked={create ? null : selectedAmenities.includes(amenity.id)}
+                                onChange={handleAmenityChange}
+                            />
+                            {amenity.name.replace(/_/g, " ")}
+                        </label>
+                    </div>
+                ))}
+            </Col>
+        ));
+    };
+    return (
+        <>
+            <Row className="justify-content-center mx-auto">
+                <Col sm={6} className="m-auto"><h4>{t('createEditForm.headers.status')}</h4></Col>
+            </Row>
+            <Row className="justify-content-center mx-auto">
+                {renderLabels(amenitiesStatusTranslatedSorted)}
+            </Row>
+        </>
+    )
+}
