@@ -62,7 +62,6 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
     power_type,
     floor_type,
     opening_frames,
-    power_type_gr,
   } = props;
 
   useEffect(() => {
@@ -98,10 +97,6 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
 
   const land_areaValue = land_area === "" || land_area === null || land_area === 0 ? "N/A" : `${land_area} m²`;
 
-  const power_typeValue = lng === "el" ? power_type_gr : power_type;
-
-  const heating_systemValue = lng === "el" ? props.heating_system_gr : heating_system;
-
   const floorValue =
     floor < 0
       ? t("propertyDetails.floorValue.basement")
@@ -131,7 +126,9 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
           { label: t("propertyDetails.livingRooms"), value: living_rooms },
           { label: t("propertyDetails.floorLevel"), value: floorValue },
           { label: t("propertyDetails.levels"), value: levels },
-          { label: t("propertyDetails.heating"), value: heating_systemValue },
+          {
+            label: t("propertyDetails.heating_system.title"), value: t(`propertyDetails.heating_system.${heating_system}`)
+          },
           { label: t("propertyDetails.energyClass"), value: energy_classValue },
           { label: t("propertyDetails.floorTypes.title"), value: t(`propertyDetails.floorTypes.${floor_type}`) },
           { label: t("propertyDetails.openingFrames.title"), value: t(`propertyDetails.openingFrames.${opening_frames}`) },
@@ -164,7 +161,7 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
           { label: t("propertyDetails.slopeTypes.title"), value: t(`propertyDetails.slopeTypes.${slope}`) },
           { label: t("propertyDetails.distanceFromSea"), value: `${distance_from_sea} m` },
           { label: t("propertyDetails.availability"), value: availability },
-          { label: "Listing id", value: `AE000${id}` },
+          { label: t("propertyDetails.propertyId"), value: `AE000${id}` },
         ].map((feature, index) => (
           <tr key={index}>
             <td className={styles.tdWidth}>{feature.label}</td>
@@ -187,13 +184,15 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
           { label: t("propertyDetails.rooms"), value: rooms },
           { label: t("propertyDetails.bathrooms"), value: bathrooms },
           { label: t("propertyDetails.wc"), value: wc },
-          { label: t("propertyDetails.heating"), value: heating_systemValue },
-          { label: t("propertyDetails.energyClass"), value: energy_class },
-          { label: t("propertyDetails.powerType"), value: power_typeValue },
+          {
+            label: t("propertyDetails.heating_system.title"), value: t(`propertyDetails.heating_system.${heating_system}`)
+          },
+          { label: t("propertyDetails.energyClass"), value: energy_classValue },
+          { label: t("propertyDetails.powerType.title"), value: t(`propertyDetails.powerType.${power_type}`) },
           { label: t("propertyDetails.yearBuilt"), value: construction_year },
           { label: t("propertyDetails.serviceCharge"), value: `${currency} ${service_charge}` },
           { label: t("propertyDetails.availability"), value: availability },
-          { label: "Listing id", value: `AE000${id}` },
+          { label: t("propertyDetails.propertyId"), value: `AE000${id}` },
         ].map((feature, index) => (
           <tr key={index}>
             <td className={styles.tdWidth}>{feature.label}</td>
