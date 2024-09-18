@@ -56,9 +56,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                     fieldName === "floor" ||
                     fieldName === "rooms" ||
                     fieldName === "bathrooms" ||
-                    fieldName === "wc" ||
-                    fieldName === "heating_system" ||
-                    fieldName === "heating_system_gr"
+                    fieldName === "wc"
                 ) {
                     return (
                         <Row className="justify-content-center" key={fieldName}>
@@ -70,6 +68,35 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                 }
                 return null;
             })}
+            <Row className="justify-content-center">
+                <Col md={6}>
+                    <Form.Group controlId="heating_system">
+                        <Form.Label>{t("propertyDetails.heating_system.title")}</Form.Label>
+                        <Form.Control
+                            className={styles.Input}
+                            as="select"
+                            name="heating_system"
+                            value={listingData.heating_system || ""}
+                            onChange={handleChange}
+                        >
+                            <option>---</option>
+                            <option value="autonomous">{t("propertyDetails.heating_system.autonomous")}</option>
+                            <option value="central">{t("propertyDetails.heating_system.central")}</option>
+                            <option value="air_condition">{t("propertyDetails.heating_system.air_condition")}</option>
+                            <option value="fireplace">{t("propertyDetails.heating_system.fireplace")}</option>
+                            <option value="solar">{t("propertyDetails.heating_system.solar")}</option>
+                            <option value="geothermal">{t("propertyDetails.heating_system.geothermal")}</option>
+                            <option value="other">{t("propertyDetails.heating_system.other")}</option>
+                            <option value="n/a">{t("propertyDetails.heating_system.n/a")}</option>
+                        </Form.Control>
+                    </Form.Group>
+                    {errors?.heating_system?.map((message, idx) => (
+                        <Alert className={styles.Input} variant="warning" key={idx}>
+                            {message}
+                        </Alert>
+                    ))}
+                </Col>
+            </Row>
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="energy_class">
@@ -85,6 +112,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                             {Array.from("ABCDEFG").map((letter) => (
                                 <option key={letter}>{letter}</option>
                             ))}
+                            <option value="to_be_issued">{t("propertyDetails.energyClassTypes.toBeIssued")}</option>
                         </Form.Control>
                     </Form.Group>
                     {errors?.energy_class?.map((message, idx) => (
@@ -97,14 +125,22 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="power_type">
-                        <Form.Label>{t("propertyDetails.powerType")}</Form.Label>
+                        <Form.Label>{t("propertyDetails.powerType.title")}</Form.Label>
                         <Form.Control
                             className={styles.Input}
-                            type="text"
+                            as="select"
                             name="power_type"
                             value={listingData.power_type || ""}
                             onChange={handleChange}
-                        />
+                        >
+                            <option>---</option>
+                            <option value="electricity">{t("propertyDetails.powerType.electricity")}</option>
+                            <option value="gas">{t("propertyDetails.powerType.gas")}</option>
+                            <option value="natural_gas">{t("propertyDetails.powerType.natural_gas")}</option>
+                            <option value="heat_pump">{t("propertyDetails.powerType.heat_pump")}</option>
+                            <option value="other">{t("propertyDetails.heating_system.other")}</option>
+                            <option value="n/a">{t("propertyDetails.heating_system.n/a")}</option>
+                        </Form.Control>
                     </Form.Group>
                     {errors?.power_type?.map((message, idx) => (
                         <Alert className={styles.Input} variant="warning" key={idx}>
@@ -113,25 +149,7 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                     ))}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="power_type_gr">
-                        <Form.Label>{t("propertyDetails.powerType_gr")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="text"
-                            name="power_type_gr"
-                            value={listingData.power_type_gr || ""}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                    {errors?.power_type_gr?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
-                </Col>
-            </Row>
+
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="construction_year">
