@@ -23,6 +23,7 @@ import Forbidden403 from "../errors/Forbidden403";
 function ListingCreateForm() {
   useRedirect("loggedOut");
   const userStatus = useUserStatus();
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
 
   const [listingData, setListingData] = useState({
     type: "",
@@ -80,7 +81,6 @@ function ListingCreateForm() {
     distance_from_port: "",
     images: "",
     uploaded_images: [],
-    amenities: [],
     approved: false,
     featured: false,
     is_first: "",
@@ -96,6 +96,15 @@ function ListingCreateForm() {
       ...listingData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleAmenityChange = (e) => {
+    const value = e.target.value;
+    setSelectedAmenities((prev) =>
+      prev.includes(value)
+        ? prev.filter((amenity) => amenity !== value)
+        : [...prev, value]
+    );
   };
 
   const handleChangeImage = (e) => {
@@ -154,9 +163,7 @@ function ListingCreateForm() {
     formData.append("living_rooms", listingData.living_rooms || "0");
     formData.append("rooms", listingData.rooms || "0");
     formData.append("power_type", listingData.power_type);
-    formData.append("power_type_gr", listingData.power_type_gr);
     formData.append("heating_system", listingData.heating_system);
-    formData.append("heating_system_gr", listingData.heating_system_gr);
     formData.append("energy_class", listingData.energy_class);
     formData.append("floor_type", listingData.floor_type);
     formData.append("construction_year", listingData.construction_year || "1900");
@@ -179,10 +186,13 @@ function ListingCreateForm() {
     formData.append("distance_from_airport", listingData.distance_from_airport || "0");
     formData.append("distance_from_village", listingData.distance_from_village || "0");
     formData.append("distance_from_port", listingData.distance_from_port || "0");
-    formData.append("amenities", listingData.amenities);
     formData.append("approved", listingData.approved);
     formData.append("featured", listingData.featured);
     formData.append("is_first", listingData.is_first || "0");
+
+    selectedAmenities.forEach((amenity) => {
+      formData.append("amenities_ids", amenity);
+    });
 
     formData.append("images", imageInput.current.files[0]);
     // Append the selected images to delete to the form data.
@@ -261,7 +271,13 @@ function ListingCreateForm() {
                 </Form.Label>
               )}
 
-              <input type="file" multiple id="image-upload" accept="image/*" onChange={handleChangeImage} ref={imageInput} />
+              <input
+                type="file"
+                multiple id="image-upload"
+                accept="image/*"
+                onChange={handleChangeImage}
+                ref={imageInput}
+              />
             </Form.Group>
             {errors?.images?.map((message, idx) => (
               <Alert variant="warning" key={idx}>
@@ -275,7 +291,15 @@ function ListingCreateForm() {
             ))}
 
             <div className="d-md-none">
-              <ListingTextFields listingData={listingData} handleChange={handleChange} history={history} errors={errors} create={true} />
+              <ListingTextFields
+                listingData={listingData}
+                handleChange={handleChange}
+                history={history}
+                errors={errors}
+                create={true}
+                handleAmenityChange={handleAmenityChange}
+                selectedAmenities={selectedAmenities}
+              />
             </div>
           </Container>
         </Col>
@@ -283,7 +307,15 @@ function ListingCreateForm() {
       <Row>
         <Col md={12} className="d-none d-md-block p-0 p-md-2">
           <Container fluid className={appStyles.Content}>
-            <ListingTextFields listingData={listingData} handleChange={handleChange} history={history} errors={errors} create={true} />
+            <ListingTextFields
+              listingData={listingData}
+              handleChange={handleChange}
+              history={history}
+              errors={errors}
+              create={true}
+              selectedAmenities={selectedAmenities}
+              handleAmenityChange={handleAmenityChange}
+            />
           </Container>
         </Col>
       </Row>
