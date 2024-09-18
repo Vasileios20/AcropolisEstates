@@ -127,7 +127,7 @@ export const AmenitiesCommercial = (
             <Col key={colIndex} className="mx-auto p-2 text-start">
                 {column.slice(0, 10).map((amenity) => (
                     <div key={amenity.id} className="ms-5 p-2">
-                        <label className="p-2 border">
+                        <label className="p-2 border shadow">
                             <input
                                 className="m-1"
                                 type="checkbox"

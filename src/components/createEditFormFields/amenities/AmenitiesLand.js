@@ -47,7 +47,7 @@ export const AmenitiesLand = (
                         <Row className="justify-content-center">
                             {amenitiesLandTranslatedSorted.map((amenity) => (
                                 <Col sm={3} key={amenity.id} className="m-1 p-2 text-center">
-                                    <label className="p-2 border">
+                                    <label className="p-2 border shadow">
                                         <input
                                             className="m-1"
                                             type="checkbox"
