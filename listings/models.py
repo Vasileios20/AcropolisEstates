@@ -134,6 +134,26 @@ class Listing(models.Model):
         ("other", "Other"),
     ]
 
+    power_type_choices = [
+        ("electricity", "Electricity"),
+        ("gas", "Gas"),
+        ("natural_gas", "Natural Gas"),
+        ("heat_pump", "Heat Pump"),
+        ("other", "Other"),
+        ("n/a", "N/A"),
+    ]
+
+    heating_system_choices = [
+        ("autonomous", "Autonomous"),
+        ("central", "Central"),
+        ("air_condition", "Air Condition"),
+        ("fireplace", "Fireplace"),
+        ("solar", "Solar"),
+        ("geothermal", "Geothermal"),
+        ("other", "Other"),
+        ("n/a", "N/A"),
+    ]
+
     construction_year_choices = [(i, i)
                                  for i in range(1900, datetime.now().year + 1)]
 
@@ -185,10 +205,10 @@ class Listing(models.Model):
         validators=[validate_zero], null=True, blank=True)
     rooms = models.IntegerField(
         validators=[validate_zero], default=0, null=True, blank=True)
-    power_type = models.CharField(max_length=255, blank=True)
-    power_type_gr = models.CharField(max_length=255, blank=True)
-    heating_system = models.CharField(max_length=255, blank=True)
-    heating_system_gr = models.CharField(max_length=255, blank=True)
+    power_type = models.CharField(
+        choices=power_type_choices, max_length=255, blank=True)
+    heating_system = models.CharField(
+        choices=heating_system_choices, max_length=255, blank=True)
     energy_class = models.CharField(
         choices=energy_class_filter_choices, default="A", max_length=255,
         blank=True
