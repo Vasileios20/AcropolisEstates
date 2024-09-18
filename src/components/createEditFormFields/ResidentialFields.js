@@ -5,13 +5,24 @@ import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
 import styles from '../../styles/ListingCreateEditForm.module.css';
 import { useTranslation } from 'react-i18next';
+import { AmenitiesResidential } from './amenities/AmenitiesResidential';
 
 
-const ResidentialFields = ({ listingData, handleChange, history, errors, renderTextField }) => {
+const ResidentialFields = (
+    {
+        listingData,
+        handleChange,
+        history,
+        errors,
+        renderTextField,
+        handleAmenityChange,
+        selectedAmenities,
+        create
+    }) => {
     const { t } = useTranslation();
     return (
         <>
-            <h1>Residential Features</h1>
+            <h2>{t('createEditForm.headers.residentialTechnical')}</h2>
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="floor_area">
@@ -249,6 +260,14 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                         </Alert>
                     ))}
                 </Col>
+            </Row>
+            <hr />
+            <Row className="justify-content-center mt-4">
+                <AmenitiesResidential
+                    handleAmenityChange={handleAmenityChange}
+                    selectedAmenities={selectedAmenities}
+                    create={create}
+                />
             </Row>
         </>
     );
