@@ -354,6 +354,9 @@ const ListingTextFields = (
           handleChange={handleChange}
           errors={errors}
           renderTextField={renderTextField}
+          handleAmenityChange={handleAmenityChange}
+          selectedAmenities={selectedAmenities}
+          create={create}
         />
       }
 

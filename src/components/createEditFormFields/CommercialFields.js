@@ -5,9 +5,20 @@ import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
 import styles from '../../styles/ListingCreateEditForm.module.css';
 import { useTranslation } from 'react-i18next';
+import { AmenitiesCommercial } from './amenities/AmenitiesCommercial';
 
 
-const CommercialFields = ({ listingData, handleChange, history, errors, renderTextField }) => {
+const CommercialFields = (
+    {
+        listingData,
+        handleChange,
+        history,
+        errors,
+        renderTextField,
+        handleAmenityChange,
+        selectedAmenities,
+        create
+    }) => {
     const { t } = useTranslation();
     return (
         <>
@@ -175,6 +186,13 @@ const CommercialFields = ({ listingData, handleChange, history, errors, renderTe
                         </Alert>
                     ))}
                 </Col>
+            </Row>
+            <Row className="justify-content-center mt-4">
+                <AmenitiesCommercial
+                    handleAmenityChange={handleAmenityChange}
+                    selectedAmenities={selectedAmenities}
+                    create={create}
+                />
             </Row>
         </>
     )
