@@ -5,13 +5,26 @@ import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
 import styles from '../../styles/ListingCreateEditForm.module.css';
 import { useTranslation } from 'react-i18next';
+import { AmenitiesLand } from './amenities/AmenitiesLand';
 
 
-const LandFields = ({ listingData, handleChange, history, errors, renderTextField }) => {
+const LandFields = (
+    {
+        listingData,
+        handleChange,
+        history,
+        errors,
+        create,
+        renderTextField,
+        handleAmenityChange,
+        selectedAmenities,
+    }) => {
+
     const { t } = useTranslation();
+
     return (
         <>
-            {/* <h1>{t("propertiesPage.header1")}</h1> */}
+            <h2>{t("createEditForm.headers.landTechincal")}</h2>
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="land_area">
@@ -213,6 +226,14 @@ const LandFields = ({ listingData, handleChange, history, errors, renderTextFiel
                         </Alert>
                     ))}
                 </Col>
+            </Row>
+            <hr />
+            <Row className="justify-content-center mt-4">
+                <AmenitiesLand
+                    handleAmenityChange={handleAmenityChange}
+                    selectedAmenities={selectedAmenities}
+                    create={create}
+                />
             </Row>
         </>
     )
