@@ -58,9 +58,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                     fieldName === "wc" ||
                     fieldName === "living_rooms" ||
                     fieldName === "floor" ||
-                    fieldName === "levels" ||
-                    fieldName === "heating_system" ||
-                    fieldName === "heating_system_gr"
+                    fieldName === "levels"
                 ) {
                     return (
                         <Row className="justify-content-center" key={fieldName}>
@@ -72,6 +70,35 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                 }
                 return null;
             })}
+            <Row className="justify-content-center">
+                <Col md={6}>
+                    <Form.Group controlId="heating_system">
+                        <Form.Label>{t("propertyDetails.heating_system.title")}</Form.Label>
+                        <Form.Control
+                            className={styles.Input}
+                            as="select"
+                            name="heating_system"
+                            value={listingData.heating_system || ""}
+                            onChange={handleChange}
+                        >
+                            <option>---</option>
+                            <option value="autonomous">{t("propertyDetails.heating_system.autonomous")}</option>
+                            <option value="central">{t("propertyDetails.heating_system.central")}</option>
+                            <option value="air_condition">{t("propertyDetails.heating_system.air_condition")}</option>
+                            <option value="fireplace">{t("propertyDetails.heating_system.fireplace")}</option>
+                            <option value="solar">{t("propertyDetails.heating_system.solar")}</option>
+                            <option value="geothermal">{t("propertyDetails.heating_system.geothermal")}</option>
+                            <option value="other">{t("propertyDetails.heating_system.other")}</option>
+                            <option value="n/a">{t("propertyDetails.heating_system.n/a")}</option>
+                        </Form.Control>
+                    </Form.Group>
+                    {errors?.heating_system?.map((message, idx) => (
+                        <Alert className={styles.Input} variant="warning" key={idx}>
+                            {message}
+                        </Alert>
+                    ))}
+                </Col>
+            </Row>
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Form.Group controlId="energy_class">
@@ -87,6 +114,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             {Array.from("ABCDEFG").map((letter) => (
                                 <option key={letter}>{letter}</option>
                             ))}
+                            <option value="to_be_issued">{t("propertyDetails.energyClassTypes.toBeIssued")}</option>
                         </Form.Control>
                     </Form.Group>
                     {errors?.energy_class?.map((message, idx) => (
@@ -166,7 +194,7 @@ const ResidentialFields = ({ listingData, handleChange, history, errors, renderT
                             <option>---</option>
                             <option value="aluminium">{t("propertyDetails.openingFrames.aluminium")}</option>
                             <option value="wooden">{t("propertyDetails.openingFrames.wooden")}</option>
-                            <option value="pvc">{t("propertyDetails.openingFrames.pvc")}</option>
+                            <option value="PVC">{t("propertyDetails.openingFrames.pvc")}</option>
                             <option value="iron">{t("propertyDetails.openingFrames.iron")}</option>
                         </Form.Control>
                     </Form.Group>
