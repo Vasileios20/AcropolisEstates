@@ -58,28 +58,6 @@ export const AmenitiesTypeOfUse = ({ amenities, create, selectedAmenities, handl
         ));
     };
     return (
-        // <Row>
-        //     <Col sm={6} className="m-auto"><h4>{t('createEditForm.headers.type_of_use')}</h4></Col>
-        //     <Col className="text-start">
-        //         {amenitiesTypeOfUseTranslatedSorted.map((amenity) => (
-        //             <div
-        //                 key={amenity.id}
-        //                 className="p-2 me-auto"
-        //             >
-        //                 <label className="p-2 border">
-        //                     <input
-        //                         className="m-1"
-        //                         type="checkbox"
-        //                         value={amenity.id}
-        //                         checked={create ? null : selectedAmenities.includes(amenity.id)}
-        //                         onChange={handleAmenityChange}
-        //                     />
-        //                     {amenity.name.replace(/_/g, " ")}
-        //                 </label>
-        //             </div>
-        //         ))}
-        //     </Col>
-        // </Row>
         <>
             <Row className="justify-content-center mx-auto">
                 <Col sm={6} className="m-auto"><h4>{t('createEditForm.headers.type_of_use')}</h4></Col>
