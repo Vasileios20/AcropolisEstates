@@ -5,8 +5,13 @@ from django.db.models import Count
 from rest_framework import generics, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Listing, Images, Amenities
-from .serializers import ListingSerializer, ImagesSerializer, AmenitiesSerializer
+from .serializers import (
+    ListingSerializer,
+    ImagesSerializer,
+    AmenitiesSerializer,
+)
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.views import APIView
 
 
 class ListingFilter(filter.FilterSet):
@@ -128,5 +133,29 @@ class AmenitiesList(generics.ListCreateAPIView):
     serializer_class = AmenitiesSerializer
     permission_classes = [IsAdminUserOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["listing"]
-    search_fields = ["listing"]
+    filterset_fields = ["name"]
+    search_fields = ["name"]
+
+
+class BulkCreateAmenitiesView(APIView):
+    """
+    Custom API View to handle bulk creation of amenities.
+    """
+
+    def post(self, request, *args, **kwargs):
+        amenities_data = request.data
+        if isinstance(amenities_data, list):
+            serializer = AmenitiesSerializer(data=amenities_data, many=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    serializer.data,
+                    status=status.HTTP_201_CREATED
+                )
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST
+            )
+        return Response(
+            {"error": "Expected a list of amenities"},
+            status=status.HTTP_400_BAD_REQUEST
+        )

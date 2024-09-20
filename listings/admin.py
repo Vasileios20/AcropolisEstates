@@ -19,19 +19,19 @@ class ListingAdmin(admin.ModelAdmin):
 
 
 class ImagesAdmin(admin.ModelAdmin):
-    list_display = ("listing", "url")
+    list_display = ("listing", "url", "is_first")
     list_filter = ("listing", "url")
     search_fields = ("listing", "url")
     list_per_page = 25
 
 
-class amenitiesAdmin(admin.ModelAdmin):
-    list_display = ("name", "description")
-    list_filter = ("name", "description")
-    search_fields = ("name", "description")
-    list_per_page = 25
+class AmenitiesAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+    list_filter = ("id", "name")
+    search_fields = ("id", "name")
+    list_per_page = 50
 
 
-admin.site.register(Amenities)
+admin.site.register(Amenities, AmenitiesAdmin)
 admin.site.register(Images, ImagesAdmin)
 admin.site.register(Listing, ListingAdmin)

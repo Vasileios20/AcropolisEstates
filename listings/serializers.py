@@ -32,7 +32,7 @@ class AmenitiesSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Amenities
-        fields = "__all__"
+        fields = ["id", "name"]
 
 
 class ImagesSerializer(serializers.ModelSerializer):
@@ -49,7 +49,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Images
-        fields = ["id", "listing", "url"]
+        fields = ["id", "listing", "url", "is_first"]
 
 
 class ListingSerializer(serializers.ModelSerializer):
@@ -104,41 +104,68 @@ class ListingSerializer(serializers.ModelSerializer):
         required=False,
     )
 
+    amenities_ids = serializers.PrimaryKeyRelatedField(
+        many=True,
+        write_only=True,
+        queryset=Amenities.objects.all(),
+        source='amenities'
+    )
+
     def get_is_owner(self, obj):
         return self.context["request"].user == obj.agent_name
 
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
-        amenities_data = validated_data.pop("amenities", [])
+        amenities = validated_data.pop('amenities')
+        is_first_image_idx = int(
+            self.context['request'].data.get('is_first', 0))
         listing = Listing.objects.create(**validated_data)
+        listing.amenities.set(amenities)
 
         for uploaded_image in uploaded_images:
-            Images.objects.create(listing=listing, url=uploaded_image)
-
-        for amenity_data in amenities_data:
-            Amenities.objects.create(listing=listing, **amenity_data)
+            if is_first_image_idx == uploaded_images.index(uploaded_image):
+                is_first = True
+            else:
+                is_first = False
+            Images.objects.create(
+                listing=listing,
+                url=uploaded_image,
+                is_first=is_first,
+            )
 
         return listing
 
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
-        amenities_data = validated_data.pop("amenities", [])
+        amenities = validated_data.pop('amenities', None)
+        is_first_image_idx = self.context['request'].data.get('is_first', None)
+
+        if is_first_image_idx is not None:
+            try:
+                is_first_image_idx = int(is_first_image_idx)
+            except (ValueError, TypeError):
+                is_first_image_idx = None
 
         if uploaded_images:
-            listing_image_model_instance = [
-                Images(
-                    listing=instance, url=image
+            if is_first_image_idx is not None:
+                listing_images = instance.images.all()
+                listing_images.update(is_first=False)
+
+            for uploaded_image in uploaded_images:
+                if is_first_image_idx == uploaded_images.index(uploaded_image):
+                    is_first = True
+                else:
+                    is_first = False
+                Images.objects.create(
+                    listing=instance,
+                    url=uploaded_image,
+                    is_first=is_first,
                 )
-                for image in uploaded_images
-            ]
-            Images.objects.bulk_create(listing_image_model_instance)
 
         instance = super().update(instance, validated_data)
 
-        if amenities_data:
-            instance.amenities.all().delete()
-            for amenity_data in amenities_data:
-                Amenities.objects.create(listing=instance, **amenity_data)
+        if amenities is not None:
+            instance.amenities.set(amenities)
 
         return instance
 
@@ -175,14 +202,12 @@ class ListingSerializer(serializers.ModelSerializer):
             "wc",
             "living_rooms",
             "heating_system",
-            "heating_system_gr",
             "energy_class",
             "construction_year",
             "availability",
             "created_on",
             "updated_on",
             "approved",
-            "amenities",
             "longitude",
             "latitude",
             "service_charge",
@@ -206,7 +231,8 @@ class ListingSerializer(serializers.ModelSerializer):
             "currency",
             "rooms",
             "power_type",
-            "power_type_gr",
             "view",
             "slope",
+            "amenities",
+            "amenities_ids",
         ]

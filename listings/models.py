@@ -9,80 +9,13 @@ class Amenities(models.Model):
     """
     Amenities model
     """
-    listing = models.ForeignKey(
-        "Listing", on_delete=models.CASCADE, related_name="amenities"
-    )
-    solar_water_heating = models.BooleanField(default=False)
-    storage_room = models.BooleanField(default=False)
-    parking = models.BooleanField(default=False)
-    garden = models.BooleanField(default=False)
-    fireplace = models.BooleanField(default=False)
-    air_conditioning = models.BooleanField(default=False)
-    underfloor_heating = models.BooleanField(default=False)
-    attic = models.BooleanField(default=False)
-    veranda = models.BooleanField(default=False)
-    terrace = models.BooleanField(default=False)
-    balcony = models.BooleanField(default=False)
-    furnished = models.BooleanField(default=False)
-    part_funished = models.BooleanField(default=False)
-    renovated = models.BooleanField(default=False)
-    corner = models.BooleanField(default=False)
-    penthouse = models.BooleanField(default=False)
-    bright = models.BooleanField(default=False)
-    painted = models.BooleanField(default=False)
-    pets_allowed = models.BooleanField(default=False)
-    satellite = models.BooleanField(default=False)
-    internal_stairs = models.BooleanField(default=False)
-    double_glass = models.BooleanField(default=False)
-    awnings = models.BooleanField(default=False)
-    screens = models.BooleanField(default=False)
-    bbq = models.BooleanField(default=False)
-    solar_heating = models.BooleanField(default=False)
-    swimming_pool = models.BooleanField(default=False)
-    gym = models.BooleanField(default=False)
-    playroom = models.BooleanField(default=False)
-    security_alarm = models.BooleanField(default=False)
-    security_door = models.BooleanField(default=False)
-    CCTV = models.BooleanField(default=False)
-    storage = models.BooleanField(default=False)
-    basement = models.BooleanField(default=False)
-    night_electricity = models.BooleanField(default=False)
-    no_shared_expenses = models.BooleanField(default=False)
-    investment = models.BooleanField(default=False)
-    student_apartment = models.BooleanField(default=False)
-    luxurious = models.BooleanField(default=False)
-    suitable_for_development = models.BooleanField(default=False)
-    suitable_for_office_use = models.BooleanField(default=False)
-    suitable_for_commercial_use = models.BooleanField(default=False)
-    suitable_for_residential_use = models.BooleanField(default=False)
-    suitable_for_short_stay = models.BooleanField(default=False)
-    suitable_for_warehouse_use = models.BooleanField(default=False)
-    suitable_for_industrial_use = models.BooleanField(default=False)
-    suitable_for_agricultural_use = models.BooleanField(default=False)
-    access_for_disabled = models.BooleanField(default=False)
-    part_complete = models.BooleanField(default=False)
-    need_renovation = models.BooleanField(default=False)
-    landmark_building = models.BooleanField(default=False)
-    insect_screen = models.BooleanField(default=False)
-    ev_charger = models.BooleanField(default=False)
-    elevator_in_building = models.BooleanField(default=False)
-    currently_rented = models.BooleanField(default=False)
-    rented = models.BooleanField(default=False)
-    sold = models.BooleanField(default=False)
-    under_construction = models.BooleanField(default=False)
-    loft = models.BooleanField(default=False)
-    property_consideration = models.BooleanField(default=False)
-    inside_the_settlement = models.BooleanField(default=False)
-    facade = models.BooleanField(default=False)
-    consierge = models.BooleanField(default=False)
-    inside_zone_area = models.BooleanField(default=False)
-    auction = models.BooleanField(default=False)
+    name = models.CharField(max_length=255, blank=True, default="")
 
     def __str__(self):
-        return f"Amenities {self.listing}"
+        return self.name
 
     class Meta:
-        verbose_name_plural = "Amenities building"
+        verbose_name_plural = "Amenities"
 
 
 def validate_zero(value):
@@ -201,6 +134,26 @@ class Listing(models.Model):
         ("other", "Other"),
     ]
 
+    power_type_choices = [
+        ("electricity", "Electricity"),
+        ("gas", "Gas"),
+        ("natural_gas", "Natural Gas"),
+        ("heat_pump", "Heat Pump"),
+        ("other", "Other"),
+        ("n/a", "N/A"),
+    ]
+
+    heating_system_choices = [
+        ("autonomous", "Autonomous"),
+        ("central", "Central"),
+        ("air_condition", "Air Condition"),
+        ("fireplace", "Fireplace"),
+        ("solar", "Solar"),
+        ("geothermal", "Geothermal"),
+        ("other", "Other"),
+        ("n/a", "N/A"),
+    ]
+
     construction_year_choices = [(i, i)
                                  for i in range(1900, datetime.now().year + 1)]
 
@@ -252,10 +205,10 @@ class Listing(models.Model):
         validators=[validate_zero], null=True, blank=True)
     rooms = models.IntegerField(
         validators=[validate_zero], default=0, null=True, blank=True)
-    power_type = models.CharField(max_length=255, blank=True)
-    power_type_gr = models.CharField(max_length=255, blank=True)
-    heating_system = models.CharField(max_length=255, blank=True)
-    heating_system_gr = models.CharField(max_length=255, blank=True)
+    power_type = models.CharField(
+        choices=power_type_choices, max_length=255, blank=True)
+    heating_system = models.CharField(
+        choices=heating_system_choices, max_length=255, blank=True)
     energy_class = models.CharField(
         choices=energy_class_filter_choices, default="A", max_length=255,
         blank=True
@@ -318,6 +271,8 @@ class Listing(models.Model):
         validators=[validate_zero], default=0, null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
+    amenities = models.ManyToManyField(
+        Amenities, blank=True, related_name="listings")
     approved = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
 
@@ -339,9 +294,16 @@ class Images(models.Model):
     url = models.ImageField(
         upload_to="images/", default="../default_post_vnf7ym", null=True
     )
+    is_first = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return f"{self.listing}'s image"
+
+    def save(self, *args, **kwargs):
+        if self.is_first:
+            Images.objects.filter(listing=self.listing,
+                                  is_first=True).update(is_first=False)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "Images"
