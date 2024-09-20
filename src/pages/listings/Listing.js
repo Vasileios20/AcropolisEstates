@@ -241,7 +241,7 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
         <meta name="keywords" content={`${props.sale_type}, ${props.type}, ${props.sub_type}, ${props.municipality}, ${props.county}, ${props.region}, Features, amenities, real estate, Acropolis Estates, price, bedroom, apartment, name, floor, area, heating, email, acropolis, estates, london,  `} />
       </Helmet>
       <Container className="mt-5 pt-2">
-        <ListingImages images={images} listing_id={id} />
+        <ListingImages images={images} listing_id={id} amenities={amenities} />
 
         <Row className="justify-content-start">
           <Col>

@@ -9,7 +9,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { Col } from "react-bootstrap";
 
-const ListingImages = ({ images = [{}], listing_id }) => {
+const ListingImages = ({ images = [{}], listing_id, amenities }) => {
   // The ListingImages component is a functional component that renders the images of a listing.
   // It uses the Carousel component from react-bootstrap to display the images in a carousel.
   // The component also uses the Modal component from react-bootstrap to display the images in a modal when clicked.
@@ -17,6 +17,7 @@ const ListingImages = ({ images = [{}], listing_id }) => {
   // When an image is clicked, the modal is displayed with the images in a carousel.
 
   const [show, setShow] = useState(false);
+  const sold = amenities?.find(amenity => amenity.name === 'sold');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -58,6 +59,7 @@ const ListingImages = ({ images = [{}], listing_id }) => {
                 trigger={["hover", "focus"]}
               >
                 <div className={styles.ImageWrapper}>
+                  {sold && <div className={styles.soldLabel}>SOLD</div>}
                   <img
                     src={image?.is_first ? image.url : images[0].url}
                     alt={image.id}
@@ -79,7 +81,9 @@ const ListingImages = ({ images = [{}], listing_id }) => {
     return (
       <>
         <Col xs={12} md={6} className="d-none d-md-block">
+
           <div className={styles.ImageWrapper}>
+            {sold && <div className={styles.soldLabel}>SOLD</div>}
             <img
               src={imagesArray[0]?.is_first ? imagesArray[0].url : images[0].url}
               alt={images[0]?.id}
