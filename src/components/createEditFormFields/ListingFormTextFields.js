@@ -391,6 +391,17 @@ const ListingTextFields = (
         </Col>
       </Row>
 
+      {errors?.images?.map((message, idx) => (
+        <Alert variant="warning" key={idx}>
+          {message}
+        </Alert>
+      ))}
+      {errors?.is_first?.map((message, idx) => (
+        <Alert variant="warning" key={idx}>
+          {message}
+        </Alert>
+      ))}
+
       <Button
         className={`${btnStyles.Button} ${btnStyles.Remove} m-3`}
         onClick={() => history.goBack()}

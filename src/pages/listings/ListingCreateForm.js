@@ -134,6 +134,16 @@ function ListingCreateForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (imageInput.current.files.length === 0) {
+      setErrors({ images: ["Please add an image"] });
+      return; // Prevent form submission if no image is selected
+    }
+
+    if (imageInput.current.files.length !== 0 && (listingData.is_first === undefined || listingData.is_first === null || listingData.is_first === "")) {
+      setErrors({ is_first: ["Please select a main image"] });
+      return; // Prevent form submission if is_first is not set
+    }
+
     const formData = new FormData();
     formData.append("type", listingData.type);
     formData.append("sub_type", listingData.sub_type);
@@ -285,6 +295,11 @@ function ListingCreateForm() {
               </Alert>
             ))}
             {errors?.uploaded_images?.map((message, idx) => (
+              <Alert variant="warning" key={idx}>
+                {message}
+              </Alert>
+            ))}
+            {errors?.is_first?.map((message, idx) => (
               <Alert variant="warning" key={idx}>
                 {message}
               </Alert>
