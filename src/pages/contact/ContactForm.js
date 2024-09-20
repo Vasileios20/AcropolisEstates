@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
@@ -27,7 +27,8 @@ function ContactForm({ listing_id }) {
    * @returns {JSX.Element} - The JSX for the component.
    */
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [languageChanged, setLanguageChanged] = useState(false);
 
   const [contactData, setContactData] = useState({
     first_name: "",
@@ -96,6 +97,11 @@ function ContactForm({ listing_id }) {
       }, 2500);
     }
   };
+
+  useEffect(() => {
+    setLanguageChanged(true);
+    setTimeout(() => setLanguageChanged(false), 500);
+  }, [i18n.language]);
 
   return (
     <Row>
@@ -222,7 +228,7 @@ function ContactForm({ listing_id }) {
                 as="textarea"
                 rows={6}
                 placeholder={
-                  listingPagePath && !messageDeleted
+                  listingPagePath && (!messageDeleted || languageChanged)
                     ? message_form
                     : t("contactForm.messagePlaceholder")
                 }

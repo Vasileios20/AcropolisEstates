@@ -116,6 +116,7 @@ const NavBar = () => {
 
   const staffIcons = (
     <>
+
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
@@ -130,7 +131,11 @@ const NavBar = () => {
       >
         {t("nav.messages")}
       </NavLink>
-      {servicesDropdown}
+      <NavLink
+        className={styles.NavLink}
+        activeClassName={styles.Active}
+        to="/listings/"
+      >Approved Listings</NavLink>
       <NavLink
         className={styles.NavLink}
         to={`/profiles/${currentUser?.profile_id}`}
@@ -176,14 +181,26 @@ const NavBar = () => {
         />
         <Navbar.Collapse id="basic-navbar-nav" className={styles.flecGrow}>
           <Nav className="ml-auto text-left">
-            <NavLink
-              exact
-              className={styles.NavLink}
-              activeClassName={styles.Active}
-              to="/"
-            >
-              {t("nav.home")}
-            </NavLink>
+            {userStatus ? (
+              <NavLink
+                exact
+                className={styles.NavLink}
+                activeClassName={styles.Active}
+                to="/admin"
+              >
+                Admin home
+              </NavLink>
+            )
+              : (
+                <NavLink
+                  exact
+                  className={styles.NavLink}
+                  activeClassName={styles.Active}
+                  to="/"
+                >
+                  {t("nav.home")}
+                </NavLink>
+              )}
 
             {userStatus ? staffIcons : userIcons}
           </Nav>

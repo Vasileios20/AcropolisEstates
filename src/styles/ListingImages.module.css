@@ -63,6 +63,21 @@
   padding-top: 3.2rem;
 }
 
+.soldLabel {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  background-color: rgb(187, 14, 14);
+  color: #fff;
+  padding: 4px;
+  font-size: 2rem;
+  z-index: 10;
+  /* transform: rotate(-45deg);
+  transform-origin: 0 0;
+  width: 155px;
+  text-align: center; */
+}
+
 @media screen and (min-width: 576px) {
   .Modal {
     max-width: 90%;

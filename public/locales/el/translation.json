@@ -114,11 +114,23 @@
     },
     "propertyDetails": {
         "propertyId": "Κωδικός Ακινήτου",
+        "typeField": "Τύπος",
         "typeRent": "Ενοικίαση",
         "typeSale": "Πώληση",
         "title": "{{sale_type}} {{type}}",
-        "description": "Περιγραφή",
+        "description_gr": "Περιγραφή",
         "address": "Διεύθυνση",
+        "address_street": "Address street",
+        "address_street_gr": "Οδός",
+        "address_number": "Αριθμός",
+        "postcode": "Τ.Κ.",
+        "city": "Πόλη",
+        "region": "Region",
+        "region_gr": "Περιοχή",
+        "county": "County",
+        "county_gr": "Νομός",
+        "municipality": "Municipality",
+        "municipality_gr": "Δήμος",
         "price": "Τιμή",
         "floorArea": "Εμβαδόν Ακινήτου",
         "landArea": "Εμβαδόν Γης",
@@ -128,7 +140,9 @@
         "wc": "WC",
         "levels": "Επίπεδα",
         "floorLevel": "Όροφος",
+        "floor": "Όροφος",
         "livingRooms": "Σαλόνια",
+        "living_rooms": "Σαλόνια",
         "kitchens": "Κουζίνες",
         "heating": "Θέρμανση",
         "energyClass": "Ενεργειακή Κλάση",
@@ -140,13 +154,19 @@
         "lengthOfFacade": "Μήκος Προσόψεως",
         "distanceFromSea": "Απόσταση από τη Θάλασσα",
         "storage": "Αποθήκη",
-        "powerType": "Τύπος Ρεύματος",
+        "approved": "Εγκεκριμένο",
+        "featured": "Προβεβλημένο",
+        "longitude": "Γεωγραφικό Μήκος",
+        "latitude": "Γεωγραφικό Πλάτος",
+        "currency": "Νόμισμα",
         "types": {
+            "title": "Τύπος Ακινήτου",
             "residential": "Κατοικία",
             "land": "Γη",
             "commercial": "Εμπορικό"
         },
         "subTypes": {
+            "title": "Υποτύπος",
             "apartment": "Διαμέρισμα",
             "house": "Κατοικία",
             "maisonette": "Μεζονέτα",
@@ -165,7 +185,7 @@
             "title": "Κουφώματα",
             "aluminium": "Αλουμίνιο",
             "wooden": "Ξύλινο",
-            "pvc": "PVC",
+            "PVC": "PVC",
             "iron": "Σίδερο",
             "": "N/A"
         },
@@ -249,6 +269,28 @@
             "f": "F",
             "g": "G",
             "toBeIssued": "Υπό εκδοση",
+            "": "N/A"
+        },
+        "heating_system": {
+            "title": "Θέρμανση",
+            "central": "Κεντρική",
+            "autonomous": "Αυτόνομη",
+            "geothermal": "Γεωθερμική",
+            "solar": "Ηλιακό",
+            "air_condition": "Κλιματισμός",
+            "fireplace": "Τζάκι",
+            "other": "Άλλο",
+            "n/a": "N/A",
+            "": "N/A"
+        },
+        "powerType": {
+            "title": "Τύπος Ρεύματος",
+            "electricity": "Ηλεκτρικό",
+            "gas": "Αέριο",
+            "natural_gas": "Φυσικό Αέριο",
+            "heat_pump": "Αντλία Θερμότητας",
+            "other": "Άλλο",
+            "n/a": "N/A",
             "": "N/A"
         }
     },
@@ -387,14 +429,15 @@
         "cookiePolicy": "Πολιτική Cookies"
     },
     "amenities": {
+        "title": "Παροχές",
         "solar_water_heating": "Ηλιακός θερμοσίφωνας",
-        "storage_room": "Αποθήκη",
+        "storage_room": "Αποθηκευτικός Χώρος",
         "parking": "Θέση Σταύθμευσης",
         "garden": "Κήπος",
         "fireplace": "Τζάκι",
         "air_conditioning": "Κλιματισμός",
         "underfloor_heating": "Ενδοδαπέδια Θέρμανση",
-        "attic": "Σοφίτα",
+        "attic": "Πατάρι",
         "veranda": "Βεράντα",
         "terrace": " Ταράτσα",
         "balcony": "Μπαλκόνι",
@@ -451,6 +494,31 @@
         "facade": "Προσώψεος",
         "consierge": "Θυρορός",
         "inside_zone_area": "Εντός Ζώνης",
-        "auction": "Πληστηριασμός"
+        "auction": "Πληστηριασμός",
+        "under_offer": "Υπό Προσφορά"
+    },
+    "createEditForm": {
+        "button": {
+            "create": "Δημιουργία",
+            "update": "Ενημέρωση",
+            "cancel": "Ακύρωση"
+        },
+        "headers": {
+            "title": "Παροχές",
+            "addressInfo": "Πληροφορίες Διεύθυνσης",
+            "basicInfo": "Βασικές Πληροφορίες",
+            "land": "Χαρακτηριστικά Οικοπέδου",
+            "landTechincal": "Τεχνικά Χαρακτηριστικά Οικοπέδου",
+            "residential": "Κατοικία",
+            "residentialTechnical": "Τεχνικά Χαρακτηριστικά Κατοικίας",
+            "residentialBuildingTechnical": "Τεχνικά Χαρακτηριστικά Κτιρίου",
+            "residentialBuildingFeatures": "Χαρακτηριστικά Κτιρίου",
+            "commercial": "Εμπορικό",
+            "commercialTechnical": "Τεχνικά Χαρακτηριστικά Εμπορικού",
+            "commercialBuildingTechnical": "Τεχνικά Χαρακτηριστικά Κτιρίου",
+            "commercialBuildingFeatures": "Χαρακτηριστικά Κτιρίου",
+            "type_of_use": "Τύπος Χρήσης",
+            "status": "Κατάσταση"
+        }
     }
 }
