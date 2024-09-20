@@ -88,6 +88,7 @@ function ListingEditForm() {
   const userStatus = useUserStatus();
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImageIdx, setSelectedImageIdx] = useState(null);
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
 
   useEffect(() => {
     // Fetch the listing data from the API.
@@ -155,6 +156,7 @@ function ListingEditForm() {
           featured,
         } = data;
 
+
         // Set the listing data state to the fetched data.
         setListingData({
           type,
@@ -216,6 +218,8 @@ function ListingEditForm() {
           images,
           uploaded_images,
         });
+        setSelectedAmenities(amenities.map((amenity) => amenity.id));
+
       } catch (err) {
         if (err.response.status === 403) {
           <Forbidden403 />;
@@ -226,12 +230,24 @@ function ListingEditForm() {
     handleMount();
   }, [id, history]);
 
+  console.log('amenities EDIT', listingData.amenities);
+
+
   // Function to handle the change event for the input fields.
   const handleChange = (e) => {
     setListingData({
       ...listingData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleAmenityChange = (e) => {
+    const value = parseInt(e.target.value);
+    setSelectedAmenities((prev) =>
+      prev.includes(value)
+        ? prev.filter((amenity) => amenity !== value)
+        : [...prev, value]
+    );
   };
 
   // Function to handle the change event for the image input field.
@@ -360,6 +376,10 @@ function ListingEditForm() {
     formData.append("approved", listingData.approved);
     formData.append("featured", listingData.featured);
     formData.append("is_first", listingData.is_first);
+
+    selectedAmenities.forEach((amenity) => {
+      formData.append("amenities_ids", amenity);
+    });
 
     formData.append("images", imageInput.current.files[0]);
     // Append the selected images to delete to the form data.
@@ -495,8 +515,26 @@ function ListingEditForm() {
                 listingData={listingData}
                 handleChange={handleChange}
                 errors={errors}
+                handleAmenityChange={handleAmenityChange}
+                selectedAmenities={selectedAmenities}
               />
             </div>
+            {/* <Row className="justify-content-center">
+              {Array.from(listingData.amenities).map((amenity, idx) => (
+                <Col md={6} key={idx}>
+                  <Form.Group>
+                    <Form.Check
+                      type="checkbox"
+                      name={amenity}
+                      // label={t(`propertyDetails.amenities.${amenity}`)}
+                      checked={listingData.amenities.has(amenity)}
+                    // onChange={handleChecked}
+                    />
+                  </Form.Group>
+                </Col>
+              ))}
+            </Row> */}
+
           </Container>
         </Col>
       </Row>
@@ -507,6 +545,8 @@ function ListingEditForm() {
               listingData={listingData}
               handleChange={handleChange}
               errors={errors}
+              handleAmenityChange={handleAmenityChange}
+              selectedAmenities={selectedAmenities}
             />
           </Container>
         </Col>
