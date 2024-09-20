@@ -280,7 +280,8 @@
             "air_condition": "Κλιματισμός",
             "fireplace": "Τζάκι",
             "other": "Άλλο",
-            "n/a": "N/A"
+            "n/a": "N/A",
+            "": "N/A"
         },
         "powerType": {
             "title": "Τύπος Ρεύματος",
@@ -289,7 +290,8 @@
             "natural_gas": "Φυσικό Αέριο",
             "heat_pump": "Αντλία Θερμότητας",
             "other": "Άλλο",
-            "n/a": "N/A"
+            "n/a": "N/A",
+            "": "N/A"
         }
     },
     "contactFormPage": {
@@ -429,13 +431,13 @@
     "amenities": {
         "title": "Παροχές",
         "solar_water_heating": "Ηλιακός θερμοσίφωνας",
-        "storage_room": "Αποθήκη",
+        "storage_room": "Αποθηκευτικός Χώρος",
         "parking": "Θέση Σταύθμευσης",
         "garden": "Κήπος",
         "fireplace": "Τζάκι",
         "air_conditioning": "Κλιματισμός",
         "underfloor_heating": "Ενδοδαπέδια Θέρμανση",
-        "attic": "Σοφίτα",
+        "attic": "Πατάρι",
         "veranda": "Βεράντα",
         "terrace": " Ταράτσα",
         "balcony": "Μπαλκόνι",
@@ -500,6 +502,23 @@
             "create": "Δημιουργία",
             "update": "Ενημέρωση",
             "cancel": "Ακύρωση"
+        },
+        "headers": {
+            "title": "Παροχές",
+            "addressInfo": "Πληροφορίες Διεύθυνσης",
+            "basicInfo": "Βασικές Πληροφορίες",
+            "land": "Χαρακτηριστικά Οικοπέδου",
+            "landTechincal": "Τεχνικά Χαρακτηριστικά Οικοπέδου",
+            "residential": "Κατοικία",
+            "residentialTechnical": "Τεχνικά Χαρακτηριστικά Κατοικίας",
+            "residentialBuildingTechnical": "Τεχνικά Χαρακτηριστικά Κτιρίου",
+            "residentialBuildingFeatures": "Χαρακτηριστικά Κτιρίου",
+            "commercial": "Εμπορικό",
+            "commercialTechnical": "Τεχνικά Χαρακτηριστικά Εμπορικού",
+            "commercialBuildingTechnical": "Τεχνικά Χαρακτηριστικά Κτιρίου",
+            "commercialBuildingFeatures": "Χαρακτηριστικά Κτιρίου",
+            "type_of_use": "Τύπος Χρήσης",
+            "status": "Κατάσταση"
         }
     }
 }

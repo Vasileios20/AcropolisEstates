@@ -501,6 +501,23 @@
             "create": "Create",
             "update": "Update",
             "cancel": "Cancel"
+        },
+        "headers": {
+            "title": "Title",
+            "addressInfo": "Address Information",
+            "basicInfo": "Basic Information",
+            "land": "Land",
+            "landTechincal": "Land Technical",
+            "residential": "Residential",
+            "residentialTechnical": "Residential Technical",
+            "residentialBuildingTechnical": "Residential Building Characteristics",
+            "residentialBuildingFeatures": "Residential Building Features",
+            "commercial": "Commercial",
+            "commercialTechnical": "Commercial Technical",
+            "commercialBuildingTechnical": "Commercial Building Characteristics",
+            "commercialBuildingFeatures": "Commercial Building Features",
+            "type_of_use": "Type of Use",
+            "status": "Status"
         }
     }
 }
