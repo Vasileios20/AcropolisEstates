@@ -131,7 +131,11 @@ const NavBar = () => {
       >
         {t("nav.messages")}
       </NavLink>
-      {servicesDropdown}
+      <NavLink
+        className={styles.NavLink}
+        activeClassName={styles.Active}
+        to="/listings/"
+      >Approved Listings</NavLink>
       <NavLink
         className={styles.NavLink}
         to={`/profiles/${currentUser?.profile_id}`}
