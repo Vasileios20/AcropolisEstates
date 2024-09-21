@@ -7,8 +7,13 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { useHistory } from 'react-router-dom';
 import Asset from '../../components/Asset';
+import { useRedirect } from '../../hooks/useRedirect';
+import useUserStatus from '../../hooks/useUserStatus';
+import Forbidden403 from '../errors/Forbidden403';
 
 export default function AdminListings() {
+    useRedirect("loggedOut");
+    const userStatus = useUserStatus();
 
     const { listings, setListings, hasLoaded } = useFetchAllListings();
     const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
@@ -47,6 +52,9 @@ export default function AdminListings() {
         setSortConfig({ key: sortType, direction });
     }
 
+    if (userStatus === false) {
+        return <Forbidden403 />;
+    }
 
     return (
         <Container fluid>
