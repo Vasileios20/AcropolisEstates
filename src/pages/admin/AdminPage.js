@@ -5,7 +5,16 @@ import styles from '../../styles/Admin.module.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
+import { useRedirect } from '../../hooks/useRedirect';
+import useUserStatus from '../../hooks/useUserStatus';
+import Forbidden403 from '../errors/Forbidden403';
+
 const AdminPage = () => {
+    useRedirect("loggedOut");
+    const userStatus = useUserStatus();
+    if (userStatus === false) {
+        return <Forbidden403 />;
+    }
     return (
 
         <Container>
