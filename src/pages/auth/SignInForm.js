@@ -55,6 +55,7 @@ function SignInForm() {
       setCurrentUser(data.user);
       setTokenTimestamp(data);
       history.goBack();
+      window.location.reload();
     } catch (err) {
       setErrors(err.response?.data);
     }
