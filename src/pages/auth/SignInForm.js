@@ -14,11 +14,11 @@ import { Link, useHistory } from "react-router-dom";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-import axios from "axios";
 
 import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import { useRedirect } from "../../hooks/useRedirect";
 import { setTokenTimestamp } from "../../utils/utils";
+import { axiosReq } from "../../api/axiosDefaults";
 
 /**
  * Represents a sign-in form component.
@@ -51,7 +51,7 @@ function SignInForm() {
     // Submit the sign in form.
     e.preventDefault();
     try {
-      const { data } = await axios.post("/dj-rest-auth/login/", signInData);
+      const { data } = await axiosReq.post("/dj-rest-auth/login/", signInData);
       setCurrentUser(data.user);
       setTokenTimestamp(data);
       history.goBack();
