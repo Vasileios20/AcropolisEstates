@@ -93,35 +93,41 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class DeleteImageView(generics.DestroyAPIView):
     """
-    API view for deleting an image associated with a listing.
+    API view for deleting images associated with a listing.
     """
-
     queryset = Images.objects.all()
     serializer_class = ImagesSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
     def delete(self, request, *args, **kwargs):
-        image_id = self.kwargs.get("pk")
         listing_id = self.kwargs.get("listing_id")
+        image_ids = request.data.get("image_ids", [])
 
-        if not image_id or not listing_id:
+        if not listing_id or not image_ids:
             return Response(
-                {"error": "Image or listing not found"},
+                {"error": "Listing ID or image IDs not provided"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        # Check if the listing exists
         try:
-            image = Images.objects.get(id=image_id, listing=listing_id)
-            image.delete()
             listing = Listing.objects.get(id=listing_id)
-            listing.save()
+        except Listing.DoesNotExist:
             return Response(
-                {"message": "Image deleted"}, status=status.HTTP_204_NO_CONTENT
+                {"error": "Listing not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
-        except Images.DoesNotExist:
-            return Response(
-                {"error": "Image not found"}, status=status.HTTP_404_NOT_FOUND
-            )
+
+        # Delete images with the specified IDs
+        deleted_count, _ = Images.objects.filter(
+            id__in=image_ids, listing=listing).delete()
+
+        listing.save()  # Save to trigger any updates if necessary
+
+        return Response(
+            {"message": f"{deleted_count} images deleted"},
+            status=status.HTTP_204_NO_CONTENT,
+        )
 
 
 class AmenitiesList(generics.ListCreateAPIView):
