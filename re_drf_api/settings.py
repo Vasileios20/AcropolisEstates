@@ -68,9 +68,15 @@ ALLOWED_HOSTS = [
     os.environ.get("ALLOWED_HOST_CUSTOM_DOMAIN"),
 ]
 
+CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGIN_REGEXES = []
+
 if "CLIENT_ORIGIN" in os.environ:
-    CORS_ALLOWED_ORIGINS = [os.environ.get(
-        "CLIENT_ORIGIN"), os.environ.get("CLIENT_ORIGIN_CUSTOM_DOMAIN")]
+    allowed_origins = list(filter(None, [
+        os.environ.get("CLIENT_ORIGIN"),
+        os.environ.get("CLIENT_ORIGIN_CUSTOM_DOMAIN")
+    ]))
+    CORS_ALLOWED_ORIGINS.extend(allowed_origins)
 if "CLIENT_ORIGIN_DEV" in os.environ:
     extracted_url = re.match(
         r"^.+-", os.environ.get("CLIENT_ORIGIN_DEV", ""), re.IGNORECASE
