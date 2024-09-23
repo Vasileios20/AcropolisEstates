@@ -206,9 +206,16 @@ class Listing(models.Model):
     rooms = models.IntegerField(
         validators=[validate_zero], default=0, null=True, blank=True)
     power_type = models.CharField(
-        choices=power_type_choices, max_length=255, blank=True, default="N/A")
+        choices=power_type_choices,
+        max_length=255,
+        blank=True,
+        default="N/A")
     heating_system = models.CharField(
-        choices=heating_system_choices, max_length=255, blank=True, default="N/A")
+        choices=heating_system_choices,
+        max_length=255,
+        blank=True,
+        default="N/A"
+    )
     energy_class = models.CharField(
         choices=energy_class_filter_choices, default="A", max_length=255,
         blank=True
