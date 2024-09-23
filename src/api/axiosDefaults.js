@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie } from "../utils/utils";
 
 axios.defaults.baseURL = "https://acropolis-estates-api-2e18d7daaa60.herokuapp.com/";
-axios.defaults.headers.post["Content-Type"] = "multipart/form-data";
+axios.defaults.headers.post["Content-Type"] = undefined;
 axios.defaults.withCredentials = true;
 
 const axiosReq = axios.create();
