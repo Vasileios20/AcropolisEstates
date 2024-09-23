@@ -112,6 +112,33 @@ const ResidentialFields = (
             </Row>
             <Row className="justify-content-center">
                 <Col md={6}>
+                    <Form.Group controlId="power_type">
+                        <Form.Label>{t("propertyDetails.powerType.title")}</Form.Label>
+                        <Form.Control
+                            className={styles.Input}
+                            as="select"
+                            name="power_type"
+                            value={listingData.power_type || ""}
+                            onChange={handleChange}
+                        >
+                            <option>---</option>
+                            <option value="electricity">{t("propertyDetails.powerType.electricity")}</option>
+                            <option value="gas">{t("propertyDetails.powerType.gas")}</option>
+                            <option value="natural_gas">{t("propertyDetails.powerType.natural_gas")}</option>
+                            <option value="heat_pump">{t("propertyDetails.powerType.heat_pump")}</option>
+                            <option value="other">{t("propertyDetails.heating_system.other")}</option>
+                            <option value="n/a">{t("propertyDetails.heating_system.n/a")}</option>
+                        </Form.Control>
+                    </Form.Group>
+                    {errors?.power_type?.map((message, idx) => (
+                        <Alert className={styles.Input} variant="warning" key={idx}>
+                            {message}
+                        </Alert>
+                    ))}
+                </Col>
+            </Row>
+            <Row className="justify-content-center">
+                <Col md={6}>
                     <Form.Group controlId="energy_class">
                         <Form.Label>{t("propertyDetails.energyClass")}</Form.Label>
                         <Form.Control
