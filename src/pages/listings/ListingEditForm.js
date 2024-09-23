@@ -230,9 +230,6 @@ function ListingEditForm() {
     handleMount();
   }, [id, history]);
 
-  console.log('amenities EDIT', listingData.amenities);
-
-
   // Function to handle the change event for the input fields.
   const handleChange = (e) => {
     setListingData({
@@ -290,13 +287,20 @@ function ListingEditForm() {
   // Function to handle the delete image event.
   const handleDeleteImage = async (e) => {
     e.preventDefault();
-    try {
-      selectedImages.forEach(async (image) => {
-        await axiosReq.delete(`/listings/${id}/images/${image}/`);
+    if (selectedImages.length === 0) {
+      alert("No images selected for deletion.");
+      return;
+    }
 
-        setSelectedImages([]);
-        window.location.reload();
+    try {
+      await axiosReq.delete(`/listings/${id}/images/`, {
+        data: {
+          image_ids: selectedImages, // Send all selected image IDs for bulk deletion
+        },
       });
+
+      setSelectedImages([]);  // Clear the selected images state
+      window.location.reload();  // Reload the page to reflect the deleted images
     } catch (err) {
       setErrors(err.response?.data);
     }
