@@ -186,7 +186,7 @@ const NavBar = () => {
                 exact
                 className={styles.NavLink}
                 activeClassName={styles.Active}
-                to="/admin"
+                to="/frontend/admin"
               >
                 Admin home
               </NavLink>

@@ -23,12 +23,12 @@ const AdminPage = () => {
                     <tbody>
                         <tr>
                             <td>
-                                <Link to="/admin/users">Users</Link>
+                                <Link to="frontend/admin/users">Users</Link>
                             </td>
                         </tr>
                         <tr>
                             <td className="d-flex">
-                                <Link to="/admin/listings">Listings</Link>
+                                <Link to="frontend/admin/listings">Listings</Link>
 
                                 <Link to="/listings/create" className="ms-auto">Add Listing </Link>
                             </td>

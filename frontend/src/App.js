@@ -122,8 +122,8 @@ function App() {
               <Route exact path="/privacyPolicy" render={() => <PrivacyPolicy />} />
               <Route exact path="/terms" render={() => <Terms />} />
               <Route exact path="/forbidden" render={() => <Forbidden403 />} />
-              <Route exact path="/admin" render={() => <AdminPage />} />
-              <Route exact path="/admin/listings" render={() => <AdminListings />} />
+              <Route exact path="/frontend/admin" render={() => <AdminPage />} />
+              <Route exact path="frontend/admin/listings" render={() => <AdminListings />} />
               <Route exact path="/notfound" render={() => <NotFound />} />
               <Route render={() => <NotFound />} />
 
