@@ -134,7 +134,7 @@ ROOT_URLCONF = "re_drf_api.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "staticfiles", "build")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -203,9 +203,10 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
+WHITENOISE_ROOT = BASE_DIR / 'staticfiles' / 'build'
 
 MEDIA_URL = "/media/"
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
