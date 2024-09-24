@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
-import re
 
 if os.path.exists("env.py"):
     import env
@@ -59,7 +58,7 @@ REST_AUTH_SERIALIZERS = {
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "DEV" in os.environ
+DEBUG = "DEBUG" in os.environ
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -69,21 +68,13 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = []
-CORS_ALLOWED_ORIGIN_REGEXES = []
 
-if "CLIENT_ORIGIN" in os.environ:
-    allowed_origins = list(filter(None, [
-        os.environ.get("CLIENT_ORIGIN"),
-        os.environ.get("CLIENT_ORIGIN_CUSTOM_DOMAIN")
-    ]))
-    CORS_ALLOWED_ORIGINS.extend(allowed_origins)
-if "CLIENT_ORIGIN_DEV" in os.environ:
-    extracted_url = re.match(
-        r"^.+-", os.environ.get("CLIENT_ORIGIN_DEV", ""), re.IGNORECASE
-    )
-    CORS_ALLOWED_ORIGIN_REGEXES = [
-        r"^http:\/\/localhost:*([0-9]+)?$",
-    ]
+allowed_origins = list(filter(None, [
+    os.environ.get("CLIENT_ORIGIN"),
+    os.environ.get("CLIENT_ORIGIN_CUSTOM_DOMAIN")
+]))
+CORS_ALLOWED_ORIGINS.extend(allowed_origins)
+
 
 CORS_ALLOW_CREDENTIALS = True
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
