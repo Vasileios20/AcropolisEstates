@@ -1,0 +1,120 @@
+.HeroImage,
+.HeroImage2,
+.HeroImage3,
+.HeroImageAbout {
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.HeroImage {
+  background-image: url("../assets/img8.jpg");
+}
+
+.HeroImage2 {
+  background-image: url("../assets/img13.jpg");
+}
+
+.HeroImage3 {
+  background-image: url("../assets/img16.jpg");
+}
+
+.HeroImageAbout {
+  background-image: url("../assets/img26.jpg");
+}
+
+.Welcome {
+  font-size: 4rem;
+  font-weight: 600;
+}
+
+.Welcome,
+.WelcomeTagLine {
+  color: #fff;
+  animation-name: hero-zoom;
+  animation-duration: 5s;
+  animation-fill-mode: forwards;
+  margin: 0;
+  width: 100%;
+}
+
+.WelcomeTagLine {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.CaruselContainer {
+  position: relative;
+  background-color: rgba(77, 103, 101, 0.4);
+}
+
+.SearchBar {
+  position: absolute;
+  top: 30%;
+  width: 100%;
+  z-index: 10;
+}
+
+.HomePageContent {
+  font-size: 1.4rem;
+}
+
+.FeaturedLabel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(77, 103, 101, 0.7);
+  color: #fff;
+  padding: 4px;
+  border-radius: 0.3rem 0 0.3rem 0;
+  font-size: 12px;
+  z-index: 10;
+}
+
+/* creates the level of zoom for hero image */
+@keyframes hero-zoom {
+  from {
+    transform: scale(0.7);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/*Responsive*/
+
+@media screen and (max-width: 832px) {
+  .Welcome {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .Welcome {
+    font-size: 1.9rem;
+  }
+
+  .WelcomeTagLine {
+    font-size: 1rem;
+  }
+
+  .SearchBar {
+    top: 18%;
+  }
+
+  .HomePageContent {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-height: 426px) and (orientation: landscape) {
+  .Welcome,
+  .WelcomeTagLine {
+    display: none;
+  }
+}

@@ -1,0 +1,85 @@
+.Input {
+  background: #ffffff;
+  border: 1px solid #aeaeb9;
+  box-sizing: border-box;
+  border-radius: 5px;
+  color: #4d6765;
+  padding: 5px;
+}
+
+.Header {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #847c3d;
+}
+
+.Link {
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  margin: auto;
+}
+
+.Link:hover {
+  color: #847c3d;
+}
+
+.Link span {
+  color: #847c3d;
+  font-weight: 500;
+}
+
+.SignInCol {
+  height: 320px;
+}
+
+.SignUpCol {
+  height: 375px;
+}
+
+.FormLabel {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 10px;
+  padding-left: 3px;
+  padding-top: 10px;
+}
+
+.Checkbox {
+  font-size: 12px;
+  line-height: 18px;
+  padding-top: 10px;
+}
+
+.Checkbox > input {
+  height: 1rem;
+  width: 1rem;
+  border: 1px solid #aeaeb9;
+}
+
+.Checkbox > label {
+  padding-left: 5px;
+  padding-top: 2.5px;
+}
+
+.Checkbox > input:checked {
+  background-color: rgba(77, 103, 101, 1);
+  border-color: rgba(77, 103, 101, 1);
+}
+
+.ErrorMessage {
+  color: rgb(201, 0, 0);
+  font-size: 0.8rem;
+  padding: 2px;
+  background-color: rgba(174, 174, 185, 0.5);
+  border-radius: 5px;
+}
+
+.FormMargin {
+  margin-top: 110px;
+}

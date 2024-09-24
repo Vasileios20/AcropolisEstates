@@ -1,0 +1,146 @@
+/* Font awsome div */
+.Listing__fontawsome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  margin-left: 2px;
+}
+
+/* Listing Header */
+.Listing__cardBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 5px 10px;
+}
+
+.Listing__cardBodyListing * {
+  padding: 0;
+}
+
+.Listing__header {
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: capitalize;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.Listing__headerLand {
+  text-transform: none;
+}
+
+.Listing__headerListingDetails {
+  flex: 1;
+}
+
+/* Features table */
+
+.Listing__table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgba(132, 124, 61, 0.5);
+  border-radius: 0.3rem;
+  overflow: hidden;
+}
+
+.Listing__table td,
+.Listing__table th {
+  border: 1px solid rgba(132, 124, 61, 0.5);
+  padding: 5px;
+}
+
+.Listing__table td:first-child,
+.Listing__table th:first-child {
+  background-color: #ececec;
+  width: 30%;
+  border-left: none;
+  border-bottom: none;
+  border-right: none;
+}
+
+.Listing__table th:last-child,
+.Listing__table td:last-child {
+  border-right: none;
+  border-bottom: none;
+  font-weight: 500;
+}
+
+.Listing__table tr:first-child th,
+.Listing__table tr:first-child td {
+  border-top: none;
+}
+
+.Listing__table tr:last-child th,
+.Listing__table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Amenities */
+
+.AmenitiesBox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0 5px;
+  font-weight: 500;
+}
+
+.Amenity {
+  border: 1px solid #847c3d;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 0 5px 5px 0;
+}
+
+.AmenityChecked {
+  background-color: #fff;
+  color: #847c3d;
+}
+
+.Map {
+  width: 100%;
+  height: 300px;
+}
+
+/* ListingsPage Image */
+
+.Listings__ImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 56.25%;
+}
+
+.Listings__Image {
+  border-radius: 0.3rem 0.3rem 0 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Responsive */
+@media screen and (max-width: 767px) {
+  .Listing__table {
+    width: 100%;
+  }
+
+  .Listings__Card {
+    margin: auto;
+    width: 15rem;
+  }
+}
+
+/* Responsive screen size 991px to 1399px  */
+
+@media screen and (min-width: 990px) and (max-width: 1399px) {
+  .Listings__Card {
+    width: 14rem;
+  }
+}

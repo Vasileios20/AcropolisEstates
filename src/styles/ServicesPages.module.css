@@ -1,0 +1,205 @@
+.HeroImageAdv {
+  background-image: url("../assets/img12.jpg");
+}
+
+.HeroImageAssetMgmt {
+  background-image: url("../assets/img21.jpg");
+}
+
+.HeroImageVal {
+  background-image: url("../assets/img2.jpg");
+}
+
+.HeroImageListings {
+  background-image: url("../assets/properties.jpg");
+}
+
+.HeroImageAdv,
+.HeroImageAssetMgmt,
+.HeroImageVal,
+.HeroImageListings {
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.HeroImageCon {
+  background-image: url("../assets/img10.jpg");
+  background-size: cover;
+  background-position: center;
+  height: auto;
+  min-height: 100vh;
+}
+
+.HeaderContainer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 100vh;
+  min-width: 100%;
+  padding-top: 550px;
+}
+
+.Header {
+  font-size: 4.5rem;
+  font-weight: 400;
+  color: #3e3e3e;
+  word-wrap: break-word;
+  background-color: rgba(198, 198, 198, 0.5);
+  padding: 5px 15px 5px 90px;
+  text-align: start;
+}
+
+.HeaderListings {
+  font-size: 4.5rem;
+  font-weight: 400;
+  color: #3e3e3e;
+  word-wrap: break-word;
+  background-color: rgba(198, 198, 198, 0.5);
+  text-align: start;
+  margin-top: 4rem;
+}
+
+/* Home Page */
+.ServiceImage1 {
+  background-image: url("../assets/img4.jpg");
+  background-size: cover;
+  background-position: center;
+  border-radius: 0.3rem 0.3rem 0 0;
+}
+
+.ServiceImage2 {
+  background-image: url("../assets/img5.jpg");
+  background-size: cover;
+  background-position: center;
+  border-radius: 0.3rem 0.3rem 0 0;
+}
+.ServiceImage3 {
+  background-image: url("../assets/img7.jpg");
+  background-size: cover;
+  background-position: center;
+  border-radius: 0.3rem 0.3rem 0 0;
+}
+
+.ServiceImage4 {
+  background-image: url("../assets/img24.jpg");
+  background-size: cover;
+  background-position: center;
+  border-radius: 0.3rem 0.3rem 0 0;
+}
+
+.ServiceImageHeight {
+  height: 275px;
+}
+
+/* Contact Page */
+
+.ContactPageContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ContactFormCol {
+  margin-bottom: 3rem;
+}
+
+.ContactPageContent {
+  background-color: rgba(132, 124, 61, 0);
+  border-radius: 0.3rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 7rem auto 2rem;
+}
+
+.PageContentWrapper {
+  border: 2px solid rgba(132, 124, 61, 0.4);
+  border-radius: 0.3rem;
+  margin-bottom: 3rem;
+  padding: 0.2rem;
+}
+
+.PageContent {
+  background-color: rgba(132, 124, 61, 0.4);
+  border-radius: 0.3rem;
+  font-size: 1.2rem;
+}
+
+.PageList {
+  background-color: rgba(132, 124, 61, 0);
+  border: 1.5px solid rgba(132, 124, 61, 0.4);
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  padding: 10px 32px 0 0;
+}
+
+.List li {
+  margin: 10px 0 0 0;
+  list-style: none;
+  padding: 15px 0 0 0;
+}
+
+/* Additional media queries for landscape orientation on mobile devices */
+@media (max-width: 576px) and (orientation: landscape) {
+  .ContactPageContainer {
+    min-height: calc(100vh - 60px);
+  }
+
+  .ContactFormCol {
+    padding-bottom: 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .HeaderContainer {
+    padding: 0;
+  }
+  .Header {
+    font-size: 4rem;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  .HeaderListings {
+    font-size: 4rem;
+    margin-top: 7rem;
+  }
+}
+
+@media (max-width: 1025px) {
+  
+
+  .HeaderListings {
+    margin-top: 9rem;
+  }
+
+  .ServiceImageHeight {
+    height: 250px;
+  }
+  
+}
+
+@media screen and (min-width: 425px) and (max-width: 768px) {
+  .ServiceImageHeight {
+    height: 200px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .ServiceImageHeight {
+    height: 175px;
+  }
+
+  .Header,
+  .HeaderListings {
+    font-size: 2.5rem;
+  }
+
+  .HeaderListings {    
+    margin-top: 2rem;
+  }
+}

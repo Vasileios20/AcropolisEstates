@@ -1,0 +1,91 @@
+.ModalImageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.ImagesModal {
+  width: auto;
+  border-radius: 0.3rem;
+  max-height: 80vh;
+  display: block;
+}
+
+.ImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 56.25%;
+}
+
+.Image {
+  border-radius: 0.3rem;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.ImageWrapper:hover {
+  border-radius: 0.3rem;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.4);
+  /* transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  transform: scale(1.01); */
+  z-index: 100;
+}
+
+.NextIcon,
+.PrevIcon {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 10px;
+  color: white;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.NextIcon {
+  right: 15px;
+}
+
+.PrevIcon {
+  left: 15px;
+}
+
+.Image:hover {
+  cursor: pointer;
+}
+
+.ImagesContainer {
+  padding-top: 3.2rem;
+}
+
+.soldLabel {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  background-color: rgb(187, 14, 14);
+  color: #fff;
+  padding: 4px;
+  font-size: 2rem;
+  z-index: 10;
+  /* transform: rotate(-45deg);
+  transform-origin: 0 0;
+  width: 155px;
+  text-align: center; */
+}
+
+@media screen and (min-width: 576px) {
+  .Modal {
+    max-width: 90%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .ImageWrapper {
+    height: 10rem;
+  }
+}

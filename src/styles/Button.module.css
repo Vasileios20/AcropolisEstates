@@ -1,0 +1,145 @@
+.Button {
+  font-size: 0.8rem;
+  font-weight: 500;
+  align-self: center;
+  border-radius: 5px;
+  border-color: transparent;
+  padding: 4px 10px;
+  min-width: 75px;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.Button:hover {
+  opacity: 0.8;
+  border-color: transparent;
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+/* .Button:hover:active {
+  background-color: #b0b000 !important;
+}
+
+.Button:active {
+  background-color: #b0b000 !important;
+}
+
+.Button:focus {
+  background-color: #b0b000;
+} */
+
+.Wide {
+  padding: 10px 50px;
+  width: 100%;
+}
+
+.Medium {
+  width: 40%;
+  font-size: 1rem;
+}
+
+.Olive,
+.OliveOutline:hover,
+.Bright:hover {
+  background-color: #606000;
+  color: #ffffff;
+}
+
+.OliveOutline,
+.Olive:hover {
+  background-color: #b0b000;
+  color: #000;
+}
+
+.Black,
+.BlackOutline:hover {
+  background-color: #4d6765;
+  color: aliceblue;
+}
+
+.Black:hover,
+.BlackOutline {
+  background-color: rgba(77, 103, 101, 0);
+  color: #4d6765;
+  border: 1px solid rgba(77, 103, 101, 1);
+  font-weight: 800;
+}
+
+.Black:active,
+.BlackOutline:active {
+  background-color: #4d6765 !important;
+  color: aliceblue;
+}
+
+.Black:focus {
+  background-color: #4d6765 !important;
+  color: aliceblue;
+}
+
+.BlackSearch {
+  background-color: #4d6765;
+  color: aliceblue;
+  border: 1px solid rgb(0, 0, 0);
+}
+
+.BlackSearch:hover {
+  background-color: #4d6765;
+  color: aliceblue;
+  border: 1px solid rgb(0, 0, 0);
+}
+
+.Bright {
+  background-color: #847c3d;
+  color: #000;
+}
+
+.Add {
+  background-color: #5c9600;
+  color: #fff;
+  border: transparent;
+}
+
+.Add:hover {
+  background-color: #00ad00;
+  color: #fff;
+}
+
+.Remove {
+  background-color: #920000;
+  color: #fff;
+  border: transparent;
+  --bs-btn-active-bg: #a35252;
+}
+
+.Remove:focus {
+  background-color: #920000;
+  color: #fff;
+}
+
+.Remove:hover {
+  background-color: #a00000;
+  color: #fff;
+}
+
+/* Alert message */
+
+.MessageNone {
+  display: none;
+}
+
+.Message {
+  width: 100%;
+  text-align: center;
+}
+
+/* Responsive */
+
+@media screen and (max-width: 768px) {
+  .Message {
+    width: 100%;
+  }
+
+  .EditDeleteSmall {
+    justify-content: space-evenly;
+  }
+}

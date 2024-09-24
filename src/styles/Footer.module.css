@@ -1,0 +1,53 @@
+.Footer {
+  background-color: rgba(132, 124, 61, 1);
+  font-size: 14px;
+}
+
+/* .centerContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.FitContent > * {
+  flex: 1;
+} */
+
+.Social {
+  font-size: 1.5rem;
+  padding-top: 0.5rem;
+}
+
+.Social > * {
+  color: rgba(12, 12, 12, 0.9);
+  padding-right: 1rem;
+}
+
+.link {
+  color: #131313;
+  transition: color ease-in-out 0.2s;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.link:hover {
+  text-decoration: none;
+  color: #555555;
+}
+
+.ServiceImage {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.CompanyReg {
+  font-size: 0.8rem;
+  margin-top: -15px;
+}
+
+@media screen and (max-width: 576px) {
+  .MobileMarginTop {
+    margin-top: 1rem;
+  }
+}
