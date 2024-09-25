@@ -28,7 +28,7 @@ const AdminPage = () => {
                         </tr>
                         <tr>
                             <td className="d-flex">
-                                <Link to="frontend/admin/listings">Listings</Link>
+                                <Link to="/frontend/admin/listings">Listings</Link>
 
                                 <Link to="/listings/create" className="ms-auto">Add Listing </Link>
                             </td>
