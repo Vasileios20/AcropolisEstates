@@ -27,6 +27,8 @@ const ContactMessagesList = () => {
    */
 
   const status = useUserStatus();
+  console.log('status', status);
+
   const [contactList, setContactList] = useState({ results: [] });
   const [query, setQuery] = useState("");
   const [created_at, setCreated_at] = useState({ min: "", max: "" });
@@ -165,7 +167,7 @@ const ContactMessagesList = () => {
           >
             <Col>
               <InfiniteScroll
-                dataLength={contactList.results.length}
+                dataLength={contactList?.results.length}
                 next={() => fetchMoreData(contactList, setContactList)}
                 hasMore={contactList.next}
                 loader={<Asset spinner />}
