@@ -14,6 +14,7 @@
     "i18next-http-backend": "^2.5.0",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-bootstrap": "^2.10.4",
     "react-cookie-consent": "^9.0.0",
     "react-datetime": "^3.2.0",
@@ -31,7 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-prebuild": "npm install -g serve"
+    "heroku-prebuild": "npm install -g serve",
+    "heroku-postbuild": "npm run build"
   },
   "eslintConfig": {
     "extends": [
