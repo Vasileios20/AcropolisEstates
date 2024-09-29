@@ -59,7 +59,7 @@ def contact_form_create(request):
                 f"Message: {message}\n\n"
                 f"Phone number: {phone_number}\nEmail: {email}",
                 from_email=ADMIN_EMAIL,
-                recipient_list=[ADMIN_EMAIL],
+                recipient_list=[os.environ.get("RECIPIENT")],
                 fail_silently=False,
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)

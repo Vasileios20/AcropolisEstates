@@ -79,13 +79,13 @@ CORS_ALLOWED_ORIGINS.extend(allowed_origins)
 CORS_ALLOW_CREDENTIALS = True
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.office365.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get("EMAIL_ADDRESS")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-
+SERVER_EMAIL = os.environ.get("EMAIL_ADDRESS")
 
 # Application definition
 
