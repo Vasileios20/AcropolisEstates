@@ -49,7 +49,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Images
-        fields = ["id", "listing", "url", "is_first"]
+        fields = ["id", "listing", "url", "is_first", "order"]
 
 
 class ListingSerializer(serializers.ModelSerializer):
@@ -117,12 +117,14 @@ class ListingSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
         amenities = validated_data.pop('amenities')
+        image_orders = self.context['request'].data.get('image_orders', [])
         is_first_image_idx = int(
             self.context['request'].data.get('is_first', 0))
         listing = Listing.objects.create(**validated_data)
         listing.amenities.set(amenities)
 
-        for uploaded_image in uploaded_images:
+        for idx, uploaded_image in enumerate(uploaded_images):
+            order = image_orders[idx] if idx < len(image_orders) else idx
             if is_first_image_idx == uploaded_images.index(uploaded_image):
                 is_first = True
             else:
@@ -131,6 +133,7 @@ class ListingSerializer(serializers.ModelSerializer):
                 listing=listing,
                 url=uploaded_image,
                 is_first=is_first,
+                order=order,
             )
 
         return listing
@@ -236,3 +239,9 @@ class ListingSerializer(serializers.ModelSerializer):
             "amenities",
             "amenities_ids",
         ]
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        # Sort by order field
+        ret['images'] = sorted(ret['images'], key=lambda x: x['order'])
+        return ret

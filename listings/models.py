@@ -302,6 +302,7 @@ class Images(models.Model):
         upload_to="images/", default="../default_post_vnf7ym", null=True
     )
     is_first = models.BooleanField(default=False, null=True)
+    order = models.PositiveIntegerField(default=0, null=True)
 
     def __str__(self):
         return f"{self.listing}'s image"
