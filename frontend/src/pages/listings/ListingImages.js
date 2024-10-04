@@ -7,7 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import Carousel from "react-bootstrap/Carousel";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import { Col } from "react-bootstrap";
+import Col from "react-bootstrap/Col";
 
 const ListingImages = ({ images = [{}], listing_id, amenities }) => {
   // The ListingImages component is a functional component that renders the images of a listing.
@@ -61,7 +61,7 @@ const ListingImages = ({ images = [{}], listing_id, amenities }) => {
                 <div className={styles.ImageWrapper}>
                   {sold && <div className={styles.soldLabel}>SOLD</div>}
                   <img
-                    src={image?.is_first ? image.url : images[0].url}
+                    src={image.url}
                     alt={image.id}
                     className={styles.Image}
                     onClick={handleShow}
