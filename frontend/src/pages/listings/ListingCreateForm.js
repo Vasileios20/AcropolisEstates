@@ -1,17 +1,14 @@
-import React, { useRef, useState } from "react";
-
+import React, { useRef, useState, useMemo } from "react";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import Image from "react-bootstrap/Image";
-
 import upload from "../../assets/upload.png";
 import styles from "../../styles/ListingCreateEditForm.module.css";
 import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
-
 import { useHistory } from "react-router-dom";
 import { axiosReq } from "../../api/axiosDefaults";
 import Asset from "../../components/Asset";
@@ -24,6 +21,7 @@ function ListingCreateForm() {
   useRedirect("loggedOut");
   const userStatus = useUserStatus();
   const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [selectedImageIdx, setSelectedImageIdx] = useState(null);
 
   const [listingData, setListingData] = useState({
     type: "",
@@ -89,7 +87,6 @@ function ListingCreateForm() {
   const [errors, setErrors] = useState({});
   const imageInput = useRef(null);
   const history = useHistory();
-  const [selectedImageIdx, setSelectedImageIdx] = useState(null);
 
   const handleChange = (e) => {
     setListingData({
@@ -107,44 +104,75 @@ function ListingCreateForm() {
     );
   };
 
-  const handleChangeImage = (e) => {
-    if (e.target.files.length) {
-      URL.revokeObjectURL(listingData.images);
-      setListingData({
-        ...listingData,
-        images: URL.createObjectURL(e.target.files[0]),
-      });
-    }
-  };
+  const imageURLs = useMemo(() => {
+    return listingData.uploaded_images.map((image) => URL.createObjectURL(image.file));
+  }, [listingData.uploaded_images]);
 
+  const handleChangeImage = (e) => {
+    const newFiles = Array.from(e.target.files).map((file, index) => ({
+      file,
+      order: listingData.uploaded_images.length + index,
+    }));
+    setListingData((prevState) => ({
+      ...prevState,
+      uploaded_images: [...prevState.uploaded_images, ...newFiles],
+    }));
+  };
 
   const handleSelectedImage = (index) => {
     if (index !== null) {
-      const imageIndex = index;
       setSelectedImageIdx(index);
-
       setListingData({
         ...listingData,
-        is_first: imageIndex === "" || null ? "0" : imageIndex,
+        is_first: index,
       });
     }
   };
 
+  const handleOrderChange = (index, newOrder) => {
+    const newImages = [...listingData.uploaded_images];
+    const [movedImage] = newImages.splice(index, 1);
+    newImages.splice(newOrder, 0, movedImage);
+
+    // Update order property
+    newImages.forEach((image, idx) => {
+      image.order = idx;
+    });
+
+    setListingData({ ...listingData, uploaded_images: newImages });
+  };
+
+  const handleRemoveImage = (index) => {
+    const newImages = [...listingData.uploaded_images];
+    newImages.splice(index, 1);
+
+    // Update order property
+    newImages.forEach((image, idx) => {
+      image.order = idx;
+    });
+
+    setListingData({ ...listingData, uploaded_images: newImages });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (imageInput.current.files.length === 0) {
       setErrors({ images: ["Please add an image"] });
-      return; // Prevent form submission if no image is selected
+      return;
     }
 
-    if (imageInput.current.files.length !== 0 && (listingData.is_first === undefined || listingData.is_first === null || listingData.is_first === "")) {
+    if (
+      imageInput.current.files.length !== 0 &&
+      (listingData.is_first === undefined ||
+        listingData.is_first === null ||
+        listingData.is_first === "")
+    ) {
       setErrors({ is_first: ["Please select a main image"] });
-      return; // Prevent form submission if is_first is not set
+      return;
     }
 
     const formData = new FormData();
+    // Append listing data fields
     formData.append("type", listingData.type);
     formData.append("sub_type", listingData.sub_type);
     formData.append("sale_type", listingData.sale_type);
@@ -204,25 +232,17 @@ function ListingCreateForm() {
       formData.append("amenities_ids", amenity);
     });
 
-    formData.append("images", imageInput.current.files[0]);
-    // Append the selected images to delete to the form data.
-    if (imageInput.current.files.length > 0) {
-      Array.from(imageInput.current.files).forEach((file) => {
-        formData.append("uploaded_images", file);
-      });
-    } else {
-      setErrors({ images: ["Please add an image"] });
-    }
+    // Append image files with order
+    listingData.uploaded_images.forEach((image) => {
+      formData.append("uploaded_images", image.file);
+      formData.append("image_orders", image.order);
+    });
 
     try {
       const { data } = await axiosReq.post("/listings/", formData);
       history.push(`/listings/${data.id}`);
     } catch (err) {
-      if (err.response?.status === 403) {
-        history.push("/forbidden");
-      } else {
-        setErrors(err.response?.data);
-      }
+      setErrors(err.response?.data || {});
     }
   };
 
@@ -234,67 +254,89 @@ function ListingCreateForm() {
     <Form onSubmit={handleSubmit}>
       <Row>
         <Col className="py-2 p-0">
-          <Container className={`${appStyles.Content} ${styles.Container} d-flex flex-column justify-content-center`}>
+          <Container
+            className={`${appStyles.Content} ${styles.Container} d-flex flex-column justify-content-center`}
+          >
             <Form.Group className="text-center justify-content-between">
-              {listingData.images ? (
+              {listingData.uploaded_images.length ? (
                 <>
-                  <Row>
-                    {Array.from(imageInput.current.files).map((file, idx) => (
-                      <>
-                        <Col md={3} key={file.id}>
-                          <div
-                            className={`my-2 ${styles.ImageWrapper} ${selectedImageIdx === idx ? styles.SelectedImage : ""}`}
-                            onClick={() => handleSelectedImage(idx)}
-                            style={{ cursor: 'pointer' }}>
-                            <figure>
-                              <Image
-                                className={`"my-2 px-2" ${styles.Image}`}
-                                src={URL.createObjectURL(file)}
-                                rounded
-                              />
-                            </figure>
+                  <div
+                    className="image-list"
+                    style={{
+                      display: "flex",
+                      overflowX: "auto",
+                      border: "2px dashed #ccc",
+                      padding: "10px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    {imageURLs.map((image, index) => (
+                      <Row className="justify-content-between mx-2" key={`${image}-${index}`}>
+                        <div
+                          className={`m-2 p-1 ${styles.ImageWrapper} ${selectedImageIdx === index
+                            ? styles.SelectedImage
+                            : ""
+                            }`}
+                          onClick={() => handleSelectedImage(index)}
+                        >
+                          <Image
+                            src={image}
+                            alt={`upload-${index}`}
+                            rounded
+                            style={{ width: "100px", height: "100px" }}
+                          />
+                          <Form.Control
+                            type="number"
+                            value={index}
+                            onChange={(e) =>
+                              handleOrderChange(index, parseInt(e.target.value, 10))
+                            }
+                            min="0"
+                            max={listingData.uploaded_images.length - 1}
+                            className="mt-2 w-75"
+                          />
 
-                            <Form.Check
-                              type="radio"
-                              id={`radio-${idx}`}
-                              name="is_first"
-                              value={listingData.is_first}
-                              checked={selectedImageIdx === idx}
-                              onChange={() => handleSelectedImage(idx)}
-                              style={{ display: 'none' }}
-                            />
-                          </div>
-                        </Col>
-                      </>
+                        </div>
+                        <div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(index)}
+                            className={`${btnStyles.Remove}`}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </Row>
                     ))}
-                  </Row>
-
+                  </div>
                   <div>
-                    <Form.Label className={`${btnStyles.Button} ${btnStyles.Bright} btn`} htmlFor="image-upload">
-                      Change the image
+                    <Form.Label
+                      className={`${btnStyles.Button} ${btnStyles.Bright} btn mt-3`}
+                      htmlFor="image-upload"
+                    >
+                      Add more images
                     </Form.Label>
                   </div>
                 </>
               ) : (
-                <Form.Label className="d-flex justify-content-center" htmlFor="image-upload">
+                <Form.Label
+                  className="d-flex justify-content-center"
+                  htmlFor="image-upload"
+                >
                   <Asset src={upload} message="Click or tap to upload an image" />
                 </Form.Label>
               )}
 
               <input
                 type="file"
-                multiple id="image-upload"
+                multiple
+                id="image-upload"
                 accept="image/*"
                 onChange={handleChangeImage}
                 ref={imageInput}
               />
             </Form.Group>
             {errors?.images?.map((message, idx) => (
-              <Alert variant="warning" key={idx}>
-                {message}
-              </Alert>
-            ))}
-            {errors?.uploaded_images?.map((message, idx) => (
               <Alert variant="warning" key={idx}>
                 {message}
               </Alert>
