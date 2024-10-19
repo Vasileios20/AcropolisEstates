@@ -44,9 +44,7 @@ function App() {
   const [nonEssentialConsent, setNonEssentialConsent] = useState(getCookieConsentValue("nonEssentialCookies") === "true");
   const { t } = useTranslation();
 
-  if (cookieConsent === "false") {
-    setCookieConsent(false);
-  }
+
 
   if (
     path === "/listings/" ||
