@@ -97,7 +97,7 @@ function App() {
                 path="/listings/create"
                 render={() => <ListingCreateForm />}
               />
-              <Route exact path="/listings/:id" render={() => <ListingPage setShowCookieBanner={setShowCookieBanner} />} />
+              <Route exact path="/listings/:id" render={() => <ListingPage setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />} />
               <Route
                 exact
                 path="/listings/:id/edit"

@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { axiosReq } from "../../api/axiosDefaults";
 import Listing from "./Listing";
 
-function ListingPage({ setShowCookieBanner }) {
+function ListingPage({ setShowCookieBanner, nonEssentialConsent }) {
   /**
    * The ListingPage component is a functional component that renders a single listing.
    * It fetches the listing data from the API using the listing id from the URL.
@@ -42,7 +42,7 @@ function ListingPage({ setShowCookieBanner }) {
 
   return (
     <>
-      <Listing {...listing.results[0]} setListings={setListing} listingPage setShowCookieBanner={setShowCookieBanner} />
+      <Listing {...listing.results[0]} setListings={setListing} listingPage setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />
     </>
   );
 }

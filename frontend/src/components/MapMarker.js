@@ -6,7 +6,7 @@ import {
   Map,
 } from "@vis.gl/react-google-maps";
 
-const MapMarker = ({ setShowCookieBanner, ...props }) => {
+const MapMarker = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
   /**
    * The MapMarker component is a functional component that renders a map marker.
    * It receives the following props:
@@ -34,7 +34,7 @@ const MapMarker = ({ setShowCookieBanner, ...props }) => {
 
   return (
     <>
-      {hasCookieConsent() ? (
+      {nonEssentialConsent ? (
         <APIProvider apiKey={API_KEY} libraries={["marker"]}>
           <Map
             mapId={"bf51a910020fa25a"}

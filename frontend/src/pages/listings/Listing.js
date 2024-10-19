@@ -19,7 +19,7 @@ import Table from "react-bootstrap/Table";
 import Card from "react-bootstrap/Card";
 
 
-const Listing = ({ setShowCookieBanner, ...props }) => {
+const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
   const history = useHistory();
   const userStatus = useUserStatus();
   const { t, i18n } = useTranslation();
@@ -270,7 +270,7 @@ const Listing = ({ setShowCookieBanner, ...props }) => {
               <h5 className="ps-2 pb-1">{t("propertiesPage.header2")}</h5>
               <div className={`${styles.AmenitiesBox}`}>{amenitiesList}</div>
             </Col>
-            <Col className="mx-auto my-5">{mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} />}</Col>
+            <Col className="mx-auto my-5">{mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />}</Col>
           </Col>
 
           <Col md={8} lg={4} className="mb-3">
