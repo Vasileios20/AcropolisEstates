@@ -16,7 +16,7 @@ import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import { t } from "i18next";
 import { Helmet } from "react-helmet-async";
 
-const ListingsPage = ({ array, hasLoaded, setListings, listings, message, searchResults, setShowCookieBanner }) => {
+const ListingsPage = ({ array, hasLoaded, setListings, listings, message, searchResults, setShowCookieBanner, nonEssentialConsent }) => {
   // The ListingsPage component is a functional component that renders the listings from the database.
   // It also renders the results of the search bar. The component uses the InfiniteScroll component to
   //  display the listings in an infinite scroll.
@@ -29,14 +29,6 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
     lng: listing.longitude,
   }));
 
-
-  const hasCookieConsent = () => {
-    const cookieConsent = document.cookie;
-    if (cookieConsent === "nonEssentialCookies=true") {
-      return true;
-    }
-    return false;
-  };
 
   const listingMapMarkers = latLng.map((listing, index) => (
     <AdvancedMarker key={index} position={listing} />
@@ -124,7 +116,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
             </Container>
           </Col>
           <Col sm={12} lg={4} className="d-none d-xl-block ps-1">
-            {hasCookieConsent() ? (
+            {nonEssentialConsent ? (
               <APIProvider apiKey={API_KEY}>
                 <Map
                   mapId={"bf51a910020fa25a"}

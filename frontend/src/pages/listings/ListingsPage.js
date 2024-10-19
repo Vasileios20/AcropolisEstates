@@ -3,7 +3,7 @@ import ListingsComponent from "../../components/Listings";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-function ListingsPage({ setShowCookieBanner }) {
+function ListingsPage({ nonEssentialConsent, setShowCookieBanner }) {
   /**
    * The ListingsPage component is a functional component that renders the listings page of the application.
    * It uses the useFetchListings hook to fetch the listings from the API.
@@ -53,6 +53,7 @@ function ListingsPage({ setShowCookieBanner }) {
         message={message}
         searchResults={searchResults}
         setShowCookieBanner={setShowCookieBanner}
+        nonEssentialConsent={nonEssentialConsent}
       />
     </>
   );
