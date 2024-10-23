@@ -319,12 +319,12 @@ useUserStatus.js: to get user status to determine what functionality is availabl
 
 ### Languages Used
 
-Python
+Python, Javascript, CSS, HTML
 
 ### Frameworks, Libraries & Programs Used
 
 * Databases Used
-  * [ElephantSQL](https://www.elephantsql.com/)
+  * [Aiven](https://aiven.io/)
 
 #### Frameworks Used
 
@@ -346,7 +346,7 @@ Python
 * [djangorestframework-simplejwt](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/) -provides a JSON Web Token authentication backend for the Django REST Framework.
 HTML, CSS, JS
 
-### Frameworks, Libraries & Programs Used
+#### Front End
 
 * [React](https://legacy.reactjs.org/docs/getting-started.html) Javascript library for building the component based UI and avoiding having to refresh to display dynamic content
 * [ESLint](https://eslint.org/) Linter for error checking and syntax analysis
@@ -358,14 +358,13 @@ HTML, CSS, JS
 * [Cloudinary](https://cloudinary.com/) - To host images
 * [React google maps](https://visgl.github.io/react-google-maps/) - To render maps with listing's pinned location
 * [i18next](https://www.i18next.com/) - To load English and Greek translation
-* [React cookie consent](https://www.npmjs.com/package/react-cookie-consent)- To get user's consent to load google maps 
+* [React cookie consent](https://www.npmjs.com/package/react-cookie-consent)- To get user's consent to load google maps
 * [React phone number input](https://www.npmjs.com/package/react-phone-number-input) - To format and validate phone field
 
 #### Programs Used
 
 * [GitHub](https://github.com/) - To save and store files for the website.
 * [VSCode](https://code.visualstudio.com/) - Code editor used for local development.
-* [GitPod](https://gitpod.io/) - IDE used to create the site.
 * [DBdiagram](/https://dbdiagram.io/home) - To create database diagrams.
 * [TinyPNG](https://tinypng.com/) - To reduce size of the images.
 * [Shields IO](https://shields.io/) - To add badges to README.
@@ -375,10 +374,7 @@ HTML, CSS, JS
 * [Google Developer Tools](https://developer.chrome.com/docs/) - To test features, resposiveness and stylilng.
 * [TinyPNG](https://tinypng.com/) - To reduce size of the images.
 * [Favicon](https://favicon.io/) - To create favicon.
-* [Shields IO](https://shields.io/) - To add badges to README.
-* [Obsidian](https://code.visualstudio.com/) - To keep notes.
 * [Coolors](https://coolors.co/) - To create palette image to README.
-* [Canva](https://www.canva.com/)
 
 ## Testing
 
