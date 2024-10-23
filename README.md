@@ -1,16 +1,12 @@
-# CB Real Estate
+# Acropolis Estate
 
-![Home Page](documentation/features/Home.png)
+Acropolis Estates represents the culmination of my efforts during the final project for Code Institute, now live as a website after combining two repositories into one. Acropolis Estates Ltd has acquired the project, and it serves as a dynamic platform designed for further development and potential client adoption. Focused on real estate, the site empowers users to effortlessly search for their next home, office space, or the ideal plot of land for construction. Currently, property uploads, updates, and deletions are restricted to administrators, ensuring quality control as per the client's request for a simpler version without user signup. As the project evolves, Acropolis Estates aims to provide an enriched and intuitive platform for users to explore and engage with the real estate market.
 
-CB Real Estate represents the culmination of my efforts during the final project for Code Institute, serving as a dynamic platform designed for further development and potential client adoption. Focused on real estate, the site empowers users to effortlessly search for their next home, office space, or the ideal plot of land for construction. The inclusion of user accounts allows individuals to curate a personalized wishlist, tracking properties of interest, and facilitating seamless communication through a user-friendly contact form. Currently, property uploads are restricted to administrators, ensuring quality control, but the future vision includes the possibility for registered agents to contribute their listings. As the project evolves, CB Real Estate aims to provide an enriched and intuitive platform for users to explore and engage with the real estate market.
+Deployed Heroku: [Acropolis Estates Heroku](https://acropolis-estates-125129ef2077.herokuapp.com/)
 
-Deployed API Heroku: [API link](https://re-drf-api-f69fb4705742.herokuapp.com/)
+Custom domain: [Acropolis Estates](https://www.acropolisestates.com/)
 
-Deployed Frontend Heroku: [CB Real Estate](https://re-real-estate-ecc213881132.herokuapp.com/)
-
-Backend Github [Repository](https://github.com/Vasileios20/drf-real-estate)
-
-Frontend Github [Repository](https://github.com/Vasileios20/real-estate)
+Github [Repository](https://github.com/Vasileios20/AcropolisEstates)
 
 ![GitHub contributors](https://img.shields.io/badge/CONTRIBUTORS-1-<RED>)
 
@@ -32,11 +28,11 @@ Frontend Github [Repository](https://github.com/Vasileios20/real-estate)
 * [User Stories](#user-stories)
 * [Features](#features)
   * [Navigation Bar](#navigation-bar)
-    * [Navigation Bar (logged in)](#navigation-bar-logged-in)
     * [Navigation Bar (Admin)](#navigation-bar-admin-user)
   * [Footer](#footer)
   * [Home Page](#home-page)
   * [About Page](#about-page)
+  * [Services Pages](#services-pages)
   * [Contact us Page](#contact-page)
   * [Listings Page](#listings-page)
   * [Listing Page](#listing-page)
@@ -47,7 +43,6 @@ Frontend Github [Repository](https://github.com/Vasileios20/real-estate)
     * [Message Page](#message-page)
   * [Sign in Page](#sign-in-page)
   * [Signup Page](#sign-up-page)
-  * [Wishlist Page](#wishlist-page)
   * [Profile Page](#profile-page)
     * [Edit Profile](#edit-profile-page)
     * [Change username](#change-username-page)
@@ -58,13 +53,7 @@ Frontend Github [Repository](https://github.com/Vasileios20/real-estate)
 * [Technologies Used](#technologies-used)
   * [Languages Used](#languages-used)
   * [Frameworks, Libraries & Programs Used](#frameworks-libraries--programs-used)
-* [Deployment and Local Development](#deployment-and-local-development)
-  * [Local Development](#local-development)
-    * [How to fork](#how-to-fork)
-    * [How to clone](#how-to-clone)
-    * [Deployment](#deployment)
 * [Testing](#testing)
-* [Credits](#credits)
 
 ### User Stories
 
@@ -78,9 +67,9 @@ I have created tasks and included links to the [GitHub Issues](https://github.co
 
 ### Colour Scheme
 
-![Colout pallete](/documentation/CB.png)
+![Colour pallete](/documentation/AcropolisEstates.png)
 
-The main 2 colours (#b0b000 and #606000) have been chosen to match the logo.
+Colors chosen by client.
 
 ### Typography
 
@@ -146,35 +135,31 @@ its readability and it's a web friendly font.
 
 ### Site Purpose
 
-The primary purpose of CB Real Estate is to provide a comprehensive and user-friendly online platform for individuals seeking real estate opportunities. Whether users are looking for a new residence, office space, or land for development, the site aims to facilitate a seamless and efficient search experience.
+The primary purpose of Acropolis Estates is to provide a comprehensive and user-friendly online platform for individuals seeking real estate opportunities. Whether users are looking for a new residence, office space, or land for development, the site aims to facilitate a seamless and efficient search experience.
 
 ### Site Goal
 
-CB Real Estate strives to become a go-to destination for real estate exploration, connecting users with their ideal properties. The overarching goal is to establish a reliable and engaging platform that not only meets current user needs but also anticipates and adapts to evolving real estate trends.
+Acropolis Estates strives to become a go-to destination for real estate exploration, connecting users with their ideal properties. The overarching goal is to establish a reliable and engaging platform that not only meets current user needs but also anticipates and adapts to evolving real estate trends.
 
 ### Audience
 
-The target audience for CB Real Estate includes individuals in search of residential properties, commercial spaces, and land for development. Additionally, the site caters to registered users interested in building personalized wishlists, fostering engagement and loyalty.
+The target audience for Acropolis Estates includes individuals in search of residential properties, commercial spaces, and land for development.
 
 ### Communication
 
-The site communicates property listings, features, and functionalities clearly and concisely to users. Through an intuitive interface, CB Real Estate aims to convey information effectively, ensuring a positive and informative user experience. Regular updates and notifications contribute to ongoing communication with users.
+The site communicates property listings, features, and functionalities clearly and concisely to users. Through an intuitive interface, Acropolis Estates aims to convey information effectively, ensuring a positive and informative user experience. Regular updates and notifications contribute to ongoing communication with users.
 
 ### Current User Goals
 
-Existing users on CB Real Estate aspire to efficiently search and find properties that align with their needs. They also seek to manage and curate personalized wishlists, making the platform a valuable tool in their real estate journey. Clear communication channels, such as the contact form, facilitate inquiries and engagement.
+Existing users on Acropolis Estates aspire to efficiently search and find properties that align with their needs. Clear communication channels, such as the contact form, facilitate inquiries and engagement.
 
 ### New User Goals
 
-New users are expected to explore the site with ease, understanding its features and functionalities. Their primary goals include discovering available properties, understanding the wishlist feature, and initiating communication through the contact form. A seamless onboarding process is crucial to ensure positive initial interactions.
+New users are expected to explore the site with ease, understanding its features and functionalities. Their primary goals include discovering available properties and initiating communication through the contact form. A seamless onboarding process is crucial to ensure positive initial interactions.
 
 ### Future Goals
 
-CB Real Estate's future goals include expanding its user base by potentially allowing agents to register and contribute property listings. The site aims to enhance its functionality to accommodate a broader range of real estate needs and evolving market demands. Continued improvements in user experience and feature development are key aspects of the platform's ongoing evolution.
-
-## User Stories
-
-I have included links to the [GitHub Issues](https://github.com/Vasileios20/real-estate/issues) for this project, as well as the [KANBAN board](https://github.com/users/Vasileios20/projects/6).
+Acropolis Estates's future goals include expanding its user base by potentially allowing agents to register and contribute property listings. The site aims to enhance its functionality to accommodate a broader range of real estate needs and evolving market demands. Continued improvements in user experience and feature development are key aspects of the platform's ongoing evolution.
 
 ## Features
 
@@ -184,31 +169,35 @@ All pages on the site are responsive and have :
 
 * ### Navigation Bar
 
-Site user [navbar](/documentation/features/Navbar.png) contains the logo (acts as home button), Home, About, Contact us,
-Listings, Sign in and Sign up
-
-* #### Navigation Bar (logged in)
-
-Logged in user [navbar](/documentation/features/Navbar(logged_in).png) contains the logo (acts as home button), Home, About, Contact us,
-Listings, Wishlist and Sign out .
+Site user [navbar](/documentation/features/Navbar.png) contains the logo (acts as home button), Home, About, Services dropdown menu and Contact us
 
 * #### Navigation Bar (Admin user)
 
-Admin user [navbar](/documentation/features/Navbar(Admin).png) contains the logged in icons plus the Add listing and Messages.
+Admin user [navbar](/documentation/features/AdminNavbar.png) contains the logged in icons plus the Add listing and Messages.
 
 * ### Footer
 
-The [Footer](/documentation/features/Footer.png) displays links for the About us, Contact and Listings. It also displays Github and Linkedin icons.
+The [Footer](/documentation/features/Footer.png) displays links for the About us, Contact and Listings(Properties) - Facebook, Instagram and Linkedin icons. At the bottom there are the privacy policy and terms & conditions.
 
 ___
 
 ### Home Page
 
-The [Home Page](/documentation/features/Home_Page.png) displays the search bar and information about the website.
+The [Home Page](/documentation/features/Home_Page.png) contains 3 full screen hero images, rotated in a carusel, in the center of the iamges displays the search bar. Scrolling down there is some info about the website and 4 cards with the services (Asset Management, Advisory, Valuation and Listings(Properties)). At the bottom of the page displays 4 featured listings.
 
 ### About Page
 
-The [About Page](/documentation/features/About_Page.png) displays the search bar and about CB Real Estate's mission and values.
+The [About Page](/documentation/features/About.mp4) displays a full screen hero image and Acropolis Estates's mission and values.
+
+### Services Pages
+
+All services page display a full screen hero image and bellow content regarding the service
+
+[Asset Management Page](/documentation/features/AssetMGM.mp4)
+
+[Advisory Page](/documentation/features/Advisory.mp4)
+
+[Valuation Page](/documentation/features/Valuation.mp4)
 
 ### Contact Page
 
@@ -216,12 +205,11 @@ The [Contact Page](/documentation/features/Contact_us_Page.png) displays a conta
 
 ### Listings Page
 
-The [Listings Page](/documentation/features/Listings_Page.png) displays the search bar and the listings in a container with infinite scroll.
+The [Listings Page](/documentation/features/Listings.mp4) displays the search bar, the listings in a container with infinite scroll and in screens with more than 1200px a google map frame with pins of each listing.
 
 ### Listing Page
 
-  The Listing Page displays the listing's images [on top of the page](/documentation/features/Listing_Page(1).png) in a carusel, when hovered over image a tooltip with a message to click on image for larger view, the [listing's features bellow](/documentation/features/Listing_Page(2).png) and a button to add to or remove from wishlist.
-  If user is not logged in will and try to add to list will be redirected to sign in page.
+  The [Listing Page](/documentation/features/Listing.mp4) displays the listing's 5 first images images on top of the page for large screens and in a carusel for small screens, when hovered over image a tooltip with a message to click on image for larger view, the listing's features bellow, a contact form on the right hand of the screen and a google maps frame with listing's pin location.
   
 #### Images Modal
 
@@ -229,10 +217,25 @@ The [Listings Page](/documentation/features/Listings_Page.png) displays the sear
 
 ### Add Listing Page
 
-  The Add Listing Page ([1](/documentation/features/Add_listing(1).png), [2](/documentation/features/Add_listing(2).png),
-  [3](/documentation/features/Add_listing(3).png)) contains a form with fields to upload images, type, sale_type, description,
-  address_number,address_street, postcode, city, price, surface, levels, bedrooms, floor, kitchens, bathrooms,
-  living_rooms, heating_system, energy_class, construction_year, availability.
+  The Add Listing Page contains a form with fields to:
+
+* upload images - choose which to be the first image and the order of the images when rendered
+* Basic info - type, sale_type, subtype, currency, price, availability and description
+* Address information - address_number,address_street, postcode, municipality, region, latitude, longitude
+  
+  When type Land has been selected
+  * Land Technical section fields - land area, cover coeficcient, building coefficient, length of facade, orienation, view, slope, zone, distance from sea, power type and heating system.
+
+  When type Commercial has been selected
+  * Commercial Features section - floor area, land area, levels, floor level, WC, bathrooms,
+  rooms, heating system, energy class, power type and year built.
+  
+  When type Residential has been selected
+
+  * floor area, land area, levels, bedrooms, floor level, kitchens, WC, bathrooms,
+  living rooms, heating system, power type, energy class, floor type, glass type, opening frames, year built, service charges
+
+  For each selection there the listing amenities with checkboxes for the user to select.
 
 ### Edit Listing Page
 
@@ -255,13 +258,6 @@ The [Sign in Page](/documentation/features/Sign_in.png) displays the Sign in for
 ### Sign up Page
 
 The [Signup Page](/documentation/features/Sign_up.png) displays the sign up form, an image on the rigt and a link to sign in page.
-
-### Wishlist Page
-
-Only registered users can visit the wishlist page.
-
-The [Wishlist Page](/documentation/features/Wishlist_Page.png) displays the search bar and a list of the user's list of properties added
-or a message "Your list is empty".
 
 ### Profile Page
 
@@ -360,6 +356,10 @@ HTML, CSS, JS
 * [React Router](https://v5.reactrouter.com/web/guides/quick-start) Used to dynamically load pages and aid site navigation for the user.
 * [jwt-decode](https://www.npmjs.com/package/jwt-decode) A browser library that helps decoding JWT's token
 * [Cloudinary](https://cloudinary.com/) - To host images
+* [React google maps](https://visgl.github.io/react-google-maps/) - To render maps with listing's pinned location
+* [i18next](https://www.i18next.com/) - To load English and Greek translation
+* [React cookie consent](https://www.npmjs.com/package/react-cookie-consent)- To get user's consent to load google maps 
+* [React phone number input](https://www.npmjs.com/package/react-phone-number-input) - To format and validate phone field
 
 #### Programs Used
 
@@ -378,386 +378,8 @@ HTML, CSS, JS
 * [Shields IO](https://shields.io/) - To add badges to README.
 * [Obsidian](https://code.visualstudio.com/) - To keep notes.
 * [Coolors](https://coolors.co/) - To create palette image to README.
-* [Canva](https://www.canva.com/) - To create the logo
-
-## Deployment and Local Development
-
-### Local Development
-
-When in development:
-run first ```nvn use 16.20.2``` to use this version of Node
-run ```npm start``` to start the app
-
-#### How to fork
-
-To fork the repository :
-
-1. Log in (sign up) to GitHub.
-2. Go to the repository for this project [drf-real-estate](https://github.com/Vasileios20/drf-real-estate).
-2. Go to the repository for this project [real-estate](https://github.com/Vasileios20/real-estate)
-3. Click the fork button in the top right corner.
-
-#### How to clone
-
-To clone the repository :
-
-1. Log in (sign up) to GitHub.
-2. Go to the repository for this project [drf-real-estate](https://github.com/Vasileios20/drf-real-estate).
-2. Go to the repository for this project [real-estate](https://github.com/Vasileios20/real-estate)
-3. Click on the code button, select one of the HTTPS, SSH or GitHub CLI and copy the link shown.
-4. Open the terminal in your code editor and change the current working directory to the location you want to use for the cloned directory.
-5. Type 'git clone' into the terminal and then paste the link you copied in step 3. Press enter.
-
-### Deployment
-
-The site has been deployed using Heroku. Deployed [API link](https://re-drf-api-f69fb4705742.herokuapp.com/).
-
-I have used VSCode for developement so I'll describe the steps I took.
-
-Follow these steps:
-
-#### ElephantSQL
-
-If you don't already have an account to ElephantSQL, create one [here](https://www.elephantsql.com).
-
-* Create an external database with
-
-  * Log into ElephantSQL
-  * Click "Create New Instance"
-  * Set up a plan by giving a Name and selecting a Plan
-  * Click "Select Region" and choose a Data center
-  * Click "Review", check all details and click "Create Instance"
-  * Return to the Dashboard and click on the database instance name
-  * Copy the database URL
-
-* Create a new repository
-* Clone the repository from VSCode
-* In VSC open the terminal and install the following using the ```pip install``` command.
-
-```text
-'django<4'
-django-cloudinary-storage==0.3.0
-Pillow==8.2.0
-djangorestframework
-django-filter
-dj-rest-auth
-'dj-rest-auth[with_social]'
-djangorestframework-simplejwt
-dj_database_url psycopg2
-gunicorn
-django-cors-headers
-```
-
-* Create a Django project
-
-```text
-django-admin startproject project_name .
-```
-
-The site has been deployed using Heroku. Deployed site [CB Real Estate](https://re-real-estate-ecc213881132.herokuapp.com/). Follow these steps:
-
-I have used VSCode with [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) for developement so I'll describe the steps I took.
-
-* Create the repository.
-* On VScode connect to WSL.
-  * Clone the repository
-* Run the command ```npx create-react-app . --use-npm```
-* After it has finished run the command ```npm start``` to check if the app is working.
-* Git add, commit and push.
-
-#### Add the Herolu deployment commands
-
-In package.json file, in the “scripts” section, add the following prebuild command:
-
-```"heroku-prebuild": "npm install -g serve",```
-
-This will install a package needed to serve our single page application on heroku
-
-Add a Procfile at the root of the project with the following web command:
-
-```web: serve -s build```
-
-#### Connect to the API
-
-Navigate to the Heroku app of the project DRF-API, and under the Settings tab, add the following configvars:
-
-|KEY|VALUE|
-|--|--|
-|CLIENT_ORIGIN | <https://your-react-app-name.herokuapp.com>*|
-|CLIENT_ORIGIN_DEV | <https://gitpod-browser-link.ws-eu54.gitpod.io>*|
-
-*Check that the trailing slash \ at the end of both links has been removed.
-
-#### Heroku App
-
-If you don't already have an account to Heroku, create one [here](https://www.heroku.com/).
-
-* Create Heroku app
-  * Go to the Heroku dashboard and click the "Create new app" button.
-  * Name the app. Each app name on Heroku has to be unique.
-  * Then select your region.
-  * And then click "Create app".
-
-* In the IDE file explorer or terminal
-  * Create new env.py file on top level directory
-
-* In env.py
-  * Import os library
-  * Set environment variables
-  * Add database url
-  * Add in secret key
-
-```python
-import os
-
-os.environ['DEV'] = '1'
-os.environ["DATABASE_URL"] = "Paste in ElephantSQL database URL"    
-os.environ["SECRET_KEY"] = "Make up your own randomSecretKey"    
-os.environ["CLOUDINARY_URL"] = "Paste in the API Environment variable"
-```
-  
-If you don't already have an account to Cloudinary, create one [here](https://cloudinary.com/).
-
-* Cloudinary
-  * Go to the Cloudinary dashboard and copy the API Environment variable.
-  * Paste in env.py variable CLOUDINARY_URL(see above)
-
-* In settings.py and to the INSTALLED_APPS add :
-
-```python
-'cloudinary_storage',
-'django.contrib.staticfiles',
-'cloudinary',
-'rest_framework',
-'django_filters',
-'rest_framework.authtoken',
-'dj_rest_auth',
-'django.contrib.sites',
-'allauth',
-'allauth.account',
-'allauth.socialaccount',
-'dj_rest_auth.registration',
-'corsheaders',
-```
-
-* Import the database, the regular expression module & the env.py
-
-```python
-import dj_database_url
-import re
-import os
-if os.path.exists('env.py')
-    import env
-Below the import statements, add the following variable for Cloudinary:
-CLOUDINARY_STORAGE = {
-    'CLOUDINARY_URL': os.environ.ger('CLOUDINARY_URL')
-}
-
-MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinartStorage'
-```
-
-* Below INSTALLED_APPS, set site ID:
-
-```python
-SITE_ID = 1
-```
-
-* Below BASE_DIR, create the REST_FRAMEWORK, and include page pagination to improve app loading times, pagination count, and date/time format:
-
-```python
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [(
-        'rest_framework.authentication.SessionAuthentication'
-        if 'DEV' in os.environ
-        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-    )],
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'DATETIME_FORMAT': '%d %b %Y',
-}
-```
-
-* Set the default renderer to JSON:
-
-```python
-if 'DEV' not in os.environ:
-    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
-        'rest_framework.renderers.JSONRenderer',
-    ]
-```
-
-* Beneath that, add the following:
-
-```python
-REST_USE_JWT = True
-JWT_AUTH_SECURE = True
-JWT_AUTH_COOKIE = 'my-app-auth'
-JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
-JWT_AUTH_SAMESITE = 'None'
-```
-
-* Then add:
-
-```python
-REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'project_name.serializers.CurrentUserSerializer'
-}
-```
-
-* Update DEBUG variable to:
-
-```python
-DEBUG = 'DEV' in os.environ
-```
-
-* Update the DATABASES variable to:
-
-```python
-DATABASES = {
-    'default': ({
-       'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    } if 'DEV' in os.environ else dj_database_url.parse(
-        os.environ.get('DATABASE_URL')
-    )
-    )
-}
-```
-
-* Add the Heroku app to the ALLOWED_HOSTS variable:
-
-```python
-os.environ.get('ALLOWED_HOST'),
-'localhost',
-```
-
-* Below ALLOWED_HOST, add the CORS_ALLOWED variable:
-
-```python
-if 'CLIENT_ORIGIN' in os.environ:
-    CORS_ALLOWED_ORIGINS = [
-        os.environ.get('CLIENT_ORIGIN')
-    ]
-
-if "CLIENT_ORIGIN_DEV" in os.environ:
-    extracted_url = re.match(
-        r"^.+-", os.environ.get("CLIENT_ORIGIN_DEV", ""), re.IGNORECASE
-    )
-    CORS_ALLOWED_ORIGIN_REGEXES = [
-        r"^http:\/\/localhost:*([0-9]+)?$",
-    ]
-```
-
-* Also add to the top of MIDDLEWARE:
-
-```python
-'corsheaders.middleware.CorsMiddleware',
-```
-
-Final requirements:
-
-* Create a Procfile, & add the following two lines:
-
-```text
-release: python manage.py makemigrations && python manage.py migrate
-web: gunicorn project_name.wsgi
-```
-
-* Migrate the database:
-
-```text
-python3 manage.py makemigrations
-python3 manage.py migrate
-```
-
-* Freeze requirements:
-
-```text
-pip3 freeze --local > requirements.txt
-```
-
-* In heroku app
-  * Go to the settings tab.
-  * In the settings click the button "Reveal Config Vars".
-  * Click Add and use
-
-    |KEY|VALUE|
-    |--|--|
-    |DATABASE_URL|Paste in ElephantSQL database URL|
-    |SECRET_KEY|Your own randomSecretKey|
-    |CLOUDINARY_URL|Paste in the API Environment variable|
-    |ALLOWED HOST|api-app-name.herokuapp.com|
-    |CLIENT_ORIGIN | <https://your-react-app-name.herokuapp.com>*|
-    |CLIENT_ORIGIN_DEV | <https://gitpod-browser-link.ws-eu54.gitpod.io>*|
-
-    *Check that the trailing slash \ at the end of both links has been removed.
-
-* In heroku app
-  * Go to the deploy tab.
-  * Choose the deployment method.
-  * Select Github, and confirm to connect to Github.
-  * Search for the Github repository name.
-  * Then click "connect".
-  * Scroll down and click "Deploy Branch".
+* [Canva](https://www.canva.com/)
 
 ## Testing
 
 Please see [Testing](TESTING.md)
-
-## Credits
-
-### Code Used
-
-[Code Institute's](https://codeinstitute.net/) - Walkthrough project Django REST Framework
-
-[Stackoverflow](https://stackoverflow.com/questions/72353753/django-rest-upload-multiple-images) to implement multiple images upload.
-
-[Stackoverflow](https://stackoverflow.com/questions/72353753/django-rest-upload-multiple-images) to implement multiple images edit.
-
-[Stackoverflow](https://stackoverflow.com/questions/66060744/django-admin-form-process-file-upload-inmemoryuploadedfile-object-has-no-attr) to validate images
-
-[Django-filter](https://django-filter.readthedocs.io/en/latest/guide/rest_framework.html#adding-a-filterset-with-filterset-class)
-
-### Media
-
-[Code Institute's](https://codeinstitute.net/) - Walkthrough project Moments
-
-[React docs](https://legacy.reactjs.org/docs/getting-started.html)
-
-[ScrollToTop](https://www.geeksforgeeks.org/how-to-create-a-scroll-to-top-button-in-react-js/)$^1$
-
-[ScrollToTop](https://dev.to/kunalukey/scroll-to-top-when-route-changes-reactjs-react-router-3bgn)$^2$
-
-[Stackoverflow](https://stackoverflow.com/) - For varius enquries I had
-
-[delete images](https://stackoverflow.com/a/61987030/21953029) - This answer helped me to find another solution to delete images as my initial implementation wouldn't work as expected.
-
-[stackoverflow](https://stackoverflow.com/questions/53949393/cant-perform-a-react-state-update-on-an-unmounted-component) - To fix warning for unmounted component.
-
-### Media
-
-403 and 404 error pages images [drlinkcheck](https://www.drlinkcheck.com/blog/free-http-error-images)
-
-[upload image](https://codeinstitute.s3.amazonaws.com/AdvancedReact/upload.png) - To use it to the ListinCreateForm and ListinEditForm
-
-[signIn image](https://www.freepik.com/free-photo/hand-presenting-model-house-home-loan-campaign_15667726.htm#fromView=search&page=1&position=1&uuid=5b4895ad-3e02-4d5e-82b7-75a26ce1959) - Image by rawpixel.com on Freepik
-
-[signUp image](https://www.freepik.com/free-photo/woman-showing-with-one-hand-mini-house-real-state-concept-ai-generative_41954006.htm#fromView=search&page=1&position=51&uuid=e3c74710-bc46-413c-992b-e1187508f5fc) - Image by chandlervid85 on Freepik
-
-[listing image 1](https://www.freepik.com/free-photo/modern-kitchen-interior-bright-colors_31023435.htm#fromView=search&page=1&position=15&uuid=28c86659-c683-4859-bb88-ebc92f29cc57) - Image by wirestock on Freepik
-
-[listing image 2](https://www.freepik.com/free-photo/modern-empty-room_94962432.htm#fromView=search&page=1&position=24&uuid=28c86659-c683-4859-bb88-ebc92f29cc57) -Image by Freepik
-
-[listing image 3](https://www.freepik.com/free-photo/room-interior-design_13195305.htm#fromView=search&page=1&position=2&uuid=28c86659-c683-4859-bb88-ebc92f29cc57) - Image by Freepik
-
-[listing image 4](https://www.freepik.com/free-photo/room-interior-design_13195299.htm#fromView=search&page=1&position=1&uuid=28c86659-c683-4859-bb88-ebc92f29cc57) - Image by Freepik
-
-### Aknowledgments
-
-My mentor [Lauren-Nicole](https://github.com/CluelessBiker) for guidance, support and feedback during the project.
-
-[Kera Cudmore](https://github.com/kera-cudmore) for feedback and support during the project. Also for providing an excellent guide how to write the README.
-
-And the tutors from Code Institute that helped me overcome the issues that I faced with the project.
