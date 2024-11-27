@@ -169,7 +169,7 @@ All pages on the site are responsive and have :
 
 * ### Navigation Bar
 
-Site user [navbar](/documentation/features/Navbar.png) contains the logo (acts as home button), Home, About, Services dropdown menu and Contact us
+Site user [navbar](/documentation/features/Navbar.png) contains the logo (acts as home button), Home, About, Services dropdown menu, Contact us and options (flag icons) for Greek or English language.
 
 * #### Navigation Bar (Admin user)
 
@@ -219,18 +219,18 @@ The [Listings Page](/documentation/features/Listings.mp4) displays the search ba
 
   The Add Listing Page contains a form with fields to:
 
-* upload images - choose which to be the first image and the order of the images when rendered
-* Basic info - type, sale_type, subtype, currency, price, availability and description
-* Address information - address_number,address_street, postcode, municipality, region, latitude, longitude
+* [Upload images](/documentation/features/Add_images_order.png) - choose which to be the first image and the order of the images when rendered
+* [Basic info](/documentation/features/basic_info.png) - type, sale_type, subtype, currency, price, availability and description
+* [Address information](/documentation/features/address_info.png) - address_number,address_street, postcode, municipality, region, latitude, longitude
   
-  When type Land has been selected
+  When type [Land](/documentation/features/AddLand.mp4) has been selected
   * Land Technical section fields - land area, cover coeficcient, building coefficient, length of facade, orienation, view, slope, zone, distance from sea, power type and heating system.
 
-  When type Commercial has been selected
+  When type [Commercial](/documentation/features/AddCommercial.mp4) has been selected
   * Commercial Features section - floor area, land area, levels, floor level, WC, bathrooms,
   rooms, heating system, energy class, power type and year built.
   
-  When type Residential has been selected
+  When type [Residential](/documentation/features/AddResidential.mp4) has been selected
 
   * floor area, land area, levels, bedrooms, floor level, kitchens, WC, bathrooms,
   living rooms, heating system, power type, energy class, floor type, glass type, opening frames, year built, service charges

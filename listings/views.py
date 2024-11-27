@@ -59,7 +59,8 @@ class ListingList(generics.ListCreateAPIView):
     parser_classes = [MultiPartParser, FormParser]
     filterset_class = ListingFilter
     search_fields = [
-        "city",
+        "municipality",
+        "county",
         "postcode",
         "address_street",
     ]
@@ -82,7 +83,8 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
 
     search_fields = [
         "agent_name__username",
-        "city",
+        "municipality",
+        "county",
         "price",
         "postcode",
         "sale_type",
