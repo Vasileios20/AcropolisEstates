@@ -22,7 +22,7 @@ from .views import logout_route, get_user_status
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     path("api/user_status/", get_user_status),
-    path("api/admin/", admin.site.urls),
+    path("admin/", admin.site.urls),
     path("api/api-auth/", include("rest_framework.urls")),
     path("api/dj-rest-auth/logout/", logout_route),
     path("api/dj-rest-auth/", include("dj_rest_auth.urls")),
