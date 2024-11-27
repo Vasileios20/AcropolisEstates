@@ -60,9 +60,12 @@ class ListingList(generics.ListCreateAPIView):
     filterset_class = ListingFilter
     search_fields = [
         "municipality",
+        "municipality_gr",
         "county",
+        "county_gr",
         "postcode",
         "address_street",
+        "address_street_gr",
     ]
 
     def perform_create(self, serializer):
@@ -84,7 +87,9 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
     search_fields = [
         "agent_name__username",
         "municipality",
+        "municipality_gr",
         "county",
+        "county_gr",
         "price",
         "postcode",
         "sale_type",
