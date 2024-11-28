@@ -64,8 +64,6 @@ class ListingList(generics.ListCreateAPIView):
         "county",
         "county_gr",
         "postcode",
-        "address_street",
-        "address_street_gr",
     ]
 
     def perform_create(self, serializer):
