@@ -119,12 +119,12 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           { label: t("propertyDetails.price"), value: `${currency} ${priceValue}` },
           { label: t("propertyDetails.floorArea"), value: `${floor_area} m²` },
           { label: t("propertyDetails.landArea"), value: land_areaValue },
+          { label: t("propertyDetails.floorLevel"), value: props.type === "residential" && props.sub_type !== "maisonette" ? floorValue : t("propertyDetails.floorValue.ground") },
           { label: t("propertyDetails.bedrooms"), value: bedrooms },
           { label: t("propertyDetails.kitchens"), value: kitchens },
           { label: t("propertyDetails.bathrooms"), value: bathrooms },
           { label: t("propertyDetails.wc"), value: wc },
           { label: t("propertyDetails.livingRooms"), value: living_rooms },
-          { label: t("propertyDetails.floorLevel"), value: floorValue },
           { label: t("propertyDetails.levels"), value: levels },
           {
             label: t("propertyDetails.heating_system.title"), value: t(`propertyDetails.heating_system.${heating_system}`)
@@ -135,7 +135,6 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           { label: t("propertyDetails.yearBuilt"), value: construction_year },
           { label: t("propertyDetails.serviceCharge"), value: `${currency} ${service_charge}` },
           { label: t("propertyDetails.availability"), value: availability },
-          { label: t("propertyDetails.propertyId"), value: `AE000${id}` },
         ].map((feature, index) => (
           <tr key={index}>
             <td className={styles.tdWidth}>{feature.label}</td>
@@ -161,7 +160,6 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           { label: t("propertyDetails.slopeTypes.title"), value: t(`propertyDetails.slopeTypes.${slope}`) },
           { label: t("propertyDetails.distanceFromSea"), value: `${distance_from_sea} m` },
           { label: t("propertyDetails.availability"), value: availability },
-          { label: t("propertyDetails.propertyId"), value: `AE000${id}` },
         ].map((feature, index) => (
           <tr key={index}>
             <td className={styles.tdWidth}>{feature.label}</td>
@@ -178,9 +176,9 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
         {[
           { label: t("propertyDetails.price"), value: `${currency} ${priceValue}` },
           { label: t("propertyDetails.floorArea"), value: `${floor_area} m²` },
-          { label: t("propertyDetails.landArea"), value: land_area },
-          { label: t("propertyDetails.levels"), value: levels },
+          { label: t("propertyDetails.landArea"), value: `${land_area}  m²` },
           { label: t("propertyDetails.floorLevel"), value: floorValue },
+          { label: t("propertyDetails.levels"), value: levels },
           { label: t("propertyDetails.rooms"), value: rooms },
           { label: t("propertyDetails.bathrooms"), value: bathrooms },
           { label: t("propertyDetails.wc"), value: wc },
@@ -192,7 +190,6 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           { label: t("propertyDetails.yearBuilt"), value: construction_year },
           { label: t("propertyDetails.serviceCharge"), value: `${currency} ${service_charge}` },
           { label: t("propertyDetails.availability"), value: availability },
-          { label: t("propertyDetails.propertyId"), value: `AE000${id}` },
         ].map((feature, index) => (
           <tr key={index}>
             <td className={styles.tdWidth}>{feature.label}</td>
