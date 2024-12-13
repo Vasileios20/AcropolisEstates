@@ -13,11 +13,17 @@
   margin: 0;
 }
 
-.Listing__levels span{
-  font-family: 'montserrat', sans-serif;
-  font-size: 1.2rem;
+.Listing__floorValue{
+  font-family: 'Font Awesome 6 Free', sans-serif;
   font-weight: 550;
 }
+
+.Listing__floorValueEn {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
 
 /* Listing Header */
 .Listing__cardBody {
