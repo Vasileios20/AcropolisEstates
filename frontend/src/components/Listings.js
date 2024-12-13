@@ -89,7 +89,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
                                     </Carousel.Item>
                                   ))}
                                 </Carousel>
-                                <Link to={`/listings/${listing.id}`} className="text-decoration-none">
+                                <Link to={`/listings/${listing.id}`} className="text-decoration-none h-100">
                                   <ListingHeader
                                     {...listing}
                                     listingPage={true}
