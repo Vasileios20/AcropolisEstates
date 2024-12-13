@@ -30,6 +30,21 @@ const ListingHeader = (props) => {
     priceValue = props.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  const floorValue =
+    props.floor < 0
+      ? t("propertyDetails.floorValue.basement")
+      : props.floor === 0
+        ? t("propertyDetails.floorValue.ground")
+        : props.floor === 1
+          ? `${props.floor}${t("propertyDetails.floorValue.first")}`
+          : props.floor === 2
+            ? `${props.floor}${t("propertyDetails.floorValue.second")} `
+            : props.floor === 3
+              ? `${props.floor}${t("propertyDetails.floorValue.third")}`
+              : props.floor === null ?
+                t("propertyDetails.floorValue.na")
+                : `${props.floor}${t("propertyDetails.floorValue.th")}`;
+
   const not_land = <div className={styles.Listing__fontawsome}>
     <p>
       <i className="fa-solid fa-bed"> {props.bedrooms}</i>
@@ -37,21 +52,23 @@ const ListingHeader = (props) => {
     <p>
       <i className="fa-solid fa-bath"> {props.bathrooms}</i>
     </p>
-    <p>
-      <i className="fa-solid fa-stairs"> {props.floor}</i>
+    <p className={styles.Listing__levels}>
+      {props.sub_type === "maisonette" ? <i className="fa-solid fa-bars"> {props.levels}</i> : <i className={`fa-solid fa-stairs`}> <span className={styles.Listing__levels}>{floorValue}</span></i>}
     </p>
   </div>
 
-  const land = <div className={`${styles.Listing__headerLand} mt-2`}>
-    <p>
+  const land = <div className={styles.Listing__fontawsome}>
+    <p className="d-flex align-items-center">
       <img
         src={area}
         alt=""
-        height={16}
+        height={18}
+        className="me-2"
       />{" "}
       {props.land_area} m²
     </p>
   </div>
+  
 
   return (
     <div className={styles.Listing__cardBody}>
@@ -64,7 +81,10 @@ const ListingHeader = (props) => {
           })}, {municipality}, {county}, {props.postcode}
         </div>
         {props.type !== "residential" ? land : not_land}
-        <h6 className={styles.Listing__price}>{t("propertyDetails.price")}: {props.currency} {priceValue}</h6>
+        <div className="m-0">
+          <h6 className={styles.Listing__price}>{t("propertyDetails.price")}: {props.currency} {priceValue}</h6>
+          <h6 className={styles.Listing__price}>ID: AE000{props.id}</h6>
+        </div>
       </div>
     </div>
   );
