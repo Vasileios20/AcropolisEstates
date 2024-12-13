@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { axiosReq } from "../../api/axiosDefaults";
 import Listing from "./Listing";
+import Asset from "../../components/Asset";
+import Container from "react-bootstrap/Container";
 
 function ListingPage({ setShowCookieBanner, nonEssentialConsent }) {
   /**
@@ -15,6 +17,7 @@ function ListingPage({ setShowCookieBanner, nonEssentialConsent }) {
   const { id } = useParams();
   const [listing, setListing] = useState({ results: [] });
   const history = useHistory();
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   // If the listing has been edited, reload the page.
   if (window.localStorage.getItem("edited") === "true") {
@@ -29,7 +32,13 @@ function ListingPage({ setShowCookieBanner, nonEssentialConsent }) {
         const [{ data: listing }] = await Promise.all([
           axiosReq.get(`/listings/${id}/`),
         ]);
-        setListing({ results: [listing] });
+        if (listing.approved) {
+          setListing({ results: [listing] });
+          setHasLoaded(true);
+        } else {
+          history.push("/notfound");
+        }
+
       } catch (err) {
         if (err.response.status === 404) {
           history.push("/notfound");
@@ -42,7 +51,12 @@ function ListingPage({ setShowCookieBanner, nonEssentialConsent }) {
 
   return (
     <>
-      <Listing {...listing.results[0]} setListings={setListing} listingPage setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />
+      {hasLoaded ?
+        <Listing {...listing.results[0]} setListings={setListing} listingPage setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />
+        : <Container className="mt-5">
+          <Asset spinner />
+        </Container>
+      }
     </>
   );
 }
