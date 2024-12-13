@@ -32,18 +32,18 @@ const ListingHeader = (props) => {
 
   const floorValue =
     props.floor < 0
-      ? t("propertyDetails.floorValue.basement")
+      ? <span>{t("propertyDetails.floorValue.basement")}</span>
       : props.floor === 0
-        ? t("propertyDetails.floorValue.ground")
+        ? <span>{t("propertyDetails.floorValue.ground")}</span>
         : props.floor === 1
-          ? `${props.floor}${t("propertyDetails.floorValue.first")}`
+          ? <span>{props.floor}<sup>{t("propertyDetails.floorValue.first")}</sup></span>
           : props.floor === 2
-            ? `${props.floor}${t("propertyDetails.floorValue.second")} `
+            ? <span>{props.floor}<sup>{t("propertyDetails.floorValue.second")}</sup></span>
             : props.floor === 3
-              ? `${props.floor}${t("propertyDetails.floorValue.third")}`
-              : props.floor === null ?
-                t("propertyDetails.floorValue.na")
-                : `${props.floor}${t("propertyDetails.floorValue.th")}`;
+              ? <span>{props.floor}<sup>{t("propertyDetails.floorValue.third")}</sup></span>
+              : props.floor === null
+                ? <span>{t("propertyDetails.floorValue.na")}</span>
+                : <span>{props.floor}<sup>{t("propertyDetails.floorValue.th")}</sup></span>;
 
   const not_land = <div className={styles.Listing__fontawsome}>
     <p>
@@ -53,7 +53,7 @@ const ListingHeader = (props) => {
       <i className="fa-solid fa-bath"> {props.bathrooms}</i>
     </p>
     <p className={styles.Listing__levels}>
-      {props.sub_type === "maisonette" ? <i className="fa-solid fa-bars"> {props.levels}</i> : <i className={`fa-solid fa-stairs`}> <span className={styles.Listing__levels}>{floorValue}</span></i>}
+      {props.sub_type === "maisonette" ? <i className="fa-solid fa-bars"> {props.levels}</i> : <i className="fa-solid fa-stairs"> <span className={`${lng === "el" ? `${styles.Listing__floorValue}` : `${styles.Listing__floorValueEn}`}`}>{floorValue}</span></i>}
     </p>
   </div>
 
