@@ -21,8 +21,7 @@ const useFetchListings = () => {
       try {
         const { data } = await axiosReq.get(`/listings/`);
         const approvedListings = data.results.filter((listing) => listing.approved === true);
-        data.results = approvedListings;
-        setListings(data);
+        setListings({ results: approvedListings });
         setHasLoaded(true);
       } catch (err) {
         // console.log(err);
