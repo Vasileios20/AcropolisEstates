@@ -55,7 +55,11 @@ class ListingList(generics.ListCreateAPIView):
     )
     serializer_class = ListingSerializer
     permission_classes = [IsAdminUserOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter
+    ]
     parser_classes = [MultiPartParser, FormParser]
     filterset_class = ListingFilter
     search_fields = [
