@@ -19,6 +19,14 @@ class ListingFilter(filter.FilterSet):
 Filter class for filtering listings based on various criteria.
     """
 
+    # Get amenities filter
+    amenities = filter.ModelMultipleChoiceFilter(
+        field_name="amenities",
+        # filter only amenities that are not blank
+        queryset=Amenities.objects.all().exclude(name=""),
+        conjoined=True,
+    )
+
     min_price = filter.NumberFilter(field_name="price", lookup_expr="gte")
     max_price = filter.NumberFilter(field_name="price", lookup_expr="lte")
 
@@ -32,6 +40,16 @@ Filter class for filtering listings based on various criteria.
     max_floor_area = filter.NumberFilter(
         field_name="floor_area", lookup_expr="lte")
 
+    min_construction_year = filter.NumberFilter(
+        field_name="construction_year", lookup_expr="gte")
+    max_construction_year = filter.NumberFilter(
+        field_name="construction_year", lookup_expr="lte")
+
+    min_floor = filter.NumberFilter(
+        field_name="floor", lookup_expr="gte")
+    max_floor = filter.NumberFilter(
+        field_name="floor", lookup_expr="lte")
+
     class Meta:
         model = Listing
         fields = [
@@ -40,6 +58,7 @@ Filter class for filtering listings based on various criteria.
             "sub_type",
             "price",
             "sale_type",
+            "floor"
         ]
 
 
