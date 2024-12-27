@@ -1,6 +1,6 @@
 /* Listings Order */
 .CustomDropdown {
-    width: 50px;
+    width: fit-content;
 }
 
 .DropdownToggle {
@@ -11,6 +11,7 @@
     border: 1px solid #847c3d;
     border-radius: 4px;
     color: #847c3d;
+    padding: 2px 15px;
 }
 
 .DropdownMenu {

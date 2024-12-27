@@ -138,6 +138,12 @@
   left: 0;
 }
 
+/* Listings Order */
+
+.Listings__Count {
+  width: fit-content;
+}
+
 /* Responsive */
 @media screen and (max-width: 767px) {
   .Listing__table {

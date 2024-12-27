@@ -30,14 +30,14 @@ const CustomDropdown = ({ options, onSelect, selected }) => {
     <div
       ref={dropdownRef}
       className={`${styles.CustomDropdown} position-relative`}>
-     
-        <div
-          className={`${styles.DropdownToggle}`}
-          onClick={() => setIsOpen(!isOpen)}
-        >
+
+      <div
+        className={`${styles.DropdownToggle}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
         {selected || <i className="fa fa-bars"></i>}
-        </div>
-      
+      </div>
+
       {isOpen && (
         <ul className={`${styles.DropdownMenu} position-absolute bg-white shadow`}>
           {options.map((option, index) => (
@@ -67,6 +67,7 @@ const SortOrder = ({ listings, setListings }) => {
     setLoaded(true);
     try {
       const { data } = await axiosReq.get(`/listings/?ordering=${value}`);
+      data.results = data.results.filter((listing) => listing.approved === true);
       setListings(data);
     } catch (error) {
       console.error(error);
@@ -83,12 +84,12 @@ const SortOrder = ({ listings, setListings }) => {
 
   return (
     <div className="d-flex justify-content-center align-items-center mb-2">
+      {loaded && <Spinner className="me-2" animation="border" />}
       <CustomDropdown
         options={sortOptions}
         onSelect={handleSortChange}
         selected={sortOptions.find((opt) => opt.value === sortOrder)?.label}
       />
-      {loaded && <Spinner className="ms-2" animation="border" />}
     </div>
   );
 };

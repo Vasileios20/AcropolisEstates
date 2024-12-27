@@ -49,23 +49,25 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
       </div>}
       <Container fluid className="px-lg-5 pt-5">
         {searchResults && <SearchBar />}
+        <Row className="justify-content-between gx-0">
+          <Col xs={12} md={4} className="ps-md-3 ps-lg-1 text-center text-sm-start">
+            <p>
+              {!searchResults ? `${array.length} ${t("propertiesPage.title2")}` : array.length === 0 ?
+                "" : array.length === 1 ?
+                  `${array.length} ${t("propertiesPage.title1")}` : `${array.length} ${t("propertiesPage.title2")} `}
+            </p>
+          </Col>
+          <Col xs={12} sm={4} className="d-flex justify-content-sm-end justify-content-center ps-xs-3 ps-sm-0 pe-md-3 pe-xl-0">
+            {array.length > 0 && <SortOrder listings={listings} setListings={setListings} />}
+          </Col>
+        </Row>
         <Row className="mt-1 justify-content-around gx-0">
-          <Row className="justify-content-around">
-            <Col xs={6} className="text-start ps-md-5 ps-xs-2 ps-lg-2 me-auto">
-              <p>
-                {!searchResults ? `${array.length} ${t("propertiesPage.title2")}` : array.length === 0 ?
-                  "" : array.length === 1 ?
-                    `${array.length} ${t("propertiesPage.title1")}` : `${array.length} ${t("propertiesPage.title2")} `}
-              </p>
-            </Col>
-            <Col xs={2} md={1} className="ms-auto">
-              {array.length > 0 && <SortOrder listings={listings} setListings={setListings} />}
-            </Col>
-          </Row>
+          
           <Col xs={12} lg={12} xl={8}>
             <Container
               id="scrollableDiv"
               style={{ height: 800, overflow: "auto" }}
+              className="px-0"
             >
               {hasLoaded ? (
                 <>
