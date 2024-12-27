@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import Image from "react-bootstrap/Image";
+import Modal from "react-bootstrap/Modal"
 
 import styles from "../../styles/ListingCreateEditForm.module.css";
 import appStyles from "../../App.module.css";
@@ -230,6 +231,12 @@ function ListingEditForm() {
     handleMount();
   }, [id, history]);
 
+  const [show, setShow] = useState(false);
+  
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   // Function to handle the change event for the input fields.
   const handleChange = (e) => {
     setListingData({
@@ -257,6 +264,19 @@ function ListingEditForm() {
       });
     }
   };
+
+  // Function to handle the move image event.
+  const handleMoveImage = (index, direction) => {
+    const reorderedImages = Array.from(listingData.images);
+    const movedImage = reorderedImages.splice(index, 1)[0];
+    reorderedImages.splice(index + direction, 0, movedImage);
+
+    setListingData({
+      ...listingData,
+      images: reorderedImages,
+    });
+  };
+
 
   // Function to handle the selected images to delete
   const handleSelectedImages = (e) => {
@@ -394,8 +414,12 @@ function ListingEditForm() {
     } else {
       setErrors({ images: ["Please add an image"] });
     }
+    const reorderedImageIds = listingData.images.map((image) => image.id);
 
     try {
+      await axiosReq.put(`/listings/${id}/images/reorder-images/`, {
+        reordered_image_ids: reorderedImageIds,
+      });
       // Send a PUT request to the API to edit the listing.
       const { data } = await axiosReq.put(`/listings/${id}/`, formData);
       // Redirect to the listing page for the edited listing.
@@ -416,7 +440,6 @@ function ListingEditForm() {
   }
 
   return (
-
     <Form onSubmit={handleSubmit}>
       <Row>
         <Col className="py-2 p-0">
@@ -432,29 +455,67 @@ function ListingEditForm() {
                 and press the button below
               </Alert>
               <div>
-                {Array.from(listingData.images).map((image) => (
-                  <figure key={image.id}>
-                    <input
-                      type="checkbox"
-                      name="images"
-                      value={image.id}
-                      id={image.url}
-                      onChange={handleSelectedImages}
-                    />
+                {Array.from(listingData.images).map((image, idx) => (
+                  <figure key={image.id} className="border border-dark p-2 mx-1">
+
                     <Image
                       className={`"my-2 px-2" ${styles.Image}`}
                       src={image.url}
                       rounded
                     />
+                    <div className="d-flex justify-content-between px-2 mt-1">
+                      <input
+                        type="number"
+                        min="1"
+                        max={listingData.images.length}
+                        value={idx + 1}
+                        onChange={(e) => handleMoveImage(idx, parseInt(e.target.value) - (idx + 1))}
+                      />
+                      <input
+                        type="checkbox"
+                        name="images"
+                        value={image.id}
+                        id={image.url}
+                        onChange={handleSelectedImages}
+                      />
+                    </div>
                   </figure>
                 ))}
               </div>
+              <button className={`${btnStyles.Button} ${btnStyles.Black} m-3`} type="submit">
+                Save order
+              </button>
               <button
                 className={`${btnStyles.Button} ${btnStyles.Remove} mb-1`}
                 onClick={handleDeleteImage}
               >
                 Delete selected image(s)
               </button>
+              <Modal
+                show={show}
+                onHide={handleClose}
+                dialogClassName={`${styles.Modal}`}
+                centered
+              >
+                <Modal.Header closeButton></Modal.Header>
+                <Modal.Body>
+                  <Row>
+                    <div>
+                      <p>
+                        Are you sure you want to delete the selected image(s)?
+                      </p>
+                    </div>
+
+                    <button
+                      className={`${btnStyles.Button} ${btnStyles.Remove} mb-1`}
+                      onClick={handleShow}
+                    >
+                      Delete selected image(s)
+                    </button>
+
+                  </Row>
+                </Modal.Body>
+              </Modal>
               <div>
                 {imageInput.current &&
                   <Row>
@@ -523,22 +584,6 @@ function ListingEditForm() {
                 selectedAmenities={selectedAmenities}
               />
             </div>
-            {/* <Row className="justify-content-center">
-              {Array.from(listingData.amenities).map((amenity, idx) => (
-                <Col md={6} key={idx}>
-                  <Form.Group>
-                    <Form.Check
-                      type="checkbox"
-                      name={amenity}
-                      // label={t(`propertyDetails.amenities.${amenity}`)}
-                      checked={listingData.amenities.has(amenity)}
-                    // onChange={handleChecked}
-                    />
-                  </Form.Group>
-                </Col>
-              ))}
-            </Row> */}
-
           </Container>
         </Col>
       </Row>
