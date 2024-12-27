@@ -83,7 +83,8 @@
     },
     "propertiesPage": {
         "title": "Properties",
-        "title1": "Property",
+        "title1": "Property available",
+        "title2": "Properties available",
         "rent": "Rent",
         "buy": "Buy",
         "sale": "Sale",
