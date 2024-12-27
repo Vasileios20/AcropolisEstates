@@ -298,9 +298,7 @@ class Images(models.Model):
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="images"
     )
-    url = models.ImageField(
-        upload_to="images/", default="../default_post_vnf7ym", null=True
-    )
+    url = models.URLField(max_length=255, blank=True, null=True)
     is_first = models.BooleanField(default=False, null=True)
     order = models.PositiveIntegerField(default=0, null=True)
 

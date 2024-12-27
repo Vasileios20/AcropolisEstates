@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filter
 from re_drf_api.permissions import IsAdminUserOrReadOnly
 from django.db.models import Count
@@ -12,6 +13,20 @@ from .serializers import (
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+
+
+@api_view(['PUT'])
+def reorder_images(request, listing_id):
+    listing = get_object_or_404(Listing, id=listing_id)
+    reordered_ids = request.data.get('reordered_image_ids', [])
+
+    # Update the ordering in the database
+    for idx, image_id in enumerate(reordered_ids):
+        Images.objects.filter(
+            id=image_id, listing=listing).update(order=idx)
+
+    return Response({"detail": "Images reordered successfully."})
 
 
 class ListingFilter(filter.FilterSet):
