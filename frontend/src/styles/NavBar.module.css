@@ -27,7 +27,7 @@
 }
 
 .NavDropdownItem:hover {
-  background-color: rgba(132, 124, 61, 1);
+  background-color: rgba(132, 124, 61, 0.4);
 }
 
 .NavLink:hover {
