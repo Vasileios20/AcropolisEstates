@@ -7,7 +7,7 @@ import heroStyles from "../styles/ServicesPages.module.css";
 import Asset from "./Asset";
 import ListingHeader from "./ListingHeader";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { fetchMoreData } from "../utils/utils";
 import SearchBar from "./SearchBar";
 import Card from "react-bootstrap/Card";
@@ -16,7 +16,6 @@ import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import { t } from "i18next";
 import { Helmet } from "react-helmet-async";
 import SortOrder from '../components/SortOrder';
-import { useMemo, useState } from "react";
 
 const ListingsPage = ({ array, hasLoaded, setListings, listings, message, searchResults, setShowCookieBanner, nonEssentialConsent }) => {
   // The ListingsPage component is a functional component that renders the listings from the database.
@@ -30,17 +29,6 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
     lat: listing.latitude,
     lng: listing.longitude,
   }));
-  const lng = localStorage.getItem("i18n_language");
-
-  const [search, setSearch] = useState("");
-
-  const history = useHistory();
-  useMemo(() => {
-    const search = history.location.search;
-    const params = new URLSearchParams(search);
-    const searchQuery = params.get("search");
-    setSearch(searchQuery);
-  }, [history.location.search]);
 
   const listingMapMarkers = latLng.map((listing, index) => (
     <AdvancedMarker key={index} position={listing} />
@@ -65,11 +53,9 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
           <Row className="justify-content-around">
             <Col xs={6} className="text-start ps-md-5 ps-xs-2 ps-lg-2 me-auto">
               <p>
-                {!searchResults ? `${array.length} ${t("propertiesPage.title")}` : array.length === 0 ?
-                  t("propertiesPage.noProperties") : array.length === 1 ?
-                    `${array.length} ${t("propertiesPage.title1")} ${search ? lng === "el" ?
-                      `στο ${search}` : `in ${search}` : ""}` : `${array.length} ${t("propertiesPage.title")} ${search ? lng === "el" ?
-                        `στο ${search}` : `in ${search}` : ""}`}
+                {!searchResults ? `${array.length} ${t("propertiesPage.title2")}` : array.length === 0 ?
+                  "" : array.length === 1 ?
+                    `${array.length} ${t("propertiesPage.title1")}` : `${array.length} ${t("propertiesPage.title2")} `}
               </p>
             </Col>
             <Col xs={2} md={1} className="ms-auto">
