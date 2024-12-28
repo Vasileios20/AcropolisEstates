@@ -47,23 +47,25 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
         <h1 className={heroStyles.HeaderListings} style={{ color: "#f3f3f3", backgroundColor: "transparent", }}>{t("propertiesPage.title")}</h1>
         <SearchBar />
       </div>}
-      <Container fluid className="px-lg-5 pt-5">
+      <Container fluid className="px-lg-5 pt-3">
         {searchResults && <SearchBar />}
+
         <Row className="justify-content-between gx-0">
-          <Col xs={12} md={4} className="ps-md-3 ps-lg-1 text-center text-sm-start">
-            <p>
-              {!searchResults ? `${array.length} ${t("propertiesPage.title2")}` : array.length === 0 ?
-                "" : array.length === 1 ?
-                  `${array.length} ${t("propertiesPage.title1")}` : `${array.length} ${t("propertiesPage.title2")} `}
-            </p>
-          </Col>
-          <Col xs={12} sm={4} className="d-flex justify-content-sm-end justify-content-center ps-xs-3 ps-sm-0 pe-md-3 pe-xl-0">
-            {array.length > 0 && <SortOrder listings={listings} setListings={setListings} />}
-          </Col>
-        </Row>
-        <Row className="mt-1 justify-content-around gx-0">
-          
-          <Col xs={12} lg={12} xl={8}>
+          <Col xs={12} lg={12} xl={8} className={`${styles.Listings__Container}`}>
+            <Container className="px-0">
+              <Row className="justify-content-between align-items-center px-1">
+                <Col xs={6} className="">
+                  <p className="">
+                    {!searchResults ? `${array.length} ${t("propertiesPage.title2")}` : array.length === 0 ?
+                      "" : array.length === 1 ?
+                        `${array.length} ${t("propertiesPage.title1")}` : `${array.length} ${t("propertiesPage.title2")} `}
+                  </p>
+                </Col>
+                <Col xs={6} className="d-flex justify-content-end">
+                  {array.length > 0 && <SortOrder listings={listings} setListings={setListings} />}
+                </Col>
+              </Row>
+            </Container>
             <Container
               id="scrollableDiv"
               style={{ height: 800, overflow: "auto" }}
@@ -127,7 +129,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
               )}
             </Container>
           </Col>
-          <Col sm={12} lg={4} className="d-none d-xl-block ps-1">
+          <Col sm={12} lg={4} className="d-none d-xl-block ps-1 mt-4 pt-3">
             {nonEssentialConsent ? (
               <APIProvider apiKey={API_KEY}>
                 <Map
