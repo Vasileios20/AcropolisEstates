@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "../styles/SortOrder.module.css";
 import { axiosReq } from "../api/axiosDefaults";
 import Spinner from "react-bootstrap/Spinner";
+import { t } from "i18next";
 
 const CustomDropdown = ({ options, onSelect, selected }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,9 +78,9 @@ const SortOrder = ({ listings, setListings }) => {
   };
 
   const sortOptions = [
-    { label: "Most recent", value: "-created_on" },
-    { label: "Lowest price first", value: "price" },
-    { label: "Highest price first", value: "-price" },
+    { label: t("sortOrder.mostRecent"), value: "-created_on" },
+    { label: t("sortOrder.asc"), value: "price" },
+    { label: t("sortOrder.desc"), value: "-price" },
   ];
 
   return (
