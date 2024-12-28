@@ -47,7 +47,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
         <h1 className={heroStyles.HeaderListings} style={{ color: "#f3f3f3", backgroundColor: "transparent", }}>{t("propertiesPage.title")}</h1>
         <SearchBar />
       </div>}
-      <Container fluid className="px-lg-5 pt-3">
+      <Container fluid className="px-lg-5 pt-5">
         {searchResults && <SearchBar />}
 
         <Row className="justify-content-between gx-0">
