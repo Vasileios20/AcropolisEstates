@@ -521,5 +521,10 @@
             "type_of_use": "Type of Use",
             "status": "Status"
         }
+    },
+    "sortOrder": {
+        "mostRecent": "Most Recent",
+        "asc": "Ascending Price",
+        "desc": "Descending Price"
     }
 }
