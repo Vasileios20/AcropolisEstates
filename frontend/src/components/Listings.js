@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -12,7 +13,7 @@ import { fetchMoreData } from "../utils/utils";
 import SearchBar from "./SearchBar";
 import Card from "react-bootstrap/Card";
 import Carousel from "react-bootstrap/Carousel";
-import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
+import { APIProvider, AdvancedMarker, Map, Pin } from "@vis.gl/react-google-maps";
 import { t } from "i18next";
 import { Helmet } from "react-helmet-async";
 import SortOrder from '../components/SortOrder';
@@ -26,12 +27,35 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
   // The component also uses the AdvancedMarker component to display the markers on the map.
   // Get the lat and lng from the listings and push it in the array.
   const latLng = array.map((listing) => ({
-    lat: listing.latitude,
-    lng: listing.longitude,
+    id: listing.id,
+    position: {
+      lat: listing.latitude,
+      lng: listing.longitude,
+    },
   }));
 
-  const listingMapMarkers = latLng.map((listing, index) => (
-    <AdvancedMarker key={index} position={listing} />
+  const [hoveredId, setHoveredId] = useState(null);
+  const [hovered, setHovered] = useState(false);
+
+  const onMouseEnter = (id) => {
+    setHoveredId(id);
+    setHovered(true);
+  };
+
+  const onMouseLeave = () => {
+    setHovered(false);
+    setHoveredId(null);
+  };
+
+  const listingMapMarkers = latLng.map(({ id, position }) => (
+    <AdvancedMarker key={id} position={position} zIndex={hovered && hoveredId === id ? 1000 : 1}>
+      <Pin
+        background={hovered && hoveredId === id ? "#a35252" : "#4d6765"} // Highlight pin if hovered
+        borderColor={hovered && hoveredId === id ? "#a35252" : "#4d6765"}
+        glyphColor={"#ffffff"}
+        scale={hovered && hoveredId === id ? 1.5 : 1}
+      />
+    </AdvancedMarker>
   ));
 
   const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -89,7 +113,9 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
                           ];
                           return (
                             <Col key={listing.id} xs={12} md={6} lg={4} xl={4} className="mb-3 gx-1">
-                              <Card style={{ height: "100%" }}>
+                              <Card style={{ height: "100%" }}
+                                onMouseEnter={() => { onMouseEnter(listing.id); }}
+                                onMouseLeave={() => { onMouseLeave(); }}>
                                 <Carousel interval={null}>
                                   {sortedImages.map((image, id) => (
                                     <Carousel.Item key={id}>
