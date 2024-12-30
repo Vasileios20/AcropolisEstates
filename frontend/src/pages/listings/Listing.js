@@ -65,10 +65,10 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
   } = props;
 
   useEffect(() => {
-    if (latitude !== undefined && longitude !== undefined) {
+    if (nonEssentialConsent && latitude !== undefined && longitude !== undefined) {
       setMapReady(true);
     }
-  }, [i18n, latitude, longitude]);
+  }, [nonEssentialConsent, latitude, longitude]);
 
   const lng = i18n.language;
 
@@ -227,9 +227,6 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
   const handleEdit = () => {
     history.push(`/listings/${id}/edit`);
   };
-
-
-
 
   return (
     <>

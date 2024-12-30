@@ -334,7 +334,7 @@ function ListingEditForm() {
 
       setListingData({
         ...listingData,
-        is_first: imageIndex === "" || null ? "0" : imageIndex,
+        is_first: imageIndex === "" || null ? 0 : imageIndex,
       });
     }
   };
@@ -399,7 +399,7 @@ function ListingEditForm() {
     formData.append("amenities", listingData.amenities);
     formData.append("approved", listingData.approved);
     formData.append("featured", listingData.featured);
-    formData.append("is_first", listingData.is_first);
+    formData.append("is_first", listingData.is_first || "0");
 
     selectedAmenities.forEach((amenity) => {
       formData.append("amenities_ids", amenity);

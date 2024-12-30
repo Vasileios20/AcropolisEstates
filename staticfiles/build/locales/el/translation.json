@@ -528,5 +528,13 @@
         "mostRecent": "Πιο Πρόσφατα",
         "asc": "Αύξουσα Τιμή",
         "desc": "Φθίνουσα Τιμή"
+    },
+    "regionOptions":{
+        "region": "Γεωγραφικό Διαμέρισμα",
+        "county": "Νομός",
+        "municipality": "Δήμος",
+        "selectRegion": "Επιλέξτε Γεωγραφικό Διαμέρισμα",
+        "selectCounty": "Επιλέξτε Νομό",
+        "selectMunicipality": "Επιλέξτε Δήμο"
     }
 }
