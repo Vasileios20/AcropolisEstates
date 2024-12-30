@@ -2,6 +2,19 @@ from rest_framework import serializers
 from .models import Listing, Images, Amenities
 from django.core.files.images import get_image_dimensions
 from .services import upload_to_backblaze
+from django.db.models import Max
+import uuid
+from datetime import datetime
+
+
+def generate_unique_filename(listing_id, idx):
+    """
+    Generate a unique filename for an image.
+    Combines listing ID, index, timestamp, and a UUID to ensure uniqueness.
+    """
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    unique_id = uuid.uuid4().hex[:8]
+    return f"listings/{listing_id}/image_{idx + 1}_{timestamp}_{unique_id}.jpg"
 
 
 def validate_images(value):
@@ -128,7 +141,7 @@ class ListingSerializer(serializers.ModelSerializer):
 
         # Upload images to Backblaze and create Image objects
         for idx, uploaded_image in enumerate(uploaded_images):
-            filename = f"listings/{listing.id}/image_{idx + 1}.jpg"
+            filename = generate_unique_filename(listing.id, idx + 1)
             try:
                 file_url = upload_to_backblaze(uploaded_image, filename)
                 order = image_orders[idx] if idx < len(image_orders) else idx
@@ -156,21 +169,44 @@ class ListingSerializer(serializers.ModelSerializer):
 
         # Process uploaded images
         if uploaded_images:
+            existing_images = instance.images.all()
+            max_order = existing_images.aggregate(
+                max_order=Max('order'))['max_order'] or 0
+
             for idx, uploaded_image in enumerate(uploaded_images):
-                filename = f"listings/{instance.id}/image_{idx + 1}.jpg"
+                filename = generate_unique_filename(
+                    instance.id, max_order + idx + 1)
                 try:
+                    # Upload to Backblaze and get file URL
                     file_url = upload_to_backblaze(uploaded_image, filename)
-                    is_first = (is_first_image_idx == idx)
+
+                    # Create a new image with the next order value
                     Images.objects.create(
                         listing=instance,
                         url=file_url,
-                        is_first=is_first,
-                        order=idx,
+                        is_first=False,
+                        order=max_order + idx + 1,
                     )
                 except Exception as e:
                     raise serializers.ValidationError(
                         f"File upload failed: {str(e)}")
 
+        if is_first_image_idx is not None:
+            try:
+                is_first_image_idx = int(is_first_image_idx)
+                # Reset all images' `is_first` flag and set the specified one
+                instance.images.update(is_first=False)
+                if 0 <= is_first_image_idx < instance.images.count():
+                    image_to_set_first = instance.images.order_by('order')[
+                        is_first_image_idx
+                    ]
+                    image_to_set_first.is_first = True
+                    image_to_set_first.save()
+            except (ValueError, TypeError, IndexError):
+                raise serializers.ValidationError(
+                    "Invalid value for 'is_first' index.")
+
+        # Call the parent class update method for the rest of the data
         return super().update(instance, validated_data)
 
     class Meta:
