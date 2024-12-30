@@ -78,16 +78,16 @@ const NavBar = () => {
       onMouseLeave={() => setServicesExpanded(false)}
       onClick={hanleServicesClick}
     >
-      <NavDropdown.Item href="/assetManagement">
+      <NavDropdown.Item className={styles.NavDropdownItem} href="/assetManagement">
         {t("services.assetManagement")}
       </NavDropdown.Item>
-      <NavDropdown.Item href="/advisory">
+      <NavDropdown.Item className={styles.NavDropdownItem} href="/advisory">
         {t("services.financialAdvice")}
       </NavDropdown.Item>
-      <NavDropdown.Item href="/valuation">
+      <NavDropdown.Item className={styles.NavDropdownItem} href="/valuation">
         {t("services.valuation")}
       </NavDropdown.Item>
-      <NavDropdown.Item href="/listings">
+      <NavDropdown.Item className={styles.NavDropdownItem} href="/listings">
         {t("services.properties")}
       </NavDropdown.Item>
     </NavDropdown>

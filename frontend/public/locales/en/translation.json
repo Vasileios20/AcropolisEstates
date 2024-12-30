@@ -83,6 +83,8 @@
     },
     "propertiesPage": {
         "title": "Properties",
+        "title1": "Property available",
+        "title2": "Properties available",
         "rent": "Rent",
         "buy": "Buy",
         "sale": "Sale",
@@ -519,5 +521,10 @@
             "type_of_use": "Type of Use",
             "status": "Status"
         }
+    },
+    "sortOrder": {
+        "mostRecent": "Most Recent",
+        "asc": "Ascending Price",
+        "desc": "Descending Price"
     }
 }

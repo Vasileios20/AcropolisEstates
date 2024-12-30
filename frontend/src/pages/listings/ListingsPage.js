@@ -34,19 +34,17 @@ function ListingsPage({ nonEssentialConsent, setShowCookieBanner }) {
       if (state.data.results.length === 0) {
         setListings({ results: [], message });
       } else {
-        // Otherwise, set the listings to the state data.
-        setListings(state.data);
+        // Otherwise, set the listings to the state data with the approved listings.
+        const approvedListings = state.data.results.filter((listing) => listing.approved === true);
+        setListings({ results: approvedListings });
       }
     }
   }, [setListings, state]);
 
-  // If the state is present, display the state data, otherwise display the listings.
-  const displayListings = state ? state.data : listings;
-
   return (
     <>
       <ListingsComponent
-        array={displayListings.results}
+        array={listings.results}
         hasLoaded={hasLoaded}
         setListings={setListings}
         listings={listings}

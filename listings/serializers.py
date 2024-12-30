@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Listing, Images, Amenities
 from django.core.files.images import get_image_dimensions
+from .services import upload_to_backblaze
 
 
 def validate_images(value):
@@ -120,21 +121,27 @@ class ListingSerializer(serializers.ModelSerializer):
         image_orders = self.context['request'].data.get('image_orders', [])
         is_first_image_idx = int(
             self.context['request'].data.get('is_first', 0))
+
+        # Create the Listing object
         listing = Listing.objects.create(**validated_data)
         listing.amenities.set(amenities)
 
+        # Upload images to Backblaze and create Image objects
         for idx, uploaded_image in enumerate(uploaded_images):
-            order = image_orders[idx] if idx < len(image_orders) else idx
-            if is_first_image_idx == uploaded_images.index(uploaded_image):
-                is_first = True
-            else:
-                is_first = False
-            Images.objects.create(
-                listing=listing,
-                url=uploaded_image,
-                is_first=is_first,
-                order=order,
-            )
+            filename = f"listings/{listing.id}/image_{idx + 1}.jpg"
+            try:
+                file_url = upload_to_backblaze(uploaded_image, filename)
+                order = image_orders[idx] if idx < len(image_orders) else idx
+                is_first = (is_first_image_idx == idx)
+                Images.objects.create(
+                    listing=listing,
+                    url=file_url,
+                    is_first=is_first,
+                    order=order,
+                )
+            except Exception as e:
+                raise serializers.ValidationError(
+                    f"File upload failed: {str(e)}")
 
         return listing
 
@@ -143,34 +150,28 @@ class ListingSerializer(serializers.ModelSerializer):
         amenities = validated_data.pop('amenities', None)
         is_first_image_idx = self.context['request'].data.get('is_first', None)
 
-        if is_first_image_idx is not None:
-            try:
-                is_first_image_idx = int(is_first_image_idx)
-            except (ValueError, TypeError):
-                is_first_image_idx = None
-
-        if uploaded_images:
-            if is_first_image_idx is not None:
-                listing_images = instance.images.all()
-                listing_images.update(is_first=False)
-
-            for uploaded_image in uploaded_images:
-                if is_first_image_idx == uploaded_images.index(uploaded_image):
-                    is_first = True
-                else:
-                    is_first = False
-                Images.objects.create(
-                    listing=instance,
-                    url=uploaded_image,
-                    is_first=is_first,
-                )
-
-        instance = super().update(instance, validated_data)
-
+        # Update amenities if provided
         if amenities is not None:
             instance.amenities.set(amenities)
 
-        return instance
+        # Process uploaded images
+        if uploaded_images:
+            for idx, uploaded_image in enumerate(uploaded_images):
+                filename = f"listings/{instance.id}/image_{idx + 1}.jpg"
+                try:
+                    file_url = upload_to_backblaze(uploaded_image, filename)
+                    is_first = (is_first_image_idx == idx)
+                    Images.objects.create(
+                        listing=instance,
+                        url=file_url,
+                        is_first=is_first,
+                        order=idx,
+                    )
+                except Exception as e:
+                    raise serializers.ValidationError(
+                        f"File upload failed: {str(e)}")
+
+        return super().update(instance, validated_data)
 
     class Meta:
         model = Listing

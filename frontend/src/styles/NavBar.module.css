@@ -26,6 +26,10 @@
   font-weight: 500;
 }
 
+.NavDropdownItem:hover {
+  background-color: rgba(132, 124, 61, 0.4);
+}
+
 .NavLink:hover {
   color: #847c3d;
 }

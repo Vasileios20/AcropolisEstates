@@ -68,6 +68,18 @@ const ListingHeader = (props) => {
       {props.land_area} m²
     </p>
   </div>
+
+  const commercial = <div className={styles.Listing__fontawsome}>
+    <p className="d-flex align-items-center">
+      <img
+        src={area}
+        alt=""
+        height={18}
+        className="me-2"
+      />{" "}
+      {props.floor_area} m²
+    </p>
+  </div>
   
 
   return (
@@ -80,7 +92,7 @@ const ListingHeader = (props) => {
             type: props.type === "land" ? translatedType : translatedSubType,
           })}, {municipality}, {county}, {props.postcode}
         </div>
-        {props.type !== "residential" ? land : not_land}
+        {props.type === "land" ? land : props.type === "residential" ? not_land : commercial}
         <div className="m-0">
           <h6 className={styles.Listing__price}>{t("propertyDetails.price")}: {props.currency} {priceValue}</h6>
           <h6 className={styles.Listing__price}>ID: AE000{props.id}</h6>

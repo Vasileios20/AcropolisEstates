@@ -15,6 +15,7 @@ import Carousel from "react-bootstrap/Carousel";
 import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import { t } from "i18next";
 import { Helmet } from "react-helmet-async";
+import SortOrder from '../components/SortOrder';
 
 const ListingsPage = ({ array, hasLoaded, setListings, listings, message, searchResults, setShowCookieBanner, nonEssentialConsent }) => {
   // The ListingsPage component is a functional component that renders the listings from the database.
@@ -28,7 +29,6 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
     lat: listing.latitude,
     lng: listing.longitude,
   }));
-
 
   const listingMapMarkers = latLng.map((listing, index) => (
     <AdvancedMarker key={index} position={listing} />
@@ -49,18 +49,32 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
       </div>}
       <Container fluid className="px-lg-5 pt-5">
         {searchResults && <SearchBar />}
-        <Row className="mt-1 justify-content-around gx-0">
-          <Col xs={12} lg={12} xl={8}>
+
+        <Row className="justify-content-between gx-0">
+          <Col xs={12} lg={12} xl={8} className={`${styles.Listings__Container}`}>
+            <Container className="px-0">
+              <Row className="justify-content-between align-items-center px-1">
+                <Col xs={6} className="">
+                  <p className="">
+                    {!searchResults ? `${array.length} ${t("propertiesPage.title2")}` : array.length === 0 ?
+                      "" : array.length === 1 ?
+                        `${array.length} ${t("propertiesPage.title1")}` : `${array.length} ${t("propertiesPage.title2")} `}
+                  </p>
+                </Col>
+                <Col xs={6} className="d-flex justify-content-end">
+                  {array.length > 0 && <SortOrder listings={listings} setListings={setListings} />}
+                </Col>
+              </Row>
+            </Container>
             <Container
               id="scrollableDiv"
               style={{ height: 800, overflow: "auto" }}
-              className=""
+              className="px-0"
             >
               {hasLoaded ? (
                 <>
                   {array.length ? (
                     <InfiniteScroll
-
                       dataLength={array.length}
                       loader={<Asset spinner />}
                       hasMore={!!listings.next}
@@ -115,7 +129,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
               )}
             </Container>
           </Col>
-          <Col sm={12} lg={4} className="d-none d-xl-block ps-1">
+          <Col sm={12} lg={4} className="d-none d-xl-block ps-1 mt-4 pt-3">
             {nonEssentialConsent ? (
               <APIProvider apiKey={API_KEY}>
                 <Map

@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filter
 from re_drf_api.permissions import IsAdminUserOrReadOnly
 from django.db.models import Count
@@ -12,12 +13,34 @@ from .serializers import (
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+
+
+@api_view(['PUT'])
+def reorder_images(request, listing_id):
+    listing = get_object_or_404(Listing, id=listing_id)
+    reordered_ids = request.data.get('reordered_image_ids', [])
+
+    # Update the ordering in the database
+    for idx, image_id in enumerate(reordered_ids):
+        Images.objects.filter(
+            id=image_id, listing=listing).update(order=idx)
+
+    return Response({"detail": "Images reordered successfully."})
 
 
 class ListingFilter(filter.FilterSet):
     """
 Filter class for filtering listings based on various criteria.
     """
+
+    # Get amenities filter
+    amenities = filter.ModelMultipleChoiceFilter(
+        field_name="amenities",
+        # filter only amenities that are not blank
+        queryset=Amenities.objects.all().exclude(name=""),
+        conjoined=True,
+    )
 
     min_price = filter.NumberFilter(field_name="price", lookup_expr="gte")
     max_price = filter.NumberFilter(field_name="price", lookup_expr="lte")
@@ -32,6 +55,16 @@ Filter class for filtering listings based on various criteria.
     max_floor_area = filter.NumberFilter(
         field_name="floor_area", lookup_expr="lte")
 
+    min_construction_year = filter.NumberFilter(
+        field_name="construction_year", lookup_expr="gte")
+    max_construction_year = filter.NumberFilter(
+        field_name="construction_year", lookup_expr="lte")
+
+    min_floor = filter.NumberFilter(
+        field_name="floor", lookup_expr="gte")
+    max_floor = filter.NumberFilter(
+        field_name="floor", lookup_expr="lte")
+
     class Meta:
         model = Listing
         fields = [
@@ -40,6 +73,7 @@ Filter class for filtering listings based on various criteria.
             "sub_type",
             "price",
             "sale_type",
+            "floor"
         ]
 
 
@@ -55,7 +89,11 @@ class ListingList(generics.ListCreateAPIView):
     )
     serializer_class = ListingSerializer
     permission_classes = [IsAdminUserOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter
+    ]
     parser_classes = [MultiPartParser, FormParser]
     filterset_class = ListingFilter
     search_fields = [
