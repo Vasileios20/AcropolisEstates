@@ -526,5 +526,13 @@
         "mostRecent": "Most Recent",
         "asc": "Ascending Price",
         "desc": "Descending Price"
+    },
+    "regionOptions": {
+        "region": "Region",
+        "county": "County",
+        "municipality": "Municipality",
+        "selectRegion": "Select Region",
+        "selectCounty": "Select County",
+        "selectMunicipality": "Select Municipality"
     }
 }

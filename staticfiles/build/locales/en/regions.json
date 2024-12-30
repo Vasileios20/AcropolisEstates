@@ -1,0 +1,1237 @@
+{
+    "regions": [
+        {
+            "id": 1,
+            "region": "Attica",
+            "population": 3800000,
+            "area": 3800,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Athens",
+                    "area": 412,
+                    "municipalities": [
+                        
+                    ]
+                },
+                {
+                    "id": 2,
+                    "county": "East Attica",
+                    "area": 1960,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "North Athens",
+                    "area": 160,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Piraeus",
+                    "area": 50,
+                    "municipalities": []
+                },
+                {
+                    "id": 5,
+                    "county": "West Attica",
+                    "area": 1228,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "region": "Central Greece",
+            "population": 550000,
+            "area": 15500,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Boeotia",
+                    "area": 2952,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Euboea",
+                    "area": 4167,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Evrytania",
+                    "area": 2040,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Phocis",
+                    "area": 2120,
+                    "municipalities": []
+                },
+                {
+                    "id": 5,
+                    "county": "Phthiotis",
+                    "area": 4441,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "region": "Central Macedonia",
+            "population": 4000000,
+            "area": 18000,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Chalkidiki",
+                    "area": 2927,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Imathia",
+                    "area": 2199,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Kilkis",
+                    "area": 2558,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Pella",
+                    "area": 2378,
+                    "municipalities": []
+                },
+                {
+                    "id": 5,
+                    "county": "Pieria",
+                    "area": 1548,
+                    "municipalities": []
+                },
+                {
+                    "id": 6,
+                    "county": "Serres",
+                    "area": 3363,
+                    "municipalities": []
+                },
+                {
+                    "id": 7,
+                    "county": "Thessaloniki",
+                    "area": 1579,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "region": "Crete",
+            "population": 630000,
+            "area": 8336,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Chania",
+                    "area": 2376,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Heraklion",
+                    "area": 2641,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Lasithi",
+                    "area": 1824,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Rethymno",
+                    "area": 1495,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "region": "Eastern Macedonia and Thrace",
+            "population": 559730,
+            "area": 14157,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Drama",
+                    "area": 3468,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Evros",
+                    "area": 4242,
+                    "municipalities": [
+                        {
+                            "id": 1,
+                            "municipality": "Alexandroupoli"
+                        },
+                        {
+                            "id": 2,
+                            "municipality": "Alexandroupoli (Center)"
+                        },
+                        {
+                            "id": 3,
+                            "municipality": "Avantas"
+                        },
+                        {
+                            "id": 4,
+                            "municipality": "Avdella"
+                        },
+                        {
+                            "id": 5,
+                            "municipality": "Agnantia"
+                        },
+                        {
+                            "id": 6,
+                            "municipality": "Agriani"
+                        },
+                        {
+                            "id": 7,
+                            "municipality": "Aetochori"
+                        },
+                        {
+                            "id": 8,
+                            "municipality": "Aisymi"
+                        },
+                        {
+                            "id": 9,
+                            "municipality": "Alepochori"
+                        },
+                        {
+                            "id": 10,
+                            "municipality": "Alonia Samothraki"
+                        },
+                        {
+                            "id": 11,
+                            "municipality": "Ammovouno"
+                        },
+                        {
+                            "id": 12,
+                            "municipality": "Amorio"
+                        },
+                        {
+                            "id": 13,
+                            "municipality": "Ampelakia"
+                        },
+                        {
+                            "id": 14,
+                            "municipality": "Amfitriti"
+                        },
+                        {
+                            "id": 15,
+                            "municipality": "Antheia"
+                        },
+                        {
+                            "id": 16,
+                            "municipality": "Ano Karyotes Samothraki"
+                        },
+                        {
+                            "id": 17,
+                            "municipality": "Ano Meria Samothraki"
+                        },
+                        {
+                            "id": 18,
+                            "municipality": "Ardani"
+                        },
+                        {
+                            "id": 19,
+                            "municipality": "Arzos"
+                        },
+                        {
+                            "id": 20,
+                            "municipality": "Aristino"
+                        },
+                        {
+                            "id": 21,
+                            "municipality": "Asvestades"
+                        },
+                        {
+                            "id": 22,
+                            "municipality": "Asimenio"
+                        },
+                        {
+                            "id": 23,
+                            "municipality": "Asproneri"
+                        },
+                        {
+                            "id": 24,
+                            "municipality": "Avra"
+                        },
+                        {
+                            "id": 25,
+                            "municipality": "Valtos"
+                        },
+                        {
+                            "id": 26,
+                            "municipality": "Industrial Area of Alexandroupoli (Avantas)"
+                        },
+                        {
+                            "id": 27,
+                            "municipality": "Vrysika"
+                        },
+                        {
+                            "id": 28,
+                            "municipality": "Vrysoula"
+                        },
+                        {
+                            "id": 29,
+                            "municipality": "Galini"
+                        },
+                        {
+                            "id": 30,
+                            "municipality": "Gemisti"
+                        },
+                        {
+                            "id": 31,
+                            "municipality": "Geriko"
+                        },
+                        {
+                            "id": 32,
+                            "municipality": "Goniko"
+                        },
+                        {
+                            "id": 33,
+                            "municipality": "Dadias"
+                        },
+                        {
+                            "id": 34,
+                            "municipality": "Dafnes Samothraki"
+                        },
+                        {
+                            "id": 35,
+                            "municipality": "Didymoteicho"
+                        },
+                        {
+                            "id": 36,
+                            "municipality": "Dikaia"
+                        },
+                        {
+                            "id": 37,
+                            "municipality": "Dikella"
+                        },
+                        {
+                            "id": 38,
+                            "municipality": "Doxa"
+                        },
+                        {
+                            "id": 39,
+                            "municipality": "Dorisos"
+                        },
+                        {
+                            "id": 40,
+                            "municipality": "Doriko"
+                        },
+                        {
+                            "id": 41,
+                            "municipality": "Elafos"
+                        },
+                        {
+                            "id": 42,
+                            "municipality": "Elia"
+                        },
+                        {
+                            "id": 43,
+                            "municipality": "Ellinochori"
+                        },
+                        {
+                            "id": 44,
+                            "municipality": "Zoni"
+                        },
+                        {
+                            "id": 45,
+                            "municipality": "Therapeio"
+                        },
+                        {
+                            "id": 46,
+                            "municipality": "Therma Samothraki"
+                        },
+                        {
+                            "id": 47,
+                            "municipality": "Thourio"
+                        },
+                        {
+                            "id": 48,
+                            "municipality": "Thymaria"
+                        },
+                        {
+                            "id": 49,
+                            "municipality": "Thyrea"
+                        },
+                        {
+                            "id": 50,
+                            "municipality": "Isaakio"
+                        },
+                        {
+                            "id": 51,
+                            "municipality": "Itea"
+                        },
+                        {
+                            "id": 52,
+                            "municipality": "Kavisos"
+                        },
+                        {
+                            "id": 53,
+                            "municipality": "Kavyli"
+                        },
+                        {
+                            "id": 54,
+                            "municipality": "Kamariotissa Samothraki"
+                        },
+                        {
+                            "id": 55,
+                            "municipality": "Kanadas"
+                        },
+                        {
+                            "id": 56,
+                            "municipality": "Karoti"
+                        },
+                        {
+                            "id": 57,
+                            "municipality": "Kastanies"
+                        },
+                        {
+                            "id": 58,
+                            "municipality": "Katsampas Samothraki"
+                        },
+                        {
+                            "id": 59,
+                            "municipality": "Kato Karyotes Samothraki"
+                        },
+                        {
+                            "id": 60,
+                            "municipality": "Keramos"
+                        },
+                        {
+                            "id": 61,
+                            "municipality": "Kipi"
+                        },
+                        {
+                            "id": 62,
+                            "municipality": "Kirki"
+                        },
+                        {
+                            "id": 63,
+                            "municipality": "Komara"
+                        },
+                        {
+                            "id": 64,
+                            "municipality": "Komaros"
+                        },
+                        {
+                            "id": 65,
+                            "municipality": "Kornofolia"
+                        },
+                        {
+                            "id": 66,
+                            "municipality": "Korymbos"
+                        },
+                        {
+                            "id": 67,
+                            "municipality": "Koufovouno"
+                        },
+                        {
+                            "id": 68,
+                            "municipality": "State Airport of Alexandroupoli Dimokritos (Apalos)"
+                        },
+                        {
+                            "id": 69,
+                            "municipality": "Kyani"
+                        },
+                        {
+                            "id": 70,
+                            "municipality": "Kyprinos"
+                        },
+                        {
+                            "id": 71,
+                            "municipality": "Kyriaki"
+                        },
+                        {
+                            "id": 72,
+                            "municipality": "Lavra"
+                        },
+                        {
+                            "id": 73,
+                            "municipality": "Lagos"
+                        },
+                        {
+                            "id": 74,
+                            "municipality": "Lagyna"
+                        },
+                        {
+                            "id": 75,
+                            "municipality": "Ladi"
+                        },
+                        {
+                            "id": 76,
+                            "municipality": "Lakkoma Samothraki"
+                        },
+                        {
+                            "id": 77,
+                            "municipality": "Lepti"
+                        },
+                        {
+                            "id": 78,
+                            "municipality": "Lefkimmi"
+                        },
+                        {
+                            "id": 79,
+                            "municipality": "Loutra Traianoupolis"
+                        },
+                        {
+                            "id": 80,
+                            "municipality": "Loutros"
+                        },
+                        {
+                            "id": 81,
+                            "municipality": "Lykofos"
+                        },
+                        {
+                            "id": 82,
+                            "municipality": "Lyra"
+                        },
+                        {
+                            "id": 83,
+                            "municipality": "Makri"
+                        },
+                        {
+                            "id": 84,
+                            "municipality": "Makrylies Samothraki"
+                        },
+                        {
+                            "id": 85,
+                            "municipality": "Mandra"
+                        },
+                        {
+                            "id": 86,
+                            "municipality": "Mani"
+                        },
+                        {
+                            "id": 87,
+                            "municipality": "Marasia"
+                        },
+                        {
+                            "id": 88,
+                            "municipality": "Mavrokklisi"
+                        },
+                        {
+                            "id": 89,
+                            "municipality": "Megali Doxipara"
+                        },
+                        {
+                            "id": 90,
+                            "municipality": "Megalo Derio"
+                        },
+                        {
+                            "id": 91,
+                            "municipality": "Mesimvria"
+                        },
+                        {
+                            "id": 92,
+                            "municipality": "Metaxades"
+                        },
+                        {
+                            "id": 93,
+                            "municipality": "Milia"
+                        },
+                        {
+                            "id": 94,
+                            "municipality": "Mikri Doxipara"
+                        },
+                        {
+                            "id": 95,
+                            "municipality": "Mikro Derio"
+                        },
+                        {
+                            "id": 96,
+                            "municipality": "Monastiraki"
+                        },
+                        {
+                            "id": 97,
+                            "municipality": "Baxedes Samothraki"
+                        },
+                        {
+                            "id": 98,
+                            "municipality": "Nea Vyssa"
+                        },
+                        {
+                            "id": 99,
+                            "municipality": "Neo Cheimoni"
+                        },
+                        {
+                            "id": 100,
+                            "municipality": "Neoi Psathades"
+                        },
+                        {
+                            "id": 101,
+                            "municipality": "Neos Pyrgos"
+                        },
+                        {
+                            "id": 102,
+                            "municipality": "Neochori"
+                        },
+                        {
+                            "id": 103,
+                            "municipality": "Nipsa"
+                        },
+                        {
+                            "id": 104,
+                            "municipality": "Xiropotamos Samothraki"
+                        },
+                        {
+                            "id": 105,
+                            "municipality": "Orestiada"
+                        },
+                        {
+                            "id": 106,
+                            "municipality": "Ormenio"
+                        },
+                        {
+                            "id": 107,
+                            "municipality": "Palaia Sagini"
+                        },
+                        {
+                            "id": 108,
+                            "municipality": "Palaiopoli Samothraki"
+                        },
+                        {
+                            "id": 109,
+                            "municipality": "Paliouri"
+                        },
+                        {
+                            "id": 110,
+                            "municipality": "Palli"
+                        },
+                        {
+                            "id": 111,
+                            "municipality": "Paralia Dikellon"
+                        },
+                        {
+                            "id": 112,
+                            "municipality": "Patagi"
+                        },
+                        {
+                            "id": 113,
+                            "municipality": "Pentalofos"
+                        },
+                        {
+                            "id": 114,
+                            "municipality": "Peplos"
+                        },
+                        {
+                            "id": 115,
+                            "municipality": "Perama"
+                        },
+                        {
+                            "id": 116,
+                            "municipality": "Petrades"
+                        },
+                        {
+                            "id": 117,
+                            "municipality": "Petrolofos"
+                        },
+                        {
+                            "id": 118,
+                            "municipality": "Petrota"
+                        },
+                        {
+                            "id": 119,
+                            "municipality": "Pefka"
+                        },
+                        {
+                            "id": 120,
+                            "municipality": "Plaka"
+                        },
+                        {
+                            "id": 121,
+                            "municipality": "Plati"
+                        },
+                        {
+                            "id": 122,
+                            "municipality": "Poimeniko"
+                        },
+                        {
+                            "id": 123,
+                            "municipality": "Polia"
+                        },
+                        {
+                            "id": 124,
+                            "municipality": "Poros"
+                        },
+                        {
+                            "id": 125,
+                            "municipality": "Praggi"
+                        },
+                        {
+                            "id": 126,
+                            "municipality": "Provatonas"
+                        },
+                        {
+                            "id": 127,
+                            "municipality": "Profitis Samothraki"
+                        },
+                        {
+                            "id": 128,
+                            "municipality": "Protokklisi"
+                        },
+                        {
+                            "id": 129,
+                            "municipality": "Ptelea"
+                        },
+                        {
+                            "id": 130,
+                            "municipality": "Pythio"
+                        },
+                        {
+                            "id": 131,
+                            "municipality": "Pylaia"
+                        },
+                        {
+                            "id": 132,
+                            "municipality": "Rigio"
+                        },
+                        {
+                            "id": 133,
+                            "municipality": "Rizia"
+                        },
+                        {
+                            "id": 134,
+                            "municipality": "Roussa"
+                        },
+                        {
+                            "id": 135,
+                            "municipality": "Sakkos"
+                        },
+                        {
+                            "id": 136,
+                            "municipality": "Samothraki (Chora)"
+                        },
+                        {
+                            "id": 137,
+                            "municipality": "Savra"
+                        },
+                        {
+                            "id": 138,
+                            "municipality": "Sidirochori"
+                        },
+                        {
+                            "id": 139,
+                            "municipality": "Sidiro"
+                        },
+                        {
+                            "id": 140,
+                            "municipality": "Sitochori"
+                        },
+                        {
+                            "id": 141,
+                            "municipality": "Soufli"
+                        },
+                        {
+                            "id": 142,
+                            "municipality": "Sofiko"
+                        },
+                        {
+                            "id": 143,
+                            "municipality": "Spilaio"
+                        },
+                        {
+                            "id": 144,
+                            "municipality": "Sterna"
+                        },
+                        {
+                            "id": 145,
+                            "municipality": "Sykorrachi"
+                        },
+                        {
+                            "id": 146,
+                            "municipality": "Trifylli"
+                        },
+                        {
+                            "id": 147,
+                            "municipality": "Tychero"
+                        },
+                        {
+                            "id": 148,
+                            "municipality": "Feres"
+                        },
+                        {
+                            "id": 149,
+                            "municipality": "Fylakio"
+                        },
+                        {
+                            "id": 150,
+                            "municipality": "Fylakto"
+                        },
+                        {
+                            "id": 151,
+                            "municipality": "Chandras"
+                        },
+                        {
+                            "id": 152,
+                            "municipality": "Chionades"
+                        },
+                        {
+                            "id": 153,
+                            "municipality": "Agia Kyriaki"
+                        },
+                        {
+                            "id": 154,
+                            "municipality": "Agios Eleftherios"
+                        },
+                        {
+                            "id": 155,
+                            "municipality": "Agios Nektarios"
+                        },
+                        {
+                            "id": 156,
+                            "municipality": "Apalos"
+                        },
+                        {
+                            "id": 157,
+                            "municipality": "Gallikos Stathmos"
+                        },
+                        {
+                            "id": 158,
+                            "municipality": "Gymnasia-Lykeia"
+                        },
+                        {
+                            "id": 159,
+                            "municipality": "Kallithea"
+                        },
+                        {
+                            "id": 160,
+                            "municipality": "Maistros"
+                        },
+                        {
+                            "id": 161,
+                            "municipality": "Mana tou Nerou"
+                        },
+                        {
+                            "id": 162,
+                            "municipality": "Megas Vasileios"
+                        },
+                        {
+                            "id": 163,
+                            "municipality": "Metamorfosi Sotiros"
+                        },
+                        {
+                            "id": 164,
+                            "municipality": "Nea Chili"
+                        },
+                        {
+                            "id": 165,
+                            "municipality": "Parko Anatolikis Thrakis"
+                        }
+                    ]
+                },
+                {
+                    "id": 3,
+                    "county": "Καβάλα",
+                    "area": 1728,
+                    "municipalities": [
+                        {
+                            "id": 7,
+                            "municipality": "Καβάλα"
+                        },
+                        {
+                            "id": 8,
+                            "municipality": "Θάσος"
+                        }
+                    ]
+                },
+                {
+                    "id": 4,
+                    "county": "Ροδόπη",
+                    "area": 2543,
+                    "municipalities": [
+                        {
+                            "id": 13,
+                            "municipality": "Αλεξανδρούπολη"
+                        },
+                        {
+                            "id": 14,
+                            "municipality": "Ορεστιάδα"
+                        }
+                    ]
+                },
+                {
+                    "id": 5,
+                    "county": "Ξάνθη",
+                    "area": 1793,
+                    "municipalities": [
+                        {
+                            "id": 15,
+                            "municipality": "Ξάνθη"
+                        },
+                        {
+                            "id": 16,
+                            "municipality": "Αλεξανδρούπολη"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "region": "Epirus",
+            "population": 350000,
+            "area": 9200,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Arta",
+                    "area": 1660,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Ioannina",
+                    "area": 4100,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Preveza",
+                    "area": 1050,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Thesprotia",
+                    "area": 1500,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "region": "Ionian Islands",
+            "population": 200000,
+            "area": 2307,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Corfu",
+                    "area": 641,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Ithaca",
+                    "area": 96,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Kefalonia",
+                    "area": 781,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Lefkada",
+                    "area": 336,
+                    "municipalities": []
+                },
+                {
+                    "id": 5,
+                    "county": "Zakynthos",
+                    "area": 406,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "region": "North Aegean",
+            "population": 200000,
+            "area": 3836,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Chios",
+                    "area": 842,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Ikaria",
+                    "area": 255,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Lemnos",
+                    "area": 477,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Lesbos",
+                    "area": 1632,
+                    "municipalities": []
+                },
+                {
+                    "id": 5,
+                    "county": "Samos",
+                    "area": 630,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "region": "Peloponnese",
+            "population": 1100000,
+            "area": 15490,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Arcadia",
+                    "area": 4419,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Argolis",
+                    "area": 2154,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Corinthia",
+                    "area": 2290,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Laconia",
+                    "area": 3636,
+                    "municipalities": []
+                },
+                {
+                    "id": 5,
+                    "county": "Messinia",
+                    "area": 2991,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "region": "South Aegean",
+            "population": 300000,
+            "area": 5286,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Andros",
+                    "area": 380,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Kalymnos",
+                    "area": 134,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Karpathos-Kasos",
+                    "area": 477,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Kea-Kythnos",
+                    "area": 149,
+                    "municipalities": []
+                },
+                {
+                    "id": 5,
+                    "county": "Kos",
+                    "area": 290,
+                    "municipalities": []
+                },
+                {
+                    "id": 6,
+                    "county": "Milos",
+                    "area": 160,
+                    "municipalities": []
+                },
+                {
+                    "id": 7,
+                    "county": "Mykonos",
+                    "area": 105,
+                    "municipalities": []
+                },
+                {
+                    "id": 8,
+                    "county": "Naxos",
+                    "area": 429,
+                    "municipalities": []
+                },
+                {
+                    "id": 9,
+                    "county": "Paros",
+                    "area": 196,
+                    "municipalities": []
+                },
+                {
+                    "id": 10,
+                    "county": "Rhodes",
+                    "area": 1401,
+                    "municipalities": []
+                },
+                {
+                    "id": 11,
+                    "county": "Syros",
+                    "area": 84,
+                    "municipalities": []
+                },
+                {
+                    "id": 12,
+                    "county": "Thira",
+                    "area": 90,
+                    "municipalities": []
+                },
+                {
+                    "id": 13,
+                    "county": "Tinos",
+                    "area": 194,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "region": "Thessaly",
+            "population": 730000,
+            "area": 14036,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Karditsa",
+                    "area": 2636,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Larissa",
+                    "area": 5381,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Magnesia",
+                    "area": 2367,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Trikala",
+                    "area": 3384,
+                    "municipalities": []
+                },
+                {
+                    "id": 5,
+                    "county": "Sporades",
+                    "area": 268,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "region": "Western Greece",
+            "population": 680000,
+            "area": 11350,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Achaea",
+                    "area": 3271,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Aetolia-Acarnania",
+                    "area": 5461,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Elis",
+                    "area": 2618,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "region": "Western Macedonia",
+            "population": 280000,
+            "area": 9451,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Florina",
+                    "area": 1804,
+                    "municipalities": []
+                },
+                {
+                    "id": 2,
+                    "county": "Grevena",
+                    "area": 2954,
+                    "municipalities": []
+                },
+                {
+                    "id": 3,
+                    "county": "Kastoria",
+                    "area": 1658,
+                    "municipalities": []
+                },
+                {
+                    "id": 4,
+                    "county": "Kozani",
+                    "area": 3191,
+                    "municipalities": []
+                }
+            ]
+        },
+        {
+            "id": 14,
+            "region": "Mount Athos",
+            "population": 2000,
+            "area": 335,
+            "counties": [
+                {
+                    "id": 1,
+                    "county": "Mount Athos",
+                    "area": 335,
+                    "municipalities": [
+                        {
+                            "id": 1,
+                            "municipality": "Άγιον Όρος"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
