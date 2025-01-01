@@ -1,0 +1,538 @@
+{
+    "nav": {
+        "home": "Home",
+        "about": "About us",
+        "services": "Services",
+        "properties": "Properties",
+        "contact": "Contact us",
+        "addListing": "Add Listing",
+        "messages": "Messages"
+    },
+    "services": {
+        "title": "Services",
+        "valuation": "Valuation",
+        "financialAdvice": "Advisory",
+        "assetManagement": "Asset Management",
+        "properties": "Properties"
+    },
+    "homePage": {
+        "title": "Welcome to the Acropolis Estate",
+        "description": "Acropolis Estates is a leading real estate and advisory firm focusing to deliver the optimum outcome to our clients. As a company we specialize to provide great services and solutions to private sector, institutional investors and public organizations.",
+        "header": "Acropolis Estates",
+        "tagline": "Real estate reimagined",
+        "header2": "Our Services",
+        "header3": "Featured Properties"
+    },
+    "aboutPage": {
+        "title": "About Us",
+        "p1": " Welcome to <strong>CB Real Estate</strong>, where we redefine your real estate experience. Established with a vision to transform the way people buy, sell, and invest in properties, we take pride in being your trusted partner in the real estate journey.",
+        "p2Title": "Our Mission",
+        "p2": "Our mission is to provide turnkey solution across our clients. Our dedicated team in focus to provide the highest level of service, professionalism, and expertise in the real estate market. We strive to exceed expectations, build long-lasting relationships, and help our clients achieve their goals with confidence and peace of mind.",
+        "ListTitle": "Why Us",
+        "listItem1": "<strong>Experience:</strong> With years of experience, our team brings a wealth of knowledge, expertise, and insight to every aspect of real estate industry.",
+        "listItem2": "<strong>Integrity:</strong> We conduct our business with the highest standards of integrity, honesty, and transparency, earning the trust and respect of our clients and partners.",
+        "listItem3": "<strong>Customer Focus:</strong> Our clients are our top priority, and we are dedicated to providing personalized attention, tailored solutions, and exceptional service to meet their unique needs.",
+        "listItem4": "<strong>Commitment to Excellence:</strong> We are committed to excellence in everything we act, continuously striving to exceed expectations and deliver outstanding results for our clients.",
+        "listItem5": "<strong>Expertise:</strong> Highly educated professionals with years of experience in the real estate sector.",
+        "bottomTitle": "Our Team",
+        "bottomDescription": "At Acropolis Estates, we have assembled a team of highly skilled and dedicated professionals who are passionate about real estate and dedicated to helping our clients succeed. From our experienced agents to our dedicated support staff, each member of our team is committed to providing exceptional service and unparalleled expertise. We are committed to providing personalized attention, expert advice, and unparalleled customer service to ensure a seamless and stress-free experience."
+    },
+    "valuationPage": {
+        "title": "Property Evaluation",
+        "p1": "Real estate valuation involves assessing the current market value of a property, which is crucial for various purposes such as investment analysis, financing, insurance, taxation, and financial reporting.",
+        "listItem1": "<strong>Property Inspection:</strong> Conducting a thorough inspection of the property to assess its physical condition, including the building structure, interior and exterior features, amenities, and any visible defects or maintenance issues.",
+        "listItem2": "<strong>Market Analysis:</strong> Analyzing market data and trends, including recent sales of comparable properties (comps), rental rates, vacancy rates, and economic indicators, to determine the property's value relative to market conditions.",
+        "listItem3": "<strong>Market Value Assessment:</strong> Integrating the findings from the property inspection, market analysis, comparable sales analysis, and income/cost approaches to arrive at an estimate of the property's fair market value, taking into account all relevant factors influencing value.",
+        "listItem4": "<strong>Report Preparation:</strong> Documenting the valuation process, methodology, assumptions, and conclusions in a formal valuation report or appraisal report, which may be used for various purposes such as investment decision-making, financing, insurance coverage, tax assessment, or financial reporting.",
+        "listItem5": "<strong>Compliance:</strong> Ensuring compliance with professional standards, regulatory requirements, and industry best practices for real estate valuation, such as those established by professional appraisal organizations (e.g., the Appraisal Institute) and governmental agencies (e.g., the Uniform Standards of Professional Appraisal Practice, or USPAP).",
+        "listItem6": "<strong>Client Communication:</strong> Communicating the valuation results, findings, and recommendations effectively to clients, stakeholders, or decision-makers, addressing any questions or concerns and providing clarity and confidence in the valuation process and outcomes."
+    },
+    "advisoryPage": {
+        "title": "Advisory",
+        "p1": "Our dedicated team is involved with advisory to provide guidance, expertise, and strategic advice to our clients to help them make informed decisions regarding their real estate investments.",
+        "listItem1": "<strong>Market Analysis:</strong> Conducting thorough market research and analysis to assess current trends, property values, and investment opportunities in specific geographic areas or sectors.",
+        "listItem2": "<strong>Investment Strategy:</strong> Developing tailored investment strategies based on clients' financial goals, risk tolerance, and investment preferences, including buy-and-hold, fix-and-flip, or development strategies.",
+        "listItem3": "<strong>Financial Planning:</strong> Assisting clients with financial planning, budgeting, and cash flow analysis to ensure they have a clear understanding of the financial implications of their real estate investments.",
+        "listItem4": "<strong>Risk Assessment:</strong> Identifying and evaluating potential risks associated with real estate investments, such as market volatility, regulatory changes, or property-specific issues, and providing recommendations to mitigate these risks.",
+        "listItem5": "<strong>Due Diligence:</strong> Conducting comprehensive due diligence on potential real estate acquisitions, including property inspections, title searches, environmental assessments, and financial analysis, to assess investment viability and uncover any potential issues or liabilities.",
+        "listItem6": "<strong>Portfolio Optimization:</strong> Analyzing clients' existing real estate portfolios to identify opportunities for diversification, consolidation, or disposition to optimize portfolio performance and achieve investment objectives.",
+        "listItem7": "<strong>Tax Planning:</strong> Collaborating with tax professionals to develop tax-efficient investment structures and strategies.",
+        "listItem8": "<strong>Financing Assistance:</strong> Assisting clients with securing financing for real estate acquisitions, refinancing existing loans, or structuring debt financing options to optimize leverage and enhance investment returns.",
+        "listItem9": "<strong>Exit Strategies:</strong> Developing exit strategies for clients' real estate investments, including options for selling, refinancing, or repositioning properties, to achieve optimal returns and liquidity.",
+        "listItem10": "<strong>Regulatory Compliance:</strong> Advising clients on legal and regulatory requirements related to real estate investments, including zoning laws, building codes, landlord-tenant regulations, and environmental regulations, to ensure compliance and minimize legal risks.",
+        "listItem11": "<strong>Client Education:</strong> Providing clients with educational resources, market updates, and industry insights to empower them to make informed decisions and navigate the complexities of the real estate market effectively."
+    },
+    "assetManagementPage": {
+        "title": "Asset Management",
+        "p1": "We specialize in real estate asset management, offering tailored solutions to maximize returns and minimize risks for our clients. With years of industry experience and a dedicated team of experts, we are committed to delivering exceptional results and unparalleled service.",
+        "p2": "Our approach to real estate asset management is strategic and client-focused. We employ a comprehensive framework that emphasizes value creation, risk mitigation, and customized solutions tailored to our clients' unique objectives. By leveraging our deep industry knowledge and analytical capabilities, we ensure that every decision is informed and aligned with our clients' goals.",
+        "listItem1": "<strong>Property Performance Monitoring:</strong> Regularly monitoring the performance of properties to ensure they meet financial goals and operational standards.",
+        "listItem2": "<strong>Lease Management:</strong> Negotiating leases, renewals, and terminations to optimize rental income and occupancy rates.",
+        "listItem3": "<strong>Financial Analysis:</strong> Conducting financial analysis, including budgeting, forecasting, and variance analysis, to evaluate property performance and identify opportunities for improvement.",
+        "listItem4": "<strong>Risk Management:</strong> Identifying and mitigating risks associated with property ownership, such as market fluctuations, tenant defaults, and property damage.",
+        "listItem5": "<strong>Maintenance and Repairs:</strong> Overseeing maintenance and repair activities to ensure properties are well-maintained and meet safety and regulatory standards.",
+        "listItem6": "<strong>Tenant Relations:</strong> Managing tenant relationships, addressing concerns, and resolving disputes to maintain tenant satisfaction and retention.",
+        "listItem7": "<strong>Strategic Planning:</strong> Developing and implementing strategies to enhance property value, such as renovations, repositioning, or redevelopment projects.",
+        "listItem8": "<strong>Market Research:</strong> Conducting market research and analysis to identify trends, assess competition, and inform investment decisions.",
+        "listItem9": "<strong>Reporting:</strong> Preparing regular reports and updates for property owners or investors, including financial performance, market trends, and property management activities.",
+        "listItem10": "<strong>Compliance:</strong> Ensuring compliance with legal and regulatory requirements, including zoning laws, building codes, and environmental regulations.",
+        "listItem11": "<strong>Sustainability Initiatives:</strong> Implementing sustainability initiatives to reduce operating costs, improve energy efficiency, and enhance environmental stewardship.",
+        "listItem12": "<strong>Portfolio Management:</strong> Managing a portfolio of properties, including acquisitions, dispositions, and portfolio optimization strategies.",
+        "listItem13": "<strong>Asset Valuation:</strong> Conducting periodic valuations of properties to assess their current market value and potential for appreciation.",
+        "listItem14": "<strong>Stakeholder Communication:</strong> Communicating regularly with property owners, investors, lenders, and other stakeholders to provide updates and address concerns."
+    },
+    "propertiesPage": {
+        "title": "Properties",
+        "title1": "Property available",
+        "title2": "Properties available",
+        "rent": "Rent",
+        "buy": "Buy",
+        "sale": "Sale",
+        "header1": "Features",
+        "header2": "Amenities"
+    },
+    "listingType": {
+        "any": "Any",
+        "commercial": "Commercial",
+        "land": "Land",
+        "residential": "Residential"
+    },
+    "searchBar": {
+        "rent": "Rent",
+        "buy": "Buy",
+        "search": "Μunicipality, Αddress",
+        "location": "Location",
+        "type": "Type",
+        "price": "Price",
+        "minPrice": "Min",
+        "maxPrice": "Max",
+        "floorArea": "Floor Area",
+        "landArea": "Land Area",
+        "minFloorArea": "Min",
+        "maxFloorArea": "Max",
+        "btnSearch": "Search",
+        "btnUpdate": "Update",
+        "btnClear": "Clear"
+    },
+    "propertyDetails": {
+        "propertyId": "Listing ID",
+        "typeField": "Sale Type",
+        "typeRent": "To Rent",
+        "typeSale": "For Sale",
+        "title": "{{sale_type}} {{type}}",
+        "description": "Description",
+        "description_gr": "Περιγραφή",
+        "address": "Address",
+        "address_street": "Address street",
+        "address_street_gr": "Οδός",
+        "address_number": "Number",
+        "postcode": "Postcode",
+        "city": "City",
+        "region": "Region",
+        "region_gr": "Περιοχή",
+        "county": "County",
+        "county_gr": "Νομός",
+        "municipality": "Municipality",
+        "municipality_gr": "Δήμος",
+        "price": "Price",
+        "floorArea": "Floor Area",
+        "landArea": "Land Area",
+        "rooms": "Rooms",
+        "bedrooms": "Bedrooms",
+        "bathrooms": "Bathrooms",
+        "wc": "WC",
+        "levels": "Levels",
+        "floorLevel": "Floor Level",
+        "floor": "Floor Level",
+        "livingRooms": "Living Rooms",
+        "living_rooms": "Living Rooms",
+        "kitchens": "Kitchens",
+        "heating": "Heating",
+        "energyClass": "Energy Class",
+        "serviceCharge": "Service Charges",
+        "yearBuilt": "Year Built",
+        "availability": "Availability",
+        "cover_coefficient": "Cover Coefficient",
+        "building_coefficient": "Building Coefficient",
+        "lengthOfFacade": "Length of Facade",
+        "distanceFromSea": "Distance from Sea",
+        "storage": "Storage",
+        "currency": "Currency",
+        "longitude": "Longitude",
+        "latitude": "Latitude",
+        "approved": "Approved",
+        "featured": "Featured",
+        "types": {
+            "title": "Type",
+            "residential": "Residential",
+            "land": "Land",
+            "commercial": "Commercial"
+        },
+        "subTypes": {
+            "title": "Subtype",
+            "apartment": "Apartment",
+            "house": "House",
+            "maisonette": "Maisonette",
+            "bungalow": "Bungalow",
+            "villa": "Villa",
+            "hotel": "Hotel",
+            "office": "Office",
+            "retail": "Retail",
+            "warehouse": "Warehouse",
+            "mixed_use": "Mixed Use",
+            "industrial": "Industrial",
+            "other": "Other",
+            "": "N/A"
+        },
+        "openingFrames": {
+            "title": "Opening Frames",
+            "aluminium": "Aluminium",
+            "wooden": "Wooden",
+            "PVC": "PVC",
+            "iron": "Iron",
+            "": "N/A"
+        },
+        "glassType": {
+            "title": "Glass Type",
+            "single": "Single",
+            "double": "Double",
+            "triple": "Triple",
+            "": "N/A"
+        },
+        "orientationTypes": {
+            "title": "Orientation",
+            "north": "North",
+            "north_east": "Northeast",
+            "east": "East",
+            "south_east": "Southeast",
+            "south": "South",
+            "south_west": "Southwest",
+            "west": "West",
+            "north_west": "Northwest",
+            "": "N/A"
+        },
+        "zoneTypes": {
+            "title": "Zone",
+            "residential": "Residential",
+            "commercial": "Commercial",
+            "industrial": "Industrial",
+            "agricultural": "Agricultural",
+            "tourist": "Tourist",
+            "mixed": "Mixed",
+            "redevelopment": "Redevelopment",
+            "other": "Other",
+            "": "N/A"
+        },
+        "viewTypes": {
+            "title": "View",
+            "sea": "Sea",
+            "mountain": "Mountain",
+            "city": "City",
+            "other": "N/A",
+            "": "N/A"
+        },
+        "slopeTypes": {
+            "title": "Slope",
+            "level": "Level",
+            "view": "View",
+            "incline": "Incline",
+            "": "N/A"
+        },
+        "floorTypes": {
+            "title": "Floor type",
+            "marble": "Marble",
+            "tile": "Tile",
+            "wooden": "Wooden",
+            "granite": "Granite",
+            "mosaic": "Mosaic",
+            "stone": "Stone",
+            "laminate": "Laminate",
+            "parquet": "Parquet",
+            "carpet": "Carpet",
+            "cement": "Cement",
+            "other": "N/A",
+            "": "N/A"
+        },
+        "floorValue": {
+            "basement": "Basement",
+            "ground": "Ground",
+            "first": "st",
+            "second": "nd",
+            "third": "rd",
+            "th": "th",
+            "na": "N/A"
+        },
+        "energyClassTypes": {
+            "a+": "A+",
+            "a": "A",
+            "b": "B",
+            "c": "C",
+            "d": "D",
+            "e": "E",
+            "f": "F",
+            "g": "G",
+            "toBeIssued": "To be issued",
+            "": "N/A"
+        },
+        "heating_system": {
+            "title": "Heating System",
+            "central": "Central",
+            "autonomous": "Autonomous",
+            "geothermal": "Geothermal",
+            "solar": "Solar",
+            "air_condition": "Air Condition",
+            "fireplace": "Fireplace",
+            "other": "Other",
+            "n/a": "N/A"
+        },
+        "powerType": {
+            "title": "Power Type",
+            "electricity": "Electricity",
+            "gas": "Gas",
+            "natural_gas": "Natural Gas",
+            "heat_pump": "Heat Pump",
+            "other": "Other",
+            "n/a": "N/A"
+        }
+    },
+    "contactFormPage": {
+        "title": "Contact Us",
+        "p1": "Contact us today to learn more about our services and how we can assist you in achieving your real estate goals."
+    },
+    "contactForm": {
+        "title": "Contact Form",
+        "name": "Name",
+        "namePlaceholder": "Enter your name",
+        "lastName": "Last Name",
+        "lastNamePlaceholder": "Enter your last name",
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "phone": "Phone",
+        "subject": "Subject",
+        "message": "Message",
+        "messagePlaceholder": "Enter your message",
+        "btnSend": "Send",
+        "acceptText": "I have read and accept the <1>terms of use </1> and <2> privacy policy</2> of Acropolis Estates",
+        "linkStyle": {
+            "textDecoration": "underline"
+        },
+        "successMessage": "Your message has been sent successfully. We will get back to you as soon as possible.",
+        "errorMessage": "You must accept the terms of use and privacy policy.",
+        "listingMessage": "I am interested in the listing with id AE000"
+    },
+    "footer": {
+        "title": "Acropolis Estates",
+        "about": "About us",
+        "services": "Services",
+        "properties": "Properties",
+        "contact": {
+            "title": "Contact us",
+            "address": "Office Address: 28is Octovriou, 211,",
+            "city": "Nea Peramos, Attikis",
+            "email": "Email: <1>info@acropolisestates.com</1>",
+            "phone": "Phone Number: +30 229 640 0420"
+        },
+        "copyRight": "Acropolis Estates. All rights reserved.",
+        "privacyPolicy": "Privacy Policy",
+        "terms": "Terms and Conditions",
+        "companyReg": "Company Registration Number: 178164109000"
+    },
+    "terms": {
+        "title": "Terms and Conditions",
+        "description": "These Terms and Conditions ('Terms') govern your use of Acropolis Estates website acropolisestates.com (the 'Site') and the services provided through the Site. By accessing or using the Site, you agree to be bound by these Terms. If you do not agree to these Terms, please do not use the Site.",
+        "section1": {
+            "title": "Use of the Site",
+            "content": "You must be at least 18 years old to use the Site. You agree to use the Site only for lawful purposes and in accordance with these Terms. You are responsible for maintaining the confidentiality of any account credentials and for all activities that occur under your account."
+        },
+        "section2": {
+            "title": "Intellectual Property Rights",
+            "content": "All content on the Site, including text, graphics, logos, images, and software, is the property of Acropolis Estates or its licensors and is protected by copyright and other intellectual property laws. You may not reproduce, modify, distribute, or display any content from the Site without our prior written consent."
+        },
+        "section3": {
+            "title": "User Contribution",
+            "content": "You may submit information, messages, or other content through the Site, such as through contact forms. By submitting such content, you grant Acropolis Estates a perpetual, irrevocable, worldwide, royalty-free, and non-exclusive license to use, reproduce, modify, adapt, publish, translate, create derivative works from, distribute, and display such content."
+        },
+        "section4": {
+            "title": "Disclaimer of Warranties",
+            "content": "The Site and its content are provided on an 'as is' and 'as available' basis. We make no representations or warranties of any kind, express or implied, regarding the accuracy, reliability, or completeness of the Site or its content. We disclaim all warranties, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement."
+        },
+        "section5": {
+            "title": "Limitation of Liability",
+            "content": " In no event shall Acropolis Estates, its officers, directors, employees, or agents be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to lost profits, lost revenue, or lost data, arising out of or in connection with your use of the Site or its content."
+        },
+        "section6": {
+            "title": "Indemnification",
+            "content": "You agree to indemnify and hold harmless Acropolis Estates, its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses, including reasonable attorneys' fees, arising out of or in connection with your use of the Site or any violation of these Terms."
+        },
+        "section7": {
+            "title": "Governing Law",
+            "content": "These Terms shall be governed by and construed in accordance with the laws of the United Kingdom/European Union, without regard to its conflicts of law principles."
+        },
+        "section8": {
+            "title": "Changes to the Terms",
+            "content": "We reserve the right to modify or revise these Terms at any time. Any changes will be effective immediately upon posting on the Site. Your continued use of the Site after the posting of changes constitutes your acceptance of such changes."
+        },
+        "section9": {
+            "title": "Contact Us",
+            "content": "If you have any questions about these Terms, please contact us at ",
+            "email": "<1>info@acropolisestates.com</1>."
+        }
+    },
+    "privacy": {
+        "title": "Privacy Policy",
+        "description": "This Privacy Policy describes how Acropolis Estates ('we', 'us', 'our') collects, uses, and shares information about you when you use our website acropolisestates.com (the 'Site'). By using the Site, you agree to the collection and use of information in accordance with this Privacy Policy.",
+        "section1": {
+            "title": "Information We Collect",
+            "content": "When you fill out our contact form, we collect your first and last name, email address, phone number, and any other information you provide in the message."
+        },
+        "section2": {
+            "title": "Usage of Information",
+            "content": "We may collect information about how you interact with our Site, such as your IP address, browser type, pages visited, and referring website."
+        },
+        "section3": {
+            "title": "How We Use Your Information",
+            "content": "We use the personal information you provide to respond to your inquiries, communicate with you, and provide the services you request. We may use usage information to analyze trends, administer the Site, and gather demographic information about our user base."
+        },
+        "section4": {
+            "title": "Information Sharing",
+            "content": "We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this Privacy Policy. We may share your information with trusted third-party service providers who assist us in operating our website, conducting our business, or servicing you. We may also disclose your information when we believe disclosure is appropriate to comply with the law, enforce our site policies, or protect our or others' rights, property, or safety. We will retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy unless a longer retention period is required or permitted by law."
+        },
+        "section5": {
+            "title": "Data Retention",
+            "content": "We will retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy unless a longer retention period is required or permitted by law."
+        },
+        "section6": {
+            "title": "Your Rights",
+            "content": "You have the right to request access to, correction of, or deletion of your personal information. You may also have the right to restrict or object to the processing of your personal information."
+        },
+        "section7": {
+            "title": "Security",
+            "content": "We take reasonable measures to protect your personal information from loss, theft, misuse, unauthorized access, disclosure, alteration, and destruction. However, no method of transmission over the internet or electronic storage is 100% secure, so we cannot guarantee absolute security."
+        },
+        "section8": {
+            "title": "Third-Party Links",
+            "content": "Our Site may contain links to third-party websites, which have their own privacy policies. We are not responsible for the privacy practices or content of these third-party sites."
+        },
+        "section9": {
+            "title": "Cookies",
+            "content": "We use cookies to improve your experience on our Site. Cookies are small files that a site or its service provider transfers to your computer's hard drive through your web browser (if you allow) that enables the site's or service provider's systems to recognize your browser and capture and remember certain information."
+        },
+        "section10": {
+            "title": "Changes to the Privacy Policy",
+            "content": "We reserve the right to modify or revise this Privacy Policy at any time. Any changes will be effective immediately upon posting on the Site. Your continued use of the Site after the posting of changes constitutes your acceptance of such changes."
+        }
+    },
+    "cookies": {
+        "content": "This website uses cookies to enhance your browsing experience, provide personalized content, and analyze our traffic. We also use cookies from third-party services like Google Maps to display interactive maps. By clicking 'Accept All Cookies', you consent to our use of all cookies. If you choose to 'Decline Non-Essential Cookies', Google Maps and other third-party services will be disabled, but essential cookies for the proper functioning of the site will still be set.",
+        "acceptAll": "Accept All Cookies",
+        "decline": "Decline Non-Essential Cookies",
+        "learnMore": "<1>Learn more</1>",
+        "cookiePolicy": "Cookie Policy"
+    },
+    "amenities": {
+        "title": "Amenities",
+        "solar_water_heating": "Solar Water Heating",
+        "storage_room": "Storage Room",
+        "parking": "Parking",
+        "garden": "Garden",
+        "fireplace": "Fireplace",
+        "air_conditioning": "Air Conditioning",
+        "underfloor_heating": "Underfloor Heating",
+        "attic": "Attic",
+        "veranda": "Veranda",
+        "terrace": "Terrace",
+        "balcony": "Balcony",
+        "furnished": "Furnished",
+        "part_funished": "Part Furnished",
+        "renovated": "Renovated",
+        "corner": "Corner",
+        "penthouse": "Penthouse",
+        "bright": "Bright",
+        "painted": "Painted",
+        "pets_allowed": "Pets Allowed",
+        "satellite": "Satellite",
+        "internal_stairs": "Internal Stairs",
+        "double_glass": "Double Glass",
+        "awnings": "Awnings",
+        "screens": "Screens",
+        "bbq": "BBQ",
+        "solar_heating": "Solar Heating",
+        "swimming_pool": "Swimming Pool",
+        "gym": "Gym",
+        "playroom": "Playroom",
+        "security_alarm": "Security Alarm",
+        "security_door": "Security Door",
+        "CCTV": "CCTV",
+        "storage": "Storage",
+        "basement": "Basement",
+        "night_electricity": "Night Electricity",
+        "no_shared_expenses": "No Shared Expenses",
+        "investment": "Investment",
+        "student_apartment": "Student Apartment",
+        "luxurious": "Luxurious",
+        "suitable_for_development": "Suitable for Development",
+        "suitable_for_office_use": "Suitable for Office Use",
+        "suitable_for_commercial_use": "Suitable for Commercial Use",
+        "suitable_for_residential_use": "Suitable for Residential Use",
+        "suitable_for_short_stay": "Suitable for Short Stay",
+        "suitable_for_warehouse_use": "Suitable for Warehouse Use",
+        "suitable_for_industrial_use": "Suitable for Industrial Use",
+        "suitable_for_agricultural_use": "Suitable for Agricultural Use",
+        "access_for_disabled": "Access for Disabled",
+        "part_complete": "Part Complete",
+        "need_renovation": "Need Renovation",
+        "landmark_building": "Landmark Building",
+        "insect_screen": "Insect Screen",
+        "ev_charger": "EV Charger",
+        "elevator_in_building": "Elevator in Building",
+        "currently_rented": "Currently Rented",
+        "rented": "Rented",
+        "sold": "Sold",
+        "under_construction": "Under Construction",
+        "loft": "Loft",
+        "property_consideration": "Property Consideration",
+        "inside_the_settlement": "Inside the Settlement",
+        "facade": "Facade",
+        "consierge": "Consierge",
+        "inside_zone_area": "Inside Zone Area",
+        "auction": "Auction",
+        "under_offer": "Under Offer"
+    },
+    "createEditForm": {
+        "button": {
+            "create": "Create",
+            "update": "Update",
+            "cancel": "Cancel"
+        },
+        "headers": {
+            "title": "Title",
+            "addressInfo": "Address Information",
+            "basicInfo": "Basic Information",
+            "land": "Land",
+            "landTechincal": "Land Technical",
+            "residential": "Residential",
+            "residentialTechnical": "Residential Technical",
+            "residentialBuildingTechnical": "Residential Building Characteristics",
+            "residentialBuildingFeatures": "Residential Building Features",
+            "commercial": "Commercial",
+            "commercialTechnical": "Commercial Technical",
+            "commercialBuildingTechnical": "Commercial Building Characteristics",
+            "commercialBuildingFeatures": "Commercial Building Features",
+            "type_of_use": "Type of Use",
+            "status": "Status"
+        }
+    },
+    "sortOrder": {
+        "mostRecent": "Most Recent",
+        "asc": "Ascending Price",
+        "desc": "Descending Price"
+    },
+    "regionOptions": {
+        "region": "Region",
+        "county": "County",
+        "municipality": "Municipality",
+        "selectRegion": "Select Region",
+        "selectCounty": "Select County",
+        "selectMunicipality": "Select Municipality"
+    }
+}
