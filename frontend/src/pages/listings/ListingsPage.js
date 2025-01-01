@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 function ListingsPage({ nonEssentialConsent, setShowCookieBanner }) {
-  const { listings, setListings, hasLoaded, fetchListings } = useFetchListings();
+  const { listings, setListings, hasLoaded } = useFetchListings();
   const { state } = useLocation();
   const [searchResults, setSearchResults] = useState(false);
   const message = "No results";
@@ -19,9 +19,9 @@ function ListingsPage({ nonEssentialConsent, setShowCookieBanner }) {
         message: approvedListings.length ? undefined : message,
       });
     } else {
-      fetchListings();
+      setSearchResults(false);
     }
-  }, [state, setListings, fetchListings, message]);
+  }, [state, setListings, message]);
 
   const displayListings = state?.data?.results.filter((listing) => listing.approved) ?? listings.results;
 
