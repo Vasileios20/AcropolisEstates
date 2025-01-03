@@ -275,6 +275,9 @@ class ListingSerializer(serializers.ModelSerializer):
             "slope",
             "amenities",
             "amenities_ids",
+            "municipality_id",
+            "county_id",
+            "region_id",
         ]
 
     def to_representation(self, instance):

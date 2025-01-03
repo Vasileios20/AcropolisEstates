@@ -180,10 +180,13 @@ class Listing(models.Model):
     address_street = models.CharField(max_length=255, blank=True)
     address_street_gr = models.CharField(max_length=255, blank=True)
     postcode = models.CharField(max_length=255, blank=True)
+    municipality_id = models.IntegerField(null=True, blank=True)
     municipality = models.CharField(max_length=255, blank=True)
     municipality_gr = models.CharField(max_length=255, blank=True)
+    county_id = models.IntegerField(null=True, blank=True)
     county = models.CharField(max_length=255, default="", blank=True)
     county_gr = models.CharField(max_length=255, default="", blank=True)
+    region_id = models.IntegerField(null=True, blank=True)
     region = models.CharField(max_length=255, default="", blank=True)
     region_gr = models.CharField(max_length=255, default="", blank=True)
     floor_area = models.FloatField(
