@@ -15,17 +15,28 @@ import LandFields from "./LandFields";
 import CommercialFields from "./CommercialFields";
 
 import { useTranslation } from "react-i18next";
+import RegionCountyMunicipalitySelect from "./RegionCountyMunicipalitySelect";
 
 const ListingTextFields = (
   {
     listingData,
+    setListingData,
     handleChange,
     history,
     errors,
     create,
     handleAmenityChange,
     selectedAmenities,
+    edit,
+    onRegionChange,
+    onCountyChange,
+    onMunicipalityChange,
+    selectedRegion,
+    selectedCounty,
+    selectedMunicipality,
   }) => {
+
+  const { t } = useTranslation();
 
   const renderTextField = (fieldName, label, type = "text", rows = 1) => (
     <Form.Group controlId={fieldName}>
@@ -47,7 +58,6 @@ const ListingTextFields = (
     </Form.Group>
   );
 
-  const { t } = useTranslation();
 
   const handleChecked = (e) => {
     handleChange({
@@ -56,10 +66,7 @@ const ListingTextFields = (
         value: e.target.checked,
       },
     });
-  }
-
-  // console.log('amenities', amenities);
-  // console.log('hasLoad', hasLoad);
+  };
 
   return (
     <div className="text-center">
@@ -249,6 +256,16 @@ const ListingTextFields = (
       <Container fluid>
         <Row>
           <h2>{t("createEditForm.headers.addressInfo")}</h2>
+          <RegionCountyMunicipalitySelect
+            onRegionChange={onRegionChange}
+            onCountyChange={onCountyChange}
+            onMunicipalityChange={onMunicipalityChange}
+            selectedRegion={selectedRegion}
+            selectedCounty={selectedCounty}
+            selectedMunicipality={selectedMunicipality}
+            listingData={listingData}
+            edit={edit}
+          />
           {Object.entries(listingData).map(([fieldName, fieldValue]) => {
             if (
               fieldName === "address_street" ||
