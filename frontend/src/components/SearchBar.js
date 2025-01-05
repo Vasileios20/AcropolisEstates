@@ -37,17 +37,16 @@ const SearchBar = () => {
   const [update, setUpdate] = useState(false);
   const location = history.location;
   const [errors, setErrors] = useState("");
-  const [selectedMunicipality, setSelectedMunicipality] = useState({});
   const renderTooltip = (props) => (
     <Tooltip id="tooltip-disabled" {...props}>
       Please choose rent or buy.
     </Tooltip>
   );
-  
+
   const { t } = useTranslation();
   const { regionsData } = useFetchLocationData();
 
-  
+
   // Fetch the search parameters from the URL and set the state.
   useMemo(() => {
     const search = history.location.search;
@@ -84,7 +83,7 @@ const SearchBar = () => {
     if (municipalityId) {
       path += `&region_id=${regionId}&county_id=${countyId}&municipality_id=${municipalityId}`;
     }
-    
+
     if (type) {
       path += `&type=${type}`;
     }
@@ -145,7 +144,6 @@ const SearchBar = () => {
   ]);
 
   const handleMunicipalitySelect = (municipality) => {
-    setSelectedMunicipality(municipality);
     setRegionId(municipality.region_id);
     setCountyId(municipality.county_id);
     setMunicipalityId(municipality.id);
@@ -184,16 +182,10 @@ const SearchBar = () => {
             <Form.Label style={{ fontWeight: "500" }}>
               {t("searchBar.location")}
             </Form.Label>
-            {/* <Form.Control
-              value={query ? query : ""}
-              onChange={(e) => setQuery(e.target.value)}
-              type="text"
-              placeholder={t("searchBar.search")}
-              className={styles.SearchInput}
-              aria-label="search"
-            /> */}
             <MunicipalitySearch
-              className={styles.SearchInput} onSearch={handleMunicipalitySelect} regionsData={regionsData} setQuery={setQuery} municipalityId={selectedMunicipality}
+              className={styles.SearchInput}
+              onSearch={handleMunicipalitySelect}
+              regionsData={regionsData}
               history={history}
             />
           </Col>
