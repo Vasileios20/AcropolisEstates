@@ -64,6 +64,12 @@ Filter class for filtering listings based on various criteria.
         field_name="floor", lookup_expr="gte")
     max_floor = filter.NumberFilter(
         field_name="floor", lookup_expr="lte")
+    region_id = filter.NumberFilter(
+        field_name="region_id", lookup_expr="exact")
+    county_id = filter.NumberFilter(
+        field_name="county_id", lookup_expr="exact")
+    municipality_id = filter.NumberFilter(
+        field_name="municipality_id", lookup_expr="exact")
 
     class Meta:
         model = Listing
@@ -99,8 +105,11 @@ class ListingList(generics.ListCreateAPIView):
     search_fields = [
         "municipality",
         "municipality_gr",
+        "municipality_id",
         "county",
         "county_gr",
+        "county_id",
+        "region_id",
         "postcode",
     ]
 
