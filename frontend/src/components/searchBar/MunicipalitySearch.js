@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "../../styles/MunicipalitySearch.module.css";
 import { t } from "i18next";
 import Form from "react-bootstrap/Form";
 
-const MunicipalitySearch = ({ regionsData, onSearch, municipalityId, history }) => {
+const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, setEmpty }) => {
     const [inputValue, setInputValue] = useState("");
     const [filteredMunicipalities, setFilteredMunicipalities] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
-    const munID = history.location.state?.data.results[0].municipality_id;
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+    const dropdownRef = useRef(null);
+    const municipalityId = history.location.state?.data?.results[0]?.municipality_id || null;
 
     useEffect(() => {
-        if (munID) {
+        if (municipalityId) {
             const allMunicipalities = regionsData?.flatMap(region =>
                 region.counties?.flatMap(county =>
                     county.municipalities?.map(municipality => ({
@@ -21,13 +23,13 @@ const MunicipalitySearch = ({ regionsData, onSearch, municipalityId, history }) 
                 )
             ) || [];
 
-            const selectedMunicipality = allMunicipalities.find(municipality => municipality.id === munID);
+            const selectedMunicipality = allMunicipalities.find(municipality => municipality.id === municipalityId);
 
             if (selectedMunicipality) {
                 setInputValue(selectedMunicipality.name);
             }
         }
-    }, [regionsData, munID]);
+    }, [regionsData, municipalityId]);
 
     const normalizeString = (str) => {
         if (!str) return "";
@@ -41,8 +43,15 @@ const MunicipalitySearch = ({ regionsData, onSearch, municipalityId, history }) 
         const value = e.target.value;
 
         setInputValue(value);
+        setSelectedIndex(-1);
+        if (!value) {
+            setEmpty(true);
+
+        }
+
 
         if (value) {
+            setEmpty(false);
             const allMunicipalities = regionsData?.flatMap(region =>
                 region.counties?.flatMap(county =>
                     county.municipalities?.map(municipality => ({
@@ -97,29 +106,68 @@ const MunicipalitySearch = ({ regionsData, onSearch, municipalityId, history }) 
         }
     };
 
+    const handleKeyDown = (e) => {
+        if (!showDropdown || filteredMunicipalities.length === 0) return;
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            setSelectedIndex((prevIndex) => {
+                const nextIndex = prevIndex < filteredMunicipalities.length - 1 ? prevIndex + 1 : 0;
+                scrollIntoView(nextIndex);
+                return nextIndex;
+            });
+        } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            setSelectedIndex((prevIndex) => {
+                const nextIndex = prevIndex > 0 ? prevIndex - 1 : filteredMunicipalities.length - 1;
+                scrollIntoView(nextIndex);
+                return nextIndex;
+            });
+        } else if (e.key === "Enter" && selectedIndex >= 0) {
+            e.preventDefault();
+            handleSelect(filteredMunicipalities[selectedIndex]);
+        }
+    };
+
+    const scrollIntoView = (index) => {
+        if (dropdownRef.current) {
+            const dropdownItems = dropdownRef.current.children;
+            const selectedItem = dropdownItems[index];
+            if (selectedItem) {
+                selectedItem.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                });
+            }
+        }
+    };
+
     return (
         <>
             <Form.Control
                 type="text"
-                value={inputValue}
+                value={inputValue ? inputValue : ""}
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 placeholder={t("searchBar.search")}
-                className="form-control"
+                className={`"form-control" ${styles.MunicipalitySearch}`}
             />
             {showDropdown && (
-                <ul className={styles.MunicipalityDropdownSearch}>
+                <ul ref={dropdownRef} className={styles.MunicipalityDropdownSearch}>
                     {filteredMunicipalities.length > 0 &&
                         filteredMunicipalities.map((municipality, index) => (
                             <li
                                 key={`${municipality.id}-${index}`}
                                 onClick={() => handleSelect(municipality)}
+                                className={
+                                    index === selectedIndex ? styles.SelectedItem : ""
+                                }
                             >
                                 {municipality.name}
                             </li>
-                        ))
-                    }
+                        ))}
                 </ul>
             )}
         </>
