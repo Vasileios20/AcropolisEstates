@@ -37,6 +37,8 @@ const SearchBar = () => {
   const [update, setUpdate] = useState(false);
   const location = history.location;
   const [errors, setErrors] = useState("");
+  const [empty, setEmpty] = useState(false);
+
   const renderTooltip = (props) => (
     <Tooltip id="tooltip-disabled" {...props}>
       Please choose rent or buy.
@@ -83,7 +85,9 @@ const SearchBar = () => {
     if (municipalityId) {
       path += `&region_id=${regionId}&county_id=${countyId}&municipality_id=${municipalityId}`;
     }
-
+    if (empty) {
+      path = `/listings/?sale_type=${saleType}`;
+    }
     if (type) {
       path += `&type=${type}`;
     }
@@ -187,6 +191,9 @@ const SearchBar = () => {
               onSearch={handleMunicipalitySelect}
               regionsData={regionsData}
               history={history}
+              saleType={saleType}
+              empty={empty}
+              setEmpty={setEmpty}
             />
           </Col>
           <Col sm={6} md={2} className="mt-1 mt-md-0">
