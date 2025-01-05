@@ -1,8 +1,9 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { t } from "i18next";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import useFetchLocationData from "../../hooks/useFetchLocationData";
+import styles from "../../styles/RegionCountyMunicipality.module.css";
 
 const RegionCountyMunicipalitySelect = ({
     onRegionChange,
@@ -14,6 +15,10 @@ const RegionCountyMunicipalitySelect = ({
     listingData,
 }) => {
     const { regionsData } = useFetchLocationData();
+
+    const [searchInput, setSearchInput] = useState("");
+    const [filteredMunicipalities, setFilteredMunicipalities] = useState([]);
+    const [showMunicipalityDropdown, setShowMunicipalityDropdown] = useState(false);
 
     // Update selected region, county, and municipality when listing data changes
     useEffect(() => {
@@ -46,6 +51,29 @@ const RegionCountyMunicipalitySelect = ({
     const selectedCountyObj = useMemo(() => counties.find(county => county.id === selectedCounty), [counties, selectedCounty]);
     
     const municipalities = useMemo(() => selectedCountyObj?.municipalities || [], [selectedCountyObj]);
+
+    const handleSearchInputChange = (e) => {
+        const value = e.target.value;
+        setSearchInput(value);
+
+        // Filter municipalities based on input
+        if (value) {
+            const filtered = municipalities.filter(municipality =>
+                municipality.municipality.toLowerCase().includes(value.toLowerCase())
+            );
+            setFilteredMunicipalities(filtered);
+            setShowMunicipalityDropdown(true);
+        } else {
+            setFilteredMunicipalities([]);
+            setShowMunicipalityDropdown(false);
+        }
+    };
+
+    const handleMunicipalitySelect = (municipality) => {
+        onMunicipalityChange(municipality.id);
+        setSearchInput(municipality.municipality); // Set the selected municipality to the input field
+        setShowMunicipalityDropdown(false); // Close the dropdown
+    };
 
     return (
         <Row className="justify-content flex-column">
@@ -95,21 +123,28 @@ const RegionCountyMunicipalitySelect = ({
             <Col md={6} className="mb-2 mx-auto d-flex justify-content-between flex-column">
                 {selectedCounty && (
                     <>
-                        <label htmlFor="municipality_id" className="mb-2">{t("regionOptions.municipality")}</label>
-                        <select
-                            id="municipality_id"
-                            value={selectedMunicipality}
-                            name="municipality_id"
-                            onChange={e => onMunicipalityChange(parseInt(e.target.value))}
-                            className="form-select"
-                        >
-                            <option value="">{t("regionOptions.selectMunicipality")}</option>
-                            {municipalities.map(municipality => (
-                                <option key={municipality.id} value={municipality.id}>
-                                    {municipality.municipality}
-                                </option>
-                            ))}
-                        </select>
+                        <label htmlFor="municipality_search" className="me-2">{t("regionOptions.municipality")}</label>
+                        <input
+                            id="municipality_search"
+                            type="text"
+                            value={searchInput}
+                            onChange={handleSearchInputChange}
+                            placeholder={t("regionOptions.selectMunicipality")}
+                            className={`${styles.Text}"form-control"`}
+                        />
+                        {showMunicipalityDropdown && (
+                            <ul className={`${styles.MuicipalityDropdown}`}>
+                                {filteredMunicipalities.map((municipality) => (
+                                    <li
+                                        key={municipality.id}
+                                        className={`${styles.MunicipalityDropdownLi} form-control`}
+                                        onClick={() => handleMunicipalitySelect(municipality)}
+                                    >
+                                        {municipality.municipality}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </>
                 )}
             </Col>
