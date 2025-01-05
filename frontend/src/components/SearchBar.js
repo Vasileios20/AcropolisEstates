@@ -14,6 +14,8 @@ import { axiosReq } from "../api/axiosDefaults";
 import { useHistory } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
+import useFetchLocationData from "../hooks/useFetchLocationData";
+import MunicipalitySearch from "./searchBar/MunicipalitySearch";
 
 const SearchBar = () => {
   /**
@@ -28,23 +30,24 @@ const SearchBar = () => {
   const [type, setType] = useState("");
   const [price, setPrice] = useState({ min: "", max: "" });
   const [surface, setSurface] = useState({ min: "", max: "" });
+  const [regionId, setRegionId] = useState("");
+  const [countyId, setCountyId] = useState("");
+  const [municipalityId, setMunicipalityId] = useState("");
   const history = useHistory();
   const [update, setUpdate] = useState(false);
   const location = history.location;
   const [errors, setErrors] = useState("");
+  const [selectedMunicipality, setSelectedMunicipality] = useState({});
   const renderTooltip = (props) => (
     <Tooltip id="tooltip-disabled" {...props}>
       Please choose rent or buy.
     </Tooltip>
   );
-  // const lng = navigator.language || navigator.userLanguage;
+  
   const { t } = useTranslation();
+  const { regionsData } = useFetchLocationData();
 
-  // useEffect(() => {
-
-  //   i18n.changeLanguage(lng);
-  // }, [i18n, lng]);
-
+  
   // Fetch the search parameters from the URL and set the state.
   useMemo(() => {
     const search = history.location.search;
@@ -56,11 +59,17 @@ const SearchBar = () => {
     const minSurface = params.get("min_surface");
     const maxSurface = params.get("max_surface");
     const searchQuery = params.get("search");
+    const regionId = params.get("region_id");
+    const countyId = params.get("county_id");
+    const municipalityId = params.get("municipality_id");
     setSaleType(saleType);
     setType(type);
     setPrice({ min: minPrice, max: maxPrice });
     setSurface({ min: minSurface, max: maxSurface });
     setQuery(searchQuery);
+    setRegionId(regionId);
+    setCountyId(countyId);
+    setMunicipalityId(municipalityId);
     setUpdate(false);
   }, [history.location.search]);
 
@@ -72,6 +81,10 @@ const SearchBar = () => {
     if (query) {
       path += `&search=${query}`;
     }
+    if (municipalityId) {
+      path += `&region_id=${regionId}&county_id=${countyId}&municipality_id=${municipalityId}`;
+    }
+    
     if (type) {
       path += `&type=${type}`;
     }
@@ -105,6 +118,7 @@ const SearchBar = () => {
         location.pathname === "/listings/" &&
         (saleType ||
           query ||
+          municipalityId ||
           type ||
           price.min ||
           price.max ||
@@ -120,6 +134,7 @@ const SearchBar = () => {
   }, [
     update,
     query,
+    municipalityId,
     type,
     price.min,
     price.max,
@@ -128,6 +143,13 @@ const SearchBar = () => {
     saleType,
     location.pathname,
   ]);
+
+  const handleMunicipalitySelect = (municipality) => {
+    setSelectedMunicipality(municipality);
+    setRegionId(municipality.region_id);
+    setCountyId(municipality.county_id);
+    setMunicipalityId(municipality.id);
+  };
 
   return (
     <Container className="mb-5">
@@ -162,13 +184,17 @@ const SearchBar = () => {
             <Form.Label style={{ fontWeight: "500" }}>
               {t("searchBar.location")}
             </Form.Label>
-            <Form.Control
+            {/* <Form.Control
               value={query ? query : ""}
               onChange={(e) => setQuery(e.target.value)}
               type="text"
               placeholder={t("searchBar.search")}
               className={styles.SearchInput}
               aria-label="search"
+            /> */}
+            <MunicipalitySearch
+              className={styles.SearchInput} onSearch={handleMunicipalitySelect} regionsData={regionsData} setQuery={setQuery} municipalityId={selectedMunicipality}
+              history={history}
             />
           </Col>
           <Col sm={6} md={2} className="mt-1 mt-md-0">
