@@ -1,0 +1,29 @@
+.MunicipalityDropdownSearch {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: fit-content;
+    z-index: 1000;
+}
+
+.MunicipalityDropdownSearch:focus {
+    outline: none;
+    background-color: aqua !important;
+    font-size: 2rem !important;
+    border: 0 0 0 25% (132, 124, 61, 0.25) !important;
+}
+
+.MunicipalityDropdownSearch li {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.7rem;
+}
+
+.MunicipalityDropdownSearch li:hover {
+    background-color: rgba(132, 124, 61, 0.4);
+}
