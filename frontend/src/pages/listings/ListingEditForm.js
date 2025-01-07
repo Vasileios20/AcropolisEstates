@@ -525,7 +525,7 @@ function ListingEditForm() {
                   </figure>
                 ))}
               </div>
-              <button className={`${btnStyles.Button} ${btnStyles.Black} m-3`} type="submit">
+              <button className={`${btnStyles.Button} ${btnStyles.AngryOcean} m-3`} type="submit">
                 Save order
               </button>
               <button

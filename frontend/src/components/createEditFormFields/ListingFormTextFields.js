@@ -425,7 +425,7 @@ const ListingTextFields = (
       >
         {t("createEditForm.button.cancel")}
       </Button>
-      <Button className={`${btnStyles.Button} ${btnStyles.Black} m-3`} type="submit">
+      <Button className={`${btnStyles.Button} ${btnStyles.AngryOcean} m-3`} type="submit">
         {create ? t("createEditForm.button.create") : t("createEditForm.button.update")}
       </Button>
     </div>
