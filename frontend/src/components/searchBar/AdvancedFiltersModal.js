@@ -38,9 +38,6 @@ const AdvancedFiltersModal = ({ filters, setFilters, onApplyFilters, handleSubmi
         fetchAmenities();
     }, []);
 
-    console.log('filters:', filters);
-
-
     const handleAmenityChange = (e, amenityId) => {
         const { checked } = e.target;
         setFilters((prevFilters) => {
@@ -168,10 +165,10 @@ const AdvancedFiltersModal = ({ filters, setFilters, onApplyFilters, handleSubmi
                                 className={styles.Input}
                                 as="select"
                                 name="heating_system"
-                                value={filters?.heating || ""}
+                                value={filters?.heating_system || ""}
                                 onChange={handleChange}
                             >
-                                <option>---</option>
+                                <option value="">---</option>
                                 <option value="autonomous">{t("propertyDetails.heating_system.autonomous")}</option>
                                 <option value="central">{t("propertyDetails.heating_system.central")}</option>
                                 <option value="air_condition">{t("propertyDetails.heating_system.air_condition")}</option>
@@ -183,7 +180,7 @@ const AdvancedFiltersModal = ({ filters, setFilters, onApplyFilters, handleSubmi
                             </Form.Control>
                         </Col>
                     </Form.Group>
-                    
+
                     <h5>{t("searchBar.amenities")}</h5>
                     <Form.Group>
                         <Form.Label>{t("searchBar.selectAmenities")}</Form.Label>

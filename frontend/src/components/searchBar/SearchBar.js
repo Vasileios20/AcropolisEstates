@@ -80,7 +80,7 @@ const SearchBar = () => {
       bedrooms: { min: params.get('min_bedrooms'), max: params.get('max_bedrooms') },
       constructionYear: { min: params.get('min_construction_year'), max: params.get('max_construction_year') },
       floor: { min: params.get('min_floor'), max: params.get('max_floor') },
-      heating: params.get('heating_system'),
+      heating_system: params.get('heating_system'),
     };
 
     setSaleType(saleType);
