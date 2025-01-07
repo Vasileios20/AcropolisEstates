@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../../styles/MunicipalitySearch.module.css";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
 
 const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, setEmpty }) => {
@@ -9,16 +9,21 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const dropdownRef = useRef(null);
-    const municipalityId = history.location.state?.data?.results[0]?.municipality_id || null;
+    const municipalityId = history.location.state?.data?.results?.length
+        ? history.location.state.data.results[0].municipality_id
+        : null;
+    const containsMunicipality = history.location.search.includes("municipality");
+    const { t, i18n } = useTranslation();
+    const lng = i18n?.language;
 
     useEffect(() => {
-        if (municipalityId) {
+        if (containsMunicipality) {
             const allMunicipalities = regionsData?.flatMap(region =>
                 region.counties?.flatMap(county =>
                     county.municipalities?.map(municipality => ({
                         id: municipality.id,
-                        name: municipality.municipality,
-                        county_id: county.id
+                        greekName: municipality.greekName,
+                        englishName: municipality.englishName,
                     }))
                 )
             ) || [];
@@ -26,37 +31,37 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
             const selectedMunicipality = allMunicipalities.find(municipality => municipality.id === municipalityId);
 
             if (selectedMunicipality) {
-                setInputValue(selectedMunicipality.name);
+                setInputValue(lng === 'el' ? selectedMunicipality.greekName : selectedMunicipality.englishName);
             }
         }
-    }, [regionsData, municipalityId]);
+    }, [regionsData, municipalityId, containsMunicipality, lng]);
 
     const normalizeString = (str) => {
         if (!str) return "";
         return str
             .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
             .toLowerCase();
     };
 
     const handleInputChange = (e) => {
         const value = e.target.value;
-
         setInputValue(value);
         setSelectedIndex(-1);
+
         if (!value) {
             setEmpty(true);
-
         }
-
 
         if (value) {
             setEmpty(false);
+
             const allMunicipalities = regionsData?.flatMap(region =>
                 region.counties?.flatMap(county =>
                     county.municipalities?.map(municipality => ({
                         id: municipality.id,
-                        name: municipality.municipality,
+                        greekName: municipality.greekName,
+                        englishName: municipality.englishName,
                         county_id: county.id,
                         county_name: county.county,
                         region_id: region.id,
@@ -65,19 +70,13 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
                 )
             ) || [];
 
-            const uniqueMunicipalities = new Map();
-            allMunicipalities.forEach(municipality => {
-                const normalizedName = normalizeString(municipality.name);
-                if (!uniqueMunicipalities.has(normalizedName)) {
-                    uniqueMunicipalities.set(normalizedName, municipality);
-                }
+            const filtered = allMunicipalities.filter(municipality => {
+                const searchValue = normalizeString(value);
+                return (
+                    normalizeString(municipality.greekName).includes(searchValue) ||
+                    normalizeString(municipality.englishName).includes(searchValue)
+                );
             });
-
-            const filtered = Array.from(uniqueMunicipalities.values())
-                .filter(municipality =>
-                    normalizeString(municipality.name).includes(normalizeString(value))
-                )
-                .sort((a, b) => String(a.id).localeCompare(String(b.id)));
 
             setFilteredMunicipalities(filtered);
             setShowDropdown(true);
@@ -88,7 +87,7 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
     };
 
     const handleSelect = (municipality) => {
-        setInputValue(municipality.name);
+        setInputValue(lng === 'el' ? municipality.greekName : municipality.englishName);
         setShowDropdown(false);
 
         if (onSearch) {
@@ -154,20 +153,17 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
                 placeholder={t("searchBar.search")}
                 className={`"form-control" ${styles.MunicipalitySearch}`}
             />
-            {showDropdown && (
+            {showDropdown && filteredMunicipalities.length > 0 && (
                 <ul ref={dropdownRef} className={styles.MunicipalityDropdownSearch}>
-                    {filteredMunicipalities.length > 0 &&
-                        filteredMunicipalities.map((municipality, index) => (
-                            <li
-                                key={`${municipality.id}-${index}`}
-                                onClick={() => handleSelect(municipality)}
-                                className={
-                                    index === selectedIndex ? styles.SelectedItem : ""
-                                }
-                            >
-                                {municipality.name}
-                            </li>
-                        ))}
+                    {filteredMunicipalities.map((municipality, index) => (
+                        <li
+                            key={`${municipality.id}-${index}`}
+                            onClick={() => handleSelect(municipality)}
+                            className={index === selectedIndex ? styles.SelectedItem : ""}
+                        >
+                            {lng === 'el' ? municipality.greekName : municipality.englishName}
+                        </li>
+                    ))}
                 </ul>
             )}
         </>
