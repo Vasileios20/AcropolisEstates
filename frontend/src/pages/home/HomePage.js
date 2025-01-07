@@ -7,7 +7,7 @@ import homeStyles from "../../styles/HomePage.module.css";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import SearchBar from "../../components/SearchBar";
+import SearchBar from "../../components/searchBar/SearchBar";
 import styles from "../../styles/ServicesPages.module.css";
 import useFetchListings from "../../hooks/useFetchListings";
 import Asset from "../../components/Asset";

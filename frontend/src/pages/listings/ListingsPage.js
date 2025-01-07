@@ -1,5 +1,5 @@
 import useFetchListings from "../../hooks/useFetchListings";
-import ListingsComponent from "../../components/Listings";
+import ListingsComponent from "../../components/listings/Listings";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 

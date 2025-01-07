@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { axiosReq } from "../../api/axiosDefaults";
-import Listing from "./Listing";
+import Listing from "../../components/listings/Listing";
 import Asset from "../../components/Asset";
 import Container from "react-bootstrap/Container";
 

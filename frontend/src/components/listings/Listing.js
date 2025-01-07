@@ -4,12 +4,12 @@ import { Helmet } from "react-helmet-async";
 import { axiosRes } from "../../api/axiosDefaults";
 import { useTranslation } from "react-i18next";
 
-import { MoreDropdown } from "../../components/MoreDropDown";
+import { MoreDropdown } from "../MoreDropDown";
 import ListingImages from "./ListingImages";
-import ListingHeader from "../../components/ListingHeader";
+import ListingHeader from "./ListingHeader";
 import useUserStatus from "../../hooks/useUserStatus";
-import ContactForm from "../contact/ContactForm";
-import MapMarker from "../../components/MapMarker";
+import ContactForm from "../../pages/contact/ContactForm";
+import MapMarker from "../MapMarker";
 
 import styles from "../../styles/Listing.module.css";
 import Container from "react-bootstrap/Container";

@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import styles from "../styles/Listing.module.css";
-import heroStyles from "../styles/ServicesPages.module.css";
+import styles from "../../styles/Listing.module.css";
+import heroStyles from "../../styles/ServicesPages.module.css";
 
-import Asset from "./Asset";
+import Asset from "../Asset";
 import ListingHeader from "./ListingHeader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
-import { fetchMoreData } from "../utils/utils";
-import SearchBar from "./SearchBar";
+import { fetchMoreData } from "../../utils/utils";
+import SearchBar from "../searchBar/SearchBar";
 import Card from "react-bootstrap/Card";
 import Carousel from "react-bootstrap/Carousel";
 import { APIProvider, AdvancedMarker, Map, Pin } from "@vis.gl/react-google-maps";
 import { t } from "i18next";
 import { Helmet } from "react-helmet-async";
-import SortOrder from '../components/SortOrder';
+import SortOrder from '../SortOrder';
 
 const ListingsPage = ({ array, hasLoaded, setListings, listings, message, searchResults, setShowCookieBanner, nonEssentialConsent }) => {
   // The ListingsPage component is a functional component that renders the listings from the database.
