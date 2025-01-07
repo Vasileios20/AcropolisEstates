@@ -92,7 +92,8 @@
         "header2": "Amenities"
     },
     "listingType": {
-        "any": "Any",
+        "": "All Types",
+        "any": "Choose Type",
         "commercial": "Commercial",
         "land": "Land",
         "residential": "Residential"
@@ -100,7 +101,7 @@
     "searchBar": {
         "rent": "Rent",
         "buy": "Buy",
-        "search": "Μunicipality, Αddress",
+        "search": "Μunicipality",
         "location": "Location",
         "type": "Type",
         "price": "Price",
@@ -110,9 +111,18 @@
         "landArea": "Land Area",
         "minFloorArea": "Min",
         "maxFloorArea": "Max",
+        "amenities": "Amenities",
+        "minBedrooms": "Min Bedrooms",
+        "maxBedrooms": "Max Bedrooms",
+        "minYearBuilt": "Min Year Built",
+        "maxYearBuilt": "Max Year Built",
+        "minFloor": "Min Floor",
+        "maxFloor": "Max Floor",
+        "selectAmenities": "Select Amenities",
         "btnSearch": "Search",
         "btnUpdate": "Update",
-        "btnClear": "Clear"
+        "btnClear": "Clear",
+        "btnApply": "Apply Filters"
     },
     "propertyDetails": {
         "propertyId": "Listing ID",

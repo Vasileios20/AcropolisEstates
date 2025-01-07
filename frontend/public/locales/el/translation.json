@@ -93,7 +93,8 @@
         "header2": "Περισσότερα"
     },
     "listingType": {
-        "any": "Ολα",
+        "": "Όλα τα Ακίνητα",
+        "any": "Επιλογή",
         "commercial": "Εμπορικό",
         "land": "Γη",
         "residential": "Κατοικία"
@@ -101,7 +102,7 @@
     "searchBar": {
         "rent": "Ενοικίαση",
         "buy": "Αγορά",
-        "search": "Δήμος, Διεύθυνση",
+        "search": "Δήμος",
         "location": "Τοποθεσία",
         "type": "Τύπος",
         "price": "Τιμή",
@@ -111,9 +112,18 @@
         "landArea": "Εμβαδόν Γης",
         "minFloorArea": "Ελάχιστο m²",
         "maxFloorArea": "Μέγιστο m²",
+        "amenities": "Παροχές",
+        "minBedrooms": "Ελάχιστα Υπνοδωμάτια",
+        "maxBedrooms": "Μέγιστα Υπνοδωμάτια",
+        "minYearBuilt": "Ελάχιστο Έτος Κατασκευής",
+        "maxYearBuilt": "Μέγιστο Έτος Κατασκευής",
+        "minFloor": "Ελάχιστος Όροφος",
+        "maxFloor": "Ανώτατος Όροφος",
+        "selectAmenities": "Επιλέξτε Παροχές",
         "btnSearch": "Αναζήτηση",
         "btnUpdate": "Ενημέρωση",
-        "btnClear": "Καθαρισμός"
+        "btnClear": "Καθαρισμός",
+        "btnApply": "Εφαρμογή Φίλτρων"
     },
     "propertyDetails": {
         "propertyId": "Κωδικός Ακινήτου",
@@ -529,7 +539,7 @@
         "asc": "Αύξουσα Τιμή",
         "desc": "Φθίνουσα Τιμή"
     },
-    "regionOptions":{
+    "regionOptions": {
         "region": "Γεωγραφικό Διαμέρισμα",
         "county": "Νομός",
         "municipality": "Δήμος",
