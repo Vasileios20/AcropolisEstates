@@ -61,7 +61,7 @@ Filter class for filtering listings based on various criteria.
         field_name="construction_year", lookup_expr="lte")
 
     min_floor = filter.NumberFilter(
-        field_name="floor", lookup_expr="gte")
+        field_name="floor", lookup_expr="lte")
     max_floor = filter.NumberFilter(
         field_name="floor", lookup_expr="lte")
     region_id = filter.NumberFilter(
@@ -79,7 +79,12 @@ Filter class for filtering listings based on various criteria.
             "sub_type",
             "price",
             "sale_type",
-            "floor"
+            "floor",
+            "bedrooms",
+            "bathrooms",
+            "construction_year",
+            "floor_area",
+            "heating_system",
         ]
 
 
