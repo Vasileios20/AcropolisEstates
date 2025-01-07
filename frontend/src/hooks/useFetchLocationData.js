@@ -1,23 +1,55 @@
 import { useState, useEffect } from 'react';
-import i18n from 'i18next';
 
 const useFetchLocationData = () => {
     const [regionsData, setRegionsData] = useState([]);
-    const lng = i18n.language;
-
     useEffect(() => {
         const fetchRegionsData = async () => {
             try {
-                const response = await fetch(`/locales/${lng}/regions.json`);
-                const data = await response.json();
-                setRegionsData(data.regions);
+                const [greekResponse, englishResponse] = await Promise.all([
+                    fetch(`/locales/el/regions.json`),
+                    fetch(`/locales/en/regions.json`),
+                ]);
+                const [greekData, englishData] = await Promise.all([
+                    greekResponse.json(),
+                    englishResponse.json(),
+                ]);
+
+                // Combine Greek and English data with transliteration
+                const combinedData = greekData.regions.map((greekRegion, index) => {
+                    const englishRegion = englishData.regions[index];
+                    return {
+                        id: greekRegion.id,
+                        greekName: greekRegion.region,
+                        englishName: englishRegion.region,
+                        counties: greekRegion.counties.map((greekCounty, countyIndex) => {
+                            const englishCounty = englishRegion.counties[countyIndex];
+                            return {
+                                id: greekCounty.id,
+                                greekName: greekCounty.county,
+                                englishName: englishCounty.county,
+                                municipalities: greekCounty.municipalities.map((greekMunicipality, municipalityIndex) => {
+                                    const englishMunicipality = englishCounty.municipalities[municipalityIndex];
+                                    return {
+                                        id: greekMunicipality.id,
+                                        greekName: greekMunicipality.municipality,
+                                        englishName: englishMunicipality.municipality,
+                                    };
+                                }),
+                            };
+                        }),
+                    };
+                });
+                console.log('combinedData:', combinedData);
+                
+
+                setRegionsData(combinedData);
             } catch (error) {
                 console.error("Error fetching regions data:", error);
             }
         };
 
         fetchRegionsData();
-    }, [lng]);
+    }, []);
 
     return {
         regionsData,
