@@ -39,12 +39,9 @@ const useFetchLocationData = () => {
                         }),
                     };
                 });
-                console.log('combinedData:', combinedData);
-                
-
                 setRegionsData(combinedData);
             } catch (error) {
-                console.error("Error fetching regions data:", error);
+                // console.error("Error fetching regions data:", error);
             }
         };
 
