@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import styles from "../styles/Listing.module.css";
+import styles from "../../styles/Listing.module.css";
 import { useTranslation } from "react-i18next";
-import area from "../assets/area.png";
-import useFetchLocationData from "../hooks/useFetchLocationData";
+import area from "../../assets/area.png";
+import useFetchLocationData from "../../hooks/useFetchLocationData";
 
 const ListingHeader = React.memo((props) => {
   const [typeReady, setTypeReady] = useState(false);
@@ -13,9 +13,15 @@ const ListingHeader = React.memo((props) => {
   const lng = i18n.language;
 
   const { regionsData } = useFetchLocationData();
+  
   const region_id = regionsData?.find(region => region.id === props.region_id);
   const county_id = region_id?.counties.find(county => county.id === props.county_id);
   const municipality_id = county_id?.municipalities.find(municipality => municipality.id === props.municipality_id);
+
+  const regionName = { region: lng === "el" ? region_id?.greekName : region_id?.englishName };
+  const countyName = { county: lng === "el" ? county_id?.greekName : county_id?.englishName };
+  const municipalityName = { municipality: lng === "el" ? municipality_id?.greekName : municipality_id?.englishName };
+
 
   useEffect(() => {
     if (props.type !== undefined && props.sub_type !== undefined) {
@@ -95,7 +101,7 @@ const ListingHeader = React.memo((props) => {
 
             sale_type: saleType,
             type: props.type === "land" ? translatedType : translatedSubType,
-          })},   {props.municipality_id ? `${municipality_id?.municipality}, ${county_id?.county}, ${region_id?.region}` : `${municipality}, ${county}, ${props.postcode}`}
+          })},   {props.municipality_id ? `${municipalityName?.municipality}, ${countyName?.county}, ${regionName?.region}` : `${municipality}, ${county}, ${props.postcode}`}
         </div>
         {props.type === "land" ? land : props.type === "residential" ? not_land : commercial}
         <div className="m-0">
