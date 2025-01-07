@@ -6,6 +6,7 @@
   cursor: default;
   color: #cfced3;
 }
+
 .ErrorWidth {
   min-width: 25%;
   max-width: 50%;
@@ -17,6 +18,7 @@
 .MinWidth {
   min-width: 100%;
 }
+
 .HomeBar {
   color: #000;
   background-color: rgba(255, 255, 255, 0.65);
@@ -24,9 +26,80 @@
   border: 1px solid rgba(77, 103, 101, 1);
 }
 
+.TypeSelect {
+  color: #4d6765 !important;
+  background-color: #fff !important;
+  border: 1px solid #dee2e6;
+  max-width: fit-content;
+  min-width: 9rem;
+}
+
+.TypeSelect:hover {
+  border: 1px solid #dee2e6;
+}
+
+.TypeSelect:focus,
 .SearchInput:focus {
   border: 1px solid #847c3d;
-  box-shadow: 0 0 0 0.25rem rgba(132, 124, 61, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(132, 124, 61, 0.45);
+  background-color: #fff !important;
+  color: #000;
+}
+
+.TypeDropdown {
+  color: #4d6765 !important;
+  background-color: #fff !important;
+  border: 1px solid #dee2e6;
+}
+
+.TypeDropdown > *:hover {
+  background-color: rgba(132, 124, 61, 0.6) !important;
+}
+
+/* AdvancedFiltersModal */
+
+.AdvancedFiltersModal {
+  color: #4d6765;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.AmenityCheckbox input[type="checkbox"] {
+  /* Hide the default checkbox */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #4d6765;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.AmenityCheckbox input[type="checkbox"]:checked {
+  background-color: #4d6765;
+  border-color: #4d6765;
+}
+
+.AmenityCheckbox input[type="checkbox"]:checked::after {
+  content: "✓";
+  display: block;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  line-height: 16px;
+  background-color: #4d6765;
+}
+
+.AmenityCheckbox label {
+  margin-left: 8px;
+  /* Space between checkbox and label */
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
 }
 
 /* Responsive design */
