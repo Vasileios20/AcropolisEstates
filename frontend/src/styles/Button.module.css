@@ -13,20 +13,8 @@
   opacity: 0.8;
   border-color: transparent;
   cursor: pointer;
-  transform: scale(1.05);
+  transform: scale(1.0);
 }
-
-/* .Button:hover:active {
-  background-color: #b0b000 !important;
-}
-
-.Button:active {
-  background-color: #b0b000 !important;
-}
-
-.Button:focus {
-  background-color: #b0b000;
-} */
 
 .Wide {
   padding: 10px 50px;
@@ -41,51 +29,42 @@
 .Olive,
 .OliveOutline:hover,
 .Bright:hover {
-  background-color: #606000;
+  background-color: #847c3d;
   color: #ffffff;
 }
 
 .OliveOutline,
 .Olive:hover {
-  background-color: #b0b000;
-  color: #000;
+  background-color: rgba(132, 124, 61, 0.85);
 }
 
-.Black,
-.BlackOutline:hover {
+.AngryOcean,
+.AngryOceanOutline:hover {
   background-color: #4d6765;
   color: aliceblue;
 }
 
-.Black:hover,
-.BlackOutline {
+.AngryOcean:hover,
+.AngryOceanOutline {
   background-color: rgba(77, 103, 101, 0);
   color: #4d6765;
   border: 1px solid rgba(77, 103, 101, 1);
-  font-weight: 800;
 }
 
-.Black:active,
-.BlackOutline:active {
+.AngryOcean:active,
+.AngryOceanOutline:active {
   background-color: #4d6765 !important;
   color: aliceblue;
 }
 
-.Black:focus {
+.AngryOcean:focus {
   background-color: #4d6765 !important;
   color: aliceblue;
 }
 
-.BlackSearch {
-  background-color: #4d6765;
+.SearchBtn:hover {
+  background-color: rgba(77, 103, 101, 0.85);
   color: aliceblue;
-  border: 1px solid rgb(0, 0, 0);
-}
-
-.BlackSearch:hover {
-  background-color: #4d6765;
-  color: aliceblue;
-  border: 1px solid rgb(0, 0, 0);
 }
 
 .Bright {
