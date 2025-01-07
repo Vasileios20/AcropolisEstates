@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from "react";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import useFetchLocationData from "../../hooks/useFetchLocationData";
@@ -15,6 +15,8 @@ const RegionCountyMunicipalitySelect = ({
     listingData,
 }) => {
     const { regionsData } = useFetchLocationData();
+    const { t, i18n } = useTranslation();
+    const lng = i18n?.language;
 
     const [searchInput, setSearchInput] = useState("");
     const [filteredMunicipalities, setFilteredMunicipalities] = useState([]);
@@ -46,9 +48,12 @@ const RegionCountyMunicipalitySelect = ({
 
     const selectedRegionObj = useMemo(() => regionsData.find(region => region.id === selectedRegion), [regionsData, selectedRegion]);
 
+    
+
     const counties = useMemo(() => selectedRegionObj?.counties || [], [selectedRegionObj]);
 
     const selectedCountyObj = useMemo(() => counties.find(county => county.id === selectedCounty), [counties, selectedCounty]);
+
     
     const municipalities = useMemo(() => selectedCountyObj?.municipalities || [], [selectedCountyObj]);
 
@@ -59,7 +64,9 @@ const RegionCountyMunicipalitySelect = ({
         // Filter municipalities based on input
         if (value) {
             const filtered = municipalities.filter(municipality =>
-                municipality.municipality.toLowerCase().includes(value.toLowerCase())
+                municipality.greekName.toLowerCase().includes(value.toLowerCase()) ||
+                municipality.englishName.toLowerCase().includes(value.toLowerCase())
+                
             );
             setFilteredMunicipalities(filtered);
             setShowMunicipalityDropdown(true);
@@ -71,7 +78,10 @@ const RegionCountyMunicipalitySelect = ({
 
     const handleMunicipalitySelect = (municipality) => {
         onMunicipalityChange(municipality.id);
-        setSearchInput(municipality.municipality); // Set the selected municipality to the input field
+        console.log('municipality:', municipality);
+        const name = lng === "el" ? municipality.greekName : municipality.englishName;
+        
+        setSearchInput(name); // Set the selected municipality to the input field
         setShowMunicipalityDropdown(false); // Close the dropdown
     };
 
@@ -90,7 +100,7 @@ const RegionCountyMunicipalitySelect = ({
                     <option value="">{t("regionOptions.selectRegion")}</option>
                     {regionsData.map(region => (
                         <option key={region.id} value={region.id}>
-                            {region.region}
+                            {lng === "el" ? region.greekName : region.englishName}
                         </option>
                     ))}
                 </select>
@@ -111,7 +121,7 @@ const RegionCountyMunicipalitySelect = ({
                             <option value="">{t("regionOptions.selectCounty")}</option>
                             {counties.map(county => (
                                 <option key={county.id} value={county.id}>
-                                    {county.county}
+                                    {lng === "el" ? county.greekName : county.englishName}
                                 </option>
                             ))}
                         </select>
@@ -140,7 +150,7 @@ const RegionCountyMunicipalitySelect = ({
                                         className={`${styles.MunicipalityDropdownLi} form-control`}
                                         onClick={() => handleMunicipalitySelect(municipality)}
                                     >
-                                        {municipality.municipality}
+                                        {lng === "el" ? municipality.greekName : municipality.englishName}
                                     </li>
                                 ))}
                             </ul>
