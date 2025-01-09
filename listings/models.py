@@ -5,6 +5,21 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 
+class Owner(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=50)
+    phone_2 = models.CharField(max_length=50, blank=True)
+    email = models.EmailField(max_length=255)
+    notes = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+    class Meta:
+        verbose_name_plural = "Owners"
+
+
 class Amenities(models.Model):
     """
     Amenities model
@@ -158,6 +173,10 @@ class Listing(models.Model):
                                  for i in range(1900, datetime.now().year + 1)]
 
     agent_name = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing_owner = models.ForeignKey(
+        Owner, on_delete=models.CASCADE, related_name="listings",
+        null=True, blank=True
+    )
     type = models.CharField(
         choices=type_filter_choices, default="residential",
         max_length=255, blank=True
