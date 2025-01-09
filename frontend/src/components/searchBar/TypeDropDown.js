@@ -2,8 +2,8 @@ import Dropdown from "react-bootstrap/Dropdown";
 import styles from "../../styles/SearchBar.module.css";
 import { t } from "i18next";
 
-const CustomDropdown = ({ type, setType }) => {
-    const typeCapitalized = type?.replace(/\b\w/g, char => char.toUpperCase());
+const CustomDropdown = ({ filters, setFilters }) => {
+    const typeCapitalized = filters?.type?.replace(/\b\w/g, char => char.toUpperCase());
     const options = [
         { value: "", label: t("listingType.any") },
         { value: "residential", label: t("listingType.residential") },
@@ -11,8 +11,12 @@ const CustomDropdown = ({ type, setType }) => {
         { value: "commercial", label: t("listingType.commercial") },
     ];
 
-    const handleSelect = (value) => {
-        setType(value);
+    const handleSelect = (e) => {
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            type: e,
+        })
+        );
     };
 
     return (
