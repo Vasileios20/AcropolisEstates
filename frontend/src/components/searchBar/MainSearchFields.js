@@ -56,7 +56,7 @@ const MainSearchFields = ({
                             placeholder={t("searchBar.minPrice")}
                             min="0"
                             value={filters.price.min ? filters.price.min : ""}
-                            onChange={(e) => handleChange(e)}
+                            onChange={(e) => setFilters({ ...filters, price: { ...filters.price, min: e.target.value } })}
                         />
                         <Form.Control
                             className={styles.SearchInput}
@@ -66,7 +66,7 @@ const MainSearchFields = ({
                             min={filters.price.min ? filters.price.min : "0"}
                             max="10000000"
                             value={filters.price.max ? filters.price.max : ""}
-                            onChange={(e) => handleChange(e)}
+                            onChange={(e) => setFilters({ ...filters, price: { ...filters.price, max: e.target.value } })}
                         />
                     </Col>
                 </Form.Group>
@@ -84,7 +84,7 @@ const MainSearchFields = ({
                             placeholder={t("searchBar.minFloorArea")}
                             min="0"
                             value={filters.surface.min ? filters.surface.min : ""}
-                            onChange={(e) => handleChange(e)}
+                            onChange={(e) => setFilters({ ...filters, surface: { ...filters.surface, min: e.target.value } })}
                         />
                         <Form.Control
                             className={styles.SearchInput}
@@ -94,7 +94,7 @@ const MainSearchFields = ({
                             min={filters.surface.min ? filters.surface.min : "0"}
                             max="1000000"
                             value={filters.surface.max ? filters.surface.max : ""}
-                            onChange={(e) => handleChange(e)}
+                            onChange={(e) => setFilters({ ...filters, surface: { ...filters.surface, max: e.target.value } })}
                         />
                     </Col>
                 </Form.Group>
