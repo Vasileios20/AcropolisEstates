@@ -9,10 +9,10 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const dropdownRef = useRef(null);
-    const municipalityId = history.location.state?.data?.results?.length
-        ? history.location.state.data.results[0].municipality_id
+    const municipalityId = history?.location?.state?.data?.results?.length
+        ? history?.location?.state?.data.results[0].municipality_id
         : null;
-    const containsMunicipality = history.location.search.includes("municipality");
+    const containsMunicipality = history?.location?.search.includes("municipality");
     const { t, i18n } = useTranslation();
     const lng = i18n?.language;
 
@@ -28,14 +28,24 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
                 )
             ) || [];
 
-            const selectedMunicipality = allMunicipalities.find(municipality => municipality.id === municipalityId);
+            const selectedMunicipality = allMunicipalities.find(
+                (municipality) => municipality.id === municipalityId
+            );
 
             if (selectedMunicipality) {
-                setInputValue(lng === 'el' ? selectedMunicipality.greekName : selectedMunicipality.englishName);
+                setInputValue(lng === "el" ? selectedMunicipality.greekName : selectedMunicipality.englishName);
+            } else {
+                const searchParams = history?.location?.search;
+                if (searchParams && searchParams.includes("municipality_id=")) {
+                    const municipalityID = searchParams.split("municipality_id=")[1].split("&")[0];
+                    const selectedMunicipality = allMunicipalities.find(
+                        (municipality) => municipality.id === parseInt(municipalityID)
+                    );
+                    setInputValue(lng === "el" ? selectedMunicipality.greekName : selectedMunicipality.englishName);
+                }
             }
         }
-    }, [regionsData, municipalityId, containsMunicipality, lng]);
-
+    }, [regionsData, municipalityId, containsMunicipality, lng, history.location.search]);
     const normalizeString = (str) => {
         if (!str) return "";
         return str
@@ -51,43 +61,40 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
 
         if (!value) {
             setEmpty(true);
-        }
-
-        if (value) {
-            setEmpty(false);
-
-            const allMunicipalities = regionsData?.flatMap(region =>
-                region.counties?.flatMap(county =>
-                    county.municipalities?.map(municipality => ({
-                        id: municipality.id,
-                        greekName: municipality.greekName,
-                        englishName: municipality.englishName,
-                        county_id: county.id,
-                        county_name: county.county,
-                        region_id: region.id,
-                        region_name: region.region,
-                    }))
-                )
-            ) || [];
-
-            const filtered = allMunicipalities.filter(municipality => {
-                const searchValue = normalizeString(value);
-                return (
-                    normalizeString(municipality.greekName).includes(searchValue) ||
-                    normalizeString(municipality.englishName).includes(searchValue)
-                );
-            });
-
-            setFilteredMunicipalities(filtered);
-            setShowDropdown(true);
-        } else {
             setFilteredMunicipalities([]);
             setShowDropdown(false);
+            return;
         }
+        setEmpty(false);
+        const allMunicipalities = regionsData?.flatMap(region =>
+            region.counties?.flatMap(county =>
+                county.municipalities?.map(municipality => ({
+                    id: municipality.id,
+                    greekName: municipality.greekName,
+                    englishName: municipality.englishName,
+                    county_id: county.id,
+                    county_name: county.county,
+                    region_id: region.id,
+                    region_name: region.region,
+                }))
+            )
+        ) || [];
+
+        const filtered = allMunicipalities.filter(municipality => {
+            const searchValue = normalizeString(value);
+            return (
+                normalizeString(municipality.greekName).includes(searchValue) ||
+                normalizeString(municipality.englishName).includes(searchValue)
+            );
+        });
+
+        setFilteredMunicipalities(filtered); // Update dropdown list
+        setShowDropdown(filtered.length > 0); // Only show dropdown if results exist
     };
 
     const handleSelect = (municipality) => {
         setInputValue(lng === 'el' ? municipality.greekName : municipality.englishName);
+        setFilteredMunicipalities([]);
         setShowDropdown(false);
 
         if (onSearch) {
