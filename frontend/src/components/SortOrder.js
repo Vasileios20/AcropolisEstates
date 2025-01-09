@@ -37,7 +37,7 @@ const CustomDropdown = ({ options, onSelect, selected }) => {
         className={`${styles.DropdownToggle}`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selected || <i className="fa fa-bars"></i>}
+        {selected || <i class="fa-solid fa-arrow-down-short-wide"></i>}
       </div>
 
       {isOpen && (
