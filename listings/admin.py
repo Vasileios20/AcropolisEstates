@@ -1,5 +1,5 @@
 from django.contrib import admin
-from listings.models import Listing, Images, Amenities
+from listings.models import Listing, Images, Amenities, Owner
 
 
 class ListingAdmin(admin.ModelAdmin):
@@ -32,6 +32,17 @@ class AmenitiesAdmin(admin.ModelAdmin):
     list_per_page = 50
 
 
+class OwnerAdmin(admin.ModelAdmin):
+    list_display = ("id", "first_name", "last_name",
+                    "email", "phone", "phone_2")
+    list_filter = ("id", "first_name", "last_name",
+                   "email", "phone", "phone_2")
+    search_fields = ("id", "first_name", "last_name",
+                     "email", "phone", "phone_2")
+    list_per_page = 50
+
+
 admin.site.register(Amenities, AmenitiesAdmin)
 admin.site.register(Images, ImagesAdmin)
 admin.site.register(Listing, ListingAdmin)
+admin.site.register(Owner, OwnerAdmin)

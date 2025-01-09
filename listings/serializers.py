@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Listing, Images, Amenities
+from .models import Listing, Images, Amenities, Owner
 from django.core.files.images import get_image_dimensions
 from .services import upload_to_backblaze
 from django.db.models import Max
@@ -30,6 +30,26 @@ def validate_images(value):
             raise serializers.ValidationError(
                 "Image height can't exceed 4096px")
     return value
+
+
+class OwnerSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for the Owner model.
+
+    This serializer is used to serialize and deserialize Owner objects.
+    It defines the fields that should be included in the serialized
+    representation of an Owner object.
+
+    Attributes:
+        class Meta: The Meta class that defines the model and fields to include
+        in the serialized representation of an Owner object.
+    """
+    class Meta:
+        model = Owner
+        fields = [
+            "id", "first_name", "last_name",
+            "email", "phone", "phone_2", "notes"
+        ]
 
 
 class AmenitiesSerializer(serializers.ModelSerializer):
@@ -101,6 +121,7 @@ class ListingSerializer(serializers.ModelSerializer):
     agent_name = serializers.ReadOnlyField(source="agent_name.username")
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source="agent_name.profile.id")
+    listing_owner = OwnerSerializer(read_only=True,)
     images = ImagesSerializer(
         many=True,
         read_only=True,
@@ -278,6 +299,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "municipality_id",
             "county_id",
             "region_id",
+            "listing_owner",
         ]
 
     def to_representation(self, instance):
