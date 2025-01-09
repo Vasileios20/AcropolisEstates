@@ -1,15 +1,17 @@
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filter
-from re_drf_api.permissions import IsAdminUserOrReadOnly
+from re_drf_api.permissions import IsAdminUserOrReadOnly, IsAdminUser
 from django.db.models import Count
 from rest_framework import generics, filters, status
+from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Listing, Images, Amenities
+from .models import Listing, Images, Amenities, Owner
 from .serializers import (
     ListingSerializer,
     ImagesSerializer,
     AmenitiesSerializer,
+    OwnerSerializer,
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
@@ -86,6 +88,12 @@ Filter class for filtering listings based on various criteria.
             "floor_area",
             "heating_system",
         ]
+
+
+class OwnerViewSet(ModelViewSet):
+    queryset = Owner.objects.all()
+    serializer_class = OwnerSerializer
+    permission_classes = [IsAdminUser]
 
 
 class ListingList(generics.ListCreateAPIView):

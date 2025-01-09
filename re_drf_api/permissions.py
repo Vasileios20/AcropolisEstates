@@ -28,3 +28,9 @@ class IsAdminUserOrReadOnly(permissions.BasePermission):
             return True
         # # Write permissions are only allowed to the owner of the snippet.
         return request.user.is_staff
+
+
+class IsAdminUser(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        return request.user.is_staff
