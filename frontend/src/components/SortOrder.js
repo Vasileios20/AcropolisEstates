@@ -69,11 +69,18 @@ const SortOrder = ({ listings, setListings }) => {
   const handleSortChange = async (value) => {
     setSortOrder(value);
     setLoaded(true);
+
+    const currentPath = path || "?";
+    const queryParams = new URLSearchParams(currentPath.split("?")[1]);
+
+    queryParams.set("ordering", value);
+    const updatedPath = `${currentPath.split("?")[0]}?${queryParams.toString()}`;
+
     if (path) {
       try {
-        const { data } = await axiosReq.get(`/listings/${path}&ordering=${value}`);
+        const { data } = await axiosReq.get(`/listings/${updatedPath}`);
         data.results = data.results.filter((listing) => listing.approved === true);
-        history.push(`/listings/${path}&ordering=${value}`, { data: data });
+        history.push(`/listings/${updatedPath}`, { data: data });
       } catch (error) {
         console.error(error);
       } finally {
