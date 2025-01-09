@@ -4,8 +4,23 @@ import { axiosReq } from "../../api/axiosDefaults";
 import { t } from "i18next";
 import styles from "../../styles/SearchBar.module.css";
 import btnStyles from "../../styles/Button.module.css";
+import { SaleTypeSearch } from "./SaleTypeSearch";
+import MainSearchFields from "./MainSearchFields";
+import { ButtonsSearch } from "./ButtonsSearch";
+import ButtonsAdvancedFilters from "./ButtonsAdvancedFilters";
 
-const AdvancedFiltersModal = ({ filters, setFilters, onApplyFilters, handleSubmit, update }) => {
+const AdvancedFiltersModal = ({
+    filters,
+    setFilters,
+    onApplyFilters,
+    handleSubmit,
+    update,
+    empty,
+    setEmpty,
+    regionsData,
+    history,
+    handleMunicipalitySelect,
+}) => {
     const [show, setShow] = useState(false);
     const [availableAmenities, setAvailableAmenities] = useState([]);
 
@@ -79,13 +94,32 @@ const AdvancedFiltersModal = ({ filters, setFilters, onApplyFilters, handleSubmi
 
     return (
         <>
-            <i className={`${styles.AdvancedFiltersModal} fas fa-bars ms-auto`} onClick={() => setShow(true)}></i>
+            <i className={`${styles.AdvancedFiltersModal} fa-solid fa-sliders`} onClick={() => setShow(true)}></i>
 
             <Modal show={show} onHide={() => setShow(false)} size="xl" fullscreen="md-down">
                 <Modal.Header closeButton>
                     <Modal.Title>Advanced Filters</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <Row className="mb-3 align-items-center justify-content-between">
+                        <SaleTypeSearch filters={filters} setFilters={setFilters} handleChange={handleChange} />
+                        <Col sm={3} className="mb-1 d-flex align-items-center justify-content-end">
+                            <ButtonsAdvancedFilters filters={filters} setFilters={setFilters} update={update} handleApply={handleApply} />
+                        </Col>
+                    </Row>
+                    <Row className="mb-3 align-items-center justify-content-between">
+                        <MainSearchFields
+                            filters={filters}
+                            setFilters={setFilters}
+                            onSearch={handleMunicipalitySelect}
+                            regionsData={regionsData}
+                            history={history}
+                            empty={empty}
+                            setEmpty={setEmpty}
+                            handleChange={handleChange}
+                        />
+
+                    </Row>
                     <Form.Group as={Row} className="mb-3">
                         <Form.Label column sm={2}>
                             {t("propertyDetails.bedrooms")}
@@ -204,21 +238,7 @@ const AdvancedFiltersModal = ({ filters, setFilters, onApplyFilters, handleSubmi
                     <Button className={`${btnStyles.Olive} ${btnStyles.Button} me-auto`} variant="secondary" onClick={() => setShow(false)}>
                         Close
                     </Button>
-                    <Button
-                        className={`${btnStyles.Button} ${btnStyles.Remove}`}
-                        onClick={() => {
-                            setFilters({
-                                amenities: [],
-                                bedrooms: {},
-                                constructionYear: {},
-                                floor: "",
-                            });
-                        }}>
-                        {t("searchBar.btnClear")}
-                    </Button>
-                    <Button className={`${btnStyles.Button} ${btnStyles.AngryOcean} ${btnStyles.SearchBtn}`} onClick={(e) => handleApply(e)} >
-                        {update ? t("searchBar.btnUpdate") : t("searchBar.btnSearch")}
-                    </Button>
+                    <ButtonsAdvancedFilters filters={filters} setFilters={setFilters} update={update} handleApply={handleApply} />
                 </Modal.Footer>
             </Modal>
         </>
