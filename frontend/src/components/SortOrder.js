@@ -3,6 +3,7 @@ import styles from "../styles/SortOrder.module.css";
 import { axiosReq } from "../api/axiosDefaults";
 import Spinner from "react-bootstrap/Spinner";
 import { t } from "i18next";
+import { useHistory } from "react-router-dom";
 
 const CustomDropdown = ({ options, onSelect, selected }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,18 +63,32 @@ const CustomDropdown = ({ options, onSelect, selected }) => {
 const SortOrder = ({ listings, setListings }) => {
   const [sortOrder, setSortOrder] = useState("");
   const [loaded, setLoaded] = useState(false);
+  const history = useHistory();
+  const path = history?.location?.search;
 
   const handleSortChange = async (value) => {
     setSortOrder(value);
     setLoaded(true);
-    try {
-      const { data } = await axiosReq.get(`/listings/?ordering=${value}`);
-      data.results = data.results.filter((listing) => listing.approved === true);
-      setListings(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoaded(false);
+    if (path) {
+      try {
+        const { data } = await axiosReq.get(`/listings/${path}&ordering=${value}`);
+        data.results = data.results.filter((listing) => listing.approved === true);
+        history.push(`/listings/${path}&ordering=${value}`, { data: data });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoaded(false);
+      }
+    } else {
+      try {
+        const { data } = await axiosReq.get(`/listings/?ordering=${value}`);
+        data.results = data.results.filter((listing) => listing.approved === true);
+        setListings(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoaded(false);
+      }
     }
   };
 
