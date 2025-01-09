@@ -103,7 +103,7 @@ const AdvancedFiltersModal = ({
                 <Modal.Body>
                     <Row className="mb-3 align-items-center justify-content-between">
                         <SaleTypeSearch filters={filters} setFilters={setFilters} handleChange={handleChange} />
-                        <Col sm={3} className="mb-1 d-flex align-items-center justify-content-end">
+                        <Col xs={6} className="mb-1 d-flex align-items-center justify-content-end">
                             <ButtonsAdvancedFilters filters={filters} setFilters={setFilters} update={update} handleApply={handleApply} />
                         </Col>
                     </Row>
@@ -121,7 +121,7 @@ const AdvancedFiltersModal = ({
 
                     </Row>
                     <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm={2}>
+                        <Form.Label column sm={2} style={{ fontWeight: "500" }}>
                             {t("propertyDetails.bedrooms")}
                         </Form.Label>
                         <Col sm={5}>
@@ -145,7 +145,7 @@ const AdvancedFiltersModal = ({
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm={2}>
+                        <Form.Label column sm={2} style={{ fontWeight: "500" }}>
                             {t("propertyDetails.yearBuilt")}
                         </Form.Label>
                         <Col sm={5}>
@@ -169,7 +169,7 @@ const AdvancedFiltersModal = ({
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm={2}>
+                        <Form.Label column sm={2} style={{ fontWeight: "500" }}>
                             {t("propertyDetails.floor")}
                         </Form.Label>
                         <Col sm={5}>
@@ -193,7 +193,7 @@ const AdvancedFiltersModal = ({
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm={2}>{t("propertyDetails.heating_system.title")}</Form.Label>
+                        <Form.Label column sm={2} style={{ fontWeight: "500" }}>{t("propertyDetails.heating_system.title")}</Form.Label>
                         <Col md={5}>
                             <Form.Control
                                 className={styles.Input}
