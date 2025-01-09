@@ -95,8 +95,6 @@ class ListingList(generics.ListCreateAPIView):
 
     queryset = Listing.objects.annotate(
         listing_count=Count("agent_name__listing")
-    ).order_by(
-        "-listing_count"
     )
     serializer_class = ListingSerializer
     permission_classes = [IsAdminUserOrReadOnly]
@@ -117,6 +115,32 @@ class ListingList(generics.ListCreateAPIView):
         "region_id",
         "postcode",
     ]
+    ordering_fields = [
+        "listing_count",  # Annotated field
+        "created_on",
+        "-created_on",
+        "price",
+        "-price",
+        "municipality_id",
+        "county",
+        "region_id",
+        "postcode"
+    ]
+
+    ordering = ["-listing_count"]
+
+    def get_queryset(self):
+        """
+        Dynamically apply filtering and ordering based on request parameters.
+        """
+        queryset = super().get_queryset()
+        ordering = self.request.query_params.get("ordering")
+
+        # Ensure dynamic ordering works with filters
+        if ordering:
+            queryset = queryset.order_by(ordering)
+
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(agent_name=self.request.user)
