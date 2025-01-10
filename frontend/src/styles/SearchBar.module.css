@@ -30,18 +30,19 @@
 .SearchInput,
 .TypeSelect {
   font-size: 0.8rem;
+  border: 1px solid #4d6765;
 }
 
 .TypeSelect {
   color: #4d6765 !important;
   background-color: #fff !important;
-  border: 1px solid #dee2e6;
+  border: 1px solid #4d6765;
   max-width: 100%;
   min-width: 9rem;
 }
 
 .TypeSelect:hover {
-  border: 1px solid #dee2e6;
+  border: 1px solid #4d6765;
 }
 
 .TypeSelect:focus,
@@ -55,7 +56,7 @@
 .TypeDropdown {
   color: #4d6765 !important;
   background-color: #fff !important;
-  border: 1px solid #dee2e6;
+  border: 1px solid #4d6765;
   font-size: 0.8rem;
 }
 

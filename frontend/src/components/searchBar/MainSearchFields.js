@@ -59,16 +59,16 @@ const MainSearchFields = ({
                     setFilters={setFilters}
                 />
             </Col>
-            <Col xs={12} sm={6} md={3} className="">
-                <Form.Label style={{ fontWeight: "500" }} className="mb-0 ps-lg-2 ps-xl-4">
+            <Col xs={12} sm={6} md={3}>
+                <Form.Label style={{ fontWeight: "500" }} className="mb-0 ps-lg-2">
                     {t("searchBar.type")}
                 </Form.Label>
                 <TypeDropDown filters={filters} setFilters={setFilters} />
             </Col>
 
-            <Col xs={12} sm={6} md={3} >
+            <Col xs={12} sm={6} md={3} className="text-center">
                 <Form.Group controlId="formGroupPrice">
-                    <Form.Label className="mb-0" style={{ fontWeight: "500" }}>
+                    <Form.Label className="mb-0" style={{ fontWeight: "500", textAlign: "center" }}>
                         {t("searchBar.price")}
                     </Form.Label>
                     <Row className="g-2">
@@ -105,7 +105,7 @@ const MainSearchFields = ({
                     </Row>
                 </Form.Group>
             </Col>
-            <Col xs={12} sm={6} md={3} >
+            <Col xs={12} sm={6} md={3} className="text-center">
                 <Form.Group controlId="formGroupSurface">
                     <Form.Label className="mb-0" style={{ fontWeight: "500" }}>
                         {filters.type === "land" ? t("searchBar.landArea") : t("searchBar.floorArea")}

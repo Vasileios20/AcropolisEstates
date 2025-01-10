@@ -1,11 +1,12 @@
 .MunicipalitySearch {
     font-size: 0.8rem;
+    border: 1px solid #4d6765;
 }
 
 .MunicipalityDropdownSearch {
     position: absolute;
     background-color: white;
-    border: 1px solid #ccc;
+    border: 1px solid #4d6765;
     max-height: 200px;
     overflow-y: auto;
     list-style-type: none;
