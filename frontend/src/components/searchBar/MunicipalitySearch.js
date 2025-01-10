@@ -41,7 +41,7 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
                     const selectedMunicipality = allMunicipalities.find(
                         (municipality) => municipality.id === parseInt(municipalityID)
                     );
-                    setInputValue(lng === "el" ? selectedMunicipality.greekName : selectedMunicipality.englishName);
+                    setInputValue(lng === "el" ? selectedMunicipality?.greekName : selectedMunicipality?.englishName);
                 }
             }
         }
@@ -158,7 +158,7 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 placeholder={t("searchBar.search")}
-                className={`"form-control" ${styles.MunicipalitySearch}`}
+                className={`${styles.MunicipalitySearch}`}
             />
             {showDropdown && filteredMunicipalities.length > 0 && (
                 <ul ref={dropdownRef} className={styles.MunicipalityDropdownSearch}>
