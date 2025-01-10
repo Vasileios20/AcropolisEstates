@@ -20,8 +20,8 @@ const CustomDropdown = ({ filters, setFilters }) => {
     };
 
     return (
-        <Dropdown className="w-100">
-            <Dropdown.Toggle className={`${styles.TypeSelect} text-start`} id="dropdown-basic">
+        <Dropdown className={`"w-100 ps-lg-2 ps-xl-4"`}>
+            <Dropdown.Toggle className={`${styles.TypeSelect} text-start w-100`} style={{ borderColor: '#dee2e6' }} id="dropdown-basic" >
                 {typeCapitalized || t("listingType.any")}
             </Dropdown.Toggle>
 
@@ -31,7 +31,7 @@ const CustomDropdown = ({ filters, setFilters }) => {
                         key={option.value}
                         onClick={() => handleSelect(option.value)}
                     >
-                        {t(`listingType.${option.value}`)}
+                        {option.label}
                     </Dropdown.Item>
                 ))}
             </Dropdown.Menu>
