@@ -96,18 +96,20 @@ const AdvancedFiltersModal = ({
         <>
             <i className={`${styles.AdvancedFiltersModal} fa-solid fa-sliders`} onClick={() => setShow(true)}></i>
 
-            <Modal show={show} onHide={() => setShow(false)} size="xl" fullscreen="md-down">
+            <Modal show={show} onHide={() => setShow(false)} size="xl" fullscreen="lg-down" style={{ fontSize: "0.8rem" }}>
                 <Modal.Header closeButton>
                     <Modal.Title>Advanced Filters</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Row className="mb-3 align-items-center justify-content-between">
-                        <SaleTypeSearch filters={filters} setFilters={setFilters} handleChange={handleChange} />
-                        <Col xs={6} className="mb-1 d-flex align-items-center justify-content-end">
+                    <Row className="mb-3 align-items-center justify-content-around">
+                        <Col xs={6} className="mb-1 d-flex align-items-center">
+                            <SaleTypeSearch filters={filters} setFilters={setFilters} handleChange={handleChange} />
+                        </Col>
+                        <Col xs={4} className="mb-1 d-none d-lg-block ms-auto">
                             <ButtonsAdvancedFilters filters={filters} setFilters={setFilters} update={update} handleApply={handleApply} />
                         </Col>
                     </Row>
-                    <Row className="mb-3 align-items-center justify-content-between">
+                    <Row className="mb-3 align-items-center justify-content-evenly">
                         <MainSearchFields
                             filters={filters}
                             setFilters={setFilters}
@@ -126,6 +128,7 @@ const AdvancedFiltersModal = ({
                         </Form.Label>
                         <Col sm={5}>
                             <Form.Control
+                                className={styles.SearchInput}
                                 type="number"
                                 placeholder={t("searchBar.minBedrooms")}
                                 name="min"
@@ -135,6 +138,7 @@ const AdvancedFiltersModal = ({
                         </Col>
                         <Col sm={5}>
                             <Form.Control
+                                className={styles.SearchInput}
                                 type="number"
                                 placeholder={t("searchBar.maxBedrooms")}
                                 name="max"
@@ -150,6 +154,7 @@ const AdvancedFiltersModal = ({
                         </Form.Label>
                         <Col sm={5}>
                             <Form.Control
+                                className={styles.SearchInput}
                                 type="number"
                                 placeholder={t("searchBar.minYearBuilt")}
                                 name="min"
@@ -159,6 +164,7 @@ const AdvancedFiltersModal = ({
                         </Col>
                         <Col sm={5}>
                             <Form.Control
+                                className={styles.SearchInput}
                                 type="number"
                                 placeholder={t("searchBar.maxYearBuilt")}
                                 name="max"
@@ -174,6 +180,7 @@ const AdvancedFiltersModal = ({
                         </Form.Label>
                         <Col sm={5}>
                             <Form.Control
+                                className={styles.SearchInput}
                                 type="number"
                                 placeholder={t("searchBar.minFloor")}
                                 name="min"
@@ -183,6 +190,7 @@ const AdvancedFiltersModal = ({
                         </Col>
                         <Col sm={5}>
                             <Form.Control
+                                className={styles.SearchInput}
                                 type="number"
                                 placeholder={t("searchBar.maxFloor")}
                                 name="max"
@@ -196,7 +204,7 @@ const AdvancedFiltersModal = ({
                         <Form.Label column sm={2} style={{ fontWeight: "500" }}>{t("propertyDetails.heating_system.title")}</Form.Label>
                         <Col md={5}>
                             <Form.Control
-                                className={styles.Input}
+                                className={styles.SearchInput}
                                 as="select"
                                 name="heating_system"
                                 value={filters?.heating_system || ""}
