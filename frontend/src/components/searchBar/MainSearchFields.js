@@ -18,10 +18,33 @@ const MainSearchFields = ({
     handleChange
 }) => {
 
+    const priceOptions = [
+        { value: "", label: t("searchBar.minPrice") },
+        ...Array.from({ length: 20 }, (_, i) => ({ value: (i + 1) * 5000, label: (i + 1) * 5000 })),
+        ...Array.from({ length: 9 }, (_, i) => ({ value: 100000 + (i + 1) * 50000, label: 100000 + (i + 1) * 50000 })),
+        ...Array.from({ length: 10 }, (_, i) => ({ value: 500000 + (i + 1) * 100000, label: 500000 + (i + 1) * 100000 }))
+    ];
+    const maxPriceOptions = [
+        { value: "", label: t("searchBar.maxPrice") },
+        ...priceOptions.slice(1)
+    ];
+
+    const surfaceOptions = [
+        { value: "", label: t("searchBar.minFloorArea") },
+        ...Array.from({ length: 10 }, (_, i) => ({ value: (i + 1) * 10, label: (i + 1) * 10 })),
+        ...Array.from({ length: 9 }, (_, i) => ({ value: 100 + (i + 1) * 50, label: 100 + (i + 1) * 50 })),
+        ...Array.from({ length: 10 }, (_, i) => ({ value: 500 + (i + 1) * 100, label: 500 + (i + 1) * 100 }))
+    ];
+
+    const maxSurfaceOptions = [
+        { value: "", label: t("searchBar.maxFloorArea") },
+        ...surfaceOptions.slice(1)
+    ];
+
     return (
-        <>
-            <Col sm={6} md={3} className="my-1 my-md-0">
-                <Form.Label style={{ fontWeight: "500" }}>
+        <Row className="g-2 align-items-center justify-content-evenly">
+            <Col xs={12} sm={6} md={3}>
+                <Form.Label style={{ fontWeight: "500" }} className="mb-0">
                     {t("searchBar.location")}
                 </Form.Label>
                 <MunicipalitySearch
@@ -36,70 +59,93 @@ const MainSearchFields = ({
                     setFilters={setFilters}
                 />
             </Col>
-            <Col sm={6} md={2} className="mt-1 mt-md-0">
-                <Form.Label style={{ fontWeight: "500" }}>
+            <Col xs={12} sm={6} md={3} className="">
+                <Form.Label style={{ fontWeight: "500" }} className="mb-0 ps-lg-2 ps-xl-4">
                     {t("searchBar.type")}
                 </Form.Label>
                 <TypeDropDown filters={filters} setFilters={setFilters} />
             </Col>
 
-            <Col lg={2} md={3} sm={6} className="mb-1">
-                <Form.Group as={Row} controlId="formGroupPrice">
-                    <Form.Label column className="mb-0" style={{ fontWeight: "500" }}>
+            <Col xs={12} sm={6} md={3} >
+                <Form.Group controlId="formGroupPrice">
+                    <Form.Label className="mb-0" style={{ fontWeight: "500" }}>
                         {t("searchBar.price")}
                     </Form.Label>
-                    <Col sm={12} className="d-flex align-items-center">
-                        <Form.Control
-                            className={styles.SearchInput}
-                            aria-label="min price"
-                            type="number"
-                            placeholder={t("searchBar.minPrice")}
-                            min="0"
-                            value={filters.price.min ? filters.price.min : ""}
-                            onChange={(e) => setFilters({ ...filters, price: { ...filters.price, min: e.target.value } })}
-                        />
-                        <Form.Control
-                            className={styles.SearchInput}
-                            aria-label="max price"
-                            type="number"
-                            placeholder={t("searchBar.maxPrice")}
-                            min={filters.price.min ? filters.price.min : "0"}
-                            max="10000000"
-                            value={filters.price.max ? filters.price.max : ""}
-                            onChange={(e) => setFilters({ ...filters, price: { ...filters.price, max: e.target.value } })}
-                        />
-                    </Col>
+                    <Row className="g-2">
+                        <Col xs={6}>
+                            <Form.Control
+                                as="select"
+                                className={styles.SearchInput}
+                                aria-label="min price"
+                                value={filters.price.min ? filters.price.min : ""}
+                                onChange={(e) => setFilters({ ...filters, price: { ...filters.price, min: e.target.value } })}
+                            >
+                                {priceOptions.map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </Form.Control>
+                        </Col>
+                        <Col xs={6}>
+                            <Form.Control
+                                as="select"
+                                className={styles.SearchInput}
+                                aria-label="max price"
+                                value={filters.price.max ? filters.price.max : ""}
+                                onChange={(e) => setFilters({ ...filters, price: { ...filters.price, max: e.target.value } })}
+                            >
+                                {maxPriceOptions.map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </Form.Control>
+                        </Col>
+                    </Row>
                 </Form.Group>
             </Col>
-            <Col lg={2} md={3} sm={6} className="mb-2">
-                <Form.Group as={Row} controlId="formGroupSurface">
-                    <Form.Label column className="mb-0" style={{ fontWeight: "500" }}>
+            <Col xs={12} sm={6} md={3} >
+                <Form.Group controlId="formGroupSurface">
+                    <Form.Label className="mb-0" style={{ fontWeight: "500" }}>
                         {filters.type === "land" ? t("searchBar.landArea") : t("searchBar.floorArea")}
                     </Form.Label>
-                    <Col sm={12} className="d-flex align-items-center">
-                        <Form.Control
-                            className={styles.SearchInput}
-                            aria-label="min surface"
-                            type="number"
-                            placeholder={t("searchBar.minFloorArea")}
-                            min="0"
-                            value={filters.surface.min ? filters.surface.min : ""}
-                            onChange={(e) => setFilters({ ...filters, surface: { ...filters.surface, min: e.target.value } })}
-                        />
-                        <Form.Control
-                            className={styles.SearchInput}
-                            aria-label="max surface"
-                            type="number"
-                            placeholder={t("searchBar.maxFloorArea")}
-                            min={filters.surface.min ? filters.surface.min : "0"}
-                            max="1000000"
-                            value={filters.surface.max ? filters.surface.max : ""}
-                            onChange={(e) => setFilters({ ...filters, surface: { ...filters.surface, max: e.target.value } })}
-                        />
-                    </Col>
+                    <Row className="g-2">
+                        <Col xs={6}>
+                            <Form.Control
+                                as="select"
+                                className={styles.SearchInput}
+                                aria-label="min surface"
+                                value={filters.surface.min ? filters.surface.min : ""}
+                                onChange={(e) => setFilters({ ...filters, surface: { ...filters.surface, min: e.target.value } })}
+                            >
+                                {surfaceOptions.map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </Form.Control>
+                        </Col>
+                        <Col xs={6}>
+                            <Form.Control
+                                as="select"
+                                className={styles.SearchInput}
+                                aria-label="max surface"
+                                min={filters.surface.min ? filters.surface.min : "0"}
+                                value={filters.surface.max ? filters.surface.max : ""}
+                                onChange={(e) => setFilters({ ...filters, surface: { ...filters.surface, max: e.target.value } })}
+                            >
+                                {maxSurfaceOptions.map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </Form.Control>
+                        </Col>
+                    </Row>
                 </Form.Group>
             </Col>
-        </>
+        </Row>
     );
 };
 
