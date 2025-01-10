@@ -19,18 +19,24 @@
   min-width: 100%;
 }
 
-.HomeBar {
+.SearchForm {
   color: #000;
   background-color: rgba(255, 255, 255, 0.65);
   border-radius: 0.5rem;
   border: 1px solid rgba(77, 103, 101, 1);
+  padding: 1rem 2rem;
+}
+
+.SearchInput,
+.TypeSelect {
+  font-size: 0.8rem;
 }
 
 .TypeSelect {
   color: #4d6765 !important;
   background-color: #fff !important;
   border: 1px solid #dee2e6;
-  max-width: fit-content;
+  max-width: 100%;
   min-width: 9rem;
 }
 
@@ -41,7 +47,7 @@
 .TypeSelect:focus,
 .SearchInput:focus {
   border: 1px solid #847c3d;
-  box-shadow: 0 0 0 0.25rem rgba(132, 124, 61, 0.45);
+  box-shadow: 0 0 0 0.15rem rgba(132, 124, 61, 0.45);
   background-color: #fff !important;
   color: #000;
 }
@@ -50,9 +56,10 @@
   color: #4d6765 !important;
   background-color: #fff !important;
   border: 1px solid #dee2e6;
+  font-size: 0.8rem;
 }
 
-.TypeDropdown > *:hover {
+.TypeDropdown>*:hover {
   background-color: rgba(132, 124, 61, 0.6) !important;
 }
 
@@ -87,17 +94,16 @@
 .AmenityCheckbox input[type="checkbox"]:checked::after {
   content: "✓";
   display: block;
-  font-size: 16px;
+  font-size: 0.8rem;
   color: white;
   text-align: center;
-  line-height: 16px;
+  line-height: 0.8rem;
   background-color: #4d6765;
 }
 
 .AmenityCheckbox label {
   margin-left: 8px;
-  /* Space between checkbox and label */
-  font-size: 16px;
+  font-size: 0.8rem;
   color: #333;
   cursor: pointer;
 }

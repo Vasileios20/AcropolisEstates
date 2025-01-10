@@ -184,12 +184,12 @@ const SearchBar = () => {
   };
 
   return (
-    <Container className="mb-5">
+    <Container className="mb-5" style={{ fontSize: "0.8rem" }}>
       <Form
-        className={`p-3 ${styles.HomeBar}`}
+        className={`${styles.SearchForm}`}
         onSubmit={handleSubmit}
       >
-        <Row className="align-items-center justify-content-between ms-lg-5 mb-lg-0">
+        <Row className="align-items-center justify-content-start">
           {errors &&
             (setTimeout(() => setErrors(""), 3000),
               (
@@ -217,21 +217,28 @@ const SearchBar = () => {
               handleMunicipalitySelect={handleMunicipalitySelect}
             />
           </Col>
-          <MainSearchFields
-            filters={filters}
-            setFilters={setFilters}
-            onSearch={handleMunicipalitySelect}
-            regionsData={regionsData}
-            history={history}
-            empty={empty}
-            setEmpty={setEmpty}
-            handleChange={handleChange}
-          />
-          <ButtonsSearch
-            filters={filters}
-            setFilters={setFilters}
-            update={update}
-          />
+          <Row className="g-1 ms-2">
+            <Col xs={12} md={11} lg={9} className="mb-1">
+              <MainSearchFields
+                filters={filters}
+                setFilters={setFilters}
+                onSearch={handleMunicipalitySelect}
+                regionsData={regionsData}
+                history={history}
+                empty={empty}
+                setEmpty={setEmpty}
+                handleChange={handleChange}
+              />
+            </Col>
+            <Col xs={12} md={3} className="pt-3 pe-lg-3 d-flex align-items-center justify-content-lg-center">
+              <ButtonsSearch
+                filters={filters}
+                setFilters={setFilters}
+                update={update}
+              />
+            </Col>
+
+          </Row>
         </Row>
       </Form>
     </Container>
