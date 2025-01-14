@@ -23,7 +23,7 @@ const SearchBar = () => {
   */
 
   const [filters, setFilters] = useState({
-    saleType: "",
+    saleType: "sale",
     type: "",
     price: { min: "", max: "" },
     surface: { min: "", max: "" },
@@ -189,7 +189,7 @@ const SearchBar = () => {
         className={`${styles.SearchForm}`}
         onSubmit={handleSubmit}
       >
-        <Row className="align-items-center justify-content-start">
+        <Row className="align-items-center justify-content-center">
           {errors &&
             (setTimeout(() => setErrors(""), 3000),
               (
@@ -197,28 +197,35 @@ const SearchBar = () => {
                   {errors}
                 </Alert>
               ))}
-          <SaleTypeSearch
-            errors={errors}
-            setErrors={setErrors}
-            filters={filters}
-            setFilters={setFilters}
-            handleChange={handleChange} />
-          <Col xs={6} className="mb-1 d-flex align-items-center justify-content-end">
-            <AdvancedFiltersModal
-              onApplyFilters={handleFilters}
-              filters={filters}
-              setFilters={setFilters}
-              handleSubmit={handleSubmit}
-              update={update}
-              empty={empty}
-              setEmpty={setEmpty}
-              regionsData={regionsData}
-              history={history}
-              handleMunicipalitySelect={handleMunicipalitySelect}
-            />
-          </Col>
-          <Row className="g-1 ms-2">
-            <Col xs={12} md={11} lg={9} className="mb-1">
+          <Row className="mb-1 align-items-center justify-content-between gx-0 gx-md-1 gx-lg-5">
+            <Col xs={6} className="mb-1 ps-lg-3">
+              <SaleTypeSearch
+                errors={errors}
+                setErrors={setErrors}
+                filters={filters}
+                setFilters={setFilters}
+                handleChange={handleChange}
+              />
+            </Col>
+
+
+            <Col xs={6} className="mb-1 d-flex align-items-center justify-content-end">
+              <AdvancedFiltersModal
+                onApplyFilters={handleFilters}
+                filters={filters}
+                setFilters={setFilters}
+                handleSubmit={handleSubmit}
+                update={update}
+                empty={empty}
+                setEmpty={setEmpty}
+                regionsData={regionsData}
+                history={history}
+                handleMunicipalitySelect={handleMunicipalitySelect}
+              />
+            </Col>
+          </Row>
+          <Row className="g-0">
+            <Col xs={12} md={12} lg={9} className="mb-1">
               <MainSearchFields
                 filters={filters}
                 setFilters={setFilters}
@@ -230,7 +237,7 @@ const SearchBar = () => {
                 handleChange={handleChange}
               />
             </Col>
-            <Col xs={12} md={3} className="pt-3 pe-lg-3 d-flex align-items-center justify-content-lg-center">
+            <Col xs={12} lg={2} className="pt-3 pe-lg-3 d-flex align-items-center justify-content-lg-center">
               <ButtonsSearch
                 filters={filters}
                 setFilters={setFilters}
