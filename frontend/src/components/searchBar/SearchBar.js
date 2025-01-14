@@ -10,9 +10,10 @@ import { axiosReq } from "../../api/axiosDefaults";
 import { useHistory } from "react-router-dom";
 import useFetchLocationData from "../../hooks/useFetchLocationData";
 import AdvancedFiltersModal from "./AdvancedFiltersModal";
-import MainSearchFields from "./MainSearchFields";
 import { SaleTypeSearch } from "./SaleTypeSearch";
 import { ButtonsSearch } from "./ButtonsSearch";
+import LocationType from "./LocationType";
+import PriceSurface from "./PriceSurface";
 
 const SearchBar = () => {
   /**
@@ -224,9 +225,9 @@ const SearchBar = () => {
               />
             </Col>
           </Row>
-          <Row className="g-0">
-            <Col xs={12} md={12} lg={9} className="mb-1">
-              <MainSearchFields
+          <Row className="g-1">
+            <Col xs={12} md={6} lg={5}  className="mb-1">
+              <LocationType
                 filters={filters}
                 setFilters={setFilters}
                 onSearch={handleMunicipalitySelect}
@@ -237,7 +238,14 @@ const SearchBar = () => {
                 handleChange={handleChange}
               />
             </Col>
-            <Col xs={12} lg={2} className="pt-3 pe-lg-3 d-flex align-items-center justify-content-lg-center">
+            <Col xs={12} md={6} lg={5} className="mb-1 d-none d-md-block">
+              <PriceSurface
+                filters={filters}
+                setFilters={setFilters}
+              />
+
+            </Col>
+            <Col xs={12} lg={2} className="pt-3 d-flex align-items-center justify-content-lg-start">
               <ButtonsSearch
                 filters={filters}
                 setFilters={setFilters}
