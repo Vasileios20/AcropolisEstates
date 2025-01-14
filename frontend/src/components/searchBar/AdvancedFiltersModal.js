@@ -5,9 +5,9 @@ import { t } from "i18next";
 import styles from "../../styles/SearchBar.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import { SaleTypeSearch } from "./SaleTypeSearch";
-import MainSearchFields from "./MainSearchFields";
-import { ButtonsSearch } from "./ButtonsSearch";
 import ButtonsAdvancedFilters from "./ButtonsAdvancedFilters";
+import LocationType from "./LocationType";
+import PriceSurface from "./PriceSurface";
 
 const AdvancedFiltersModal = ({
     filters,
@@ -109,8 +109,8 @@ const AdvancedFiltersModal = ({
                             <ButtonsAdvancedFilters filters={filters} setFilters={setFilters} update={update} handleApply={handleApply} />
                         </Col>
                     </Row>
-                    <Row className="mb-3 align-items-center justify-content-evenly">
-                        <MainSearchFields
+                    <Row className="g-1 align-items-center justify-content-start col-md-6">
+                        <LocationType
                             filters={filters}
                             setFilters={setFilters}
                             onSearch={handleMunicipalitySelect}
@@ -120,9 +120,15 @@ const AdvancedFiltersModal = ({
                             setEmpty={setEmpty}
                             handleChange={handleChange}
                         />
-
                     </Row>
-                    <Form.Group as={Row} className="mb-3">
+                    <Row className="g-1 align-items-center justify-content-start col-md-6 col-lg-9">
+                        <PriceSurface
+                            filters={filters}
+                            setFilters={setFilters}
+                        />
+                    </Row>
+
+                    <Form.Group as={Row} className="my-3">
                         <Form.Label column sm={2} style={{ fontWeight: "500" }}>
                             {t("propertyDetails.bedrooms")}
                         </Form.Label>

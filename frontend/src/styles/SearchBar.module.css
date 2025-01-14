@@ -37,6 +37,7 @@
   background-color: #fff !important;
   max-width: 100%;
   min-width: 7rem;
+  text-align: left;
 }
 
 .Select:focus {
@@ -51,17 +52,25 @@
   background-color: #fff !important;
   border: 1px solid #4d6765;
   font-size: 0.8rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  width: 100%;
 }
 
 .TypeDropdown>*:hover,
 .MainFieldsDropdown>*:hover {
-  background-color: rgba(77, 103, 101, 0.4) !important;
+  background-color: rgba(77, 103, 101, 0.8) !important;
 }
 
 .Dropdown {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: rgba(77, 102, 100, 0.5);
+  color: #000;
+}
+
+.DropdownMenu {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 /* Dropdowns with scrollbar */
@@ -74,6 +83,7 @@
   scrollbar-width: thin;
   /* For Firefox (optional) */
   scrollbar-color: #4d6765 #efefef;
+  min-width: 8rem;
 }
 
 .MainFieldsDropdown::-webkit-scrollbar {
