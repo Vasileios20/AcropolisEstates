@@ -28,27 +28,20 @@
 }
 
 .SearchInput,
-.TypeSelect {
+.Select {
   font-size: 0.8rem;
-  border: 1px solid #4d6765;
 }
 
-.TypeSelect {
+.Select {
   color: #4d6765 !important;
   background-color: #fff !important;
-  border: 1px solid #4d6765;
   max-width: 100%;
-  min-width: 9rem;
+  min-width: 7rem;
 }
 
-.TypeSelect:hover {
+.Select:focus {
   border: 1px solid #4d6765;
-}
-
-.TypeSelect:focus,
-.SearchInput:focus {
-  border: 1px solid #847c3d;
-  box-shadow: 0 0 0 0.15rem rgba(132, 124, 61, 0.45);
+  box-shadow: 0 0 0 0.15rem rgba(77, 103, 101, 0.45);
   background-color: #fff !important;
   color: #000;
 }
@@ -60,8 +53,45 @@
   font-size: 0.8rem;
 }
 
-.TypeDropdown>*:hover {
-  background-color: rgba(132, 124, 61, 0.6) !important;
+.TypeDropdown>*:hover,
+.MainFieldsDropdown>*:hover {
+  background-color: rgba(77, 103, 101, 0.4) !important;
+}
+
+.Dropdown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Dropdowns with scrollbar */
+
+.MainFieldsDropdown {
+  font-size: 0.8rem;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  /* For Firefox (optional) */
+  scrollbar-color: #4d6765 #efefef;
+}
+
+.MainFieldsDropdown::-webkit-scrollbar {
+  width: 5px;
+}
+
+.MainFieldsDropdown::-webkit-scrollbar-thumb {
+  background-color: #4d6765;
+  border-radius: 4px;
+}
+
+.MainFieldsDropdown::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.MainFieldsDropdown>* {
+  padding: 0 0.5rem;
+  cursor: pointer;
 }
 
 /* AdvancedFiltersModal */

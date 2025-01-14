@@ -3,8 +3,9 @@ import { t } from 'i18next';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Dropdown from 'react-bootstrap/Dropdown';
 import MunicipalitySearch from './MunicipalitySearch';
-import TypeDropDown from './TypeDropDown';
+import { MainFieldsDropDown, TypeDropDown } from './CustomDropDown';
 import styles from '../../styles/SearchBar.module.css';
 
 const MainSearchFields = ({
@@ -43,7 +44,7 @@ const MainSearchFields = ({
 
     return (
         <Row className="g-2 align-items-center justify-content-evenly">
-            <Col xs={12} sm={6} md={3}>
+            <Col xs={8} md={3}>
                 <Form.Label style={{ fontWeight: "500" }} className="mb-0">
                     {t("searchBar.location")}
                 </Form.Label>
@@ -59,90 +60,47 @@ const MainSearchFields = ({
                     setFilters={setFilters}
                 />
             </Col>
-            <Col xs={12} sm={6} md={3}>
-                <Form.Label style={{ fontWeight: "500" }} className="mb-0 ps-lg-2">
+            <Col xs={4} md={3} lg={2}>
+                <Form.Label style={{ fontWeight: "500" }} className="mb-0">
                     {t("searchBar.type")}
                 </Form.Label>
                 <TypeDropDown filters={filters} setFilters={setFilters} />
             </Col>
 
-            <Col xs={12} sm={6} md={3} className="text-center">
+            <Col xs={12} sm={6} md={3} lg={2} className="text-start d-none d-md-block">
                 <Form.Group controlId="formGroupPrice">
-                    <Form.Label className="mb-0" style={{ fontWeight: "500", textAlign: "center" }}>
+                    <Form.Label className="mb-0" style={{ fontWeight: "500" }}>
                         {t("searchBar.price")}
                     </Form.Label>
-                    <Row className="g-2">
-                        <Col xs={6}>
-                            <Form.Control
-                                as="select"
-                                className={styles.SearchInput}
-                                aria-label="min price"
-                                value={filters.price.min ? filters.price.min : ""}
-                                onChange={(e) => setFilters({ ...filters, price: { ...filters.price, min: e.target.value } })}
-                            >
-                                {priceOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </Form.Control>
-                        </Col>
-                        <Col xs={6}>
-                            <Form.Control
-                                as="select"
-                                className={styles.SearchInput}
-                                aria-label="max price"
-                                value={filters.price.max ? filters.price.max : ""}
-                                onChange={(e) => setFilters({ ...filters, price: { ...filters.price, max: e.target.value } })}
-                            >
-                                {maxPriceOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </Form.Control>
-                        </Col>
-                    </Row>
+                    <Dropdown className={`${styles.SearchInput} w-100`}>
+                        <Dropdown.Toggle className={`${styles.Select} w-100`} style={{ borderColor: "#4d6765" }} id="dropdown-basic">
+                            {filters.price.min ? filters.price.min : t("searchBar.minPrice")} - {filters.price.max ? filters.price.max : t("searchBar.maxPrice")}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu >
+                            <div className={styles.Dropdown}>
+                                <MainFieldsDropDown filters={filters} setFilters={setFilters} options={priceOptions} field="price" keyName="min" />
+                                <MainFieldsDropDown filters={filters} setFilters={setFilters} options={maxPriceOptions} field="price" keyName="max" />
+                            </div>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Form.Group>
             </Col>
-            <Col xs={12} sm={6} md={3} className="text-center">
+            <Col xs={12} sm={6} md={3} lg={2} className="text-start d-none d-md-block">
                 <Form.Group controlId="formGroupSurface">
                     <Form.Label className="mb-0" style={{ fontWeight: "500" }}>
                         {filters.type === "land" ? t("searchBar.landArea") : t("searchBar.floorArea")}
                     </Form.Label>
-                    <Row className="g-2">
-                        <Col xs={6}>
-                            <Form.Control
-                                as="select"
-                                className={styles.SearchInput}
-                                aria-label="min surface"
-                                value={filters.surface.min ? filters.surface.min : ""}
-                                onChange={(e) => setFilters({ ...filters, surface: { ...filters.surface, min: e.target.value } })}
-                            >
-                                {surfaceOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </Form.Control>
-                        </Col>
-                        <Col xs={6}>
-                            <Form.Control
-                                as="select"
-                                className={styles.SearchInput}
-                                aria-label="max surface"
-                                min={filters.surface.min ? filters.surface.min : "0"}
-                                value={filters.surface.max ? filters.surface.max : ""}
-                                onChange={(e) => setFilters({ ...filters, surface: { ...filters.surface, max: e.target.value } })}
-                            >
-                                {maxSurfaceOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </Form.Control>
-                        </Col>
-                    </Row>
+                    <Dropdown className={`${styles.SearchInput} w-100`}>
+                        <Dropdown.Toggle className={`${styles.Select} w-100`} style={{ borderColor: "#4d6765" }} id="dropdown-basic">
+                            {filters.surface.min ? filters.surface.min : t("searchBar.minFloorArea")} - {filters.surface.max ? filters.surface.max : t("searchBar.maxFloorArea")}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu align="end">
+                            <div className={styles.Dropdown}>
+                                <MainFieldsDropDown filters={filters} setFilters={setFilters} options={surfaceOptions} field="surface" keyName="min" />
+                                <MainFieldsDropDown filters={filters} setFilters={setFilters} options={maxSurfaceOptions} field="surface" keyName="max" />
+                            </div>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Form.Group>
             </Col>
         </Row>
