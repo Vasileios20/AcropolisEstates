@@ -23,14 +23,14 @@ const MainSearchFields = ({
     ];
 
     const surfaceOptions = [
-        { value: "", label: t("searchBar.minFloorArea") },
+        { value: "", label: `${t("searchBar.minFloorArea") } ${t("searchBar.sqm")}` },
         ...Array.from({ length: 10 }, (_, i) => ({ value: (i + 1) * 10, label: (i + 1) * 10 })),
         ...Array.from({ length: 9 }, (_, i) => ({ value: 100 + (i + 1) * 50, label: 100 + (i + 1) * 50 })),
         ...Array.from({ length: 10 }, (_, i) => ({ value: 500 + (i + 1) * 100, label: 500 + (i + 1) * 100 }))
     ];
 
     const maxSurfaceOptions = [
-        { value: "", label: t("searchBar.maxFloorArea") },
+        { value: "", label: `${t("searchBar.maxFloorArea")} ${t("searchBar.sqm")}` },
         ...surfaceOptions.slice(1)
     ];
 
@@ -45,7 +45,7 @@ const MainSearchFields = ({
                     </Form.Label>
                     <Dropdown>
                         <Dropdown.Toggle className={`${styles.Select} w-100`} style={{ borderColor: "#4d6765" }} id="dropdown-basic">
-                            {filters.price.min ? filters.price.min : t("searchBar.minPrice")} - {filters.price.max ? filters.price.max : t("searchBar.maxPrice")}
+                            {filters.price.min && !filters.price.max ? `${t("searchBar.from")} ${filters.price.min}` : filters.price.min && filters.price.max ? `${filters.price.min} - ${filters.price.max}` : !filters.price.min && filters.price.max ? `${t("searchBar.to")} ${filters.price.max}` :`${t("searchBar.from")} - ${t("searchBar.to")}`}
                         </Dropdown.Toggle>
                         <Dropdown.Menu className={`${styles.DropdownMenu} rounded`}>
                             <div className={`${styles.Dropdown} rounded`}>
@@ -63,7 +63,7 @@ const MainSearchFields = ({
                     </Form.Label>
                     <Dropdown>
                         <Dropdown.Toggle className={`${styles.Select} w-100`} style={{ borderColor: "#4d6765" }} id="dropdown-basic">
-                            {filters.surface.min ? filters.surface.min : t("searchBar.minFloorArea")} - {filters.surface.max ? filters.surface.max : t("searchBar.maxFloorArea")}
+                            {filters.surface.min && !filters.surface.max ? `${t("searchBar.from")} ${filters.surface.min} m²` : filters.surface.min && filters.surface.max ? `${filters.surface.min} - ${filters.surface.max} ${t("searchBar.sqm")}` : !filters.surface.min && filters.surface.max ? `${t("searchBar.to")} ${filters.surface.max} ${t("searchBar.sqm")}` : `${t("searchBar.from")} - ${t("searchBar.to")} ${t("searchBar.sqm")}`}
                         </Dropdown.Toggle>
                         <Dropdown.Menu align="end" className={`${styles.DropdownMenu} rounded`}>
                             <div className={`${styles.Dropdown} rounded`}>
