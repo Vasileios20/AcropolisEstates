@@ -119,7 +119,6 @@ export default function HomePage() {
             <Link to="/listings">
               <Card className="h-100 rounded">
                 <div
-                  // src={propertiesImage}
                   alt="Property Management"
                   className={`${styles.ServiceImage4} ${styles.ServiceImageHeight}`}
                 />
@@ -152,6 +151,7 @@ export default function HomePage() {
                                   <Carousel.Item key={id}>
                                     <div className={imageStyles.Listings__ImageWrapper}>
                                       <img
+                                        loading="lazy"
                                         src={image?.url}
                                         alt={image?.id}
                                         className={`img-fluid ${imageStyles.Listings__Image}`}

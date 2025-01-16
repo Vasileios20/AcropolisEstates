@@ -61,6 +61,7 @@ const ListingImages = ({ images = [{}], listing_id, amenities }) => {
                 <div className={styles.ImageWrapper}>
                   {sold && <div className={styles.soldLabel}>SOLD</div>}
                   <img
+                    loading="lazy"
                     src={image.url}
                     alt={image.id}
                     className={styles.Image}
@@ -85,6 +86,7 @@ const ListingImages = ({ images = [{}], listing_id, amenities }) => {
           <div className={styles.ImageWrapper}>
             {sold && <div className={styles.soldLabel}>SOLD</div>}
             <img
+              loading="lazy"
               src={imagesArray[0]?.is_first ? imagesArray[0].url : images[0].url}
               alt={images[0]?.id}
               className={`img-fluid ${styles.Image}`}
@@ -99,6 +101,7 @@ const ListingImages = ({ images = [{}], listing_id, amenities }) => {
               <Col key={id} xs={6} md={6} lg={6} xl={6} style={{ paddingBottom: "3px" }}>
                 <div className={styles.ImageWrapper}>
                   <img
+                    loading="lazy"
                     src={image.url}
                     alt={image.id}
                     className={`img-fluid ${styles.Image}`}
