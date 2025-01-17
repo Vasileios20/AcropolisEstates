@@ -35,6 +35,7 @@ const SearchBar = () => {
     bedrooms: { min: "", max: "" },
     constructionYear: { min: "", max: "" },
     floor: { min: "", max: "" },
+    heating_system: "",
   });
 
   const history = useHistory();
