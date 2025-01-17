@@ -34,19 +34,22 @@ const AdvancedFiltersModal = ({
 
                 const filteredAmenities = response.data.results.filter(
                     (amenity) => [
-                        "parking", "elevator_in_building", "solar_water_heating",
-                        "double_glazed_windows", "balcony", "furnished", "garden",
+                        "solar_water_heating", "parking", "elevator_in_building", 
+                        "double_glass", "balcony", "furnished", "garden",
                         "fireplace", "air_conditioning", "underfloor_heating",
-                        "storage_room", "swimming_pool", "central_heating",
-                        "renovated", "alarm", "security_door", "penthouse",
-                        "luxury", "studio", "loft", "ground_floor", "investment",
+                        "attic", "veranda", "balcony", "furnished", "renovated", "storage", "bright",
+                        "pets_allowed", "satelite", "awnings",
+                        "screens", "bbq", "swimming_pool", "gym", "playroom", "security_alarm", "security_door", "penthouse",
+                        "CCTV", "night_electricity", "access_for_disabled", "need_renovation", "ev_charger", "loft", "propery_consideration",
+                        "inside_the_settlement", "facade", "consierge", "auction", "under_construction"
                     ].includes(amenity.name)
                 ).map((amenity) => ({
                     ...amenity,
                     name: amenity.name
                 }));
+            
 
-                setAvailableAmenities(response.data.results); // Expecting an array
+                setAvailableAmenities(filteredAmenities); // Expecting an array
             } catch (error) {
                 console.error("Error fetching amenities:", error);
                 setAvailableAmenities([]); // Prevent map issues
@@ -96,9 +99,6 @@ const AdvancedFiltersModal = ({
                     <Row className="mb-3 align-items-center justify-content-around">
                         <Col xs={12} className="mb-1 d-flex align-items-center">
                             <SaleTypeSearch filters={filters} setFilters={setFilters} handleChange={handleChange} />
-                        </Col>
-                        <Col xs={4} className="mb-1 d-none d-lg-block ms-auto">
-                            <ButtonsAdvancedFilters filters={filters} setFilters={setFilters} update={update} handleApply={handleApply} />
                         </Col>
                     </Row>
                     <Row className="g-1 align-items-center justify-content-start col-md-6">
