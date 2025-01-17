@@ -18,8 +18,7 @@ const MainSearchFields = ({
     handleChange
 }) => {
     const type = filters?.type
-    const multiType = type ? t("listingType." + type) : ""; 
-    const typeCapitalized = multiType?.replace(/\b\w/g, char => char.toUpperCase());
+    const typeLabel = type ? t("propertyDetails.types." + type) : "";
 
     const options = [
         { value: "", label: t("listingType.any") },
@@ -51,7 +50,7 @@ const MainSearchFields = ({
                     <Form.Label style={{ fontWeight: "500" }} className={`${styles.Label} mb-0`}>
                         {t("searchBar.type")}
                     </Form.Label>
-                    <CustomDropDown filters={filters} setFilters={setFilters} options={options} labelCapitalized={typeCapitalized} />
+                    <CustomDropDown filters={filters} setFilters={setFilters} options={options} labelSelect={typeLabel} field="type" />
                 </Col>
             </Row>
 

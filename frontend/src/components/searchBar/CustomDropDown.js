@@ -3,19 +3,19 @@ import Dropdown from "react-bootstrap/Dropdown";
 import styles from "../../styles/SearchBar.module.css";
 import { t } from "i18next";
 
-export const CustomDropDown = ({ filters, setFilters, options, labelCapitalized }) => {
-    const handleSelect = (e) => {
+export const CustomDropDown = ({ filters, setFilters, options, labelSelect, field }) => {
+    
+    const handleSelect = (value) => {
         setFilters((prevFilters) => ({
             ...prevFilters,
-            type: e,
-        })
-        );
+            [field]: value,
+        }));
     };
 
     return (
         <Dropdown className="w-100">
             <Dropdown.Toggle className={`${styles.Select} text-start w-100`} style={{ borderColor: "#4d6765" }} id="dropdown-basic" >
-                {labelCapitalized || t("listingType.any")}
+                {labelSelect || t("listingType.any")}
             </Dropdown.Toggle>
 
             <Dropdown.Menu className={styles.TypeDropdown}>
