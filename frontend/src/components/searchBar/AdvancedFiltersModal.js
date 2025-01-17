@@ -8,6 +8,9 @@ import { SaleTypeSearch } from "./SaleTypeSearch";
 import ButtonsAdvancedFilters from "./ButtonsAdvancedFilters";
 import LocationType from "./LocationType";
 import PriceSurface from "./PriceSurface";
+import Bedrooms from "./Bedrooms";
+import YearBuilt from "./YearBuilt";
+import HeatingSystem from "./HeatingSystem";
 
 const AdvancedFiltersModal = ({
     filters,
@@ -67,17 +70,6 @@ const AdvancedFiltersModal = ({
         });
     };
 
-    const handleRangeChange = (e, field) => {
-        const { name, value } = e.target;
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            [field]: {
-                ...prevFilters[field],
-                [name]: value,
-            },
-        }));
-    };
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFilters((prevFilters) => ({
@@ -100,9 +92,9 @@ const AdvancedFiltersModal = ({
                 <Modal.Header closeButton>
                     <Modal.Title>Advanced Filters</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className={styles.ModalBody}>
                     <Row className="mb-3 align-items-center justify-content-around">
-                        <Col xs={6} className="mb-1 d-flex align-items-center">
+                        <Col xs={12} className="mb-1 d-flex align-items-center">
                             <SaleTypeSearch filters={filters} setFilters={setFilters} handleChange={handleChange} />
                         </Col>
                         <Col xs={4} className="mb-1 d-none d-lg-block ms-auto">
@@ -121,113 +113,23 @@ const AdvancedFiltersModal = ({
                             handleChange={handleChange}
                         />
                     </Row>
-                    <Row className="g-1 align-items-center justify-content-start col-md-6 col-lg-9">
+                    <Row className="g-1 align-items-center justify-content-start col-md-9">
                         <PriceSurface
                             filters={filters}
                             setFilters={setFilters}
                         />
                     </Row>
 
-                    <Form.Group as={Row} className="my-3">
-                        <Form.Label column sm={2} style={{ fontWeight: "500" }}>
-                            {t("propertyDetails.bedrooms")}
-                        </Form.Label>
-                        <Col sm={5}>
-                            <Form.Control
-                                className={styles.SearchInput}
-                                type="number"
-                                placeholder={t("searchBar.minBedrooms")}
-                                name="min"
-                                value={filters?.bedrooms.min || ""}
-                                onChange={(e) => handleRangeChange(e, "bedrooms")}
-                            />
-                        </Col>
-                        <Col sm={5}>
-                            <Form.Control
-                                className={styles.SearchInput}
-                                type="number"
-                                placeholder={t("searchBar.maxBedrooms")}
-                                name="max"
-                                value={filters?.bedrooms.max || ""}
-                                onChange={(e) => handleRangeChange(e, "bedrooms")}
-                            />
-                        </Col>
-                    </Form.Group>
+                    <Row className="g-1 align-items-center justify-content-start col-md-9">
+                        <Bedrooms filters={filters} setFilters={setFilters} />
+                    </Row>
 
-                    <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm={2} style={{ fontWeight: "500" }}>
-                            {t("propertyDetails.yearBuilt")}
-                        </Form.Label>
-                        <Col sm={5}>
-                            <Form.Control
-                                className={styles.SearchInput}
-                                type="number"
-                                placeholder={t("searchBar.minYearBuilt")}
-                                name="min"
-                                value={filters?.constructionYear.min || ""}
-                                onChange={(e) => handleRangeChange(e, "constructionYear")}
-                            />
-                        </Col>
-                        <Col sm={5}>
-                            <Form.Control
-                                className={styles.SearchInput}
-                                type="number"
-                                placeholder={t("searchBar.maxYearBuilt")}
-                                name="max"
-                                value={filters?.constructionYear.max || ""}
-                                onChange={(e) => handleRangeChange(e, "constructionYear")}
-                            />
-                        </Col>
-                    </Form.Group>
-
-                    <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm={2} style={{ fontWeight: "500" }}>
-                            {t("propertyDetails.floor")}
-                        </Form.Label>
-                        <Col sm={5}>
-                            <Form.Control
-                                className={styles.SearchInput}
-                                type="number"
-                                placeholder={t("searchBar.minFloor")}
-                                name="min"
-                                value={filters?.floor?.min || ""}
-                                onChange={(e) => handleRangeChange(e, "floor")}
-                            />
-                        </Col>
-                        <Col sm={5}>
-                            <Form.Control
-                                className={styles.SearchInput}
-                                type="number"
-                                placeholder={t("searchBar.maxFloor")}
-                                name="max"
-                                value={filters?.floor?.max || ""}
-                                onChange={(e) => handleRangeChange(e, "floor")}
-                            />
-                        </Col>
-                    </Form.Group>
-
-                    <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm={2} style={{ fontWeight: "500" }}>{t("propertyDetails.heating_system.title")}</Form.Label>
-                        <Col md={5}>
-                            <Form.Control
-                                className={styles.SearchInput}
-                                as="select"
-                                name="heating_system"
-                                value={filters?.heating_system || ""}
-                                onChange={handleChange}
-                            >
-                                <option value="">---</option>
-                                <option value="autonomous">{t("propertyDetails.heating_system.autonomous")}</option>
-                                <option value="central">{t("propertyDetails.heating_system.central")}</option>
-                                <option value="air_condition">{t("propertyDetails.heating_system.air_condition")}</option>
-                                <option value="fireplace">{t("propertyDetails.heating_system.fireplace")}</option>
-                                <option value="solar">{t("propertyDetails.heating_system.solar")}</option>
-                                <option value="geothermal">{t("propertyDetails.heating_system.geothermal")}</option>
-                                <option value="other">{t("propertyDetails.heating_system.other")}</option>
-                                <option value="n/a">{t("propertyDetails.heating_system.n/a")}</option>
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
+                    <Row className="g-1 align-items-center justify-content-start col-md-9">
+                        <YearBuilt filters={filters} setFilters={setFilters} />
+                    </Row>
+                    <Row className="g-1 align-items-center justify-content-start">
+                        <HeatingSystem filters={filters} setFilters={setFilters} handleChange={handleChange} />
+                    </Row>
 
                     <h5>{t("searchBar.amenities")}</h5>
                     <Form.Group>
