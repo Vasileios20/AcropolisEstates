@@ -198,8 +198,8 @@ const SearchBar = () => {
                   {errors}
                 </Alert>
               ))}
-          <Row className="mb-1 align-items-center justify-content-between gx-0 gx-md-1 gx-lg-5">
-            <Col xs={6} className="mb-1 ps-lg-3">
+          <Row className="mb-1 align-items-center justify-content-start gx-0 gx-md-1">
+            <Col xs={6} className="mb-1">
               <SaleTypeSearch
                 errors={errors}
                 setErrors={setErrors}
@@ -226,7 +226,7 @@ const SearchBar = () => {
             </Col>
           </Row>
           <Row className="g-1">
-            <Col xs={12} md={6} lg={5}  className="mb-1">
+            <Col xs={12} md={6} lg={7}  className="mb-1">
               <LocationType
                 filters={filters}
                 setFilters={setFilters}
@@ -238,14 +238,14 @@ const SearchBar = () => {
                 handleChange={handleChange}
               />
             </Col>
-            <Col xs={12} md={6} lg={5} className="mb-1 d-none d-md-block">
+            <Col xs={12} md={12} lg={12} xl={5} className="mb-1 d-none d-md-block">
               <PriceSurface
                 filters={filters}
                 setFilters={setFilters}
               />
 
             </Col>
-            <Col xs={12} lg={2} className="pt-3 d-flex align-items-center justify-content-lg-start">
+            <Col xs={12} lg={12} className="pt-3 d-flex align-items-center justify-content-lg-end">
               <ButtonsSearch
                 filters={filters}
                 setFilters={setFilters}

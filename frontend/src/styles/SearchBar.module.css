@@ -29,7 +29,7 @@
 
 .SearchInput,
 .Select {
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .Select {
@@ -52,20 +52,21 @@
   color: #4d6765 !important;
   background-color: #fff !important;
   border: 1px solid #4d6765;
-  font-size: 0.8rem;
+  font-size: 1rem;
   padding-top: 0;
   padding-bottom: 0;
   width: 100%;
 }
 
+.ListingsPerPageDropdown>*:hover,
 .TypeDropdown>*:hover,
 .MainFieldsDropdown>*:hover {
   background-color: rgba(77, 103, 101, 0.8) !important;
+  border-radius: 0.3rem;
 }
 
 .Dropdown {
   display: flex;
-  background-color: rgba(77, 102, 100, 0.5);
   color: #000;
 }
 
@@ -74,10 +75,15 @@
   padding-bottom: 0;
 }
 
+.Label {
+  font-size: 1rem;
+}
+
 /* Dropdowns with scrollbar */
 
 .MainFieldsDropdown {
-  font-size: 0.8rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
   max-height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -106,6 +112,10 @@
 }
 
 /* AdvancedFiltersModal */
+
+.ModalBody {
+  background-color: rgba(240, 240, 240, 0.3);
+}
 
 .AdvancedFiltersModal {
   color: #4d6765;
