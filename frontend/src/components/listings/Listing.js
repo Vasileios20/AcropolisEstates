@@ -214,9 +214,7 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
         <meta name="keywords" content={`${props.sale_type}, ${props.type}, ${props.sub_type}, ${props.municipality}, ${props.county}, ${props.region}, Features, amenities, real estate, Acropolis Estates, price, bedroom, apartment, name, floor, area, heating, email, acropolis, estates, london,  `} />
       </Helmet>
       <Container className="mt-5 pt-2">
-        <Row className="mt-5">
-          {userStatus && <StaffCard {...props} handleDelete={handleDelete} handleEdit={handleEdit} />}
-        </Row>
+        
         <ListingImages images={images} listing_id={id} amenities={amenities} />
 
         <Row className="justify-content-start">
@@ -247,6 +245,9 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           <Col md={8} lg={4} className="mb-3">
             <ContactForm listing_id={id} />
           </Col>
+        </Row>
+        <Row className="mt-5">
+          {userStatus && <StaffCard {...props} handleDelete={handleDelete} handleEdit={handleEdit} />}
         </Row>
       </Container>
     </>
