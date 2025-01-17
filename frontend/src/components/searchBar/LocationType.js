@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import MunicipalitySearch from './MunicipalitySearch';
-import { TypeDropDown } from './CustomDropDown';
+import { CustomDropDown } from './CustomDropDown';
 import styles from '../../styles/SearchBar.module.css';
 
 const MainSearchFields = ({
@@ -17,7 +17,16 @@ const MainSearchFields = ({
     setEmpty,
     handleChange
 }) => {
+    const type = filters?.type
+    const multiType = type ? t("listingType." + type) : ""; 
+    const typeCapitalized = multiType?.replace(/\b\w/g, char => char.toUpperCase());
 
+    const options = [
+        { value: "", label: t("listingType.any") },
+        { value: "residential", label: t("listingType.residential") },
+        { value: "land", label: t("listingType.land") },
+        { value: "commercial", label: t("listingType.commercial") },
+    ];
 
     return (
         <>
@@ -42,7 +51,7 @@ const MainSearchFields = ({
                     <Form.Label style={{ fontWeight: "500" }} className={`${styles.Label} mb-0`}>
                         {t("searchBar.type")}
                     </Form.Label>
-                    <TypeDropDown filters={filters} setFilters={setFilters} />
+                    <CustomDropDown filters={filters} setFilters={setFilters} options={options} labelCapitalized={typeCapitalized} />
                 </Col>
             </Row>
 
