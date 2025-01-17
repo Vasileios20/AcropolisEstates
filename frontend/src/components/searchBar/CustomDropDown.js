@@ -1,16 +1,9 @@
+import React, { useEffect, useRef } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import styles from "../../styles/SearchBar.module.css";
 import { t } from "i18next";
 
-export const TypeDropDown = ({ filters, setFilters }) => {
-    const typeCapitalized = filters?.type?.replace(/\b\w/g, char => char.toUpperCase());
-    const options = [
-        { value: "", label: t("listingType.any") },
-        { value: "residential", label: t("listingType.residential") },
-        { value: "land", label: t("listingType.land") },
-        { value: "commercial", label: t("listingType.commercial") },
-    ];
-
+export const CustomDropDown = ({ filters, setFilters, options, labelCapitalized }) => {
     const handleSelect = (e) => {
         setFilters((prevFilters) => ({
             ...prevFilters,
@@ -22,11 +15,11 @@ export const TypeDropDown = ({ filters, setFilters }) => {
     return (
         <Dropdown className="w-100">
             <Dropdown.Toggle className={`${styles.Select} text-start w-100`} style={{ borderColor: "#4d6765" }} id="dropdown-basic" >
-                {typeCapitalized || t("listingType.any")}
+                {labelCapitalized || t("listingType.any")}
             </Dropdown.Toggle>
 
             <Dropdown.Menu className={styles.TypeDropdown}>
-                {options.map((option) => (
+                {options?.map((option) => (
                     <Dropdown.Item
                         key={option.value}
                         onClick={() => handleSelect(option.value)}
@@ -41,7 +34,7 @@ export const TypeDropDown = ({ filters, setFilters }) => {
 
 
 
-export const MainFieldsDropDown = ({ filters, setFilters, options, field, keyName }) => {
+export const MainFieldsDropDown = ({ filters, setFilters, options, field, keyName, show, setShow }) => {
     const handleOption = (field, keyName, value) => {
         setFilters((prevFilters) => {
             const updatedFilters = { ...prevFilters };
@@ -63,8 +56,33 @@ export const MainFieldsDropDown = ({ filters, setFilters, options, field, keyNam
         });
     };
 
+    const inputRef = useRef(null);
+
+    const triggerBlinking = () => {
+        if (inputRef.current) {
+            inputRef.current.classList.remove(styles.BlinkingInput);
+            void inputRef.current.offsetWidth;
+            inputRef.current.classList.add(styles.BlinkingInput);
+            inputRef.current.focus();
+        }
+    };
+
+    useEffect(() => {
+        if (show) {
+            triggerBlinking();
+        }
+    }, [show]);
+
     return (
         <Dropdown className="w-100">
+            <input
+                ref={inputRef}
+                type="number"
+                className={`${styles.SearchInput} form-control`}
+                placeholder={keyName === "min" ? t("searchBar.from") : t("searchBar.to")}
+                value={filters[field]?.[keyName] || ""}
+                onChange={(e) => handleOption(field, keyName, e.target.value)}
+            />
             <div className={styles.MainFieldsDropdown} onClick={(e) => e.stopPropagation()}>
                 {options.map((option) => (
                     <div
@@ -80,7 +98,3 @@ export const MainFieldsDropDown = ({ filters, setFilters, options, field, keyNam
         </Dropdown>
     );
 };
-
-
-
-
