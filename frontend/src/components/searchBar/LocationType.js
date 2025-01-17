@@ -22,8 +22,8 @@ const MainSearchFields = ({
     return (
         <>
             <Row className="g-1 align-items-center justify-content-evenly">
-                <Col xs={12} sm={6} md={6} className="text-start">
-                    <Form.Label style={{ fontWeight: "500" }} className="mb-0">
+                <Col xs={12} sm={6} md={9} className="text-start">
+                    <Form.Label style={{ fontWeight: "500" }} className={`${styles.Label} mb-0`}>
                         {t("searchBar.location")}
                     </Form.Label>
                     <MunicipalitySearch
@@ -38,8 +38,8 @@ const MainSearchFields = ({
                         setFilters={setFilters}
                     />
                 </Col>
-                <Col xs={12} sm={6} md={6} className="text-start">
-                    <Form.Label style={{ fontWeight: "500" }} className="mb-0">
+                <Col xs={12} sm={6} md={3} className="text-start">
+                    <Form.Label style={{ fontWeight: "500" }} className={`${styles.Label} mb-0`}>
                         {t("searchBar.type")}
                     </Form.Label>
                     <TypeDropDown filters={filters} setFilters={setFilters} />

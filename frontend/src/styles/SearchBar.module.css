@@ -36,7 +36,7 @@
   color: #4d6765 !important;
   background-color: #fff !important;
   max-width: 100%;
-  min-width: 7rem;
+  min-width: fit-content;
   text-align: left;
 }
 
@@ -56,6 +56,7 @@
   padding-top: 0;
   padding-bottom: 0;
   width: 100%;
+  min-width: fit-content;
 }
 
 .ListingsPerPageDropdown>*:hover,
@@ -71,6 +72,7 @@
 }
 
 .DropdownMenu {
+  min-width: 100%;
   padding-top: 0;
   padding-bottom: 0;
 }
