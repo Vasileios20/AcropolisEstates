@@ -3,21 +3,19 @@ import styles from "../../styles/MunicipalitySearch.module.css";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
 
-const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, setEmpty }) => {
+const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, setEmpty, filters, setFilters }) => {
     const [inputValue, setInputValue] = useState("");
     const [filteredMunicipalities, setFilteredMunicipalities] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const dropdownRef = useRef(null);
-    const municipalityId = history?.location?.state?.data?.results?.length
-        ? history?.location?.state?.data.results[0].municipality_id
-        : null;
-    const containsMunicipality = history?.location?.search.includes("municipality");
+    const municipalityId = filters?.municipalityId;
+    
     const { t, i18n } = useTranslation();
     const lng = i18n?.language;
 
     useEffect(() => {
-        if (containsMunicipality) {
+        if (municipalityId) {
             const allMunicipalities = regionsData?.flatMap(region =>
                 region.counties?.flatMap(county =>
                     county.municipalities?.map(municipality => ({
@@ -45,7 +43,8 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
                 }
             }
         }
-    }, [regionsData, municipalityId, containsMunicipality, lng, history.location.search]);
+    }, [regionsData, municipalityId, lng, history.location.search]);
+
     const normalizeString = (str) => {
         if (!str) return "";
         return str
@@ -57,6 +56,10 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
     const handleInputChange = (e) => {
         const value = e.target.value;
         setInputValue(value);
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            municipalityId: value ? value : "",
+        }));
         setSelectedIndex(-1);
 
         if (!value) {
