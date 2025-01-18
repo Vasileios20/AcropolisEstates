@@ -227,7 +227,7 @@ const SearchBar = () => {
             </Col>
           </Row>
           <Row className="g-1">
-            <Col xs={12} md={6} lg={7}  className="mb-1">
+            <Col xs={12} md={6} lg={7} xl={6}  className="mb-1">
               <LocationType
                 filters={filters}
                 setFilters={setFilters}
@@ -239,7 +239,7 @@ const SearchBar = () => {
                 handleChange={handleChange}
               />
             </Col>
-            <Col xs={12} md={12} lg={12} xl={5} className="mb-1 d-none d-md-block">
+            <Col xs={12} md={12} lg={12} xl={6} className="mb-1 d-none d-md-block">
               <PriceSurface
                 filters={filters}
                 setFilters={setFilters}
