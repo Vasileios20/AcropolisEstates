@@ -10,7 +10,7 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const dropdownRef = useRef(null);
     const municipalityId = filters?.municipalityId;
-    
+
     const { t, i18n } = useTranslation();
     const lng = i18n?.language;
 
@@ -42,6 +42,8 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
                     setInputValue(lng === "el" ? selectedMunicipality?.greekName : selectedMunicipality?.englishName);
                 }
             }
+        } else {
+            setInputValue("");
         }
     }, [regionsData, municipalityId, lng, history.location.search]);
 
