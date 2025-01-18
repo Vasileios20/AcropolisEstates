@@ -262,7 +262,7 @@ function ContactForm({ listing_id }) {
             </Form.Group>
 
             <Button
-              className={`${btnStyles.Button} ${btnStyles.Black} mt-3`}
+              className={`${btnStyles.Button} ${btnStyles.AngryOcean} mt-3`}
               type="submit"
             >
               {t("contactForm.btnSend")}
