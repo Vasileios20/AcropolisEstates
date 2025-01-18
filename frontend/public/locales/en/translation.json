@@ -101,6 +101,7 @@
     "searchBar": {
         "rent": "Rent",
         "buy": "Buy",
+        "advancedFilters": "Filters",
         "search": "Μunicipality",
         "location": "Location",
         "type": "Type",

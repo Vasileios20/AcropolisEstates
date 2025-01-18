@@ -102,6 +102,7 @@
     "searchBar": {
         "rent": "Ενοικίαση",
         "buy": "Αγορά",
+        "advancedFilters": "Φίλτρα",
         "search": "Δήμος",
         "location": "Τοποθεσία",
         "type": "Τύπος",
@@ -481,7 +482,7 @@
         "storage": "Αποθήκη",
         "basement": "Υπόγειο",
         "night_electricity": "Νυχτερινό Ρεύμα",
-        "no_shared_expenses": "ΌΧι Κοινόχρηστα ",
+        "no_shared_expenses": "Όχι Κοινόχρηστα ",
         "investment": "Επενδυτικό",
         "student_apartment": "Φοιτητικό",
         "luxurious": "Πολυτελείας",
@@ -508,7 +509,7 @@
         "property_consideration": "Αντιπαροχή",
         "inside_the_settlement": "Εντός Σχεδίου",
         "facade": "Προσώψεος",
-        "consierge": "Θυρορός",
+        "consierge": "Θυρωρός",
         "inside_zone_area": "Εντός Ζώνης",
         "auction": "Πληστηριασμός",
         "under_offer": "Υπό Προσφορά"
@@ -543,10 +544,10 @@
         "desc": "Φθίνουσα Τιμή"
     },
     "regionOptions": {
-        "region": "Γεωγραφικό Διαμέρισμα",
+        "region": "Περιφέρεια",
         "county": "Νομός",
         "municipality": "Δήμος",
-        "selectRegion": "Επιλέξτε Γεωγραφικό Διαμέρισμα",
+        "selectRegion": "Επιλέξτε Περιφέρεια",
         "selectCounty": "Επιλέξτε Νομό",
         "selectMunicipality": "Επιλέξτε Δήμο"
     }

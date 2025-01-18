@@ -93,7 +93,7 @@ const AdvancedFiltersModal = ({
 
             <Modal show={show} onHide={() => setShow(false)} size="xl" fullscreen="lg-down" style={{ fontSize: "0.8rem" }}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Advanced Filters</Modal.Title>
+                    <Modal.Title>{t("searchBar.advancedFilters")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className={styles.ModalBody}>
                     <Row className="mb-3 align-items-center justify-content-around">
