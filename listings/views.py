@@ -6,12 +6,13 @@ from django.db.models import Count
 from rest_framework import generics, filters, status
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Listing, Images, Amenities, Owner
+from .models import Listing, Images, Amenities, Owner, OwnerFile
 from .serializers import (
     ListingSerializer,
     ImagesSerializer,
     AmenitiesSerializer,
     OwnerSerializer,
+    OwnerFileSerializer,
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
@@ -94,6 +95,62 @@ class OwnerViewSet(ModelViewSet):
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
     permission_classes = [IsAdminUser]
+    parser_classes = (MultiPartParser, FormParser)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        # Manually adding the files to the owner data
+        owner_data = serializer.data
+        owner_data['files'] = OwnerFileSerializer(
+            instance.files.all(), many=True).data
+        return Response(owner_data)
+
+    def create(self, request, *args, **kwargs):
+        """
+        Override the default create method to handle file uploads for an owner.
+        """
+        owner_serializer = OwnerSerializer(data=request.data)
+
+        if owner_serializer.is_valid():
+            owner_serializer.save()
+
+            # Now, handle file uploads for the owner
+            owner = owner_serializer.instance
+            files = request.FILES.getlist('files')
+
+            for file in files:
+                # Create the owner file entry
+                OwnerFile.objects.create(owner=owner, file=file)
+
+            return Response(
+                owner_serializer.data, status=status.HTTP_201_CREATED
+            )
+        return Response(
+            owner_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    def update(self, request, *args, **kwargs):
+        """
+        Override the default update method to handle file uploads for an owner.
+        """
+        instance = self.get_object()
+        owner_serializer = OwnerSerializer(
+            instance, data=request.data, partial=True)
+
+        if owner_serializer.is_valid():
+            owner_serializer.save()
+
+            # Handle file uploads
+            files = request.FILES.getlist('files')
+            for file in files:
+                # Create the owner file entry
+                OwnerFile.objects.create(owner=instance, file=file)
+
+            return Response(owner_serializer.data)
+        return Response(
+            owner_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class ListingList(generics.ListCreateAPIView):
