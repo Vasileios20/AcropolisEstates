@@ -22,8 +22,10 @@ const AdminPage = () => {
                 <Table className={`${styles.Admin}`}>
                     <tbody>
                         <tr>
-                            <td>
+                            <td className="d-flex">
                                 <Link to="/frontend/admin/listings/owners">Owners</Link>
+
+                                <Link to="/frontend/admin/listings/owners/create" className="ms-auto">Add Owner</Link>
                             </td>
                         </tr>
                         <tr>
