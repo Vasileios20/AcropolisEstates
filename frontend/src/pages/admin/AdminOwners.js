@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
-import styles from '../../styles/Admin.module.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { useRedirect } from '../../hooks/useRedirect';
 import useUserStatus from '../../hooks/useUserStatus';
 import Forbidden403 from '../errors/Forbidden403';
@@ -42,10 +42,13 @@ const AdminOwners = () => {
     }
 
     return (
-        <Container fluid>
+        <Container fluid style={{ paddingTop: '90px' }}>
             <Row className="m-4">
+                <Col className=" d-flex justify-content-end g-0 mb-3">
+                    <Link to="/frontend/admin/listings/owners/create" className={`${btnStyles.AngryOcean} ${btnStyles.Button}`}>Add New Owner</Link>
+                </Col>
 
-                <Table className={`${styles.Admin}`}>
+                <Table>
                     <thead>
                         <tr>
                             <th>{t('First Name')}</th>
@@ -54,12 +57,6 @@ const AdminOwners = () => {
                             <th>{t('Phone 2')}</th>
                             <th>{t('Email')}</th>
                             <th>{t('Notes')}</th>
-                            <th>{t('Files')}</th>
-                            <th style={{ backgroundColor: 'transparent', border: 'none' }}>
-                                <Link to="/frontend/admin/listings/owners/create" className={`${btnStyles.AngryOcean} ${btnStyles.Button}`}>Add New Owner
-                                </Link>
-
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,17 +68,6 @@ const AdminOwners = () => {
                                 <td>{owner.phone_2}</td>
                                 <td>{owner.email}</td>
                                 <td>{owner.notes}</td>
-                                <td>
-                                    <ul className={`list-unstyled ${styles.OwnerList}`}>
-                                        {owner.files.map((file, index) => (
-                                            <li key={index} className={`border rounded  p-1 mb-2 `}>
-                                                <a href={file.file_url} target="_blank" rel="noopener noreferrer">
-                                                    {file.file_url}
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </td>
                             </tr>
                         ))}
                     </tbody>
