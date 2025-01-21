@@ -33,6 +33,7 @@ import CookieConsent, { getCookieConsentValue } from "react-cookie-consent";
 import { HelmetProvider } from "react-helmet-async";
 import { useTranslation, Trans } from "react-i18next";
 import AdminListings from "./pages/admin/AdminListings";
+import AdminOwners from "./pages/admin/AdminOwners";
 
 
 function App() {
@@ -124,6 +125,7 @@ function App() {
               <Route exact path="/forbidden" render={() => <Forbidden403 />} />
               <Route exact path="/frontend/admin" render={() => <AdminPage />} />
               <Route exact path="/frontend/admin/listings" render={() => <AdminListings />} />
+              <Route exact path="/frontend/admin/listings/owners" render={() => <AdminOwners />} />
               <Route exact path="/notfound" render={() => <NotFound />} />
               <Route render={() => <NotFound />} />
 
