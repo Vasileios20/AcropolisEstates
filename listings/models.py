@@ -20,6 +20,19 @@ class Owner(models.Model):
         verbose_name_plural = "Owners"
 
 
+class OwnerFile(models.Model):
+    owner = models.ForeignKey(
+        Owner, related_name="files", on_delete=models.CASCADE)
+    file = models.FileField(upload_to="owners/%Y/%m/%d/")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"File for {self.owner} uploaded on {self.uploaded_at}"
+
+    class Meta:
+        verbose_name_plural = "Owner Files"
+
+
 class Amenities(models.Model):
     """
     Amenities model
