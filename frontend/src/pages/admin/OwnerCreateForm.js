@@ -75,7 +75,8 @@ const OwnerCreateForm = () => {
     return (
         <Container className="mt-5 pt-5">
             <Row>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} className="col-6 mx-auto border shadow p-4 rounded">
+                    <p className="text-center h3">Add Owner</p>
                     <Form.Group controlId="formFirstName">
                         <Form.Label>First Name</Form.Label>
                         <Form.Control
