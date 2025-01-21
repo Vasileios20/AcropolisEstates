@@ -1,5 +1,6 @@
 from django.contrib import admin
-from listings.models import Listing, Images, Amenities, Owner
+from listings.models import Listing, Images, Amenities, Owner, OwnerFile
+from django.utils.html import format_html
 
 
 class ListingAdmin(admin.ModelAdmin):
@@ -32,14 +33,39 @@ class AmenitiesAdmin(admin.ModelAdmin):
     list_per_page = 50
 
 
+class OwnerFileInline(admin.TabularInline):
+    model = OwnerFile
+    extra = 1
+
+
 class OwnerAdmin(admin.ModelAdmin):
+    inlines = [OwnerFileInline]
     list_display = ("id", "first_name", "last_name",
-                    "email", "phone", "phone_2")
+                    "email", "phone", "phone_2", "display_files")
+    fields = ("first_name", "last_name", "email", "phone", "phone_2")
     list_filter = ("id", "first_name", "last_name",
                    "email", "phone", "phone_2")
     search_fields = ("id", "first_name", "last_name",
                      "email", "phone", "phone_2")
     list_per_page = 50
+
+    def display_files(self, obj):
+        files = obj.files.all()  # Get all the files associated with the owner
+        file_links = []
+
+        # Loop through files and generate links to them
+        for file in files:
+            file_url = file.file.url  # Get the URL of the file
+            file_name = file.file.name  # Get the file name
+            # Create an HTML link for the file
+            file_links.append(
+                f'<a href="{file_url}" target="_blank">{file_name}</a>')
+
+        # Return a concatenated string of file links
+        return format_html(', '.join(file_links)) if file_links else 'No files'
+
+    # Label for the field in the admin list display
+    display_files.short_description = 'Uploaded Files'
 
 
 admin.site.register(Amenities, AmenitiesAdmin)
