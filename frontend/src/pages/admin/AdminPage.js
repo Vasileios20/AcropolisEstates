@@ -23,7 +23,7 @@ const AdminPage = () => {
                     <tbody>
                         <tr>
                             <td>
-                                <Link to="frontend/admin/users">Users</Link>
+                                <Link to="/frontend/admin/listings/owners">Owners</Link>
                             </td>
                         </tr>
                         <tr>
