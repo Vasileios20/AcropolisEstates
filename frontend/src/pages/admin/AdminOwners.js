@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import styles from '../../styles/Admin.module.css';
 import Container from 'react-bootstrap/Container';
@@ -9,12 +9,15 @@ import useUserStatus from '../../hooks/useUserStatus';
 import Forbidden403 from '../errors/Forbidden403';
 import { axiosReq } from '../../api/axiosDefaults';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import btnStyles from '../../styles/Button.module.css';
 
 const AdminOwners = () => {
     useRedirect("loggedOut");
     const userStatus = useUserStatus();
     const [owners, setOwners] = useState([]);
     const { t } = useTranslation();
+    const history = useHistory();
 
     useEffect(() => {
         const fetchOwners = async () => {
@@ -34,9 +37,14 @@ const AdminOwners = () => {
         return <Forbidden403 />;
     }
 
+    const handleRowClick = (id) => {
+        history.push(`/frontend/admin/listings/owners/${id}`);
+    }
+
     return (
         <Container fluid>
             <Row className="m-4">
+
                 <Table className={`${styles.Admin}`}>
                     <thead>
                         <tr>
@@ -47,11 +55,16 @@ const AdminOwners = () => {
                             <th>{t('Email')}</th>
                             <th>{t('Notes')}</th>
                             <th>{t('Files')}</th>
+                            <th style={{ backgroundColor: 'transparent', border: 'none' }}>
+                                <Link to="/frontend/admin/listings/owners/create" className={`${btnStyles.AngryOcean} ${btnStyles.Button}`}>Add New Owner
+                                </Link>
+
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {owners.map((owner, index) => (
-                            <tr key={index}>
+                            <tr key={index} onClick={() => handleRowClick(owner.id)} style={{ cursor: 'pointer' }}>
                                 <td>{owner.first_name}</td>
                                 <td>{owner.last_name}</td>
                                 <td>{owner.phone}</td>
