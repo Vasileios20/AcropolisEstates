@@ -83,7 +83,7 @@ function OwnerPage() {
                                                 {ownersData?.files && ownersData?.files.length > 0 ? (
                                                     ownersData?.files.map((file, index) => (
                                                         <li key={index} className="border rounded shadow p-1 mb-2">
-                                                            <a href={file.file_url} target="_blank" rel="noopener noreferrer">
+                                                            <a href={file.file} target="_blank" rel="noopener noreferrer">
                                                                 {file.file_url}
                                                             </a>
                                                         </li>
