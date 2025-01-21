@@ -5,12 +5,14 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import btnStyles from '../../styles/Button.module.css'
+import styles from '../../styles/Admin.module.css'
 
 export const StaffCard = ({ handleDelete, handleEdit, ...props }) => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    
     return (
         <>
             <Col md={5} className="mb-3">
@@ -33,6 +35,20 @@ export const StaffCard = ({ handleDelete, handleEdit, ...props }) => {
                         <Card.Text>
                             <strong>Notes:</strong> {props.listing_owner?.notes}
                         </Card.Text>
+                        <h5>Uploaded Files</h5>
+                        <ul className={`list-unstyled ${styles.OwnerList}`}>
+                            {props?.listing_owner?.files && props?.listing_owner?.files.length > 0 ? (
+                                props?.listing_owner?.files.map((file, index) => (
+                                    <li key={index} className="border rounded shadow p-1 mb-2">
+                                        <a href={file.file_url} target="_blank" rel="noopener noreferrer">
+                                            {file.file_url}
+                                        </a>
+                                    </li>
+                                ))
+                            ) : (
+                                <li>No files uploaded.</li>
+                            )}
+                        </ul>
                     </Card.Body>
                 </Card>
             </Col>
