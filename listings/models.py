@@ -23,7 +23,9 @@ class Owner(models.Model):
 class OwnerFile(models.Model):
     owner = models.ForeignKey(
         Owner, related_name="files", on_delete=models.CASCADE)
-    file = models.FileField(upload_to="owners/%Y/%m/%d/")
+    file = models.FileField(
+        upload_to="owners/%Y/%m/%d/", blank=True, null=True
+    )
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
