@@ -119,9 +119,9 @@ class OwnerViewSet(ModelViewSet):
             owner = owner_serializer.instance
             files = request.FILES.getlist('files')
 
-            for file in files:
-                # Create the owner file entry
-                OwnerFile.objects.create(owner=owner, file=file)
+            if files:  # Only process files if any are provided
+                for file in files:
+                    OwnerFile.objects.create(owner=owner, file=file)
 
             return Response(
                 owner_serializer.data, status=status.HTTP_201_CREATED
