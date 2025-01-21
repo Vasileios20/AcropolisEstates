@@ -66,14 +66,14 @@ const OwnerCreateForm = () => {
 
         try {
             const response = await axiosReq.post('/listings/owners/', data);
-            history.push(`frontend/admin/listings/owners/${response.data.id}`);
+            history.push(`${response.data.id}`);
         } catch (error) {
             console.error('Error adding owner:', error.response?.data || error.message);
         }
     };
 
     return (
-        <Container className="mt-5 pt-5">
+        <Container className="mt-5 mb-3 pt-5">
             <Row>
                 <Form onSubmit={handleSubmit} className="col-6 mx-auto border shadow p-4 rounded">
                     <p className="text-center h3">Add Owner</p>
@@ -124,6 +124,17 @@ const OwnerCreateForm = () => {
                             name="phone_2"
                             value={formData.phone_2}
                             onChange={handleChange}
+                        />
+                    </Form.Group>
+
+                    <Form.Group controlId="formNotes">
+                        <Form.Label>Notes</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            name="notes"
+                            value={formData.notes || ''}
+                            onChange={handleChange}
+                            rows={3}
                         />
                     </Form.Group>
 
