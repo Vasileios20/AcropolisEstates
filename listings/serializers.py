@@ -58,7 +58,7 @@ class OwnerSerializer(serializers.ModelSerializer):
         in the serialized representation of an Owner object.
     """
 
-    files = OwnerFileSerializer(many=True)
+    files = OwnerFileSerializer(many=True, read_only=True)
 
     class Meta:
         model = Owner
