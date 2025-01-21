@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Listing, Images, Amenities, Owner
+from .models import Listing, Images, Amenities, Owner, OwnerFile
 from django.core.files.images import get_image_dimensions
 from .services import upload_to_backblaze
 from django.db.models import Max
@@ -32,6 +32,19 @@ def validate_images(value):
     return value
 
 
+class OwnerFileSerializer(serializers.ModelSerializer):
+    file_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = OwnerFile
+        fields = ['file', 'owner', 'file_url']
+
+    def get_file_url(self, obj):
+        obj_url = obj.file.url.split('?')[0]
+        clean_url = obj_url.split('/')[-1]
+        return clean_url
+
+
 class OwnerSerializer(serializers.ModelSerializer):
     """
     Serializer class for the Owner model.
@@ -44,11 +57,15 @@ class OwnerSerializer(serializers.ModelSerializer):
         class Meta: The Meta class that defines the model and fields to include
         in the serialized representation of an Owner object.
     """
+
+    files = OwnerFileSerializer(many=True)
+
     class Meta:
         model = Owner
         fields = [
             "id", "first_name", "last_name",
-            "email", "phone", "phone_2", "notes"
+            "email", "phone", "phone_2", "notes",
+            "files"
         ]
 
 
