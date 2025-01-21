@@ -36,6 +36,7 @@ import AdminListings from "./pages/admin/AdminListings";
 import AdminOwners from "./pages/admin/AdminOwners";
 import Owner from "./pages/admin/Owner";
 import OwnerCreateForm from "./pages/admin/OwnerCreateForm";
+import OwnerEditForm from "./pages/admin/OwnerEditForm";
 
 
 function App() {
@@ -129,6 +130,7 @@ function App() {
               <Route exact path="/frontend/admin/listings" render={() => <AdminListings />} />
               <Route exact path="/frontend/admin/listings/owners" render={() => <AdminOwners />} />
               <Route exact path="/frontend/admin/listings/owners/create" render={() => <OwnerCreateForm />} />
+              <Route exact path="/frontend/admin/listings/owners/:id/edit" render={() => <OwnerEditForm />} />
 
               <Route exact path="/frontend/admin/listings/owners/:id" render={() => <Owner />} />
               <Route exact path="/notfound" render={() => <NotFound />} />
