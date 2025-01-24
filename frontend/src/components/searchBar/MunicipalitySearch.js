@@ -9,10 +9,10 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const dropdownRef = useRef(null);
-    const municipalityId = filters?.municipalityId;
 
     const { t, i18n } = useTranslation();
     const lng = i18n?.language;
+    const municipalityId = filters?.municipalityId;
 
     useEffect(() => {
         if (municipalityId) {
@@ -22,22 +22,29 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
                         id: municipality.id,
                         greekName: municipality.greekName,
                         englishName: municipality.englishName,
+                        countyId: county.id,
+                        countyName: county.county,
+                        regionId: region.id,
+                        regionName: region.region,
                     }))
                 )
             ) || [];
 
             const selectedMunicipality = allMunicipalities.find(
-                (municipality) => municipality.id === municipalityId
+                (municipality) => municipality.id === municipalityId && municipality.countyId === filters.countyId && municipality.regionId === filters.regionId
             );
 
             if (selectedMunicipality) {
-                setInputValue(lng === "el" ? selectedMunicipality.greekName : selectedMunicipality.englishName);
+                setInputValue(lng === "el" ? selectedMunicipality?.greekName : selectedMunicipality?.englishName);
             } else {
                 const searchParams = history?.location?.search;
                 if (searchParams && searchParams.includes("municipality_id=")) {
                     const municipalityID = searchParams.split("municipality_id=")[1].split("&")[0];
+                    const countyID = searchParams.split("county_id=")[1].split("&")[0];
+                    const regionID = searchParams.split("region_id=")[1].split("&")[0];
+
                     const selectedMunicipality = allMunicipalities.find(
-                        (municipality) => municipality.id === parseInt(municipalityID)
+                        (municipality) => municipality.id === parseInt(municipalityID) && municipality.countyId === parseInt(countyID) && municipality.regionId === parseInt(regionID)
                     );
                     setInputValue(lng === "el" ? selectedMunicipality?.greekName : selectedMunicipality?.englishName);
                 }
@@ -45,7 +52,10 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
         } else {
             setInputValue("");
         }
-    }, [regionsData, municipalityId, lng, history.location.search]);
+    }, [regionsData, municipalityId, lng, history.location.search, filters.countyId, filters.regionId]);
+
+
+
 
     const normalizeString = (str) => {
         if (!str) return "";
@@ -58,10 +68,6 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
     const handleInputChange = (e) => {
         const value = e.target.value;
         setInputValue(value);
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            municipalityId: value ? value : "",
-        }));
         setSelectedIndex(-1);
 
         if (!value) {
@@ -101,6 +107,13 @@ const MunicipalitySearch = ({ regionsData, onSearch, history, saleType, empty, s
         setInputValue(lng === 'el' ? municipality.greekName : municipality.englishName);
         setFilteredMunicipalities([]);
         setShowDropdown(false);
+
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            regionId: municipality.region_id,
+            countyId: municipality.county_id,
+            municipalityId: municipality.id,
+        }));
 
         if (onSearch) {
             onSearch(municipality);
