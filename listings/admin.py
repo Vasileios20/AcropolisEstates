@@ -1,6 +1,7 @@
 from django.contrib import admin
 from listings.models import Listing, Images, Amenities, Owner, OwnerFile
 from django.utils.html import format_html
+from .forms import ImagesAdminForm
 
 
 class ListingAdmin(admin.ModelAdmin):
@@ -20,6 +21,7 @@ class ListingAdmin(admin.ModelAdmin):
 
 
 class ImagesAdmin(admin.ModelAdmin):
+    form = ImagesAdminForm
     list_display = ("listing", "url", "is_first")
     list_filter = ("listing", "url")
     search_fields = ("listing", "url")
