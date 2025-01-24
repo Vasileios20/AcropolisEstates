@@ -23,8 +23,6 @@ const AdminOwners = () => {
         const fetchOwners = async () => {
             try {
                 const response = await axiosReq.get('/listings/owners/');
-                console.log('response', response.data.results);
-
                 setOwners(response.data.results);
             } catch (error) {
                 console.error(error);

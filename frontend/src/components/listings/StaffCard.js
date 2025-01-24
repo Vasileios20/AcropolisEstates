@@ -15,7 +15,7 @@ export const StaffCard = ({ handleDelete, handleEdit, ...props }) => {
     
     return (
         <>
-            <Col md={5} className="mb-3">
+            <Col sm={12} className="mb-3">
                 <Card className="h-100 shadow-sm">
                     <Card.Body>
                         <Card.Text>
@@ -39,7 +39,7 @@ export const StaffCard = ({ handleDelete, handleEdit, ...props }) => {
                         <ul className={`list-unstyled ${styles.OwnerList}`}>
                             {props?.listing_owner?.files && props?.listing_owner?.files.length > 0 ? (
                                 props?.listing_owner?.files.map((file, index) => (
-                                    <li key={index} className="border rounded shadow p-1 mb-2">
+                                    <li key={index} className="border rounded shadow p-1 mb-2" style={{ maxWidth: '100%' }}>
                                         <a href={file.file_url} target="_blank" rel="noopener noreferrer">
                                             {file.file_url}
                                         </a>
@@ -52,7 +52,7 @@ export const StaffCard = ({ handleDelete, handleEdit, ...props }) => {
                     </Card.Body>
                 </Card>
             </Col>
-            <Col sm={5} className="mb-3">
+            <Col sm={12} className="mb-3">
                 <Card className="h-100 shadow-sm">
                     <Card.Body>
                         <Card.Text>
