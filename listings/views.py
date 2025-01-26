@@ -1,15 +1,18 @@
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filter
-from re_drf_api.permissions import IsAdminUserOrReadOnly
+from re_drf_api.permissions import IsAdminUserOrReadOnly, IsAdminUser
 from django.db.models import Count
 from rest_framework import generics, filters, status
+from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Listing, Images, Amenities
+from .models import Listing, Images, Amenities, Owner, OwnerFile
 from .serializers import (
     ListingSerializer,
     ImagesSerializer,
     AmenitiesSerializer,
+    OwnerSerializer,
+    OwnerFileSerializer,
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
@@ -61,9 +64,15 @@ Filter class for filtering listings based on various criteria.
         field_name="construction_year", lookup_expr="lte")
 
     min_floor = filter.NumberFilter(
-        field_name="floor", lookup_expr="gte")
+        field_name="floor", lookup_expr="lte")
     max_floor = filter.NumberFilter(
         field_name="floor", lookup_expr="lte")
+    region_id = filter.NumberFilter(
+        field_name="region_id", lookup_expr="exact")
+    county_id = filter.NumberFilter(
+        field_name="county_id", lookup_expr="exact")
+    municipality_id = filter.NumberFilter(
+        field_name="municipality_id", lookup_expr="exact")
 
     class Meta:
         model = Listing
@@ -73,8 +82,75 @@ Filter class for filtering listings based on various criteria.
             "sub_type",
             "price",
             "sale_type",
-            "floor"
+            "floor",
+            "bedrooms",
+            "bathrooms",
+            "construction_year",
+            "floor_area",
+            "heating_system",
         ]
+
+
+class OwnerViewSet(ModelViewSet):
+    queryset = Owner.objects.all()
+    serializer_class = OwnerSerializer
+    permission_classes = [IsAdminUser]
+    parser_classes = (MultiPartParser, FormParser)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        # Manually adding the files to the owner data
+        owner_data = serializer.data
+        owner_data['files'] = OwnerFileSerializer(
+            instance.files.all(), many=True).data
+        return Response(owner_data)
+
+    def create(self, request, *args, **kwargs):
+        """
+        Override the default create method to handle file uploads for an owner.
+        """
+        owner_serializer = OwnerSerializer(data=request.data)
+
+        if owner_serializer.is_valid():
+            owner_serializer.save()
+
+            # Now, handle file uploads for the owner
+            owner = owner_serializer.instance
+            files = request.FILES.getlist('files')
+
+            if files:  # Only process files if any are provided
+                for file in files:
+                    OwnerFile.objects.create(owner=owner, file=file)
+
+            return Response(
+                owner_serializer.data, status=status.HTTP_201_CREATED
+            )
+        return Response(
+            owner_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    def update(self, request, *args, **kwargs):
+        """
+        Override the default update method to handle file uploads for an owner.
+        """
+        instance = self.get_object()
+        owner_serializer = OwnerSerializer(
+            instance, data=request.data, partial=True)
+
+        if owner_serializer.is_valid():
+            owner_serializer.save()
+
+            # Handle file uploads
+            files = request.FILES.getlist('files')
+            for file in files:
+                # Create the owner file entry
+                OwnerFile.objects.create(owner=instance, file=file)
+
+            return Response(owner_serializer.data)
+        return Response(
+            owner_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class ListingList(generics.ListCreateAPIView):
@@ -84,8 +160,6 @@ class ListingList(generics.ListCreateAPIView):
 
     queryset = Listing.objects.annotate(
         listing_count=Count("agent_name__listing")
-    ).order_by(
-        "-listing_count"
     )
     serializer_class = ListingSerializer
     permission_classes = [IsAdminUserOrReadOnly]
@@ -99,10 +173,39 @@ class ListingList(generics.ListCreateAPIView):
     search_fields = [
         "municipality",
         "municipality_gr",
+        "municipality_id",
         "county",
         "county_gr",
+        "county_id",
+        "region_id",
         "postcode",
     ]
+    ordering_fields = [
+        "listing_count",  # Annotated field
+        "created_on",
+        "-created_on",
+        "price",
+        "-price",
+        "municipality_id",
+        "county",
+        "region_id",
+        "postcode"
+    ]
+
+    ordering = ["-listing_count"]
+
+    def get_queryset(self):
+        """
+        Dynamically apply filtering and ordering based on request parameters.
+        """
+        queryset = super().get_queryset()
+        ordering = self.request.query_params.get("ordering")
+
+        # Ensure dynamic ordering works with filters
+        if ordering:
+            queryset = queryset.order_by(ordering)
+
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(agent_name=self.request.user)

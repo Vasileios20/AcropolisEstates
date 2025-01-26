@@ -108,6 +108,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "django.contrib.sites",
     "dj_rest_auth.registration",
+    "storages",
     "corsheaders",
     "profiles",
     "listings",
@@ -209,7 +210,13 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 WHITENOISE_ROOT = BASE_DIR / 'staticfiles' / 'build'
 
 MEDIA_URL = "/media/"
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+AWS_ACCESS_KEY_ID = os.environ.get('APPlICATION_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('APPLICATION_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('BUCKET_NAME')
+# Update with your B2 region
+AWS_S3_ENDPOINT_URL = "https://s3.eu-central-003.backblazeb2.com"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

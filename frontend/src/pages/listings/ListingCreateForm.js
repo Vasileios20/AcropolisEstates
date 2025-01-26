@@ -22,6 +22,10 @@ function ListingCreateForm() {
   const userStatus = useUserStatus();
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [selectedImageIdx, setSelectedImageIdx] = useState(null);
+  const [selectedRegion, setSelectedRegion] = useState("");
+  const [selectedCounty, setSelectedCounty] = useState("");
+  const [selectedMunicipality, setSelectedMunicipality] = useState("");
+
 
   const [listingData, setListingData] = useState({
     type: "",
@@ -82,6 +86,9 @@ function ListingCreateForm() {
     approved: false,
     featured: false,
     is_first: "",
+    region_id: "",
+    county_id: "",
+    municipality_id: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -153,6 +160,34 @@ function ListingCreateForm() {
 
     setListingData({ ...listingData, uploaded_images: newImages });
   };
+  
+  const handleRegionChange = region => {
+    setSelectedRegion(region);
+    setListingData((prevData) => ({
+      ...prevData,
+      region_id: region,
+    }));
+    setSelectedCounty("");
+    setSelectedMunicipality("");
+  };
+
+  const handleCountyChange = county => {
+    setSelectedCounty(county);
+    setListingData((prevData) => ({
+      ...prevData,
+      county_id: county,
+    }));
+    setSelectedMunicipality("");
+  };
+
+  const handleMunicipalityChange = municipality => {
+    setSelectedMunicipality(municipality);
+    setListingData((prevData) => ({
+      ...prevData,
+      municipality_id: municipality,
+    }));
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -227,6 +262,9 @@ function ListingCreateForm() {
     formData.append("approved", listingData.approved);
     formData.append("featured", listingData.featured);
     formData.append("is_first", listingData.is_first || "0");
+    formData.append("region_id", listingData.region_id);
+    formData.append("county_id", listingData.county_id);
+    formData.append("municipality_id", listingData.municipality_id);
 
     selectedAmenities.forEach((amenity) => {
       formData.append("amenities_ids", amenity);
@@ -356,6 +394,12 @@ function ListingCreateForm() {
                 create={true}
                 handleAmenityChange={handleAmenityChange}
                 selectedAmenities={selectedAmenities}
+                onRegionChange={handleRegionChange}
+                onCountyChange={handleCountyChange}
+                onMunicipalityChange={handleMunicipalityChange}
+                selectedRegion={selectedRegion}
+                selectedCounty={selectedCounty}
+                selectedMunicipality={selectedMunicipality}
               />
             </div>
           </Container>
@@ -363,7 +407,7 @@ function ListingCreateForm() {
       </Row>
       <Row>
         <Col md={12} className="d-none d-md-block p-0 p-md-2">
-          <Container fluid className={appStyles.Content}>
+          <Container className={appStyles.Content}>
             <ListingTextFields
               listingData={listingData}
               handleChange={handleChange}
@@ -372,6 +416,12 @@ function ListingCreateForm() {
               create={true}
               selectedAmenities={selectedAmenities}
               handleAmenityChange={handleAmenityChange}
+              onRegionChange={handleRegionChange}
+              onCountyChange={handleCountyChange}
+              onMunicipalityChange={handleMunicipalityChange}
+              selectedRegion={selectedRegion}
+              selectedCounty={selectedCounty}
+              selectedMunicipality={selectedMunicipality}
             />
           </Container>
         </Col>

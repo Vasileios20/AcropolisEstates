@@ -8,9 +8,9 @@
     cursor: pointer;
     font-size: 16px;
     text-align: center;
-    border: 1px solid #847c3d;
+    border: 1px solid rgba(77, 103, 101, 1);
     border-radius: 4px;
-    color: #847c3d;
+    color: rgba(77, 103, 101, 1);
     padding: 2px 15px;
 }
 
@@ -19,7 +19,7 @@
     padding: 0;
     margin: 0;
     width: 200px;
-    border: 1px solid #847c3d;
+    border: 1px solid rgba(77, 103, 101, 1);
     border-bottom: none;
     border-radius: 4px;
     overflow: hidden;
@@ -30,9 +30,9 @@
 .DropdownItem {
     background-color: transparent;
     transition: background-color 0.3s;
-    border-bottom: 1px solid #847c3d;
+    border-bottom: 1px solid rgba(77, 103, 101, 1);
 }
 
 .DropdownItem:hover {
-    background-color: rgba(132, 124, 61, 0.4) !important;
+    background-color: rgba(77, 103, 101, 0.4) !important;
 }

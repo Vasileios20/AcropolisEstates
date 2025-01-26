@@ -3,6 +3,7 @@ import styles from "../styles/SortOrder.module.css";
 import { axiosReq } from "../api/axiosDefaults";
 import Spinner from "react-bootstrap/Spinner";
 import { t } from "i18next";
+import { useHistory } from "react-router-dom";
 
 const CustomDropdown = ({ options, onSelect, selected }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +37,7 @@ const CustomDropdown = ({ options, onSelect, selected }) => {
         className={`${styles.DropdownToggle}`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selected || <i className="fa fa-bars"></i>}
+        {selected || <i className="fa-solid fa-arrow-down-short-wide"></i>}
       </div>
 
       {isOpen && (
@@ -62,18 +63,39 @@ const CustomDropdown = ({ options, onSelect, selected }) => {
 const SortOrder = ({ listings, setListings }) => {
   const [sortOrder, setSortOrder] = useState("");
   const [loaded, setLoaded] = useState(false);
+  const history = useHistory();
+  const path = history?.location?.search;
 
   const handleSortChange = async (value) => {
     setSortOrder(value);
     setLoaded(true);
-    try {
-      const { data } = await axiosReq.get(`/listings/?ordering=${value}`);
-      data.results = data.results.filter((listing) => listing.approved === true);
-      setListings(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoaded(false);
+
+    const currentPath = path || "?";
+    const queryParams = new URLSearchParams(currentPath.split("?")[1]);
+
+    queryParams.set("ordering", value);
+    const updatedPath = `${currentPath.split("?")[0]}?${queryParams.toString()}`;
+
+    if (path) {
+      try {
+        const { data } = await axiosReq.get(`/listings/${updatedPath}`);
+        data.results = data.results.filter((listing) => listing.approved === true);
+        history.push(`/listings/${updatedPath}`, { data: data });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoaded(false);
+      }
+    } else {
+      try {
+        const { data } = await axiosReq.get(`/listings/?ordering=${value}`);
+        data.results = data.results.filter((listing) => listing.approved === true);
+        setListings(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoaded(false);
+      }
     }
   };
 

@@ -13,7 +13,7 @@
         "valuation": "Εκτίμηση Ακινήτων",
         "financialAdvice": "Συμβουλευτικές Υπηρεσίες",
         "assetManagement": "Διαχείριση Ακινήτων",
-        "properties": "Καταχωρήσεις Ακινήτων"
+        "properties": "Διαθέσιμα Ακίνητα"
     },
     "homePage": {
         "title": "Καλώς ήρθατε στην Acropolis Estates",
@@ -93,7 +93,8 @@
         "header2": "Περισσότερα"
     },
     "listingType": {
-        "any": "Ολα",
+        "": "Όλα τα Ακίνητα",
+        "any": "Επιλογή",
         "commercial": "Εμπορικό",
         "land": "Γη",
         "residential": "Κατοικία"
@@ -101,19 +102,32 @@
     "searchBar": {
         "rent": "Ενοικίαση",
         "buy": "Αγορά",
-        "search": "Δήμος, Διεύθυνση",
+        "advancedFilters": "Φίλτρα",
+        "search": "Δήμος",
         "location": "Τοποθεσία",
         "type": "Τύπος",
         "price": "Τιμή",
+        "from": "Από",
+        "to": "Έως",
         "minPrice": "Ελάχιστη Τιμή",
         "maxPrice": "Μέγιστη Τιμή",
-        "floorArea": "Εμβαδόν Ακινήτου",
-        "landArea": "Εμβαδόν Γης",
-        "minFloorArea": "Ελάχιστο m²",
-        "maxFloorArea": "Μέγιστο m²",
+        "floorArea": "Εμβαδόν",
+        "landArea": "Εμβαδόν",
+        "sqm": "τ.μ.",
+        "minFloorArea": "Ελάχιστο",
+        "maxFloorArea": "Μέγιστο",
+        "amenities": "Παροχές",
+        "minBedrooms": "Ελάχιστα",
+        "maxBedrooms": "Μέγιστα",
+        "minYearBuilt": "Ελάχιστο",
+        "maxYearBuilt": "Μέγιστο",
+        "minFloor": "Ελάχιστο",
+        "maxFloor": "Ανώτατο",
+        "selectAmenities": "Επιλέξτε Παροχές",
         "btnSearch": "Αναζήτηση",
         "btnUpdate": "Ενημέρωση",
-        "btnClear": "Καθαρισμός"
+        "btnClear": "Καθαρισμός",
+        "btnApply": "Εφαρμογή Φίλτρων"
     },
     "propertyDetails": {
         "propertyId": "Κωδικός Ακινήτου",
@@ -468,7 +482,7 @@
         "storage": "Αποθήκη",
         "basement": "Υπόγειο",
         "night_electricity": "Νυχτερινό Ρεύμα",
-        "no_shared_expenses": "ΌΧι Κοινόχρηστα ",
+        "no_shared_expenses": "Όχι Κοινόχρηστα ",
         "investment": "Επενδυτικό",
         "student_apartment": "Φοιτητικό",
         "luxurious": "Πολυτελείας",
@@ -495,7 +509,7 @@
         "property_consideration": "Αντιπαροχή",
         "inside_the_settlement": "Εντός Σχεδίου",
         "facade": "Προσώψεος",
-        "consierge": "Θυρορός",
+        "consierge": "Θυρωρός",
         "inside_zone_area": "Εντός Ζώνης",
         "auction": "Πληστηριασμός",
         "under_offer": "Υπό Προσφορά"
@@ -529,11 +543,11 @@
         "asc": "Αύξουσα Τιμή",
         "desc": "Φθίνουσα Τιμή"
     },
-    "regionOptions":{
-        "region": "Γεωγραφικό Διαμέρισμα",
+    "regionOptions": {
+        "region": "Περιφέρεια",
         "county": "Νομός",
         "municipality": "Δήμος",
-        "selectRegion": "Επιλέξτε Γεωγραφικό Διαμέρισμα",
+        "selectRegion": "Επιλέξτε Περιφέρεια",
         "selectCounty": "Επιλέξτε Νομό",
         "selectMunicipality": "Επιλέξτε Δήμο"
     }

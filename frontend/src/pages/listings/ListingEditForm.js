@@ -80,6 +80,9 @@ function ListingEditForm() {
     amenities: [],
     approved: false,
     featured: false,
+    region_id: "",
+    county_id: "",
+    municipality_id: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -90,6 +93,14 @@ function ListingEditForm() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImageIdx, setSelectedImageIdx] = useState(null);
   const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [show, setShow] = useState(false);
+
+  const [selectedRegion, setSelectedRegion] = useState("");
+  const [selectedCounty, setSelectedCounty] = useState("");
+  const [selectedMunicipality, setSelectedMunicipality] = useState("");
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     // Fetch the listing data from the API.
@@ -155,6 +166,9 @@ function ListingEditForm() {
           amenities,
           approved,
           featured,
+          region_id,
+          county_id,
+          municipality_id,
         } = data;
 
 
@@ -218,6 +232,9 @@ function ListingEditForm() {
           featured,
           images,
           uploaded_images,
+          region_id,
+          county_id,
+          municipality_id,
         });
         setSelectedAmenities(amenities.map((amenity) => amenity.id));
 
@@ -231,11 +248,7 @@ function ListingEditForm() {
     handleMount();
   }, [id, history]);
 
-  const [show, setShow] = useState(false);
-  
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   // Function to handle the change event for the input fields.
   const handleChange = (e) => {
@@ -339,6 +352,33 @@ function ListingEditForm() {
     }
   };
 
+  const handleRegionChange = region => {
+    setSelectedRegion(region);
+    setListingData((prevData) => ({
+      ...prevData,
+      region_id: region,
+    }));
+    setSelectedCounty("");
+    setSelectedMunicipality("");
+  };
+
+  const handleCountyChange = county => {
+    setSelectedCounty(county);
+    setListingData((prevData) => ({
+      ...prevData,
+      county_id: county,
+    }));
+    setSelectedMunicipality("");
+  };
+
+  const handleMunicipalityChange = municipality => {
+    setSelectedMunicipality(municipality);
+    setListingData((prevData) => ({
+      ...prevData,
+      municipality_id: municipality,
+    }));
+  };
+
   // Function to handle the submit event for the form.
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -400,6 +440,9 @@ function ListingEditForm() {
     formData.append("approved", listingData.approved);
     formData.append("featured", listingData.featured);
     formData.append("is_first", listingData.is_first || "0");
+    formData.append("region_id", listingData.region_id);
+    formData.append("county_id", listingData.county_id);
+    formData.append("municipality_id", listingData.municipality_id);
 
     selectedAmenities.forEach((amenity) => {
       formData.append("amenities_ids", amenity);
@@ -482,7 +525,7 @@ function ListingEditForm() {
                   </figure>
                 ))}
               </div>
-              <button className={`${btnStyles.Button} ${btnStyles.Black} m-3`} type="submit">
+              <button className={`${btnStyles.Button} ${btnStyles.AngryOcean} m-3`} type="submit">
                 Save order
               </button>
               <button
@@ -582,6 +625,13 @@ function ListingEditForm() {
                 errors={errors}
                 handleAmenityChange={handleAmenityChange}
                 selectedAmenities={selectedAmenities}
+                edit={true}
+                onRegionChange={handleRegionChange}
+                onCountyChange={handleCountyChange}
+                onMunicipalityChange={handleMunicipalityChange}
+                selectedRegion={selectedRegion}
+                selectedCounty={selectedCounty}
+                selectedMunicipality={selectedMunicipality}
               />
             </div>
           </Container>
@@ -596,6 +646,13 @@ function ListingEditForm() {
               errors={errors}
               handleAmenityChange={handleAmenityChange}
               selectedAmenities={selectedAmenities}
+              edit={true}
+              onRegionChange={handleRegionChange}
+              onCountyChange={handleCountyChange}
+              onMunicipalityChange={handleMunicipalityChange}
+              selectedRegion={selectedRegion}
+              selectedCounty={selectedCounty}
+              selectedMunicipality={selectedMunicipality}
             />
           </Container>
         </Col>

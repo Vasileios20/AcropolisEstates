@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { axiosRes } from "../../api/axiosDefaults";
 import { useTranslation } from "react-i18next";
-
-import { MoreDropdown } from "../../components/MoreDropDown";
 import ListingImages from "./ListingImages";
-import ListingHeader from "../../components/ListingHeader";
+import ListingHeader from "./ListingHeader";
 import useUserStatus from "../../hooks/useUserStatus";
-import ContactForm from "../contact/ContactForm";
-import MapMarker from "../../components/MapMarker";
+import ContactForm from "../../pages/contact/ContactForm";
+import MapMarker from "../MapMarker";
 
 import styles from "../../styles/Listing.module.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
-import Card from "react-bootstrap/Card";
+import { StaffCard } from "./StaffCard";
 
 
 const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
@@ -26,7 +24,6 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
 
   const {
     id,
-    profile_id,
     price,
     floor_area,
     levels,
@@ -40,8 +37,6 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
     energy_class,
     construction_year,
     availability,
-    created_on,
-    updated_on,
     listingPage,
     images,
     longitude,
@@ -63,6 +58,7 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
     floor_type,
     opening_frames,
   } = props;
+
 
   useEffect(() => {
     if (nonEssentialConsent && latitude !== undefined && longitude !== undefined) {
@@ -126,9 +122,7 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           { label: t("propertyDetails.wc"), value: wc },
           { label: t("propertyDetails.livingRooms"), value: living_rooms },
           { label: t("propertyDetails.levels"), value: levels },
-          {
-            label: t("propertyDetails.heating_system.title"), value: t(`propertyDetails.heating_system.${heating_system}`)
-          },
+          { label: t("propertyDetails.heating_system.title"), value: t(`propertyDetails.heating_system.${heating_system}`) },
           { label: t("propertyDetails.energyClass"), value: energy_classValue },
           { label: t("propertyDetails.floorTypes.title"), value: t(`propertyDetails.floorTypes.${floor_type}`) },
           { label: t("propertyDetails.openingFrames.title"), value: t(`propertyDetails.openingFrames.${opening_frames}`) },
@@ -182,9 +176,7 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           { label: t("propertyDetails.rooms"), value: rooms },
           { label: t("propertyDetails.bathrooms"), value: bathrooms },
           { label: t("propertyDetails.wc"), value: wc },
-          {
-            label: t("propertyDetails.heating_system.title"), value: t(`propertyDetails.heating_system.${heating_system}`)
-          },
+          { label: t("propertyDetails.heating_system.title"), value: t(`propertyDetails.heating_system.${heating_system}`) },
           { label: t("propertyDetails.energyClass"), value: energy_classValue },
           { label: t("propertyDetails.powerType.title"), value: t(`propertyDetails.powerType.${power_type}`) },
           { label: t("propertyDetails.yearBuilt"), value: construction_year },
@@ -198,19 +190,6 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
         ))}
       </tbody>
     </Table>
-  );
-
-  const staffCard = (
-    <>
-      <Card.Body>
-        <Card.Text>
-          <Link to={`/profiles/${profile_id}`}>Agent: {props.agent_name}</Link>
-        </Card.Text>
-
-        <Card.Text>Created on: {created_on}</Card.Text>
-        <Card.Text>Updated on: {updated_on}</Card.Text>
-      </Card.Body>
-    </>
   );
 
   // Delete listing
@@ -235,16 +214,12 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
         <meta name="keywords" content={`${props.sale_type}, ${props.type}, ${props.sub_type}, ${props.municipality}, ${props.county}, ${props.region}, Features, amenities, real estate, Acropolis Estates, price, bedroom, apartment, name, floor, area, heating, email, acropolis, estates, london,  `} />
       </Helmet>
       <Container className="mt-5 pt-2">
+        
         <ListingImages images={images} listing_id={id} amenities={amenities} />
 
         <Row className="justify-content-start">
+          
           <Col>
-            <Col md={4} className="d-flex mt-4">
-              {userStatus && staffCard}
-              {userStatus && (
-                <MoreDropdown handleDelete={handleDelete} handleEdit={handleEdit} />
-              )}
-            </Col>
             <div className={styles.Listing__cardBodyListing}>
               <ListingHeader {...props} listingPage={listingPage} />
             </div>
@@ -270,6 +245,9 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           <Col md={8} lg={4} className="mb-3">
             <ContactForm listing_id={id} />
           </Col>
+        </Row>
+        <Row className="mt-5">
+          {userStatus && <StaffCard {...props} handleDelete={handleDelete} handleEdit={handleEdit} />}
         </Row>
       </Container>
     </>

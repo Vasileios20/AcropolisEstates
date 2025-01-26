@@ -1,20 +1,9 @@
 from rest_framework import serializers
-from .models import Listing, Images, Amenities
+from .models import Listing, Images, Amenities, Owner, OwnerFile
 from django.core.files.images import get_image_dimensions
 from .services import upload_to_backblaze
 from django.db.models import Max
-import uuid
-from datetime import datetime
-
-
-def generate_unique_filename(listing_id, idx):
-    """
-    Generate a unique filename for an image.
-    Combines listing ID, index, timestamp, and a UUID to ensure uniqueness.
-    """
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    unique_id = uuid.uuid4().hex[:8]
-    return f"listings/{listing_id}/image_{idx + 1}_{timestamp}_{unique_id}.jpg"
+from .utils import generate_unique_filename
 
 
 def validate_images(value):
@@ -30,6 +19,43 @@ def validate_images(value):
             raise serializers.ValidationError(
                 "Image height can't exceed 4096px")
     return value
+
+
+class OwnerFileSerializer(serializers.ModelSerializer):
+    file_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = OwnerFile
+        fields = ['file', 'owner', 'file_url']
+
+    def get_file_url(self, obj):
+        obj_url = obj.file.url.split('?')[0]
+        clean_url = obj_url.split('/')[-1]
+        return clean_url
+
+
+class OwnerSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for the Owner model.
+
+    This serializer is used to serialize and deserialize Owner objects.
+    It defines the fields that should be included in the serialized
+    representation of an Owner object.
+
+    Attributes:
+        class Meta: The Meta class that defines the model and fields to include
+        in the serialized representation of an Owner object.
+    """
+
+    files = OwnerFileSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Owner
+        fields = [
+            "id", "first_name", "last_name",
+            "email", "phone", "phone_2", "notes",
+            "files"
+        ]
 
 
 class AmenitiesSerializer(serializers.ModelSerializer):
@@ -101,6 +127,7 @@ class ListingSerializer(serializers.ModelSerializer):
     agent_name = serializers.ReadOnlyField(source="agent_name.username")
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source="agent_name.profile.id")
+    listing_owner = OwnerSerializer(read_only=True,)
     images = ImagesSerializer(
         many=True,
         read_only=True,
@@ -275,6 +302,10 @@ class ListingSerializer(serializers.ModelSerializer):
             "slope",
             "amenities",
             "amenities_ids",
+            "municipality_id",
+            "county_id",
+            "region_id",
+            "listing_owner",
         ]
 
     def to_representation(self, instance):

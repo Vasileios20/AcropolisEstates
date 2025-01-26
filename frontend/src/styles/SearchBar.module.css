@@ -6,6 +6,7 @@
   cursor: default;
   color: #cfced3;
 }
+
 .ErrorWidth {
   min-width: 25%;
   max-width: 50%;
@@ -17,16 +18,161 @@
 .MinWidth {
   min-width: 100%;
 }
-.HomeBar {
+
+.SearchForm {
   color: #000;
   background-color: rgba(255, 255, 255, 0.65);
   border-radius: 0.5rem;
   border: 1px solid rgba(77, 103, 101, 1);
+  padding: 1rem 2rem;
 }
 
-.SearchInput {
-  border: 1px solid rgba(77, 103, 101, 1);
+.SearchInput,
+.Select {
+  font-size: 1rem;
+}
+
+.Select {
+  color: #4d6765 !important;
+  background-color: #fff !important;
+  max-width: 100%;
+  min-width: fit-content;
+  text-align: left;
+}
+
+.SearchInput:focus,
+.Select:focus {
+  border: 1px solid #4d6765;
+  box-shadow: 0 0 0 0.15rem rgba(77, 103, 101, 0.45);
+  background-color: #fff !important;
+  color: #000;
+}
+
+.TypeDropdown {
+  color: #4d6765 !important;
+  background-color: #fff !important;
+  border: 1px solid #4d6765;
+  font-size: 1rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  width: 100%;
+  min-width: fit-content;
+}
+
+.ListingsPerPageDropdown>*:hover,
+.TypeDropdown>*:hover,
+.MainFieldsDropdown>*:hover {
+  background-color: rgba(77, 103, 101, 0.8) !important;
+  border-radius: 0.3rem;
+}
+
+.Dropdown {
+  display: flex;
+  color: #000;
+}
+
+.DropdownMenu {
+  min-width: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.Label {
+  font-size: 1rem;
+}
+
+/* Dropdowns with scrollbar */
+
+.MainFieldsDropdown {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  /* For Firefox (optional) */
+  scrollbar-color: #4d6765 #efefef;
+  min-width: 8rem;
+}
+
+.MainFieldsDropdown::-webkit-scrollbar {
+  width: 5px;
+}
+
+.MainFieldsDropdown::-webkit-scrollbar-thumb {
+  background-color: #4d6765;
+  border-radius: 4px;
+}
+
+.MainFieldsDropdown::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.MainFieldsDropdown>* {
+  padding: 0 0.5rem;
+  cursor: pointer;
+}
+
+/* AdvancedFiltersModal */
+
+.ModalBody {
+  background-color: rgba(240, 240, 240, 0.3);
+}
+
+.AdvancedFiltersModal {
+  color: #4d6765;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.BlinkingInput {
+    animation: blink-caret 2s step-end infinite;
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-right-color: transparent;
+    }
+    50% {
+        border-right-color: black;
+    }
+}
+
+.AmenityCheckbox input[type="checkbox"] {
+  /* Hide the default checkbox */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #4d6765;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.AmenityCheckbox input[type="checkbox"]:checked {
+  background-color: #4d6765;
+  border-color: #4d6765;
+}
+
+.AmenityCheckbox input[type="checkbox"]:checked::after {
+  content: "✓";
+  display: block;
   font-size: 0.8rem;
+  color: white;
+  text-align: center;
+  line-height: 0.8rem;
+  background-color: #4d6765;
+}
+
+.AmenityCheckbox label {
+  margin-left: 8px;
+  font-size: 0.8rem;
+  color: #333;
+  cursor: pointer;
 }
 
 /* Responsive design */

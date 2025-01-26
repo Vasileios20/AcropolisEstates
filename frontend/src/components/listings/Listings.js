@@ -1,22 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import styles from "../styles/Listing.module.css";
-import heroStyles from "../styles/ServicesPages.module.css";
+import styles from "../../styles/Listing.module.css";
+import heroStyles from "../../styles/ServicesPages.module.css";
 
-import Asset from "./Asset";
+import Asset from "../Asset";
 import ListingHeader from "./ListingHeader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
-import { fetchMoreData } from "../utils/utils";
-import SearchBar from "./SearchBar";
+import { fetchMoreData } from "../../utils/utils";
+import SearchBar from "../searchBar/SearchBar";
 import Card from "react-bootstrap/Card";
 import Carousel from "react-bootstrap/Carousel";
-import { APIProvider, AdvancedMarker, Map, Pin } from "@vis.gl/react-google-maps";
+import { APIProvider, AdvancedMarker, Map, Pin, InfoWindow } from "@vis.gl/react-google-maps";
 import { t } from "i18next";
 import { Helmet } from "react-helmet-async";
-import SortOrder from '../components/SortOrder';
+import SortOrder from '../SortOrder';
 
 const ListingsPage = ({ array, hasLoaded, setListings, listings, message, searchResults, setShowCookieBanner, nonEssentialConsent }) => {
   // The ListingsPage component is a functional component that renders the listings from the database.
@@ -36,10 +36,39 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
 
   const [hoveredId, setHoveredId] = useState(null);
   const [hovered, setHovered] = useState(false);
+  const [infoWindowShownId, setInfoWindowShownId] = useState(null);
+  const markerRefs = useRef({});
+  const listingRefs = useRef({});
+  const infoWindowRef = useRef(null);
+
+  const handleMarkerClick = useCallback(
+    (id) => {
+      setInfoWindowShownId((prevId) => (prevId === id ? null : id));
+      if (listingRefs.current[id]) {
+        listingRefs.current[id].scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    },
+    []
+  );
+
+  const handleClose = useCallback(() => {
+    setHoveredId(null);
+    setInfoWindowShownId(null);
+  }, []);
 
   const onMouseEnter = (id) => {
     setHoveredId(id);
     setHovered(true);
+    if (markerRefs.current[id]) {
+      markerRefs.current[id].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+
   };
 
   const onMouseLeave = () => {
@@ -47,15 +76,72 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
     setHoveredId(null);
   };
 
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        infoWindowRef.current &&
+        !infoWindowRef.current.contains(event.target)
+      ) {
+        handleClose();
+      }
+    };
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [handleClose]);
+
   const listingMapMarkers = latLng.map(({ id, position }) => (
-    <AdvancedMarker key={id} position={position} zIndex={hovered && hoveredId === id ? 1000 : 1}>
-      <Pin
-        background={hovered && hoveredId === id ? "#a35252" : "#4d6765"} // Highlight pin if hovered
-        borderColor={hovered && hoveredId === id ? "#a35252" : "#4d6765"}
-        glyphColor={"#ffffff"}
-        scale={hovered && hoveredId === id ? 1.5 : 1}
-      />
-    </AdvancedMarker>
+    <>
+      <AdvancedMarker
+        key={id}
+        position={position}
+        zIndex={hovered && hoveredId === id ? 1000 : 1}
+        ref={(el) => (markerRefs.current[id] = el)} // Assign a unique ref for each marker
+        onClick={() => handleMarkerClick(id)}
+      >
+        <Pin
+          background={hovered && hoveredId === id ? "#a35252" : "#4d6765"} // Highlight pin if hovered
+          borderColor={hovered && hoveredId === id ? "#a35252" : "#4d6765"}
+          glyphColor={"#ffffff"}
+          scale={hovered && hoveredId === id ? 1.5 : 1}
+        />
+      </AdvancedMarker>
+      {infoWindowShownId === id && (
+        <InfoWindow
+          anchor={markerRefs.current[id]}
+          onClose={handleClose}
+          maxWidth={200}
+          headerDisabled
+        >
+          <Link to={`/listings/${id}`} className="text-decoration-none">
+            <div
+              className={` ${styles.Listings__InfoWindow}`}
+              ref={infoWindowRef}
+            >
+              <Carousel interval={null}>
+                {array.find((listing) => listing.id === id).images.map((image, id) => (
+                  <Carousel.Item key={id}>
+                    <div className={styles.Listings__ImageWrapper}>
+                      <img
+                        loading='lazy'
+                        src={image?.url}
+                        alt={image?.id}
+                        className={`img-fluid ${styles.Listings__Image}`}
+                      />
+                    </div>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+              <div className={styles.Listings__InfoWindowContent}>
+                <ListingHeader {...array.find((listing) => listing.id === id)} listingPage={false} />
+              </div>
+
+            </div>
+          </Link>
+        </InfoWindow>
+      )}
+    </>
   ));
 
   const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -112,15 +198,20 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
                             ...listing.images.filter((image) => !image.is_first),
                           ];
                           return (
-                            <Col key={listing.id} xs={12} md={6} lg={4} xl={4} className="mb-3 gx-1">
+                            <Col key={listing.id} xs={12} md={6} lg={4} xl={4} className="mb-3 gx-1"
+                              ref={(el) => (listingRefs.current[listing.id] = el)}>
                               <Card style={{ height: "100%" }}
                                 onMouseEnter={() => { onMouseEnter(listing.id); }}
-                                onMouseLeave={() => { onMouseLeave(); }}>
+                                onMouseLeave={() => { onMouseLeave(); }}
+                                className={infoWindowShownId === listing.id ? styles.Highlighted : styles.Listings__Card}
+                              >
+
                                 <Carousel interval={null}>
                                   {sortedImages.map((image, id) => (
                                     <Carousel.Item key={id}>
                                       <div className={styles.Listings__ImageWrapper}>
                                         <img
+                                          loading='lazy'
                                           src={image?.url}
                                           alt={image?.id}
                                           className={`img-fluid ${styles.Listings__Image}`}
@@ -168,7 +259,9 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
                   gestureHandling={"greedy"}
                   style={{ width: "100%", height: "780px" }}
                 >
-                  {listingMapMarkers}
+                  {listingMapMarkers.map((marker, index) => (
+                    <React.Fragment key={index}>{marker}</React.Fragment>
+                  ))}
                 </Map>
               </APIProvider>
             ) : (
