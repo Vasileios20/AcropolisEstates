@@ -9,7 +9,7 @@ const useUserStatus = () => {
    */
 
   const user = useCurrentUser();
-  const [userStatus, setUserStatus] = useState("");
+  const [userStatus, setUserStatus] = useState(null);
 
   const userId = user?.pk;
 
