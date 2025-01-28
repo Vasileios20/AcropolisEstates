@@ -35,7 +35,7 @@ import { useTranslation, Trans } from "react-i18next";
 import AdminListings from "./pages/admin/AdminListings";
 import AdminOwners from "./pages/admin/AdminOwners";
 import Owner from "./pages/admin/Owner";
-import OwnerCreateForm from "./pages/admin/OwnerCreateForm";
+import OwnerCreateFormPage from "./pages/admin/OwnerCreateFormPage";
 import OwnerEditForm from "./pages/admin/OwnerEditForm";
 
 
@@ -129,7 +129,7 @@ function App() {
               <Route exact path="/frontend/admin" render={() => <AdminPage />} />
               <Route exact path="/frontend/admin/listings" render={() => <AdminListings />} />
               <Route exact path="/frontend/admin/listings/owners" render={() => <AdminOwners />} />
-              <Route exact path="/frontend/admin/listings/owners/create" render={() => <OwnerCreateForm />} />
+              <Route exact path="/frontend/admin/listings/owners/create" render={() => <OwnerCreateFormPage />} />
               <Route exact path="/frontend/admin/listings/owners/:id/edit" render={() => <OwnerEditForm />} />
 
               <Route exact path="/frontend/admin/listings/owners/:id" render={() => <Owner />} />
