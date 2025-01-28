@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Alert from "react-bootstrap/Alert";
+import Modal from "react-bootstrap/Modal";
 
 import styles from "../../styles/ListingCreateEditForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
@@ -16,6 +17,8 @@ import CommercialFields from "./CommercialFields";
 
 import { useTranslation } from "react-i18next";
 import RegionCountyMunicipalitySelect from "./RegionCountyMunicipalitySelect";
+import OwnerCreateForm from "../../pages/admin/OwnerCreateForm";
+import useFetchOwners from "../../hooks/useFetchOwners";
 
 const ListingTextFields = (
   {
@@ -37,6 +40,10 @@ const ListingTextFields = (
   }) => {
 
   const { t } = useTranslation();
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const { owners } = useFetchOwners();
 
   const renderTextField = (fieldName, label, type = "text", rows = 1) => (
     <Form.Group controlId={fieldName}>
@@ -58,7 +65,6 @@ const ListingTextFields = (
     </Form.Group>
   );
 
-
   const handleChecked = (e) => {
     handleChange({
       target: {
@@ -71,6 +77,53 @@ const ListingTextFields = (
   return (
     <div className="text-center">
       <h2>{t("createEditForm.headers.basicInfo")}</h2>
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <Form.Group controlId="owner">
+            <Form.Label>Owner</Form.Label>
+            <Form.Control
+              className={styles.Input}
+              as="select"
+              name="listing_owner"
+              value={listingData.listing_owner}
+              onChange={(e) => {
+                handleChange(e);
+                if (e.target.value === "create_new") {
+                  handleShow();
+                }
+              }}
+            >
+              <option>---</option>
+              <option value="create_new">Create New Owner</option>
+              {owners?.map((owner) => (
+                <option key={owner.id} value={owner.id}>
+                  {owner.first_name} {owner.last_name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+          {listingData?.listing_owner === "create_new" && (
+            <Modal
+              show={show}
+              onHide={handleClose}
+              centered
+            >
+              <Modal.Header closeButton></Modal.Header>
+              <Modal.Body
+                className={`${styles.Modal}`}>
+                <Row className="justify-content-center w-100">
+                  <OwnerCreateForm />
+                </Row>
+              </Modal.Body>
+            </Modal>
+          )}
+          {errors?.listing_owner?.map((message, idx) => (
+            <Alert className={styles.Input} variant="warning" key={idx}>
+              {message}
+            </Alert>
+          ))}
+        </Col>
+      </Row>
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="sale_type">
@@ -94,6 +147,7 @@ const ListingTextFields = (
           ))}
         </Col>
       </Row>
+
       <Row className="justify-content-center">
         <Col md={6}>
           <Form.Group controlId="type">
@@ -272,13 +326,6 @@ const ListingTextFields = (
               fieldName === "address_street_gr" ||
               fieldName === "address_number" ||
               fieldName === "postcode" ||
-              fieldName === "city" ||
-              fieldName === "city_gr" ||
-              fieldName === "region" ||
-              fieldName === "region_gr" ||
-              fieldName === "county" ||
-              fieldName === "county_gr" ||
-              fieldName === "municipality" ||
               fieldName === "municipality_gr"
             ) {
               return (
