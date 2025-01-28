@@ -3,8 +3,6 @@ import { axiosReq } from '../../api/axiosDefaults';
 import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import styles from '../../styles/Admin.module.css';
 import btnStyles from '../../styles/Button.module.css';
@@ -66,16 +64,15 @@ const OwnerCreateForm = () => {
 
         try {
             const response = await axiosReq.post('/listings/owners/', data);
-            history.push(`${response.data.id}`);
+            history.location.pathname === '/frontend/admin/listings/owners/create' ? history.push(`/frontend/admin/listings/owners/${response.data.id}`) : history.go(0); ;
         } catch (error) {
             console.error('Error adding owner:', error.response?.data || error.message);
         }
     };
 
     return (
-        <Container className="mt-5 mb-3 pt-5">
-            <Row>
-                <Form onSubmit={handleSubmit} className="col-6 mx-auto border shadow p-4 rounded">
+       
+                <Form onSubmit={handleSubmit} className="mx-auto border shadow p-4 rounded">
                     <p className="text-center h3">Add Owner</p>
                     <Form.Group controlId="formFirstName">
                         <Form.Label>First Name</Form.Label>
@@ -177,8 +174,7 @@ const OwnerCreateForm = () => {
                         Add Owner
                     </Button>
                 </Form>
-            </Row>
-        </Container>
+        
     );
 };
 

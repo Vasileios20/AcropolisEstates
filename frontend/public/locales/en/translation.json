@@ -93,7 +93,7 @@
     },
     "listingType": {
         "": "All Types",
-        "any": "Choose Type",
+        "any": "All Types",
         "commercial": "Commercial",
         "land": "Land",
         "residential": "Residential"
@@ -111,6 +111,7 @@
         "minPrice": "Min",
         "maxPrice": "Max",
         "sqm": "m²",
+        "heating": "All types",
         "floorArea": "Floor Area",
         "landArea": "Land Area",
         "minFloorArea": "Min",
@@ -544,9 +545,10 @@
     "regionOptions": {
         "region": "Region",
         "county": "County",
-        "municipality": "Municipality",
+        "municipality": "Municipality - Area",
         "selectRegion": "Select Region",
         "selectCounty": "Select County",
-        "selectMunicipality": "Select Municipality"
+        "selectMunicipality": "Select Municipality - Area",
+        "sectors": "Sectors"
     }
 }

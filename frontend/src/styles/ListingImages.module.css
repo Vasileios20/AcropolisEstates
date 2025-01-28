@@ -78,6 +78,17 @@
   text-align: center; */
 }
 
+.soldLabelListings {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  background-color: rgb(187, 14, 14);
+  color: #fff;
+  padding: 4px;
+  font-size: 1.3rem;
+  z-index: 10;
+}
+
 @media screen and (min-width: 576px) {
   .Modal {
     max-width: 90%;

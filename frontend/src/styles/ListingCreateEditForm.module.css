@@ -25,3 +25,9 @@
   border-radius: 5px;
   box-shadow: 0 0 5px 2px #847c3d;
 }
+
+.Modal {
+  background-color: rgba(215, 215, 215, 0.5);
+  display: flex;
+  justify-content: center;
+}

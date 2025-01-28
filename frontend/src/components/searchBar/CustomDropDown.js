@@ -15,7 +15,7 @@ export const CustomDropDown = ({ filters, setFilters, options, labelSelect, fiel
     return (
         <Dropdown className="w-100">
             <Dropdown.Toggle className={`${styles.Select} text-start w-100`} style={{ borderColor: "#4d6765" }} id="dropdown-basic" >
-                {labelSelect || t("listingType.any")}
+                {labelSelect || (field === "type" ? `${t("listingType.any")}` : t("searchBar.heating"))}
             </Dropdown.Toggle>
 
             <Dropdown.Menu className={styles.TypeDropdown}>

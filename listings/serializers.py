@@ -26,7 +26,7 @@ class OwnerFileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OwnerFile
-        fields = ['file', 'owner', 'file_url']
+        fields = ['id', 'file', 'owner', 'file_url']
 
     def get_file_url(self, obj):
         obj_url = obj.file.url.split('?')[0]
@@ -127,7 +127,11 @@ class ListingSerializer(serializers.ModelSerializer):
     agent_name = serializers.ReadOnlyField(source="agent_name.username")
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source="agent_name.profile.id")
-    listing_owner = OwnerSerializer(read_only=True,)
+    listing_owner = serializers.PrimaryKeyRelatedField(
+        queryset=Owner.objects.all(),
+        allow_null=True,
+        required=False,
+    )
     images = ImagesSerializer(
         many=True,
         read_only=True,
@@ -189,6 +193,10 @@ class ListingSerializer(serializers.ModelSerializer):
         uploaded_images = validated_data.pop("uploaded_images", [])
         amenities = validated_data.pop('amenities', None)
         is_first_image_idx = self.context['request'].data.get('is_first', None)
+
+        listing_owner = validated_data.pop("listing_owner", None)
+        if listing_owner is not None:
+            instance.listing_owner = listing_owner
 
         # Update amenities if provided
         if amenities is not None:

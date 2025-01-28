@@ -17,6 +17,7 @@ import { APIProvider, AdvancedMarker, Map, Pin, InfoWindow } from "@vis.gl/react
 import { t } from "i18next";
 import { Helmet } from "react-helmet-async";
 import SortOrder from '../SortOrder';
+import imagesStyles from "../../styles/ListingImages.module.css";
 
 const ListingsPage = ({ array, hasLoaded, setListings, listings, message, searchResults, setShowCookieBanner, nonEssentialConsent }) => {
   // The ListingsPage component is a functional component that renders the listings from the database.
@@ -197,6 +198,8 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
                             ...listing.images.filter((image) => image.is_first),
                             ...listing.images.filter((image) => !image.is_first),
                           ];
+                          const sold = listing?.amenities?.find(amenity => amenity.name === 'sold');
+                          
                           return (
                             <Col key={listing.id} xs={12} md={6} lg={4} xl={4} className="mb-3 gx-1"
                               ref={(el) => (listingRefs.current[listing.id] = el)}>
@@ -209,6 +212,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
                                 <Carousel interval={null}>
                                   {sortedImages.map((image, id) => (
                                     <Carousel.Item key={id}>
+                                      {sold && <div className={imagesStyles.soldLabelListings}>SOLD</div>}
                                       <div className={styles.Listings__ImageWrapper}>
                                         <img
                                           loading='lazy'

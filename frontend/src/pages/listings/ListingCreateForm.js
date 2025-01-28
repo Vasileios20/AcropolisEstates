@@ -89,6 +89,7 @@ function ListingCreateForm() {
     region_id: "",
     county_id: "",
     municipality_id: "",
+    listing_owner: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -265,6 +266,7 @@ function ListingCreateForm() {
     formData.append("region_id", listingData.region_id);
     formData.append("county_id", listingData.county_id);
     formData.append("municipality_id", listingData.municipality_id);
+    formData.append("listing_owner", listingData.listing_owner);
 
     selectedAmenities.forEach((amenity) => {
       formData.append("amenities_ids", amenity);

@@ -15,4 +15,6 @@ urlpatterns = [
          views.reorder_images),
     path("amenities/", views.AmenitiesList.as_view()),
     path("amenities/bulk/", views.BulkCreateAmenitiesView.as_view()),
+    path('owners/<int:owner_id>/files/<int:file_id>/',
+         views.delete_file, name='delete_file'),
 ]

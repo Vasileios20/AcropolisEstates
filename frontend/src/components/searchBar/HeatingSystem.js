@@ -9,7 +9,7 @@ import { CustomDropDown } from "./CustomDropDown";
 
 const HeatingSystem = ({ filters, setFilters, handleChange }) => {
     const options = [
-        { value: "", label: t("listingType.any") },
+        { value: "", label: t("searchBar.heating") },
         { value: "autonomous", label: t("propertyDetails.heating_system.autonomous") },
         { value: "central", label: t("propertyDetails.heating_system.central") },
         { value: "air_condition", label: t("propertyDetails.heating_system.air_condition") },

@@ -4,6 +4,7 @@ import { axiosReq } from "../../api/axiosDefaults";
 import Listing from "../../components/listings/Listing";
 import Asset from "../../components/Asset";
 import Container from "react-bootstrap/Container";
+import useUserStatus from "../../hooks/useUserStatus";
 
 function ListingPage({ setShowCookieBanner, nonEssentialConsent }) {
   /**
@@ -18,6 +19,7 @@ function ListingPage({ setShowCookieBanner, nonEssentialConsent }) {
   const [listing, setListing] = useState({ results: [] });
   const history = useHistory();
   const [hasLoaded, setHasLoaded] = useState(false);
+  const userStatus = useUserStatus();
 
   // If the listing has been edited, reload the page.
   if (window.localStorage.getItem("edited") === "true") {
@@ -26,19 +28,26 @@ function ListingPage({ setShowCookieBanner, nonEssentialConsent }) {
   }
 
   useEffect(() => {
+    if (userStatus === null) {
+      return;
+    }
     // Fetch the listing from the API.
     const handleMount = async () => {
       try {
         const [{ data: listing }] = await Promise.all([
           axiosReq.get(`/listings/${id}/`),
         ]);
+        if (userStatus) {
+          setListing({ results: [listing] });
+          setHasLoaded(true);
+          return;
+        }
         if (listing.approved) {
           setListing({ results: [listing] });
           setHasLoaded(true);
-        } else {
-          history.push("/notfound");
+          return;
         }
-
+        history.push("/forbidden");
       } catch (err) {
         if (err.response.status === 404) {
           history.push("/notfound");
@@ -47,7 +56,7 @@ function ListingPage({ setShowCookieBanner, nonEssentialConsent }) {
       }
     };
     handleMount();
-  }, [id, history]);
+  }, [id, history, userStatus]);
 
   return (
     <>
