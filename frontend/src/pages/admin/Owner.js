@@ -17,6 +17,7 @@ import useUserStatus from "../../hooks/useUserStatus";
 import Forbidden403 from "../errors/Forbidden403";
 import styles from "../../styles/Admin.module.css";
 import btnStyles from "../../styles/Button.module.css";
+import useFetchOwners from "../../hooks/useFetchOwners";
 
 
 function OwnerPage() {
@@ -39,18 +40,28 @@ function OwnerPage() {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const { owners } = useFetchOwners();
 
     useEffect(() => {
-        const fetchOwners = async () => {
-            try {
-                const response = await axiosReq.get(`/listings/owners/${id}/`);
-                setOwnersData(response.data);
-            } catch (error) {
-                console.error(error);
+        setOwnersData(owners.find((owner) => owner.id === parseInt(id)));
+    }, [owners, id]);
+
+    const handleDeleteFile = async (fileId) => {
+        try {
+            const confirmDelete = window.confirm("Are you sure you want to delete this file?");
+            if (confirmDelete) {
+                await axiosReq.delete(`/owners/${ownersData.id}/files/${fileId}/`);
+                const updatedFiles = ownersData.files.filter(file => file.id !== fileId);
+                setOwnersData(prevData => ({
+                    ...prevData,
+                    files: updatedFiles
+                }));
             }
+        } catch (error) {
+            console.error("Error deleting file:", error.response?.data || error.message);
         }
-        fetchOwners();
-    }, [id]);
+    };
+
 
     if (userStatus === false) {
         return <Forbidden403 />;
@@ -77,10 +88,10 @@ function OwnerPage() {
                             <Card className="my-2">
                                 <Card.Header>
                                     <h1 className="text-center">{modifiedFirstName} Info </h1>
-                                   
+
                                     <div className="d-flex justify-content-end">
                                         <div className="me-auto">
-                                            
+
                                             <Link to="/frontend/admin/listings/owners"><i className="fas fa-arrow-left" /> Back</Link>
 
                                         </div>
@@ -88,7 +99,7 @@ function OwnerPage() {
                                             <Link to={`/frontend/admin/listings/owners/${id}/edit`}><i className="fas fa-edit" /></Link>
 
                                         </div>
-                                        <div className="ms-4" style={{ cursor: 'pointer', color : '#a00000' }}>
+                                        <div className="ms-4" style={{ cursor: 'pointer', color: '#a00000' }}>
                                             <i className="fas fa-trash" onClick={handleShow} />
 
                                         </div>
@@ -117,10 +128,18 @@ function OwnerPage() {
                                             <ol className={`${styles.OwnerList}`}>
                                                 {ownersData?.files && ownersData?.files.length > 0 ? (
                                                     ownersData?.files.map((file, index) => (
-                                                        <li key={index} className="border rounded shadow p-1 mb-2">
+                                                        <li key={index} className="border rounded shadow p-1 mb-2 d-flex" style={{ maxWidth: '100%' }}>
                                                             <a href={file.file} target="_blank" rel="noopener noreferrer">
                                                                 {file.file_url}
                                                             </a>
+                                                            <Button
+                                                                className={`${btnStyles.Remove} ms-auto`}
+                                                                variant="danger"
+                                                                size="sm"
+                                                                onClick={() => handleDeleteFile(file.id)}
+                                                            >
+                                                                Delete
+                                                            </Button>
                                                         </li>
                                                     ))
                                                 ) : (
