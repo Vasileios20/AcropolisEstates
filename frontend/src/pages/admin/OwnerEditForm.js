@@ -19,7 +19,8 @@ const OwnerEditForm = () => {
         phone_2: '',
         notes: '',
     });
-    const [files, setFiles] = useState([]); // State for uploaded files
+    const [existingFiles, setExistingFiles] = useState([]); // For files from the server
+    const [newFiles, setNewFiles] = useState([]); // For newly added files
     const history = useHistory();
 
     useEffect(() => {
@@ -33,8 +34,9 @@ const OwnerEditForm = () => {
                     phone: data.phone,
                     phone_2: data.phone_2 || '',
                     notes: data.notes || '',
+                    files: data.files || [],
                 });
-                setFiles(data.files || []); // Preload existing files
+                setExistingFiles(data.files || []); // Preload existing files
             } catch (error) {
                 console.error('Error fetching owner data:', error);
             }
@@ -52,11 +54,23 @@ const OwnerEditForm = () => {
     };
 
     const handleFileChange = (e) => {
-        setFiles([...files, ...Array.from(e.target.files)]);
+        setNewFiles([...newFiles, ...Array.from(e.target.files)]);
     };
 
-    const handleFileRemove = (index) => {
-        setFiles(files.filter((_, i) => i !== index));
+    const handleRemoveNewFile = (index) => {
+        setNewFiles(newFiles.filter((_, i) => i !== index));
+    };
+
+    const handleDeleteFile = async (fileId) => {
+        try {
+            const confirmDelete = window.confirm("Are you sure you want to delete this file?");
+            if (confirmDelete) {
+                await axiosReq.delete(`/owners/${id}/files/${fileId}/`);
+                setExistingFiles(existingFiles.filter((file) => file.id !== fileId));
+            }
+        } catch (error) {
+            console.error("Error deleting file:", error.response?.data || error.message);
+        }
     };
 
     const handleDragOver = (e) => {
@@ -68,7 +82,7 @@ const OwnerEditForm = () => {
         e.preventDefault();
         e.stopPropagation();
         const droppedFiles = Array.from(e.dataTransfer.files);
-        setFiles([...files, ...droppedFiles]);
+        setNewFiles([...newFiles, ...droppedFiles]);
     };
 
     const handleSubmit = async (e) => {
@@ -81,7 +95,7 @@ const OwnerEditForm = () => {
         }
 
         // Append files
-        files.forEach((file) => {
+        newFiles.forEach((file) => {
             if (file instanceof File) {
                 data.append('files', file);
             }
@@ -180,15 +194,40 @@ const OwnerEditForm = () => {
                                 </div>
                             </div>
                         </Form.Label>
-                        {files.length > 0 && (
+                        {/* Display existing files */}
+                        {existingFiles.length > 0 && (
                             <ListGroup className={styles.FileList}>
-                                {files.map((file, index) => (
-                                    <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
-                                        {file.name || file.file_url} {/* Handle existing and new files */}
+                                {existingFiles.map((file, idx) => (
+                                    <ListGroup.Item
+                                        key={file.id}
+                                        className="d-flex justify-content-between align-items-center"
+                                    >
+                                        {file.file_url || file.file || file[idx]}
                                         <Button
                                             variant="danger"
                                             size="sm"
-                                            onClick={() => handleFileRemove(index)}
+                                            onClick={() => handleDeleteFile(file.id)}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </ListGroup.Item>
+                                ))}
+                            </ListGroup>
+                        )}
+
+                        {/* Display new files */}
+                        {newFiles.length > 0 && (
+                            <ListGroup className={styles.FileList}>
+                                {newFiles.map((file, index) => (
+                                    <ListGroup.Item
+                                        key={index}
+                                        className="d-flex justify-content-between align-items-center"
+                                    >
+                                        {file.name}
+                                        <Button
+                                            variant="danger"
+                                            size="sm"
+                                            onClick={() => handleRemoveNewFile(index)}
                                         >
                                             Remove
                                         </Button>
@@ -197,7 +236,11 @@ const OwnerEditForm = () => {
                             </ListGroup>
                         )}
                     </Form.Group>
-                    <Button type="submit" className={`${btnStyles.AngryOcean} ${btnStyles.Button} mt-3`}>
+
+                    <Button
+                        type="submit"
+                        className={`${btnStyles.AngryOcean} ${btnStyles.Button} mt-3`}
+                    >
                         Update Owner
                     </Button>
                 </Form>
