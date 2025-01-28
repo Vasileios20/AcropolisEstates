@@ -94,7 +94,7 @@
     },
     "listingType": {
         "": "Όλα τα Ακίνητα",
-        "any": "Επιλογή",
+        "any": "Όλα τα Ακίνητα",
         "commercial": "Εμπορικό",
         "land": "Γη",
         "residential": "Κατοικία"
@@ -111,6 +111,7 @@
         "to": "Έως",
         "minPrice": "Ελάχιστη Τιμή",
         "maxPrice": "Μέγιστη Τιμή",
+        "heating": "'Ολα",
         "floorArea": "Εμβαδόν",
         "landArea": "Εμβαδόν",
         "sqm": "τ.μ.",
@@ -546,9 +547,10 @@
     "regionOptions": {
         "region": "Περιφέρεια",
         "county": "Νομός",
-        "municipality": "Δήμος",
+        "municipality": "Δήμος - Περιοχή",
         "selectRegion": "Επιλέξτε Περιφέρεια",
         "selectCounty": "Επιλέξτε Νομό",
-        "selectMunicipality": "Επιλέξτε Δήμο"
+        "selectMunicipality": "Επιλέξτε Δήμο - Περιοχή",
+        "sectors": "Τομείς"
     }
 }

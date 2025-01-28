@@ -446,7 +446,7 @@ function ListingEditForm() {
     formData.append("region_id", listingData.region_id);
     formData.append("county_id", listingData.county_id);
     formData.append("municipality_id", listingData.municipality_id);
-    formData.append("listing_owner", listingData.listing_owner);
+    formData.append("listing_owner", listingData.listing_owner || "");
 
     selectedAmenities.forEach((amenity) => {
       formData.append("amenities_ids", amenity);
