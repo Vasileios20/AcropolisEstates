@@ -19,6 +19,33 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
 
+@api_view(['DELETE'])
+def delete_file(request, owner_id, file_id):
+    """
+    Delete a file associated with an owner.
+    """
+    try:
+        # Fetch the file, ensuring it belongs to the given owner
+        file = get_object_or_404(OwnerFile, id=file_id, owner_id=owner_id)
+
+        # Delete the file from storage
+        if file.file:
+            file.file.delete(save=False)
+
+        # Delete the file record from the database
+        file.delete()
+
+        return Response(
+            {'message': 'File deleted successfully'},
+            status=status.HTTP_204_NO_CONTENT
+        )
+    except OwnerFile.DoesNotExist:
+        return Response(
+            {'error': 'File not found or does not belong to this owner'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+
 @api_view(['PUT'])
 def reorder_images(request, listing_id):
     listing = get_object_or_404(Listing, id=listing_id)
