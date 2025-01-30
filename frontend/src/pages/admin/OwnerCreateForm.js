@@ -101,7 +101,6 @@ const OwnerCreateForm = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            required
                         />
                     </Form.Group>
                     <Form.Group controlId="formPhone">
