@@ -48,6 +48,7 @@ class OwnerSerializer(serializers.ModelSerializer):
     """
 
     files = OwnerFileSerializer(many=True, read_only=True)
+    email = serializers.EmailField(required=False)
 
     class Meta:
         model = Owner
