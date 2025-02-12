@@ -1,0 +1,118 @@
+.MortgagePaymentCalculator {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* General styling for form elements */
+input {
+    /* padding: 8px; */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Deposit inputs side by side */
+.DepositContainer {
+    display: flex;
+    align-items: center;
+}
+
+.DepositContainer input:first-child {
+    flex: 4;
+}
+
+.DepositContainer input:last-child {
+    flex: 1;
+}
+
+/* Ensure all range inputs are aligned below */
+.RangeContainer {
+    margin-top: 5px;
+}
+
+.Range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: rgba(77, 103, 101, 0.3);
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.2s;
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+}
+
+/* Track (the background bar) */
+.Range::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    background: rgba(77, 103, 101, 0.3);
+    border-radius: 5px;
+}
+
+/* Thumb (the moving circle) */
+.Range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1rem;
+    height: 0.9rem;
+    background: rgb(77, 103, 101);
+    border-radius: 50%;
+    border: 2px solid #4d6765;
+    box-shadow: inset 0 0 0 0.1rem #f1f1f1;
+    cursor: pointer;
+    transition: 0.1s;
+    margin-top: -5px;
+}
+
+/* Hover effect */
+.Range::-webkit-slider-thumb:hover {
+    background: #4d6765;
+    box-shadow: inset 0 0 0 5px #f1f1f1;
+}
+
+/* Active (when clicked) */
+.Range:active::-webkit-slider-thumb {
+    background: #4d6765;
+    box-shadow: inset 0 0 0 5px #4d6765;
+}
+
+/* Firefox Styles */
+.Range::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(77, 103, 101, 0.3);
+    border-radius: 5px;
+}
+
+.Range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #847c3d;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Circular Range Display */
+/* .CircularRange {
+    margin-top: 20px;
+} */
+
+.Text {
+    font-size: 16px;
+    font-weight: bold;
+    fill: #333;
+}
+
+.TextStar {
+    font-size: 10px;
+    font-weight: bold;
+    fill: #333;
+}

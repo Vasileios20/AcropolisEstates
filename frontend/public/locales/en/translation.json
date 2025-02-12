@@ -550,5 +550,23 @@
         "selectCounty": "Select County",
         "selectMunicipality": "Select Municipality - Area",
         "sectors": "Sectors"
+    },
+    "mortgageCalculator": {
+        "title": "Mortgage Calculator",
+        "propertyValue": "Property Value",
+        "deposit": "Deposit",
+        "loanAmount": "Loan Amount",
+        "loanTerm": "Loan Term",
+        "interestRate": "Interest Rate",
+        "monthlyPayment": "Monthly Payment",
+        "totalPayment": "Total Payment",
+        "totalInterest": "Total Interest",
+        "calculate": "Calculate",
+        "month": "Month",
+        "monthly": "Monthly",
+        "years": "Years",
+        "total": "Total",
+        "tooltip": "The above values are indicative and do not constitute a binding offer. The final loan terms are subject to the requirements of the respective financial institution and the borrower's credibility",
+        "textInterested": "Are you interested in a mortgage? Contact us for more information."
     }
 }

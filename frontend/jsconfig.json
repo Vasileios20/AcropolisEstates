@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "paths": {
+      "react-bootstrap": ["node_modules/react-bootstrap"]
+    }
+  },
+  "include": ["src"]
+}
