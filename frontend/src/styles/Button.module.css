@@ -17,8 +17,9 @@
 }
 
 .Wide {
-  padding: 10px 50px;
+  padding: 6px 24px;
   width: 100%;
+  font-size: 1.1rem;
 }
 
 .Medium {

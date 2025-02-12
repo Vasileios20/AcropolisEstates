@@ -15,6 +15,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import { StaffCard } from "./StaffCard";
+import MortgagePaymentCalculator from "../MortgagePaymentCalculator";
 
 
 const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
@@ -214,11 +215,11 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
         <meta name="keywords" content={`${props.sale_type}, ${props.type}, ${props.sub_type}, ${props.municipality}, ${props.county}, ${props.region}, Features, amenities, real estate, Acropolis Estates, price, bedroom, apartment, name, floor, area, heating, email, acropolis, estates, london,  `} />
       </Helmet>
       <Container className="mt-5 pt-2">
-        
+
         <ListingImages images={images} listing_id={id} amenities={amenities} />
 
         <Row className="justify-content-start">
-          
+
           <Col>
             <div className={styles.Listing__cardBodyListing}>
               <ListingHeader {...props} listingPage={listingPage} />
@@ -230,7 +231,7 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           </Col>
 
           <h5>{t("propertiesPage.header1")}</h5>
-          <Col md={8} lg={8}>
+          <Col lg={8}>
             {props.type === "residential" && residentialTableData}
             {props.type === "commercial" && commercialTableData}
             {props.type === "land" && landTableData}
@@ -240,14 +241,18 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
               <div className={`${styles.AmenitiesBox}`}>{amenitiesList}</div>
             </Col>
             <Col className="mx-auto my-5">{mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />}</Col>
+            <Col className="my-5">
+              <MortgagePaymentCalculator price={props?.price} />
+              {userStatus && <StaffCard {...props} handleDelete={handleDelete} handleEdit={handleEdit} />}
+            </Col>
           </Col>
 
-          <Col md={8} lg={4} className="mb-3">
+          <Col lg={4} className="mb-3">
             <ContactForm listing_id={id} />
           </Col>
         </Row>
-        <Row className="mt-5">
-          {userStatus && <StaffCard {...props} handleDelete={handleDelete} handleEdit={handleEdit} />}
+        <Row className="my-5">
+
         </Row>
       </Container>
     </>
