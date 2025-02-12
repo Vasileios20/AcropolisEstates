@@ -251,9 +251,6 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
             <ContactForm listing_id={id} />
           </Col>
         </Row>
-        <Row className="my-5">
-
-        </Row>
       </Container>
     </>
   );
