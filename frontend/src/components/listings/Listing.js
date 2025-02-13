@@ -87,7 +87,7 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
   // Format price value with commas
   let priceValue = "";
   if (typeof price === 'number' && !isNaN(price)) {
-    priceValue = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    priceValue = price.toLocaleString("de-DE");
   }
 
   const energy_classValue = energy_class === "to_be_issued" ? t("propertyDetails.energyClassTypes.toBeIssued") : energy_class;
@@ -250,9 +250,6 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           <Col lg={4} className="mb-3">
             <ContactForm listing_id={id} />
           </Col>
-        </Row>
-        <Row className="my-5">
-
         </Row>
       </Container>
     </>

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
-import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import styles from '../styles/MortgagePaymentCalculator.module.css';
 import btnStyles from '../styles/Button.module.css';
+import inputStyles from '../styles/SearchBar.module.css';
 import { Link } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 
@@ -15,16 +18,27 @@ const MortgagePaymentCalculator = ({ price }) => {
     const [deposit, setDeposit] = useState(price * 0.1);
     const [percentage, setPercentage] = useState(10);
     const principalPercentage = (principal - deposit) / principal * 100;
-    const star = "*" 
+    const star = "*"
     const { t } = useTranslation();
 
-    const formatValue = (field, value) =>
-        field === "percentage" ? `${Number(value).toLocaleString("de-DE", { useGrouping: true })}%`
-            : `€${Number(value).toLocaleString("de-DE", { useGrouping: true })}`;
+    const formatValue = (field, value) => {
+        const number = parseFloat(String(value).replace(/,/g, ""));
+        const amount = parseInt(String(value).replace(/\D/g, ""));
+
+        if (isNaN(number)) return "";
+
+        if (field === "interestRate") {
+            return `${value.toString().replace(".", ",")}%`; // Ensure comma for decimals
+        }
+
+        if (["principal", "deposit", "monthly", "loanAmount"].includes(field)) {
+            return `€${amount.toLocaleString("de-DE")}`; // Uses `de-DE` for correct thousands separator
+        }
+
+        return field === "percentage" ? `${number}%` : value;
+    };
 
     const stripCurrency = (value) => Number(String(value).replace(/[^\d.-]/g, ""));
-
-
 
     const calculatePMT = (principal, interestRate, loanTerm) => {
         const r = interestRate / 100 / 12;  // Monthly interest rate
@@ -34,21 +48,23 @@ const MortgagePaymentCalculator = ({ price }) => {
     };
 
     const handlePrincipalChange = (value) => {
-        const adjustedPrincipal = Math.min(stripCurrency(value), 1_500_000);
+        const numericValue = parseInt(value.replace(/\D/g, ""));
+        const adjustedPrincipal = Math.min(stripCurrency(numericValue), 1_500_000);
         setPrincipal(adjustedPrincipal);
         setDeposit((adjustedPrincipal * percentage) / 100);
     };
 
     const handlePercentageChange = (value) => {
         const numericValue = Number(value);
-        if (isNaN(numericValue) || numericValue < 0 || numericValue > 100) return;
+        if (isNaN(numericValue) || numericValue < 0 || numericValue > 90) return;
         setPercentage(numericValue);
         setDeposit((principal * numericValue) / 100);
     };
 
     // Handle deposit range change, updates deposit value & monthly payment
     const handleDepositRangeChange = (value) => {
-        const newDeposit = Number(value);
+        const newDeposit = parseInt(value.replace(/\D/g, ""));
+        if (newDeposit < 0 || newDeposit > principal * 0.9) return;
         setDeposit(newDeposit);
         setPercentage(((newDeposit / principal) * 100).toFixed(1)); // Update % based on deposit
     };
@@ -66,10 +82,11 @@ const MortgagePaymentCalculator = ({ price }) => {
     };
 
     useEffect(() => {
-        if (principal && interestRate && loanTerm && deposit) {
-            setMonthlyPayment(calculatePMT(principal - deposit, interestRate, loanTerm).toFixed(2));
+        if (!isNaN(principal) && !isNaN(deposit) && !isNaN(interestRate) && !isNaN(loanTerm)) {
+            const loanAmount = principal - deposit;
+            setMonthlyPayment(formatValue('monthly', calculatePMT(loanAmount, interestRate, loanTerm).toFixed(0)));
         }
-    }, [principal, interestRate, loanTerm, deposit]);
+    }, [principal, deposit, interestRate, loanTerm]);
 
     const renderTooltip = (props) => (
         <Tooltip
@@ -83,7 +100,7 @@ const MortgagePaymentCalculator = ({ price }) => {
 
 
     return (
-        <Container>
+        <Container className='mb-5'>
             <Row className={`${styles.MortgagePaymentCalculator} shadow rounded`}>
                 <p className='text-center mb-4 h2'>{t("mortgageCalculator.title")}</p>
                 <Col sm={6}>
@@ -92,10 +109,10 @@ const MortgagePaymentCalculator = ({ price }) => {
                         <label>{t("mortgageCalculator.propertyValue")}</label>
                         <input
                             type="text"
-                            value={formatValue("", principal)}
-                            onChange={(e) => handlePrincipalChange(stripCurrency(e.target.value))}
+                            value={formatValue("principal", principal)}
+                            onChange={(e) => handlePrincipalChange(e.target.value)}
                             required
-                            className="form-control"
+                            className={`form-control ${inputStyles.SearchInput}`}
                         />
                         <div className={styles.RangeContainer}>
                             <input
@@ -104,7 +121,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                                 max={1_500_000}
                                 step="1000"
                                 value={principal}
-                                onChange={(e) => handleRangeChange("principal", Number(e.target.value))}
+                                onChange={(e) => handleRangeChange("principal", e.target.value)}
                                 className={styles.Range}
                                 style={{
                                     background: `linear-gradient(to right, rgba(77, 103, 101, 1) ${(principal / 1_500_000) * 100
@@ -118,17 +135,17 @@ const MortgagePaymentCalculator = ({ price }) => {
                         <div className={styles.DepositContainer}>
                             <input
                                 type="text"
-                                value={formatValue("", deposit)}
-                                onChange={(e) => handleDepositRangeChange(stripCurrency(e.target.value))}
+                                value={formatValue("deposit", deposit)}
+                                onChange={(e) => handleDepositRangeChange(e.target.value)}
                                 required
-                                className="form-control"
+                                className={`form-control ${inputStyles.SearchInput}`}
                             />
                             <input
                                 type="text"
                                 value={formatValue("percentage", Math.round(percentage))}
                                 onChange={(e) => handlePercentageChange(stripCurrency(e.target.value))}
                                 required
-                                className="form-control"
+                                className={`form-control ${inputStyles.SearchInput}`}
                             />
                         </div>
                         <div className={styles.RangeContainer}>
@@ -138,7 +155,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                                 max={principal * 0.99}
                                 step="1000"
                                 value={deposit}
-                                onChange={(e) => handleRangeChange("deposit", Number(e.target.value))}
+                                onChange={(e) => handleRangeChange("deposit", e.target.value)}
                                 className={styles.Range}
                                 style={{
                                     background: `linear-gradient(to right, rgba(77, 103, 101, 1) ${(deposit / principal * 0.99) * 100
@@ -151,13 +168,40 @@ const MortgagePaymentCalculator = ({ price }) => {
                         <label>{t("mortgageCalculator.interestRate")}</label>
                         <input
                             type="text"
-                            min="0"
-                            max="20"
-                            step="0.1"
-                            value={formatValue("percentage", interestRate)}
-                            onChange={(e) => setInterestRate(Number(e.target.value))}
+                            value={interestRate !== "" ? `${interestRate.toString().replace(".", ",")}%` : ""}
+                            onChange={(e) => {
+                                let input = e.target;
+                                let value = input.value.replace(",", ".").replace("%", ""); // Convert , to . and remove %
+
+                                // Preserve cursor position before modifying value
+                                let cursorPos = input.selectionStart;
+
+                                // Allow empty value while typing
+                                if (value === "") {
+                                    setInterestRate("");
+                                    return;
+                                }
+
+                                // Check if input is a valid number (allows decimal points)
+                                if (!/^\d*\.?\d*$/.test(value)) return;
+
+                                let numericValue = parseFloat(value);
+
+                                // If it's a valid number, enforce the range
+                                if (!isNaN(numericValue)) {
+                                    if (numericValue > 20) value = 20;
+                                    if (numericValue < 1) value = 1;
+                                }
+
+                                setInterestRate(value); // Keep the raw value for smooth typing
+
+                                // Restore caret position after setting value
+                                setTimeout(() => {
+                                    input.setSelectionRange(cursorPos, cursorPos);
+                                }, 0);
+                            }}
                             required
-                            className="form-control"
+                            className={`form-control ${inputStyles.SearchInput}`}
                         />
                         <div className={styles.RangeContainer}>
                             <input
@@ -183,9 +227,26 @@ const MortgagePaymentCalculator = ({ price }) => {
                             max="40"
                             step="1"
                             value={loanTerm}
-                            onChange={(e) => setLoanTerm(Number(e.target.value))}
+                            onChange={(e) => {
+                                let value = e.target.value;
+                                value = value.replace(/\..*/, "");
+                                let numericValue = parseInt(value);
+
+                                if (value === "") {
+                                    setLoanTerm("");
+                                    return;
+                                }
+
+                                // If it's a valid number, enforce the range
+                                if (!isNaN(numericValue)) {
+                                    if (numericValue > 40) value = 40;
+                                    if (numericValue < 1) value = 1;
+                                    if (value === "0") value = "1";
+                                }
+                                setLoanTerm(Number(value));
+                            }}
                             required
-                            className="form-control"
+                            className={`form-control ${inputStyles.SearchInput}`}
                         />
                         <div className={styles.RangeContainer}>
                             <input
@@ -208,7 +269,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                 <Col className="text-center border-start">
 
                     {/* Circular Mortgage Payment Visualization */}
-                    
+
                     <div className="d-flex justify-content-center">
                         <OverlayTrigger
                             placement="right"
@@ -240,7 +301,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                                         transform="rotate(-90 60 60)"
                                     />
                                     <text x="50%" y="50%" textAnchor="middle" dy=".3em" className={styles.Text}>
-                                        €{monthlyPayment}/
+                                        {monthlyPayment}/
                                     </text>
                                     <text x="50%" y="50%" textAnchor="middle" dy="1.1em" className={styles.Text}>
                                         {t("mortgageCalculator.month")}
@@ -251,8 +312,8 @@ const MortgagePaymentCalculator = ({ price }) => {
                                 </svg>
                             </div>
                         </OverlayTrigger>
-                        </div>
-                    <div className="text-center mt-1">
+                    </div>
+                    <div className={`"text-center mt-1" ${styles.TextSize}`}>
                         <p className="m-0">{t("mortgageCalculator.loanAmount")}: {formatValue("loanAmount", (principal - deposit))}</p>
                         <p>{t("mortgageCalculator.deposit")}: {formatValue("deposit", deposit)}</p>
                     </div>

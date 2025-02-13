@@ -100,11 +100,6 @@ label {
     cursor: pointer;
 }
 
-/* Circular Range Display */
-/* .CircularRange {
-    margin-top: 20px;
-} */
-
 .Text {
     font-size: 16px;
     font-weight: bold;
@@ -113,6 +108,12 @@ label {
 
 .TextStar {
     font-size: 10px;
+    font-weight: bold;
+    fill: #333;
+}
+
+.TextSize {
+    font-size: 0.9rem;
     font-weight: bold;
     fill: #333;
 }
