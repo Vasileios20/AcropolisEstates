@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
-import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import styles from '../styles/MortgagePaymentCalculator.module.css';
 import btnStyles from '../styles/Button.module.css';
+import inputStyles from '../styles/SearchBar.module.css';
 import { Link } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 
@@ -109,7 +112,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                             value={formatValue("principal", principal)}
                             onChange={(e) => handlePrincipalChange(e.target.value)}
                             required
-                            className="form-control"
+                            className={`form-control ${inputStyles.SearchInput}`}
                         />
                         <div className={styles.RangeContainer}>
                             <input
@@ -135,14 +138,14 @@ const MortgagePaymentCalculator = ({ price }) => {
                                 value={formatValue("deposit", deposit)}
                                 onChange={(e) => handleDepositRangeChange(e.target.value)}
                                 required
-                                className="form-control"
+                                className={`form-control ${inputStyles.SearchInput}`}
                             />
                             <input
                                 type="text"
                                 value={formatValue("percentage", Math.round(percentage))}
                                 onChange={(e) => handlePercentageChange(stripCurrency(e.target.value))}
                                 required
-                                className="form-control"
+                                className={`form-control ${inputStyles.SearchInput}`}
                             />
                         </div>
                         <div className={styles.RangeContainer}>
@@ -198,7 +201,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                                 }, 0);
                             }}
                             required
-                            className="form-control"
+                            className={`form-control ${inputStyles.SearchInput}`}
                         />
                         <div className={styles.RangeContainer}>
                             <input
@@ -243,7 +246,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                                 setLoanTerm(Number(value));
                             }}
                             required
-                            className="form-control"
+                            className={`form-control ${inputStyles.SearchInput}`}
                         />
                         <div className={styles.RangeContainer}>
                             <input
