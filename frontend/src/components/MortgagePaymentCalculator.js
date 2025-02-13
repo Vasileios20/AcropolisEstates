@@ -15,16 +15,27 @@ const MortgagePaymentCalculator = ({ price }) => {
     const [deposit, setDeposit] = useState(price * 0.1);
     const [percentage, setPercentage] = useState(10);
     const principalPercentage = (principal - deposit) / principal * 100;
-    const star = "*" 
+    const star = "*"
     const { t } = useTranslation();
 
-    const formatValue = (field, value) =>
-        field === "percentage" ? `${Number(value).toLocaleString("de-DE", { useGrouping: true })}%`
-            : `€${Number(value).toLocaleString("de-DE", { useGrouping: true })}`;
+    const formatValue = (field, value) => {
+        const number = parseFloat(String(value).replace(/,/g, ""));
+        const amount = parseInt(String(value).replace(/\D/g, ""));
+
+        if (isNaN(number)) return "";
+
+        if (field === "interestRate") {
+            return `${value.toString().replace(".", ",")}%`; // Ensure comma for decimals
+        }
+
+        if (["principal", "deposit", "monthly", "loanAmount"].includes(field)) {
+            return `€${amount.toLocaleString("de-DE")}`; // Uses `de-DE` for correct thousands separator
+        }
+
+        return field === "percentage" ? `${number}%` : value;
+    };
 
     const stripCurrency = (value) => Number(String(value).replace(/[^\d.-]/g, ""));
-
-
 
     const calculatePMT = (principal, interestRate, loanTerm) => {
         const r = interestRate / 100 / 12;  // Monthly interest rate
@@ -34,7 +45,8 @@ const MortgagePaymentCalculator = ({ price }) => {
     };
 
     const handlePrincipalChange = (value) => {
-        const adjustedPrincipal = Math.min(stripCurrency(value), 1_500_000);
+        const numericValue = parseInt(value.replace(/\D/g, ""));
+        const adjustedPrincipal = Math.min(stripCurrency(numericValue), 1_500_000);
         setPrincipal(adjustedPrincipal);
         setDeposit((adjustedPrincipal * percentage) / 100);
     };
@@ -48,7 +60,8 @@ const MortgagePaymentCalculator = ({ price }) => {
 
     // Handle deposit range change, updates deposit value & monthly payment
     const handleDepositRangeChange = (value) => {
-        const newDeposit = Number(value);
+        const newDeposit = parseInt(value.replace(/\D/g, ""));
+        if (newDeposit < 0 || newDeposit > principal * 0.9) return;
         setDeposit(newDeposit);
         setPercentage(((newDeposit / principal) * 100).toFixed(1)); // Update % based on deposit
     };
@@ -66,10 +79,11 @@ const MortgagePaymentCalculator = ({ price }) => {
     };
 
     useEffect(() => {
-        if (principal && interestRate && loanTerm && deposit) {
-            setMonthlyPayment(calculatePMT(principal - deposit, interestRate, loanTerm).toFixed(2));
+        if (!isNaN(principal) && !isNaN(deposit) && !isNaN(interestRate) && !isNaN(loanTerm)) {
+            const loanAmount = principal - deposit;
+            setMonthlyPayment(formatValue('monthly', calculatePMT(loanAmount, interestRate, loanTerm).toFixed(0)));
         }
-    }, [principal, interestRate, loanTerm, deposit]);
+    }, [principal, deposit, interestRate, loanTerm]);
 
     const renderTooltip = (props) => (
         <Tooltip
@@ -83,7 +97,7 @@ const MortgagePaymentCalculator = ({ price }) => {
 
 
     return (
-        <Container>
+        <Container className='mb-5'>
             <Row className={`${styles.MortgagePaymentCalculator} shadow rounded`}>
                 <p className='text-center mb-4 h2'>{t("mortgageCalculator.title")}</p>
                 <Col sm={6}>
@@ -92,8 +106,8 @@ const MortgagePaymentCalculator = ({ price }) => {
                         <label>{t("mortgageCalculator.propertyValue")}</label>
                         <input
                             type="text"
-                            value={formatValue("", principal)}
-                            onChange={(e) => handlePrincipalChange(stripCurrency(e.target.value))}
+                            value={formatValue("principal", principal)}
+                            onChange={(e) => handlePrincipalChange(e.target.value)}
                             required
                             className="form-control"
                         />
@@ -104,7 +118,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                                 max={1_500_000}
                                 step="1000"
                                 value={principal}
-                                onChange={(e) => handleRangeChange("principal", Number(e.target.value))}
+                                onChange={(e) => handleRangeChange("principal", e.target.value)}
                                 className={styles.Range}
                                 style={{
                                     background: `linear-gradient(to right, rgba(77, 103, 101, 1) ${(principal / 1_500_000) * 100
@@ -118,8 +132,8 @@ const MortgagePaymentCalculator = ({ price }) => {
                         <div className={styles.DepositContainer}>
                             <input
                                 type="text"
-                                value={formatValue("", deposit)}
-                                onChange={(e) => handleDepositRangeChange(stripCurrency(e.target.value))}
+                                value={formatValue("deposit", deposit)}
+                                onChange={(e) => handleDepositRangeChange(e.target.value)}
                                 required
                                 className="form-control"
                             />
@@ -138,7 +152,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                                 max={principal * 0.99}
                                 step="1000"
                                 value={deposit}
-                                onChange={(e) => handleRangeChange("deposit", Number(e.target.value))}
+                                onChange={(e) => handleRangeChange("deposit", e.target.value)}
                                 className={styles.Range}
                                 style={{
                                     background: `linear-gradient(to right, rgba(77, 103, 101, 1) ${(deposit / principal * 0.99) * 100
@@ -208,7 +222,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                 <Col className="text-center border-start">
 
                     {/* Circular Mortgage Payment Visualization */}
-                    
+
                     <div className="d-flex justify-content-center">
                         <OverlayTrigger
                             placement="right"
@@ -240,7 +254,7 @@ const MortgagePaymentCalculator = ({ price }) => {
                                         transform="rotate(-90 60 60)"
                                     />
                                     <text x="50%" y="50%" textAnchor="middle" dy=".3em" className={styles.Text}>
-                                        €{monthlyPayment}/
+                                        {monthlyPayment}/
                                     </text>
                                     <text x="50%" y="50%" textAnchor="middle" dy="1.1em" className={styles.Text}>
                                         {t("mortgageCalculator.month")}
@@ -251,8 +265,8 @@ const MortgagePaymentCalculator = ({ price }) => {
                                 </svg>
                             </div>
                         </OverlayTrigger>
-                        </div>
-                    <div className="text-center mt-1">
+                    </div>
+                    <div className={`"text-center mt-1" ${styles.TextSize}`}>
                         <p className="m-0">{t("mortgageCalculator.loanAmount")}: {formatValue("loanAmount", (principal - deposit))}</p>
                         <p>{t("mortgageCalculator.deposit")}: {formatValue("deposit", deposit)}</p>
                     </div>
