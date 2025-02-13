@@ -224,7 +224,24 @@ const MortgagePaymentCalculator = ({ price }) => {
                             max="40"
                             step="1"
                             value={loanTerm}
-                            onChange={(e) => setLoanTerm(Number(e.target.value))}
+                            onChange={(e) => {
+                                let value = e.target.value;
+                                value = value.replace(/\..*/, "");
+                                let numericValue = parseInt(value);
+
+                                if (value === "") {
+                                    setLoanTerm("");
+                                    return;
+                                }
+
+                                // If it's a valid number, enforce the range
+                                if (!isNaN(numericValue)) {
+                                    if (numericValue > 40) value = 40;
+                                    if (numericValue < 1) value = 1;
+                                    if (value === "0") value = "1";
+                                }
+                                setLoanTerm(Number(value));
+                            }}
                             required
                             className="form-control"
                         />
