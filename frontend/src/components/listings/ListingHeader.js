@@ -36,7 +36,7 @@ const ListingHeader = React.memo((props) => {
 
   let priceValue = "";
   if (typeof props.price === 'number' && !isNaN(props.price)) {
-    priceValue = props.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    priceValue = props.price.toLocaleString("de-DE");
   }
 
   const floorValue =

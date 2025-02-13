@@ -168,7 +168,7 @@ export default function HomePage() {
                                       sale_type: listing.sale_type === "rent" ? `${t("propertyDetails.typeRent")}` : `${t("propertyDetails.typeSale")}`,
                                     })}
                                   </Card.Title>
-                                  <Card.Text>{listing.currency} {typeof listing.price === "number" && !isNaN(listing.price) && listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Card.Text>
+                                  <Card.Text>{listing.currency} {typeof listing.price === "number" && !isNaN(listing.price) && listing.price.toLocaleString("de-DE")}</Card.Text>
                                 </Card.Body>
                               </Link>
                             </Card>

@@ -87,7 +87,7 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
   // Format price value with commas
   let priceValue = "";
   if (typeof price === 'number' && !isNaN(price)) {
-    priceValue = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    priceValue = price.toLocaleString("de-DE");
   }
 
   const energy_classValue = energy_class === "to_be_issued" ? t("propertyDetails.energyClassTypes.toBeIssued") : energy_class;
