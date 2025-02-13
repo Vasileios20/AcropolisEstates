@@ -53,7 +53,7 @@ const MortgagePaymentCalculator = ({ price }) => {
 
     const handlePercentageChange = (value) => {
         const numericValue = Number(value);
-        if (isNaN(numericValue) || numericValue < 0 || numericValue > 100) return;
+        if (isNaN(numericValue) || numericValue < 0 || numericValue > 90) return;
         setPercentage(numericValue);
         setDeposit((principal * numericValue) / 100);
     };
