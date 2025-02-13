@@ -165,11 +165,38 @@ const MortgagePaymentCalculator = ({ price }) => {
                         <label>{t("mortgageCalculator.interestRate")}</label>
                         <input
                             type="text"
-                            min="0"
-                            max="20"
-                            step="0.1"
-                            value={formatValue("percentage", interestRate)}
-                            onChange={(e) => setInterestRate(Number(e.target.value))}
+                            value={interestRate !== "" ? `${interestRate.toString().replace(".", ",")}%` : ""}
+                            onChange={(e) => {
+                                let input = e.target;
+                                let value = input.value.replace(",", ".").replace("%", ""); // Convert , to . and remove %
+
+                                // Preserve cursor position before modifying value
+                                let cursorPos = input.selectionStart;
+
+                                // Allow empty value while typing
+                                if (value === "") {
+                                    setInterestRate("");
+                                    return;
+                                }
+
+                                // Check if input is a valid number (allows decimal points)
+                                if (!/^\d*\.?\d*$/.test(value)) return;
+
+                                let numericValue = parseFloat(value);
+
+                                // If it's a valid number, enforce the range
+                                if (!isNaN(numericValue)) {
+                                    if (numericValue > 20) value = 20;
+                                    if (numericValue < 1) value = 1;
+                                }
+
+                                setInterestRate(value); // Keep the raw value for smooth typing
+
+                                // Restore caret position after setting value
+                                setTimeout(() => {
+                                    input.setSelectionRange(cursorPos, cursorPos);
+                                }, 0);
+                            }}
                             required
                             className="form-control"
                         />
