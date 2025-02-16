@@ -20,6 +20,7 @@ const MortgagePaymentCalculator = ({ price }) => {
     const principalPercentage = (principal - deposit) / principal * 100;
     const star = "*"
     const { t } = useTranslation();
+    const isMobile = window.innerWidth < 768;
 
     const formatValue = (field, value) => {
         const number = parseFloat(String(value).replace(/,/g, ""));
@@ -272,7 +273,7 @@ const MortgagePaymentCalculator = ({ price }) => {
 
                     <div className="d-flex justify-content-center">
                         <OverlayTrigger
-                            placement="right"
+                            placement={isMobile ? "bottom" : "right"}
                             delay={{ show: 0, hide: 0 }}
                             overlay={renderTooltip}
                             trigger={["hover", "focus"]}
