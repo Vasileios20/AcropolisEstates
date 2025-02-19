@@ -404,6 +404,7 @@ function ListingEditForm() {
     formData.append("region", listingData.region);
     formData.append("region_gr", listingData.region_gr);
     formData.append("surface", listingData.floor_area || "0");
+    formData.append("floor_area", listingData.floor_area || "0");
     formData.append("land_area", listingData.land_area || "0");
     formData.append("levels", listingData.levels || "0");
     formData.append("bedrooms", listingData.bedrooms || "0");
@@ -636,6 +637,7 @@ function ListingEditForm() {
                 selectedRegion={selectedRegion}
                 selectedCounty={selectedCounty}
                 selectedMunicipality={selectedMunicipality}
+                history={history}
               />
             </div>
           </Container>
@@ -657,6 +659,7 @@ function ListingEditForm() {
               selectedRegion={selectedRegion}
               selectedCounty={selectedCounty}
               selectedMunicipality={selectedMunicipality}
+              history={history}
             />
           </Container>
         </Col>
