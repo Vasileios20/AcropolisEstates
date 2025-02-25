@@ -161,6 +161,7 @@ class Listing(models.Model):
         ("parquet", "Parquet"),
         ("carpet", "Carpet"),
         ("cement", "Cement"),
+        ("industrial_floor", "Industrial Floor"),
         ("other", "Other"),
     ]
 
