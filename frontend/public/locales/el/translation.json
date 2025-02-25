@@ -265,6 +265,7 @@
             "parquet": "Παρκέ",
             "carpet": "Χαλί",
             "cement": "Τσιμέντο",
+            "industrial_floor": "Βιομηχανικό Δάπεδο",
             "other": "Άλλο",
             "": "N/A"
         },
@@ -513,7 +514,9 @@
         "consierge": "Θυρωρός",
         "inside_zone_area": "Εντός Ζώνης",
         "auction": "Πληστηριασμός",
-        "under_offer": "Υπό Προσφορά"
+        "under_offer": "Υπό Προσφορά",
+        "3_phase_electricity": "Τριφασικό Ρεύμα",
+        "loading_unloading_bay": "Πλατφόρμα Φόρτωσης/Εκφόρτωσης"
     },
     "createEditForm": {
         "button": {

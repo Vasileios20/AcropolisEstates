@@ -163,6 +163,40 @@ const CommercialFields = (
 
             <Row className="justify-content-center">
                 <Col md={6}>
+                    <Form.Group controlId="floor_type">
+                        <Form.Label>{t("propertyDetails.floorTypes.title")}</Form.Label>
+                        <Form.Control
+                            className={styles.Input}
+                            as="select"
+                            name="floor_type"
+                            value={listingData.floor_type || ""}
+                            onChange={handleChange}
+                        >
+                            <option>---</option>
+                            <option value="marble">{t("propertyDetails.floorTypes.marble")}</option>
+                            <option value="tile">{t("propertyDetails.floorTypes.tile")}</option>
+                            <option value="wooden">{t("propertyDetails.floorTypes.wooden")}</option>
+                            <option value="granite">{t("propertyDetails.floorTypes.granite")}</option>
+                            <option value="mosaic">{t("propertyDetails.floorTypes.mosaic")}</option>
+                            <option value="stone">{t("propertyDetails.floorTypes.stone")}</option>
+                            <option value="laminate">{t("propertyDetails.floorTypes.laminate")}</option>
+                            <option value="parquet">{t("propertyDetails.floorTypes.parquet")}</option>
+                            <option value="carpet">{t("propertyDetails.floorTypes.carpet")}</option>
+                            <option value="cement">{t("propertyDetails.floorTypes.cement")}</option>
+                            <option value="industrial_floor">{t("propertyDetails.floorTypes.industrial_floor")}</option>
+                            <option value="other">{t("propertyDetails.floorTypes.other")}</option>
+                        </Form.Control>
+                    </Form.Group>
+                    {errors?.floor_type?.map((message, idx) => (
+                        <Alert className={styles.Input} variant="warning" key={idx}>
+                            {message}
+                        </Alert>
+                    ))}
+                </Col>
+            </Row>
+
+            <Row className="justify-content-center">
+                <Col md={6}>
                     <Form.Group controlId="construction_year">
                         <Form.Label>{t("propertyDetails.yearBuilt")}</Form.Label>
                         <Form.Control

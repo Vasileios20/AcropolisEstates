@@ -265,6 +265,7 @@
             "parquet": "Parquet",
             "carpet": "Carpet",
             "cement": "Cement",
+            "industrial_floor": "Industrial Floor",
             "other": "N/A",
             "": "N/A"
         },
@@ -511,7 +512,9 @@
         "consierge": "Consierge",
         "inside_zone_area": "Inside Zone Area",
         "auction": "Auction",
-        "under_offer": "Under Offer"
+        "under_offer": "Under Offer",
+        "3_phase_electricity": "3 Phase Electricity",
+        "loading_unloading_bay": "Loading/Unloading Bay"
     },
     "createEditForm": {
         "button": {

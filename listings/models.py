@@ -161,6 +161,7 @@ class Listing(models.Model):
         ("parquet", "Parquet"),
         ("carpet", "Carpet"),
         ("cement", "Cement"),
+        ("industrial_floor", "Industrial Floor"),
         ("other", "Other"),
     ]
 
@@ -218,11 +219,7 @@ class Listing(models.Model):
     municipality = models.CharField(max_length=255, blank=True)
     municipality_gr = models.CharField(max_length=255, blank=True)
     county_id = models.IntegerField(null=True, blank=True)
-    county = models.CharField(max_length=255, default="", blank=True)
-    county_gr = models.CharField(max_length=255, default="", blank=True)
     region_id = models.IntegerField(null=True, blank=True)
-    region = models.CharField(max_length=255, default="", blank=True)
-    region_gr = models.CharField(max_length=255, default="", blank=True)
     floor_area = models.FloatField(
         validators=[validate_zero], null=True, blank=True)
     land_area = models.FloatField(

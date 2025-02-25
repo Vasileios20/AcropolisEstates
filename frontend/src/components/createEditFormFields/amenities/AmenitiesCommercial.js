@@ -99,7 +99,9 @@ export const AmenitiesCommercial = (
             amenity.name === 'need_renovation' ||
             amenity.name === 'access_for_disabled' ||
             amenity.name === 'under_construction' ||
-            amenity.name === 'part_complete'
+            amenity.name === 'part_complete' ||
+            amenity.name === '3_phase_electricity' ||
+            amenity.name === 'loading_unloading_bay'
         ) {
             return amenity;
         }

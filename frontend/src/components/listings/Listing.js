@@ -180,6 +180,7 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           { label: t("propertyDetails.heating_system.title"), value: t(`propertyDetails.heating_system.${heating_system}`) },
           { label: t("propertyDetails.energyClass"), value: energy_classValue },
           { label: t("propertyDetails.powerType.title"), value: t(`propertyDetails.powerType.${power_type}`) },
+          { label: t("propertyDetails.floorTypes.title"), value: t(`propertyDetails.floorTypes.${floor_type}`) },
           { label: t("propertyDetails.yearBuilt"), value: construction_year },
           { label: t("propertyDetails.serviceCharge"), value: `${currency} ${service_charge}` },
           { label: t("propertyDetails.availability"), value: availability },
