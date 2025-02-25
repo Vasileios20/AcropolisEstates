@@ -16,12 +16,14 @@ import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import { StaffCard } from "./StaffCard";
 import MortgagePaymentCalculator from "../MortgagePaymentCalculator";
+import Brochure from "components/Brochure";
 
 
 const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
   const history = useHistory();
   const userStatus = useUserStatus();
   const { t, i18n } = useTranslation();
+  const [mapImage, setMapImage] = useState(null);
 
   const {
     id,
@@ -229,10 +231,13 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
               <h5>{lng === "el" ? t("propertyDetails.description_gr") : t("propertyDetails.description")}</h5>
               <p>{description}</p>
             </div>
+
           </Col>
+
 
           <h5>{t("propertiesPage.header1")}</h5>
           <Col lg={8}>
+
             {props.type === "residential" && residentialTableData}
             {props.type === "commercial" && commercialTableData}
             {props.type === "land" && landTableData}
@@ -241,11 +246,18 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
               <h5 className="ps-2 pb-1">{t("propertiesPage.header2")}</h5>
               <div className={`${styles.AmenitiesBox}`}>{amenitiesList}</div>
             </Col>
-            <Col className="mx-auto my-5">{mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />}</Col>
+            <Col className="mx-auto my-5">{mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} setMapImage={setMapImage} />}</Col>
             <Col className="my-5">
+              {mapImage && (
+                <img src={mapImage} alt="Captured Map" style={{ width: "100%", height: "auto", marginTop: "10px" }} />
+              )}
               <MortgagePaymentCalculator price={props?.price} />
+              {userStatus && <div className="mb-4">
+                <Brochure {...props} mapImage={mapImage} amenitiesList={amenitiesList} />
+              </div>}
               {userStatus && <StaffCard {...props} handleDelete={handleDelete} handleEdit={handleEdit} />}
             </Col>
+
           </Col>
 
           <Col lg={4} className="mb-3">
