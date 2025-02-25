@@ -257,7 +257,8 @@ const Brochure = ({ mapImage, amenitiesList, ...props }) => {
 
     return (
         <>
-            <div ref={pdfRef} className={styles.BrochureContainer} style={{ position: "absolute", top: "-10000px", left: "-10000px", width: "297mm" }}>
+            <div ref={pdfRef} className={styles.BrochureContainer} style={{ width: "297mm" }}>
+                {/* position: "absolute", top: "-10000px", left: "-10000px", */}
                 <div style={{ width: "297mm", background: "transparent" }} className="d-flex flex-column">
                     <div style={{ height: "210mm", width: "297mm", background: "transparent" }} className={`m-0 p-0 ${styles.ContainerWrapper}`}>
                         <div className={`d-flex flex-column m-0 p-0 justify-content-between `}>

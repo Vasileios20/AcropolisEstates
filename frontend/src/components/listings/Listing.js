@@ -167,9 +167,6 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
     </Table>
   );
 
-  console.log('mapImage', mapImage);
-  
-
   const commercialTableData = (
     <Table className={`${styles.Listing__table} shadow`}>
       <tbody>
@@ -234,11 +231,9 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
               <h5>{lng === "el" ? t("propertyDetails.description_gr") : t("propertyDetails.description")}</h5>
               <p>{description}</p>
             </div>
-            <div className="mb-4">
-              <Brochure {...props} mapImage={mapImage} amenitiesList={amenitiesList} />
-            </div>
+
           </Col>
-          
+
 
           <h5>{t("propertiesPage.header1")}</h5>
           <Col lg={8}>
@@ -257,9 +252,12 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
                 <img src={mapImage} alt="Captured Map" style={{ width: "100%", height: "auto", marginTop: "10px" }} />
               )}
               <MortgagePaymentCalculator price={props?.price} />
+              {userStatus && <div className="mb-4">
+                <Brochure {...props} mapImage={mapImage} amenitiesList={amenitiesList} />
+              </div>}
               {userStatus && <StaffCard {...props} handleDelete={handleDelete} handleEdit={handleEdit} />}
             </Col>
-            
+
           </Col>
 
           <Col lg={4} className="mb-3">
