@@ -308,13 +308,13 @@ const Brochure = ({ mapImage, amenitiesList, ...props }) => {
 
                     {/* SECOND PAGE */}
                     <div style={{ height: "210mm", width: "297mm", background: "transparent" }} className={`d-flex flex-column align-items-center justify-content-between m-0 p-0 ${styles.ContainerWrapper}`}>
-                        <div className="col-12 px-2">
+                        <div className="col-12 p-4">
                             <div className={`${styles.BrochureDescription}`}>
                                 <p className="h2">{lng === "el" ? t("propertyDetails.description_gr") : t("propertyDetails.description")}</p>
                                 <p>{description}</p>
                             </div>
                         </div>
-                        <div className="d-flex col-12 justify-content-around mb-auto mt-4">
+                        <div className="d-flex col-12 justify-content-around mb-auto">
                             <div className="col-4 ps-5">
                                 {type === "residential" && residentialTableData}
                                 {type === "commercial" && commercialTableData}
@@ -329,18 +329,24 @@ const Brochure = ({ mapImage, amenitiesList, ...props }) => {
                                 />
                             </div>
                         </div>
-                        <div className={`d-flex col-12 justify-content-between mt-auto px-2 ${styles.Footer} ${styles.OliveBg} ${styles.FooterPosition}`} style={{ width: "297.5mm" }}>
-                            <p className="m-0 border-end border-dark pe-2">
-                                {t("footer.contact.address")} {t("footer.contact.city")}
-                            </p>
-                            <p className="m-0 border-end border-dark pe-2">
-                                <Trans i18nKey="footer.contact.email" components={{
-                                    1: <Link to="/contact" className={`${styles.link}`} />
-                                }} />
-                            </p>
-                            <p className="m-0">
-                                {t("footer.contact.phone")}
-                            </p>
+                        <div className={`d-flex w-100 justify-content-between mt-auto px-2 ${styles.Footer} ${styles.OliveBg} ${styles.FooterPosition}`} style={{ width: "297.5mm" }}>
+                            <div className="col-5 pe-0">
+                                <p className="m-0 border-end border-dark me-3"> 
+                                    {t("footer.contact.address")} {t("footer.contact.city")}
+                                </p>
+                            </div>
+                            <div className="col-4">
+                                <p className="my-0 border-end border-dark me-5 ps-4">
+                                    <Trans i18nKey="footer.contact.email" components={{
+                                        1: <Link to="/contact" className={`${styles.link}`} />
+                                    }} />
+                                </p>
+                            </div>
+                            <div className="col-3">
+                                <p className="m-0 w-100">
+                                    {t("footer.contact.phone")}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
