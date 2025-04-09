@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import styles from "../../styles/Listing.module.css";
 import { useTranslation } from "react-i18next";
-import area from "../../assets/area.png";
 import useFetchLocationData from "../../hooks/useFetchLocationData";
 
 const ListingHeader = React.memo((props) => {
@@ -13,7 +12,7 @@ const ListingHeader = React.memo((props) => {
   const lng = i18n.language;
 
   const { regionsData } = useFetchLocationData();
-  
+
   const region_id = regionsData?.find(region => region.id === props.region_id);
   const county_id = region_id?.counties.find(county => county.id === props.county_id);
   const municipality_id = county_id?.municipalities.find(municipality => municipality.id === props.municipality_id);
@@ -45,16 +44,16 @@ const ListingHeader = React.memo((props) => {
       : props.floor === 0
         ? <span>{t("propertyDetails.floorValue.ground")}</span>
         : props.floor === 1
-          ? <span>{props.floor}<sup>{t("propertyDetails.floorValue.first")}</sup></span>
+          ? <span><sup>{t("propertyDetails.floorValue.first")}</sup></span>
           : props.floor === 2
-            ? <span>{props.floor}<sup>{t("propertyDetails.floorValue.second")}</sup></span>
+            ? <span><sup>{t("propertyDetails.floorValue.second")}</sup></span>
             : props.floor === 3
-              ? <span>{props.floor}<sup>{t("propertyDetails.floorValue.third")}</sup></span>
+              ? <span><sup>{t("propertyDetails.floorValue.third")}</sup></span>
               : props.floor === null
                 ? <span>{t("propertyDetails.floorValue.na")}</span>
-                : <span>{props.floor}<sup>{t("propertyDetails.floorValue.th")}</sup></span>;
+                : <span><sup>{t("propertyDetails.floorValue.th")}</sup></span>;
 
-  const not_land = <div className={styles.Listing__fontawsome}>
+  const residential = <div className={styles.Listing__fontawsome}>
     <p>
       <i className="fa-solid fa-bed"> {props.bedrooms}</i>
     </p>
@@ -62,31 +61,14 @@ const ListingHeader = React.memo((props) => {
       <i className="fa-solid fa-bath"> {props.bathrooms}</i>
     </p>
     <p className={styles.Listing__levels}>
-      {props.sub_type === "maisonette" ? <i className="fa-solid fa-bars"> {props.levels}</i> : <i className="fa-solid fa-stairs"> <span className={`${lng === "el" ? `${styles.Listing__floorValue}` : `${styles.Listing__floorValueEn}`}`}>{floorValue}</span></i>}
+      {props.sub_type === "maisonette" ? <i className="fa-solid fa-layer-group"> {props.levels}</i> : <i className="fa-solid fa-stairs">{props.floor === 0 ? "" : props.floor}<span className={`${lng === "el" ? `${styles.Listing__floorValue}` : `${styles.Listing__floorValueEn}`}`}>{floorValue}</span></i>}
     </p>
   </div>
 
-  const land = <div className={styles.Listing__fontawsome}>
-    <p className="d-flex align-items-center">
-      <img
-        src={area}
-        alt=""
-        height={18}
-        className="me-2"
-      />{" "}
-      {props.land_area} m²
-    </p>
-  </div>
-
-  const commercial = <div className={styles.Listing__fontawsome}>
-    <p className="d-flex align-items-center">
-      <img
-        src={area}
-        alt=""
-        height={18}
-        className="me-2"
-      />{" "}
-      {props.floor_area} m²
+  const landCommercial = <div className={styles.Listing__fontawsome}>
+    <p>
+      <i className="fa-solid fa-ruler-combined"><span className="ps-1">{props.type === "commercial" ? props.floor_area : props.land_area}</span></i>
+      m²
     </p>
   </div>
 
@@ -100,7 +82,7 @@ const ListingHeader = React.memo((props) => {
             type: props.type === "land" ? translatedType : translatedSubType,
           })},   {props.municipality_id ? `${municipalityName?.municipality}, ${props.postcode}` : `${municipality}, ${county}, ${props.postcode}`}
         </div>
-        {props.type === "land" ? land : props.type === "residential" ? not_land : commercial}
+        {props.type === "residential" ? residential : landCommercial}
         <div className="m-0">
           <h6 className={styles.Listing__price}>{t("propertyDetails.price")}: {props.currency} {priceValue}</h6>
           <h6 className={styles.Listing__price}>ID: AE000{props.id}</h6>

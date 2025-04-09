@@ -201,7 +201,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
                           const sold = listing?.amenities?.find(amenity => amenity.name === 'sold');
                           
                           return (
-                            <Col key={listing.id} xs={12} md={6} lg={4} xl={4} className="mb-3 gx-1"
+                            <Col key={listing.id} xs={12} md={6} lg={4} className="mb-4 gx-4"
                               ref={(el) => (listingRefs.current[listing.id] = el)}>
                               <Card style={{ height: "100%" }}
                                 onMouseEnter={() => { onMouseEnter(listing.id); }}

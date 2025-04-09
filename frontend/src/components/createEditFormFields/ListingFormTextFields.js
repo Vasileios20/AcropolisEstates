@@ -320,6 +320,21 @@ const ListingTextFields = (
             listingData={listingData}
             edit={edit}
           />
+          {errors?.region_id?.map((message, idx) => (
+            <Alert className={styles.Input} variant="warning" key={idx}>
+              {message}
+            </Alert>
+          ))}
+          {errors?.county_id?.map((message, idx) => (
+            <Alert className={styles.Input} variant="warning" key={idx}>
+              {message}
+            </Alert>
+          ))}
+          {errors?.municipality_id?.map((message, idx) => (
+            <Alert className={styles.Input} variant="warning" key={idx}>
+              {message}
+            </Alert>
+          ))}
           {Object.entries(listingData).map(([fieldName, fieldValue]) => {
             if (
               fieldName === "address_street" ||
@@ -339,6 +354,8 @@ const ListingTextFields = (
             }
             return null;
           })}
+
+
         </Row>
 
         <Row className="justify-content-center">
