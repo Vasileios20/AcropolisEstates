@@ -114,6 +114,7 @@ INSTALLED_APPS = [
     "listings",
     "wishlist",
     "contact",
+    "bookings",
 ]
 
 SITE_ID = 1
