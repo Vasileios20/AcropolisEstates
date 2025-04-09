@@ -8,7 +8,6 @@ import btnStyles from "../styles/Button.module.css";
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import useFetchLocationData from "hooks/useFetchLocationData";
-import area from "../assets/area.png";
 
 
 const Brochure = ({ mapImage, amenitiesList, ...props }) => {
@@ -114,26 +113,16 @@ const Brochure = ({ mapImage, amenitiesList, ...props }) => {
     </div>
 
     const land = <div className={`${listingStyles.Listing__fontawsome} d-flex `}>
-        <p className="d-flex align-items-center">
-            <img
-                src={area}
-                alt=""
-                height={18}
-                className="me-2"
-            />{" "}
-            {land_area} m²
+        <p>
+            <i className="fa-solid fa-ruler-combined"><span className="ps-1">{props.type === "commercial" ? props.floor_area : props.land_area}</span></i>
+            m²
         </p>
     </div>
 
     const commercial = <div className={`${listingStyles.Listing__fontawsome} d-flex `}>
-        <p className="d-flex align-items-center">
-            <img
-                src={area}
-                alt=""
-                height={18}
-                className="me-2"
-            />{" "}
-            {floor_area} m²
+        <p>
+            <i className="fa-solid fa-ruler-combined"><span className="ps-1">{props.type === "commercial" ? props.floor_area : props.land_area}</span></i>
+            m²
         </p>
     </div>
 
