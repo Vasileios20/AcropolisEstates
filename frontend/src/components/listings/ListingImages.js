@@ -87,7 +87,7 @@ const ListingImages = ({ images = [{}], listing_id, amenities }) => {
             {sold && <div className={styles.soldLabel}>SOLD</div>}
             <img
               loading="lazy"
-              src={imagesArray[0]?.is_first ? imagesArray[0].url : images[0].url}
+              src={imagesArray[0]?.is_first ? imagesArray[0]?.url : images[0]?.url}
               alt={images[0]?.id}
               className={`img-fluid ${styles.Image}`}
               onClick={handleShow}
