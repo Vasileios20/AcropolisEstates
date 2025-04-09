@@ -1,5 +1,8 @@
 from django.contrib import admin
-from listings.models import Listing, Images, Amenities, Owner, OwnerFile
+from listings.models import (
+    Listing, Images, Amenities, Owner, OwnerFile,
+    ShortTermListing, ShortTermImages
+)
 from django.utils.html import format_html
 from .forms import ImagesAdminForm
 
@@ -74,3 +77,6 @@ admin.site.register(Amenities, AmenitiesAdmin)
 admin.site.register(Images, ImagesAdmin)
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(Owner, OwnerAdmin)
+admin.site.register(OwnerFile)
+admin.site.register(ShortTermListing)
+admin.site.register(ShortTermImages)
