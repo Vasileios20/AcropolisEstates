@@ -17,4 +17,11 @@ urlpatterns = [
     path("amenities/bulk/", views.BulkCreateAmenitiesView.as_view()),
     path('owners/<int:owner_id>/files/<int:file_id>/',
          views.delete_file, name='delete_file'),
+    path("short-term-listings/", views.ShortTermListingList.as_view()),
+    path("short-term-listings/<int:pk>/",
+         views.ShortTermListingDetail.as_view()),
+    path("short-term-listings/<int:listing_id>/images/",
+         views.DeleteImageView.as_view()),
+    path("short-term-listings/<int:listing_id>/images/reorder-images/",
+         views.reorder_images_short_term),
 ]

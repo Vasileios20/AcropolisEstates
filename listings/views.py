@@ -6,13 +6,16 @@ from django.db.models import Count
 from rest_framework import generics, filters, status
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Listing, Images, Amenities, Owner, OwnerFile
+from .models import (Listing, Images, Amenities, Owner,
+                     OwnerFile, ShortTermListing, ShortTermImages)
 from .serializers import (
     ListingSerializer,
     ImagesSerializer,
     AmenitiesSerializer,
     OwnerSerializer,
     OwnerFileSerializer,
+    ShortTermImagesSerializer,
+    ShortTermListingSerializer,
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
@@ -54,6 +57,19 @@ def reorder_images(request, listing_id):
     # Update the ordering in the database
     for idx, image_id in enumerate(reordered_ids):
         Images.objects.filter(
+            id=image_id, listing=listing).update(order=idx)
+
+    return Response({"detail": "Images reordered successfully."})
+
+
+@api_view(['PUT'])
+def reorder_images_short_term(request, listing_id):
+    listing = get_object_or_404(ShortTermListing, id=listing_id)
+    reordered_ids = request.data.get('reordered_image_ids', [])
+
+    # Update the ordering in the database
+    for idx, image_id in enumerate(reordered_ids):
+        ShortTermImages.objects.filter(
             id=image_id, listing=listing).update(order=idx)
 
     return Response({"detail": "Images reordered successfully."})
@@ -199,10 +215,8 @@ class ListingList(generics.ListCreateAPIView):
     filterset_class = ListingFilter
     search_fields = [
         "municipality",
-        "municipality_gr",
         "municipality_id",
         "county",
-        "county_gr",
         "county_id",
         "region_id",
         "postcode",
@@ -337,4 +351,117 @@ class BulkCreateAmenitiesView(APIView):
         return Response(
             {"error": "Expected a list of amenities"},
             status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class ShortTermListingList(generics.ListCreateAPIView):
+    """
+    List all short-term listings, or create a new short-term listing.
+    """
+
+    queryset = ShortTermListing.objects.annotate(
+        listing_count=Count("agent_name__listing")
+    ).filter(approved=True)
+
+    serializer_class = ShortTermListingSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter
+    ]
+    parser_classes = [MultiPartParser, FormParser]
+    # filterset_class = ListingFilter
+    search_fields = [
+        "municipality",
+        "municipality_id",
+        "county",
+        "county_id",
+        "region_id",
+        "postcode",
+    ]
+    ordering_fields = [
+        "listing_count",  # Annotated field
+        "created_on",
+        "-created_on",
+        "price",
+        "-price",
+        "municipality_id",
+        "county",
+        "region_id",
+        "postcode"
+    ]
+    ordering = ["-listing_count"]
+
+    def get_queryset(self):
+        """
+        Dynamically apply filtering and ordering based on request parameters.
+        """
+        queryset = super().get_queryset()
+        ordering = self.request.query_params.get("ordering")
+        # Ensure dynamic ordering works with filters
+        if ordering:
+            queryset = queryset.order_by(ordering)
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(agent_name=self.request.user)
+
+
+class ShortTermListingDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a short-term listing.
+    """
+
+    queryset = ShortTermListing.objects.all()
+    serializer_class = ShortTermListingSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["agent_name", "price"]
+
+    search_fields = [
+        "agent_name__username",
+        "municipality",
+        "price",
+        "postcode"
+    ]
+
+
+class DeleteShortTermImages(generics.DestroyAPIView):
+    """
+    API view for deleting images associated with a short-term listing.
+    """
+    queryset = ShortTermImages.objects.all()
+    serializer_class = ShortTermImagesSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
+    def delete(self, request, *args, **kwargs):
+        listing_id = self.kwargs.get("listing_id")
+        image_ids = request.data.get("image_ids", [])
+
+        if not listing_id or not image_ids:
+            return Response(
+                {"error": "Listing ID or image IDs not provided"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Check if the listing exists
+        try:
+            listing = ShortTermListing.objects.get(id=listing_id)
+        except ShortTermListing.DoesNotExist:
+            return Response(
+                {"error": "Listing not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Delete images with the specified IDs
+        deleted_count, _ = ShortTermImages.objects.filter(
+            id__in=image_ids, listing=listing).delete()
+
+        listing.save()  # Save to trigger any updates if necessary
+
+        return Response(
+            {"message": f"{deleted_count} images deleted"},
+            status=status.HTTP_204_NO_CONTENT,
         )
