@@ -35,7 +35,6 @@ const MainSearchFields = ({
                         {t("searchBar.location")}
                     </Form.Label>
                     <MunicipalitySearch
-                        className={styles.SearchInput}
                         onSearch={onSearch}
                         regionsData={regionsData}
                         history={history}

@@ -68,16 +68,39 @@ figure {
   display: inline-block;
 }
 
+textarea:focus,
+input:focus,
+select:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 0.15rem rgba(77, 103, 101, 0.45) !important;
+  background-color: #fff !important;
+}
+
+.ErrorMessage {
+  color: rgb(201, 0, 0);
+  font-size: 0.8rem;
+  padding: 2px;
+  background-color: rgba(174, 174, 185, 0.5);
+  border-radius: 5px;
+  max-width: 50%;
+  margin-right: auto;
+  margin-bottom: 0;
+  padding: 0 5px;
+}
+
 /* scrollbar */
 *::-webkit-scrollbar {
   width: 5px;
 }
+
 *::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
+
 *::-webkit-scrollbar-thumb {
   background: #888;
 }
+
 *::-webkit-scrollbar-thumb:hover {
   background: #555;
 }

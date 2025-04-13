@@ -105,7 +105,7 @@ export const MainFieldsDropDown = ({ filters, setFilters, options, field, keyNam
             <input
                 ref={inputRef}
                 type="text"
-                className={`${styles.SearchInput} form-control`}
+                className={`form-control`}
                 placeholder={keyName === "min" ? field === "price" ? `€ ${t("searchBar.from")}` : t("searchBar.from") : field === "price" ? `€ ${t("searchBar.to")} ` : t("searchBar.to")}
                 value={filters[field]?.[keyName] ? formatValue(filters[field][keyName]) : ""}
                 onChange={(e) => handleOption(field, keyName, e.target.value)}

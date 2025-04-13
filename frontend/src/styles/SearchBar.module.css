@@ -40,14 +40,6 @@
   text-align: left;
 }
 
-.SearchInput:focus,
-.Select:focus {
-  border: 1px solid #4d6765;
-  box-shadow: 0 0 0 0.15rem rgba(77, 103, 101, 0.45);
-  background-color: #fff !important;
-  color: #000;
-}
-
 .TypeDropdown {
   color: #4d6765 !important;
   background-color: #fff !important;
