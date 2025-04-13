@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 from listings.models import ShortTermListing
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class ShortTermBooking(models.Model):
@@ -13,6 +14,7 @@ class ShortTermBooking(models.Model):
         ShortTermListing, on_delete=models.CASCADE, related_name='bookings')
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    phone_number = PhoneNumberField()
     email = models.EmailField()
     check_in = models.DateField()
     check_out = models.DateField()
@@ -30,6 +32,6 @@ class ShortTermBooking(models.Model):
 
     def __str__(self):
         return (
-            f"{self.name} - {self.listing} "
+            f"{self.first_name} {self.last_name} - {self.listing} "
             f"({self.check_in} to {self.check_out})"
         )

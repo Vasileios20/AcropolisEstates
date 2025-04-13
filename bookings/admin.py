@@ -8,7 +8,8 @@ class ShortTermBookingAdmin(admin.ModelAdmin):
                     'check_out', 'confirmed', 'admin_confirmed')
     list_filter = ('listing', 'confirmed', 'user',
                    'admin_confirmed', 'check_in')
-    search_fields = ('first_name', 'last_name', 'email', 'listing__description')
+    search_fields = ('first_name', 'last_name',
+                     'email', 'listing__description')
     ordering = ('-created_at',)
     readonly_fields = ('created_at', 'token')
 

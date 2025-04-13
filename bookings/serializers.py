@@ -11,6 +11,7 @@ class ShortTermBookingSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'email',
+            'phone_number',
             'check_in',
             'check_out',
             'created_at',
