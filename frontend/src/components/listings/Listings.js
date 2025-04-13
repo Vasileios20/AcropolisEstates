@@ -41,6 +41,8 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
   const markerRefs = useRef({});
   const listingRefs = useRef({});
   const infoWindowRef = useRef(null);
+  const path = window.location.pathname;
+  
 
   const handleMarkerClick = useCallback(
     (id) => {
@@ -224,7 +226,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
                                     </Carousel.Item>
                                   ))}
                                 </Carousel>
-                                <Link to={`/listings/${listing.id}`} className="text-decoration-none h-100">
+                                <Link to={path === "/short-term-listings/" ? `/short-term-listings/${listing.id}` : `/listings/${listing.id}`} className="text-decoration-none h-100">
                                   <ListingHeader
                                     {...listing}
                                     listingPage={true}
