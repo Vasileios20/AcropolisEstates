@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (
     ShortTermBookingCreateView,
     ShortTermBookingDetailView,
-    ConfirmBookingView
+    ConfirmBookingView,
+    UnavailableDatesView,
 )
 
 urlpatterns = [
@@ -12,4 +13,6 @@ urlpatterns = [
          name='shortterm-booking-detail'),
     path('confirm/<uuid:token>/', ConfirmBookingView.as_view(),
          name='shortterm-booking-confirm'),
+    path("bookings/unavailable-dates/",
+         UnavailableDatesView.as_view(), name="unavailable-dates"),
 ]

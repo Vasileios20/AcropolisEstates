@@ -76,3 +76,25 @@ class ConfirmBookingView(APIView):
                 {'error': 'Invalid or expired confirmation link.'},
                 status=404
             )
+
+
+class UnavailableDatesView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        listing_id = request.query_params.get("listing")
+        if not listing_id:
+            return Response(
+                {"error": "Missing 'listing' parameter"},
+                status=400
+            )
+
+        bookings = ShortTermBooking.objects.filter(listing_id=listing_id)
+
+        data = [
+            {
+                "check_in": booking.check_in,
+                "check_out": booking.check_out
+            }
+            for booking in bookings
+        ]
+        return Response(data)
