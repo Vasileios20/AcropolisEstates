@@ -37,6 +37,10 @@ import AdminOwners from "./pages/admin/AdminOwners";
 import Owner from "./pages/admin/Owner";
 import OwnerCreateFormPage from "./pages/admin/OwnerCreateFormPage";
 import OwnerEditForm from "./pages/admin/OwnerEditForm";
+import ShortTermListingCreateForm from "pages/listings/ShortTermListingCreateForm";
+import ShortTermListingsPage from "pages/listings/ShortTermListingsPage";
+import ShortTermListingPage from "pages/listings/ShortTermListingPage";
+import ShortTermListingEditForm from "pages/listings/ShortTermListingEditForm";
 
 
 function App() {
@@ -133,6 +137,16 @@ function App() {
               <Route exact path="/frontend/admin/listings/owners/:id/edit" render={() => <OwnerEditForm />} />
 
               <Route exact path="/frontend/admin/listings/owners/:id" render={() => <Owner />} />
+
+              <Route exact path="/short-term-listings" render={() => <ShortTermListingsPage nonEssentialConsent={nonEssentialConsent} setShowCookieBanner={setShowCookieBanner} />} />
+              <Route exact path="/short-term-listings/create" render={() => <ShortTermListingCreateForm />} />
+              <Route exact path="/short-term-listings/:id" render={() => <ShortTermListingPage setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />} />
+              <Route
+                exact
+                path="/short-term-listings/:id/edit"
+                render={() => <ShortTermListingEditForm />}
+              />
+
               <Route exact path="/notfound" render={() => <NotFound />} />
               <Route render={() => <NotFound />} />
 
