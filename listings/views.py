@@ -134,6 +134,55 @@ Filter class for filtering listings based on various criteria.
         ]
 
 
+class ShortTermListingFilter(filter.FilterSet):
+    """
+Filter class for filtering listings based on various criteria.
+    """
+
+    # Get amenities filter
+    amenities = filter.ModelMultipleChoiceFilter(
+        field_name="amenities",
+        # filter only amenities that are not blank
+        queryset=Amenities.objects.all().exclude(name=""),
+        conjoined=True,
+    )
+
+    min_price = filter.NumberFilter(field_name="price", lookup_expr="gte")
+    max_price = filter.NumberFilter(field_name="price", lookup_expr="lte")
+
+    min_bedrooms = filter.NumberFilter(
+        field_name="bedrooms", lookup_expr="gte")
+    max_bedrooms = filter.NumberFilter(
+        field_name="bedrooms", lookup_expr="lte")
+
+    min_floor_area = filter.NumberFilter(
+        field_name="floor_area", lookup_expr="gte")
+    max_floor_area = filter.NumberFilter(
+        field_name="floor_area", lookup_expr="lte")
+
+    min_floor = filter.NumberFilter(
+        field_name="floor", lookup_expr="lte")
+    max_floor = filter.NumberFilter(
+        field_name="floor", lookup_expr="lte")
+    region_id = filter.NumberFilter(
+        field_name="region_id", lookup_expr="exact")
+    county_id = filter.NumberFilter(
+        field_name="county_id", lookup_expr="exact")
+    municipality_id = filter.NumberFilter(
+        field_name="municipality_id", lookup_expr="exact")
+
+    class Meta:
+        model = ShortTermListing
+        fields = [
+            "agent_name",
+            "price",
+            "floor",
+            "bedrooms",
+            "bathrooms",
+            "floor_area",
+        ]
+
+
 class OwnerViewSet(ModelViewSet):
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
@@ -371,7 +420,7 @@ class ShortTermListingList(generics.ListCreateAPIView):
         filters.OrderingFilter
     ]
     parser_classes = [MultiPartParser, FormParser]
-    # filterset_class = ListingFilter
+    filterset_class = ShortTermListingFilter
     search_fields = [
         "municipality",
         "municipality_id",
