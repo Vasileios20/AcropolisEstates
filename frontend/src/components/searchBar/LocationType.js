@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import MunicipalitySearch from './MunicipalitySearch';
 import { CustomDropDown } from './CustomDropDown';
 import styles from '../../styles/SearchBar.module.css';
+import { useRouteFlags } from 'contexts/RouteProvider';
 
 const MainSearchFields = ({
     filters,
@@ -17,6 +18,7 @@ const MainSearchFields = ({
     setEmpty,
     handleChange
 }) => {
+    const { shortTermListing } = useRouteFlags();
     const type = filters?.type
     const typeLabel = type ? t("propertyDetails.types." + type) : "";
 
@@ -29,7 +31,7 @@ const MainSearchFields = ({
 
     return (
         <>
-            <Row className="g-1 align-items-center justify-content-evenly">
+            <Row className={shortTermListing ? "" : "g-1 align-items-center justify-content-evenly"}>
                 <Col xs={12} sm={6} md={9} className="text-start">
                     <Form.Label style={{ fontWeight: "500" }} className={`${styles.Label} mb-0`}>
                         {t("searchBar.location")}
@@ -45,7 +47,7 @@ const MainSearchFields = ({
                         setFilters={setFilters}
                     />
                 </Col>
-                <Col xs={12} sm={6} md={3} className="text-start">
+                <Col xs={12} sm={6} md={3} className={shortTermListing ? "d-none" : "text-start"}>
                     <Form.Label style={{ fontWeight: "500" }} className={`${styles.Label} mb-0`}>
                         {t("searchBar.type")}
                     </Form.Label>

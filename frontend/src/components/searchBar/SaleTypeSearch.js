@@ -3,16 +3,20 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { t } from 'i18next'
 import btnStyles from '../../styles/Button.module.css'
+import { useRouteFlags } from 'contexts/RouteProvider'
 
 export const SaleTypeSearch = ({ filters, setFilters, handleChange }) => {
+    const { shortTermListing } = useRouteFlags();
+
     useEffect(() => {
         if (!filters.saleType) {
             setFilters((prevFilters) => ({
                 ...prevFilters,
-                saleType: "sale",
+                saleType: shortTermListing ? "rent" : "sale",
             }))
         }
-    }, [filters.saleType, setFilters])
+    }, [filters.saleType, setFilters, shortTermListing])
+
     return (
         <Col xs={6} className="mb-1 d-flex align-items-center">
 

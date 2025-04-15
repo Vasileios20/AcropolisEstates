@@ -6,12 +6,15 @@ import Row from 'react-bootstrap/Row';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { MainFieldsDropDown } from './CustomDropDown';
 import styles from '../../styles/SearchBar.module.css';
+import { useRouteFlags } from 'contexts/RouteProvider';
 
 const MainSearchFields = ({
     filters,
     setFilters
 }) => {
+    const { shortTermListing } = useRouteFlags();
     const [show, setShow] = useState(false);
+
     const priceOptions = [
         { value: "", label: t("searchBar.minPrice") },
         ...Array.from({ length: 20 }, (_, i) => ({ value: (i + 1) * 5000, label: (i + 1) * 5000 })),
@@ -21,6 +24,18 @@ const MainSearchFields = ({
     const maxPriceOptions = [
         { value: "", label: t("searchBar.maxPrice") },
         ...priceOptions.slice(1)
+    ];
+
+    const shortTermPriceOptions = [
+        { value: "", label: t("searchBar.minPrice") },
+        ...Array.from({ length: 20 }, (_, i) => ({ value: (i + 1) * 50, label: (i + 1) * 50 })),
+        ...Array.from({ length: 9 }, (_, i) => ({ value: 1000 + (i + 1) * 500, label: 1000 + (i + 1) * 500 })),
+        ...Array.from({ length: 10 }, (_, i) => ({ value: 5000 + (i + 1) * 1000, label: 5000 + (i + 1) * 1000 }))
+    ];
+
+    const maxShortTermPriceOptions = [
+        { value: "", label: t("searchBar.maxPrice") },
+        ...shortTermPriceOptions.slice(1)
     ];
 
     const surfaceOptions = [
@@ -39,6 +54,8 @@ const MainSearchFields = ({
     const priceMax = parseInt(String(filters?.price?.max)).toLocaleString("de-DE", { useGrouping: true });
     const surfaceMin = parseInt(String(filters?.surface?.min)).toLocaleString("de-DE", { useGrouping: true });
     const surfaceMax = parseInt(String(filters?.surface?.max)).toLocaleString("de-DE", { useGrouping: true });
+    const priceOptionsToUse = { shortTermListing } ? shortTermPriceOptions : priceOptions;
+    const maxPriceOptionsToUse = { shortTermListing } ? maxShortTermPriceOptions : maxPriceOptions;
 
     return (
         <Row className="g-1 align-items-center justify-content-evenly justify-content-lg-start">
@@ -58,7 +75,7 @@ const MainSearchFields = ({
                                 <Dropdown.Menu className={`${styles.DropdownMenu} rounded`}>
 
                                     <div className={`${styles.Dropdown} rounded`}>
-                                        <MainFieldsDropDown filters={filters} setFilters={setFilters} options={priceOptions} field="price" keyName="min" show={show} setShow={setShow} />
+                                        <MainFieldsDropDown filters={filters} setFilters={setFilters} options={priceOptionsToUse} field="price" keyName="min" show={show} setShow={setShow} />
                                     </div>
                                 </Dropdown.Menu>
                             </Dropdown>
@@ -70,7 +87,7 @@ const MainSearchFields = ({
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className={`${styles.DropdownMenu} rounded`}>
                                     <div className={`${styles.Dropdown} rounded`}>
-                                        <MainFieldsDropDown filters={filters} setFilters={setFilters} options={maxPriceOptions} field="price" keyName="max" show={show} setShow={setShow} />
+                                        <MainFieldsDropDown filters={filters} setFilters={setFilters} options={maxPriceOptionsToUse} field="price" keyName="max" show={show} setShow={setShow} />
                                     </div>
                                 </Dropdown.Menu>
                             </Dropdown>
@@ -98,7 +115,7 @@ const MainSearchFields = ({
                         </Col>
                         <Col xs={12} sm={6} md={6}>
                             <Dropdown onToggle={() => setShow(!show)}>
-                                <Dropdown.Toggle className={`${styles.Select} w-100`} style={{ borderColor: "#4d6765" }} id="dropdown-basic">                        
+                                <Dropdown.Toggle className={`${styles.Select} w-100`} style={{ borderColor: "#4d6765" }} id="dropdown-basic">
                                     {filters.surface.min && filters.surface.max ? `${surfaceMax} ${t("searchBar.sqm")}` : filters.surface.max ? `${t("searchBar.to")} ${surfaceMax} ${t("searchBar.sqm")}` : `${t("searchBar.to")}`}
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className={`${styles.DropdownMenu} rounded`}>
