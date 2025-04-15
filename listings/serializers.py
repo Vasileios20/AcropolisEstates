@@ -486,6 +486,7 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
             "municipality",
             "postcode",
             "price",
+            "currency",
             "floor_area",
             "bedrooms",
             "floor",
