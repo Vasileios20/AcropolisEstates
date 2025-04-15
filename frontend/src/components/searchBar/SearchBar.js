@@ -14,6 +14,7 @@ import { SaleTypeSearch } from "./SaleTypeSearch";
 import { ButtonsSearch } from "./ButtonsSearch";
 import LocationType from "./LocationType";
 import PriceSurface from "./PriceSurface";
+import { useRouteFlags } from "contexts/RouteProvider";
 
 const SearchBar = () => {
   /**
@@ -44,6 +45,7 @@ const SearchBar = () => {
   const [errors, setErrors] = useState("");
   const [empty, setEmpty] = useState(false);
   const { regionsData } = useFetchLocationData();
+  const { shortTermListing } = useRouteFlags();
 
   // Fetch the search parameters from the URL and set the state.
   useMemo(() => {
@@ -68,16 +70,19 @@ const SearchBar = () => {
     setUpdate(false);
   }, [history.location.search]);
 
+  
   // Submit the search form.
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Fetch the listings from the API using the search parameters.
-    let path = `/listings/?sale_type=${filters.saleType}`;
+    let path = shortTermListing ? `/short-term-listings/?` : `/listings/?sale_type=${filters.saleType}`;
     if (filters.municipalityId) {
       path += `&region_id=${filters.regionId}&county_id=${filters.countyId}&municipality_id=${filters.municipalityId}`;
     }
     if (empty) {
-      path = `/listings/?sale_type=${filters.saleType}`;
+      path = shortTermListing
+    ? `/short-term-listings/?`
+    : `/listings/?sale_type=${filters.saleType}`;
     }
     if (filters.type) {
       path += `&type=${filters.type}`;
@@ -200,7 +205,7 @@ const SearchBar = () => {
                 </Alert>
               ))}
           <Row className="mb-1 align-items-center justify-content-start gx-0 gx-md-1">
-            <Col xs={6} className="mb-1">
+            <Col xs={6} className={shortTermListing ? "d-none" : "mb-1"}>
               <SaleTypeSearch
                 errors={errors}
                 setErrors={setErrors}
@@ -211,7 +216,7 @@ const SearchBar = () => {
             </Col>
 
 
-            <Col xs={6} className="mb-1 d-flex align-items-center justify-content-end">
+            <Col xs={shortTermListing ? 12 : 6} className="mb-1 d-flex align-items-center justify-content-end">
               <AdvancedFiltersModal
                 onApplyFilters={handleFilters}
                 filters={filters}
@@ -227,7 +232,7 @@ const SearchBar = () => {
             </Col>
           </Row>
           <Row className="g-1">
-            <Col xs={12} md={6} lg={7} xl={6}  className="mb-1">
+            <Col xs={12} md={6} lg={7} xl={6} className="mb-1">
               <LocationType
                 filters={filters}
                 setFilters={setFilters}
