@@ -4,6 +4,7 @@ import { axiosReq } from "../api/axiosDefaults";
 import Spinner from "react-bootstrap/Spinner";
 import { t } from "i18next";
 import { useHistory } from "react-router-dom";
+import { useRouteFlags } from "contexts/RouteProvider";
 
 const CustomDropdown = ({ options, onSelect, selected }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,6 +66,9 @@ const SortOrder = ({ listings, setListings }) => {
   const [loaded, setLoaded] = useState(false);
   const history = useHistory();
   const path = history?.location?.search;
+  const { shortTermListing } = useRouteFlags();
+
+
 
   const handleSortChange = async (value) => {
     setSortOrder(value);
@@ -76,7 +80,28 @@ const SortOrder = ({ listings, setListings }) => {
     queryParams.set("ordering", value);
     const updatedPath = `${currentPath.split("?")[0]}?${queryParams.toString()}`;
 
-    if (path) {
+    if (shortTermListing) {
+      try {
+        const { data } = await axiosReq.get(`/short-term-listings/${updatedPath}`);
+        data.results = data.results.filter((listing) => listing.approved === true);
+        history.push(`/short-term-listings/${updatedPath}`, { data: data });
+      }
+      catch (error) {
+        console.error(error);
+      } finally {
+        setLoaded(false);
+      }
+    } else if (path && shortTermListing) {
+      try {
+        const { data } = await axiosReq.get(`/short-term-listings/${updatedPath}`);
+        data.results = data.results.filter((listing) => listing.approved === true);
+        history.push(`/short-term-listings/${updatedPath}`, { data: data });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoaded(false);
+      }
+    } else if (path && path.includes("listings")) {
       try {
         const { data } = await axiosReq.get(`/listings/${updatedPath}`);
         data.results = data.results.filter((listing) => listing.approved === true);
@@ -86,7 +111,8 @@ const SortOrder = ({ listings, setListings }) => {
       } finally {
         setLoaded(false);
       }
-    } else {
+    }
+    else {
       try {
         const { data } = await axiosReq.get(`/listings/?ordering=${value}`);
         data.results = data.results.filter((listing) => listing.approved === true);
@@ -97,6 +123,9 @@ const SortOrder = ({ listings, setListings }) => {
         setLoaded(false);
       }
     }
+
+
+
   };
 
   const sortOptions = [
