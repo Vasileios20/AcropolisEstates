@@ -90,6 +90,9 @@ const NavBar = () => {
       <NavDropdown.Item className={styles.NavDropdownItem} href="/listings">
         {t("services.properties")}
       </NavDropdown.Item>
+      <NavDropdown.Item className={styles.NavDropdownItem} href="/short-term-listings">
+        {t("services.shortTermRental")}
+      </NavDropdown.Item>
     </NavDropdown>
   );
 
@@ -127,6 +130,13 @@ const NavBar = () => {
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
+        to="/short-term-listings/create"
+      >
+        {t("nav.addShortTermRental")}
+      </NavLink>
+      <NavLink
+        className={styles.NavLink}
+        activeClassName={styles.Active}
         to="/contact_list"
       >
         {t("nav.messages")}
@@ -136,6 +146,11 @@ const NavBar = () => {
         activeClassName={styles.Active}
         to="/listings/"
       >Approved Listings</NavLink>
+      <NavLink
+        className={styles.NavLink}
+        activeClassName={styles.Active}
+        to="/short-term-listings/"
+      >Approved Short Term Listings</NavLink>
       <NavLink
         className={styles.NavLink}
         to={`/profiles/${currentUser?.profile_id}`}
