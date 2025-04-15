@@ -18,6 +18,7 @@ import { t } from "i18next";
 import { Helmet } from "react-helmet-async";
 import SortOrder from '../SortOrder';
 import imagesStyles from "../../styles/ListingImages.module.css";
+import { useRouteFlags } from "contexts/RouteProvider";
 
 const ListingsPage = ({ array, hasLoaded, setListings, listings, message, searchResults, setShowCookieBanner, nonEssentialConsent }) => {
   // The ListingsPage component is a functional component that renders the listings from the database.
@@ -41,7 +42,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
   const markerRefs = useRef({});
   const listingRefs = useRef({});
   const infoWindowRef = useRef(null);
-  const path = window.location.pathname;
+  const { shortTermListing } = useRouteFlags();
   
 
   const handleMarkerClick = useCallback(
@@ -226,7 +227,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
                                     </Carousel.Item>
                                   ))}
                                 </Carousel>
-                                <Link to={path === "/short-term-listings/" ? `/short-term-listings/${listing.id}` : `/listings/${listing.id}`} className="text-decoration-none h-100">
+                                <Link to={shortTermListing ? `/short-term-listings/${listing.id}` : `/listings/${listing.id}`} className="text-decoration-none h-100">
                                   <ListingHeader
                                     {...listing}
                                     listingPage={true}
