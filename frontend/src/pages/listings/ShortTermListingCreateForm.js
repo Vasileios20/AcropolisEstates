@@ -226,7 +226,7 @@ function ShortTermListingCreateForm() {
 
     try {
       const { data } = await axiosReq.post("/short-term-listings/", formData);
-      history.push(`/listings/${data.id}`);
+      history.push(`/short-term-listings/${data.id}`);
     } catch (err) {
       setErrors(err.response?.data || {});
     }

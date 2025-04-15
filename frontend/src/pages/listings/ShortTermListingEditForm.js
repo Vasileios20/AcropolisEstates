@@ -305,9 +305,6 @@ function ShortTermListingEditForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("type", listingData.type);
-    formData.append("sub_type", listingData.sub_type);
-    formData.append("sale_type", listingData.sale_type);
     formData.append("price", listingData.price || "0");
     formData.append("currency", listingData.currency);
     formData.append("description", listingData.description);
