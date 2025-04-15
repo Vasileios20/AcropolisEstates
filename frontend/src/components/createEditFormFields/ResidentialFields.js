@@ -6,6 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import styles from '../../styles/ListingCreateEditForm.module.css';
 import { useTranslation } from 'react-i18next';
 import { AmenitiesResidential } from './amenities/AmenitiesResidential';
+import { useRouteFlags } from 'contexts/RouteProvider';
 
 
 const ResidentialFields = (
@@ -17,9 +18,11 @@ const ResidentialFields = (
         renderTextField,
         handleAmenityChange,
         selectedAmenities,
-        create
+        create,
     }) => {
     const { t } = useTranslation();
+    const { shortTermListing } = useRouteFlags();
+
     return (
         <>
             <h2>{t('createEditForm.headers.residentialTechnical')}</h2>
@@ -42,7 +45,7 @@ const ResidentialFields = (
                     ))}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
+            <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
                 <Col md={6}>
                     <Form.Group controlId="land_area">
                         <Form.Label>{t("propertyDetails.landArea")} </Form.Label>
@@ -69,7 +72,7 @@ const ResidentialFields = (
                     fieldName === "wc" ||
                     fieldName === "living_rooms" ||
                     fieldName === "floor" ||
-                    fieldName === "levels"
+                    (shortTermListing ? "" : fieldName === "levels")
                 ) {
                     return (
                         <Row className="justify-content-center" key={fieldName}>
@@ -81,7 +84,7 @@ const ResidentialFields = (
                 }
                 return null;
             })}
-            <Row className="justify-content-center">
+            <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
                 <Col md={6}>
                     <Form.Group controlId="heating_system">
                         <Form.Label>{t("propertyDetails.heating_system.title")}</Form.Label>
@@ -110,7 +113,7 @@ const ResidentialFields = (
                     ))}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
+            <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
                 <Col md={6}>
                     <Form.Group controlId="power_type">
                         <Form.Label>{t("propertyDetails.powerType.title")}</Form.Label>
@@ -137,7 +140,7 @@ const ResidentialFields = (
                     ))}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
+            <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
                 <Col md={6}>
                     <Form.Group controlId="energy_class">
                         <Form.Label>{t("propertyDetails.energyClass")}</Form.Label>
@@ -162,7 +165,7 @@ const ResidentialFields = (
                     ))}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
+            <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
                 <Col md={6}>
                     <Form.Group controlId="floor_type">
                         <Form.Label>{t("propertyDetails.floorTypes.title")}</Form.Label>
@@ -194,7 +197,7 @@ const ResidentialFields = (
                     ))}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
+            <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
                 <Col md={6}>
                     <Form.Group controlId="type_of_glass">
                         <Form.Label>{t("propertyDetails.glassType.title")}</Form.Label>
@@ -218,7 +221,7 @@ const ResidentialFields = (
                     ))}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
+            <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
                 <Col md={6}>
                     <Form.Group controlId="opening_frames">
                         <Form.Label>{t("propertyDetails.openingFrames.title")}</Form.Label>
@@ -243,7 +246,7 @@ const ResidentialFields = (
                     ))}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
+            <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
                 <Col md={6}>
                     <Form.Group controlId="construction_year">
                         <Form.Label>{t("propertyDetails.yearBuilt")}</Form.Label>
@@ -269,7 +272,7 @@ const ResidentialFields = (
                     ))}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
+            <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
                 <Col md={6}>
                     <Form.Group controlId="service_charge">
                         <Form.Label>{t("propertyDetails.serviceCharge")} {listingData.currency === "---" ? "" : listingData.currency}</Form.Label>

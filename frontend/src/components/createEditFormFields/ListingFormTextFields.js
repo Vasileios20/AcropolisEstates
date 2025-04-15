@@ -12,13 +12,12 @@ import styles from "../../styles/ListingCreateEditForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 
 import ResidentialFields from "./ResidentialFields";
-import LandFields from "./LandFields";
-import CommercialFields from "./CommercialFields";
 
 import { useTranslation } from "react-i18next";
 import RegionCountyMunicipalitySelect from "./RegionCountyMunicipalitySelect";
 import OwnerCreateForm from "../../pages/admin/OwnerCreateForm";
 import useFetchOwners from "../../hooks/useFetchOwners";
+import { useRouteFlags } from "contexts/RouteProvider";
 
 const ListingTextFields = (
   {
@@ -36,7 +35,7 @@ const ListingTextFields = (
     onMunicipalityChange,
     selectedRegion,
     selectedCounty,
-    selectedMunicipality,
+    selectedMunicipality
   }) => {
 
   const { t } = useTranslation();
@@ -44,6 +43,8 @@ const ListingTextFields = (
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { owners } = useFetchOwners();
+  const { shortTermListing } = useRouteFlags();
+
 
   const renderTextField = (fieldName, label, type = "text", rows = 1) => (
     <Form.Group controlId={fieldName}>
@@ -124,7 +125,7 @@ const ListingTextFields = (
           ))}
         </Col>
       </Row>
-      <Row className="justify-content-center">
+      <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
         <Col md={6}>
           <Form.Group controlId="sale_type">
             <Form.Label>{t("propertyDetails.typeField")}</Form.Label>
@@ -148,7 +149,7 @@ const ListingTextFields = (
         </Col>
       </Row>
 
-      <Row className="justify-content-center">
+      <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
         <Col md={6}>
           <Form.Group controlId="type">
             <Form.Label>{t("propertyDetails.types.title")}</Form.Label>
@@ -172,7 +173,7 @@ const ListingTextFields = (
           ))}
         </Col>
       </Row>
-      <Row className="justify-content-center">
+      <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
         <Col md={6}>
           <Form.Group controlId="sub_type">
             <Form.Label>{t("propertyDetails.subTypes.title")}</Form.Label>
@@ -248,7 +249,7 @@ const ListingTextFields = (
           ))}
         </Col>
       </Row>
-      <Row className="justify-content-center">
+      <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
         <Col md={6}>
           <Form.Group controlId="availability">
             <Form.Label>{t("propertyDetails.availability")}</Form.Label>
@@ -401,48 +402,17 @@ const ListingTextFields = (
 
       {/* // RESIDENTIAL FIELDS */}
 
-      {listingData.type === "residential" &&
-        <ResidentialFields
-          listingData={listingData}
-          handleChange={handleChange}
-          errors={errors}
-          renderTextField={renderTextField}
-          handleAmenityChange={handleAmenityChange}
-          selectedAmenities={selectedAmenities}
-          create={create}
-        />
-      }
 
-      {/* // LAND FIELDS */}
-
-      {listingData.type === "land" &&
-        <LandFields
-          listingData={listingData}
-          handleChange={handleChange}
-          errors={errors}
-          renderTextField={renderTextField}
-          handleAmenityChange={handleAmenityChange}
-          selectedAmenities={selectedAmenities}
-          create={create}
-        />
-      }
-
-      {/* // COMMERCIAL FIELDS */}
-
-      {listingData.type === "commercial" &&
-        <CommercialFields
-          listingData={listingData}
-          handleChange={handleChange}
-          errors={errors}
-          renderTextField={renderTextField}
-          handleAmenityChange={handleAmenityChange}
-          selectedAmenities={selectedAmenities}
-          create={create}
-        />
-      }
-
-      <hr />
-
+      <ResidentialFields
+        listingData={listingData}
+        handleChange={handleChange}
+        errors={errors}
+        renderTextField={renderTextField}
+        handleAmenityChange={handleAmenityChange}
+        selectedAmenities={selectedAmenities}
+        create={create}
+        shortTermListing={shortTermListing}
+      />
 
 
       <Row className="justify-content-center">
