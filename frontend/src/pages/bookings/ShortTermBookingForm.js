@@ -36,6 +36,8 @@ const ShortTermBookingForm = ({ listingId }) => {
     const [submitted, setSubmitted] = useState(false);
     const [disabledDates, setDisabledDates] = useState([]);
 
+    const lng = i18n.language.startsWith('el') ? 'el' : 'en';
+
     useEffect(() => {
         const fetchUnavailableDates = async () => {
             try {
@@ -69,7 +71,7 @@ const ShortTermBookingForm = ({ listingId }) => {
             check_in: check_in?.toISOString().split('T')[0],
             check_out: check_out?.toISOString().split('T')[0],
             listing: listingId,
-            language: i18n.language || 'en',
+            language: lng || 'en',
         };
 
         if (currentUser) {
