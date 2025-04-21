@@ -80,6 +80,10 @@ input[type="checkbox"]:focus:checked {
   background-color: rgba(77, 103, 101, 1) !important;
 }
 
+input[type="checkbox"]:checked {
+  background-color: rgba(77, 103, 101, 1) !important;
+}
+
 .ErrorMessage {
   color: rgb(201, 0, 0);
   font-size: 0.8rem;
