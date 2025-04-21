@@ -7,7 +7,8 @@ import btnStyles from "../../styles/Button.module.css";
 import { SaleTypeSearch } from "./SaleTypeSearch";
 import ButtonsAdvancedFilters from "./ButtonsAdvancedFilters";
 import LocationType from "./LocationType";
-import PriceSurface from "./PriceSurface";
+import Price from "./Price";
+import Surface from "./Surface";
 import Bedrooms from "./Bedrooms";
 import YearBuilt from "./YearBuilt";
 import HeatingSystem from "./HeatingSystem";
@@ -117,10 +118,15 @@ const AdvancedFiltersModal = ({
                         />
                     </Row>
                     <Row className="g-1 align-items-center justify-content-start col-md-9">
-                        <PriceSurface
+                        <Price
                             filters={filters}
                             setFilters={setFilters}
                         />
+                        <Surface
+                            filters={filters}
+                            setFilters={setFilters}
+                        />
+
                     </Row>
 
                     <Row className="g-1 align-items-center justify-content-start col-md-9">
