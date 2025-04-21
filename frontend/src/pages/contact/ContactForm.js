@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 
 import Container from "react-bootstrap/Container";
 
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import styles from "../../styles/ContactForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
@@ -17,7 +17,8 @@ import axios from "axios";
 
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import TermsCheckbox from "components/TermsCheckbox";
 
 function ContactForm({ listing_id }) {
   /**
@@ -69,14 +70,13 @@ function ContactForm({ listing_id }) {
     }
   };
 
-  const handleCheckboxChange = (e) => {
-    setIsChecked(e.target.checked);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isChecked) {
       setErrors({ ...errors, checkbox: [t("contactForm.errorMessage")] });
+      setTimeout(() => {
+        setErrors({});
+      }, 2500);
       return;
     }
     contactData.phone_number = phoneValue;
@@ -91,7 +91,7 @@ function ContactForm({ listing_id }) {
       }, 2000);
     } catch (err) {
       setErrors(err.response?.data);
-      console.log(err.response?.data);
+      // console.log(err.response?.data);
       setTimeout(() => {
         setErrors({});
       }, 2500);
@@ -238,28 +238,7 @@ function ContactForm({ listing_id }) {
                 disabled={success ? true : false}
               />
             </Form.Group>
-            <Form.Group controlId="checkbox">
-              <Form.Check
-                className={`${styles.Checkbox}`}
-                type="checkbox"
-                label={<div>
-                  <Trans i18nKey="contactForm.acceptText"
-                    components={{
-                      1: <Link to="/terms" style={{ textDecoration: "underline" }} target="_blank" />,
-                      2: <Link to="/privacyPolicy" style={{ textDecoration: "underline" }} target="_blank" />
-                    }}
-                  />
-                </div>}
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-                disabled={success ? true : false}
-              />
-              {errors.checkbox && (
-                <span className={styles.ErrorMessage}>
-                  {errors.checkbox[0]}
-                </span>
-              )}
-            </Form.Group>
+            <TermsCheckbox errors={errors} isChecked={isChecked} setIsChecked={setIsChecked} />
 
             <Button
               className={`${btnStyles.Button} ${btnStyles.AngryOcean} mt-3`}

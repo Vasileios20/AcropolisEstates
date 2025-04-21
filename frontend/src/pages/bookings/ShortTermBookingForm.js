@@ -14,6 +14,7 @@ import Button from 'react-bootstrap/Button';
 import { axiosReq } from 'api/axiosDefaults';
 import { eachDayOfInterval, parseISO } from "date-fns";
 import BookingSuccessMessage from 'pages/bookings/BookingSuccessMessage';
+import TermsCheckbox from 'components/TermsCheckbox';
 
 
 const ShortTermBookingForm = ({ listingId }) => {
@@ -35,8 +36,13 @@ const ShortTermBookingForm = ({ listingId }) => {
 
     const [submitted, setSubmitted] = useState(false);
     const [disabledDates, setDisabledDates] = useState([]);
+    const [isChecked, setIsChecked] = useState(false);
 
     const lng = i18n.language.startsWith('el') ? 'el' : 'en';
+
+    // const handleCheckboxChange = (e) => {
+    //     setIsChecked(e.target.checked);
+    // };
 
     useEffect(() => {
         const fetchUnavailableDates = async () => {
@@ -64,6 +70,13 @@ const ShortTermBookingForm = ({ listingId }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!isChecked) {
+            setErrors({ ...errors, checkbox: [t("contactForm.errorMessage")] });
+            setTimeout(() => {
+                setErrors({});
+            }, 2500);
+            return;
+        }
 
         const formData = {
             ...bookingData,
@@ -82,7 +95,7 @@ const ShortTermBookingForm = ({ listingId }) => {
             await axios.post('bookings/', formData);
             setSubmitted(true);
         } catch (error) {
-            // console.error(error.response?.data);
+            console.error(error.response?.data);
             setErrors(error.response?.data);
             setTimeout(() => {
                 setErrors({});
@@ -220,6 +233,9 @@ const ShortTermBookingForm = ({ listingId }) => {
                             </span>
                         )}
                     </Form.Group>
+
+                    <TermsCheckbox errors={errors} isChecked={isChecked} setIsChecked={setIsChecked} />
+
                     <Row className="justify-content-center align-items-center">
                         <div className="d-flex justify-content-center gap-3 mt-3 w-100">
                             <Button className={`${btnStyles.Button} ${btnStyles.AngryOcean}`} type="submit">
