@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 
-import Container from "react-bootstrap/Container";
+
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Alert from "react-bootstrap/Alert";
-import Modal from "react-bootstrap/Modal";
 
 import styles from "../../styles/ListingCreateEditForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
@@ -14,10 +11,17 @@ import btnStyles from "../../styles/Button.module.css";
 import ResidentialFields from "./ResidentialFields";
 
 import { useTranslation } from "react-i18next";
-import RegionCountyMunicipalitySelect from "./RegionCountyMunicipalitySelect";
-import OwnerCreateForm from "../../pages/admin/OwnerCreateForm";
 import useFetchOwners from "../../hooks/useFetchOwners";
 import { useRouteFlags } from "contexts/RouteProvider";
+import LandFields from "components/createEditFormFields/LandFields";
+import CommercialFields from "components/createEditFormFields/CommercialFields";
+import ShortTermFields from "components/createEditFormFields/ShortTermFields";
+import AgentOwner from "components/createEditFormFields/Owner";
+import TypeSaleSub from "components/createEditFormFields/TypeSaleSub";
+import CurrencyPrice from "components/createEditFormFields/CurrencyPriceAvailability";
+import Description from "components/createEditFormFields/Description";
+import LocationFields from "components/createEditFormFields/LocationFields";
+import { ApprovedFeatureCheckbox } from "components/createEditFormFields/ApprovedFeatureCheckbox";
 
 const ListingTextFields = (
   {
@@ -78,380 +82,137 @@ const ListingTextFields = (
   return (
     <div className="text-center">
       <h2>{t("createEditForm.headers.basicInfo")}</h2>
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="owner">
-            <Form.Label>Owner</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              as="select"
-              name="listing_owner"
-              value={listingData.listing_owner}
-              onChange={(e) => {
-                handleChange(e);
-                if (e.target.value === "create_new") {
-                  handleShow();
-                }
-              }}
-            >
-              <option>---</option>
-              <option value="create_new">Create New Owner</option>
-              {owners?.map((owner) => (
-                <option key={owner.id} value={owner.id}>
-                  {owner.first_name} {owner.last_name}
-                </option>
-              ))}
-            </Form.Control>
-          </Form.Group>
-          {listingData?.listing_owner === "create_new" && (
-            <Modal
-              show={show}
-              onHide={handleClose}
-              centered
-            >
-              <Modal.Header closeButton></Modal.Header>
-              <Modal.Body
-                className={`${styles.Modal}`}>
-                <Row className="justify-content-center w-100">
-                  <OwnerCreateForm />
-                </Row>
-              </Modal.Body>
-            </Modal>
-          )}
-          {errors?.listing_owner?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-      <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
-        <Col md={6}>
-          <Form.Group controlId="sale_type">
-            <Form.Label>{t("propertyDetails.typeField")}</Form.Label>
-            <Form.Control
-              className={`${styles.Input}`}
-              as="select"
-              name="sale_type"
-              value={listingData.sale_type}
-              onChange={handleChange}
-            >
-              <option>---</option>
-              <option value="rent">{t("propertyDetails.typeRent")}</option>
-              <option value="sale">{t("propertyDetails.typeSale")}</option>
-            </Form.Control>
-          </Form.Group>
-          {errors?.sale_type?.map((message, idx) => (
-            <Alert variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-
-      <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
-        <Col md={6}>
-          <Form.Group controlId="type">
-            <Form.Label>{t("propertyDetails.types.title")}</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              as="select"
-              name="type"
-              value={listingData.type}
-              onChange={handleChange}
-            >
-              <option>---</option>
-              <option value="land">{t("propertyDetails.types.land")}</option>
-              <option value="commercial">{t("propertyDetails.types.commercial")}</option>
-              <option value="residential">{t("propertyDetails.types.residential")}</option>
-            </Form.Control>
-          </Form.Group>
-          {errors?.type?.map((message, idx) => (
-            <Alert variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-      <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
-        <Col md={6}>
-          <Form.Group controlId="sub_type">
-            <Form.Label>{t("propertyDetails.subTypes.title")}</Form.Label>
-            <Form.Control
-              className={`${styles.Input}`}
-              as="select"
-              name="sub_type"
-              value={listingData.sub_type}
-              onChange={handleChange}
-            >
-              <option>---</option>
-              <option value="apartment">{t("propertyDetails.subTypes.apartment")}</option>
-              <option value="house">{t("propertyDetails.subTypes.house")}</option>
-              <option value="maisonette">{t("propertyDetails.subTypes.maisonette")}</option>
-              <option value="bungalow">{t("propertyDetails.subTypes.bungalow")}</option>
-              <option value="villa">{t("propertyDetails.subTypes.villa")}</option>
-              <option value="hotel">{t("propertyDetails.subTypes.hotel")}</option>
-              <option value="office">{t("propertyDetails.subTypes.office")}</option>
-              <option value="retail">{t("propertyDetails.subTypes.retail")}</option>
-              <option value="warehouse">{t("propertyDetails.subTypes.warehouse")}</option>
-              <option value="mixed_use">{t("propertyDetails.subTypes.mixed_use")}</option>
-              <option value="industrial">{t("propertyDetails.subTypes.industrial")}</option>
-              <option value="other">{t("propertyDetails.subTypes.other")}</option>
-            </Form.Control>
-          </Form.Group>
-          {errors?.sub_type?.map((message, idx) => (
-            <Alert variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="currency">
-            <Form.Label>{t("propertyDetails.currency")}</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              as="select"
-              name="currency"
-              value={listingData.currency}
-              onChange={handleChange}
-            >
-              <option>---</option>
-              <option value="€">€ EUR</option>
-              <option value="$">$ USD</option>
-              <option value="£">£ GBP</option>
-            </Form.Control>
-          </Form.Group>
-          {errors?.currency?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group controlId="price">
-            <Form.Label>{t("propertyDetails.price")} {listingData.currency === "---" ? "" : listingData.currency}</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="number"
-              name="price"
-              value={listingData.price}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.price?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
-      <Row className={shortTermListing ? "d-none" : "justify-content-center"}>
-        <Col md={6}>
-          <Form.Group controlId="availability">
-            <Form.Label>{t("propertyDetails.availability")}</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              type="date"
-              name="availability"
-              value={listingData.availability || ""}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.availability?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
+      <AgentOwner
+        listingData={listingData}
+        handleChange={handleChange}
+        handleShow={handleShow}
+        handleClose={handleClose}
+        show={show}
+        owners={owners}
+        errors={errors}
+      />
+      {!shortTermListing && <TypeSaleSub
+        listingData={listingData}
+        handleChange={handleChange}
+        handleShow={handleShow}
+        handleClose={handleClose}
+        show={show}
+        owners={owners}
+        errors={errors}
+        t={t}
+      />}
+      <CurrencyPrice
+        listingData={listingData}
+        handleChange={handleChange}
+        handleShow={handleShow}
+        handleClose={handleClose}
+        show={show}
+        owners={owners}
+        errors={errors}
+        t={t}
+      />
+      
       <hr />
-      <Row className="justify-content-center mt-4">
-        <Col md={6}>
-          <Form.Group controlId="description">
-            <Form.Label>{t("propertyDetails.description")}</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              as="textarea"
-              rows={3}
-              name="description"
-              value={listingData.description}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.description?.map((message, idx) => (
-            <Alert variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-        <Col md={6}>
-          <Form.Group controlId="description_gr">
-            <Form.Label>{t("propertyDetails.description_gr")}</Form.Label>
-            <Form.Control
-              className={styles.Input}
-              as="textarea"
-              rows={3}
-              name="description_gr"
-              value={listingData.description_gr}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.description?.map((message, idx) => (
-            <Alert variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </Col>
-      </Row>
+
+      <Description
+        listingData={listingData}
+        handleChange={handleChange}
+        handleShow={handleShow}
+        handleClose={handleClose}
+        show={show}
+        owners={owners}
+        errors={errors}
+        t={t}
+      />
+
       <hr />
-      <Container fluid>
-        <Row>
-          <h2>{t("createEditForm.headers.addressInfo")}</h2>
-          <RegionCountyMunicipalitySelect
-            onRegionChange={onRegionChange}
-            onCountyChange={onCountyChange}
-            onMunicipalityChange={onMunicipalityChange}
-            selectedRegion={selectedRegion}
-            selectedCounty={selectedCounty}
-            selectedMunicipality={selectedMunicipality}
-            listingData={listingData}
-            edit={edit}
-          />
-          {errors?.region_id?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-          {errors?.county_id?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-          {errors?.municipality_id?.map((message, idx) => (
-            <Alert className={styles.Input} variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-          {Object.entries(listingData).map(([fieldName, fieldValue]) => {
-            if (
-              fieldName === "address_street" ||
-              fieldName === "address_street_gr" ||
-              fieldName === "address_number" ||
-              fieldName === "postcode" ||
-              fieldName === "municipality_gr"
-            ) {
-              return (
-                <Row className="justify-content-center" key={fieldName}>
-                  <Col md={6}>
-                    {renderTextField(fieldName, t(`propertyDetails.${fieldName.charAt(0).toLowerCase()}${fieldName.slice(1)}`))}
-                  </Col>
-                </Row>
+   
+        <LocationFields
+          listingData={listingData}
+          handleChange={handleChange}
+          errors={errors}
+          onRegionChange={onRegionChange}
+          onCountyChange={onCountyChange}
+          onMunicipalityChange={onMunicipalityChange}
+          selectedRegion={selectedRegion}
+          selectedCounty={selectedCounty}
+          selectedMunicipality={selectedMunicipality}
+          renderTextField={renderTextField}
+          t={t}
+        />
 
-              );
-            }
-            return null;
-          })}
-
-
-        </Row>
-
-        <Row className="justify-content-center">
-          <Col md={6}>
-            <Form.Group controlId="latitude">
-              <Form.Label>{t("propertyDetails.latitude")}</Form.Label>
-              <Form.Control
-                className={styles.Input}
-                type="decimal"
-                name="latitude"
-                value={listingData.latitude}
-                onChange={handleChange}
-              />
-              {errors?.latitude?.map((message, idx) => (
-                <Alert className={styles.Input} variant="warning" key={idx}>
-                  {message}
-                </Alert>
-              ))}
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row className="justify-content-center">
-          <Col md={6}>
-            <Form.Group controlId="longitude">
-              <Form.Label>{t("propertyDetails.longitude")}</Form.Label>
-              <Form.Control
-                className={styles.Input}
-                type="decimal"
-                name="longitude"
-                value={listingData.longitude}
-                onChange={handleChange}
-              />
-              {errors?.longitude?.map((message, idx) => (
-                <Alert className={styles.Input} variant="warning" key={idx}>
-                  {message}
-                </Alert>
-              ))}
-            </Form.Group>
-          </Col>
-        </Row>
-      </Container>
       <hr />
 
       {/* // RESIDENTIAL FIELDS */}
 
+      {listingData.type === "residential" &&
+        <ResidentialFields
+          listingData={listingData}
+          handleChange={handleChange}
+          errors={errors}
+          renderTextField={renderTextField}
+          handleAmenityChange={handleAmenityChange}
+          selectedAmenities={selectedAmenities}
+          create={create}
+        />
+      }
 
-      <ResidentialFields
+      {/* // LAND FIELDS */}
+
+      {listingData.type === "land" &&
+        <LandFields
+          listingData={listingData}
+          handleChange={handleChange}
+          errors={errors}
+          renderTextField={renderTextField}
+          handleAmenityChange={handleAmenityChange}
+          selectedAmenities={selectedAmenities}
+          create={create}
+        />
+      }
+
+      {/* // COMMERCIAL FIELDS */}
+
+      {listingData.type === "commercial" &&
+        <CommercialFields
+          listingData={listingData}
+          handleChange={handleChange}
+          errors={errors}
+          renderTextField={renderTextField}
+          handleAmenityChange={handleAmenityChange}
+          selectedAmenities={selectedAmenities}
+          create={create}
+        />
+      }
+
+      {/* // SHORT TERM FIELDS */}
+
+      {shortTermListing &&
+        <ShortTermFields
+          listingData={listingData}
+          handleChange={handleChange}
+          errors={errors}
+          renderTextField={renderTextField}
+          handleAmenityChange={handleAmenityChange}
+          selectedAmenities={selectedAmenities}
+          create={create}
+        />
+      }
+
+      <hr />
+
+
+      <ApprovedFeatureCheckbox
         listingData={listingData}
         handleChange={handleChange}
+        handleChecked={handleChecked}
+        handleShow={handleShow}
+        handleClose={handleClose}
+        show={show}
+        owners={owners}
         errors={errors}
-        renderTextField={renderTextField}
-        handleAmenityChange={handleAmenityChange}
-        selectedAmenities={selectedAmenities}
-        create={create}
-        shortTermListing={shortTermListing}
+        t={t}
       />
-
-
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>{t("propertyDetails.approved")}</Form.Label>
-            <Form.Check
-              type="checkbox"
-              name="approved"
-              checked={listingData.approved}
-              onChange={handleChecked}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>{t("propertyDetails.featured")}</Form.Label>
-            <Form.Check
-              type="checkbox"
-              name="featured"
-              checked={listingData.featured}
-              onChange={handleChecked}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
-
-      {errors?.images?.map((message, idx) => (
-        <Alert variant="warning" key={idx}>
-          {message}
-        </Alert>
-      ))}
-      {errors?.is_first?.map((message, idx) => (
-        <Alert variant="warning" key={idx}>
-          {message}
-        </Alert>
-      ))}
 
       <Button
         className={`${btnStyles.Button} ${btnStyles.Remove} m-3`}
