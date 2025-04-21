@@ -31,7 +31,6 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
   const history = useHistory();
   const userStatus = useUserStatus();
   const { t, i18n } = useTranslation();
-  const [mapImage, setMapImage] = useState(null);
 
   const {
     id,
@@ -157,12 +156,9 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
               <h5 className="ps-2 pb-1">{t("propertiesPage.header2")}</h5>
               <div className={`${styles.AmenitiesBox}`}>{amenitiesList}</div>
             </Col>
-            <Col className="mx-auto my-5">{mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} setMapImage={setMapImage} />}</Col>
-            <Col className="my-5">
-              {mapImage && (
-                <img src={mapImage} alt="Captured Map" style={{ width: "100%", height: "auto", marginTop: "10px" }} />
-              )}
-            </Col>
+            <Col className="mx-auto my-5">
+              {mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />}</Col>
+            
           </Col>
 
           <Col lg={6} className="mb-3 ms-auto">
