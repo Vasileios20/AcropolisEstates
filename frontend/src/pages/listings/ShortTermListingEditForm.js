@@ -116,6 +116,9 @@ function ShortTermListingEditForm() {
           county_id,
           municipality_id,
           listing_owner,
+          max_guests,
+          max_adults,
+          max_children,
         } = data;
 
 
@@ -157,6 +160,9 @@ function ShortTermListingEditForm() {
           county_id,
           municipality_id,
           listing_owner,
+          max_guests,
+          max_adults,
+          max_children,
         });
         setSelectedAmenities(amenities.map((amenity) => amenity.id));
 
@@ -338,6 +344,9 @@ function ShortTermListingEditForm() {
     formData.append("county_id", listingData.county_id);
     formData.append("municipality_id", listingData.municipality_id);
     formData.append("listing_owner", listingData.listing_owner || "");
+    formData.append("max_guests", listingData.max_guests || "0");
+    formData.append("max_adults", listingData.max_adults || "0");
+    formData.append("max_children", listingData.max_children || "0");
 
     selectedAmenities.forEach((amenity) => {
       formData.append("amenities_ids", amenity);
