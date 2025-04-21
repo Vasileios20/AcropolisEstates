@@ -5,8 +5,8 @@ import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
 import styles from '../../styles/ListingCreateEditForm.module.css';
 import { useTranslation } from 'react-i18next';
-import { AmenitiesResidential } from './amenities/AmenitiesResidential';
 import { useRouteFlags } from 'contexts/RouteProvider';
+import AmenitiesShortTerm from 'components/createEditFormFields/amenities/AmenitiesShortTerm';
 
 
 const ShortTermFields = (
@@ -22,8 +22,6 @@ const ShortTermFields = (
     }) => {
     const { t } = useTranslation();
     const { shortTermListing } = useRouteFlags();
-    console.log('listingData', listingData);
-
 
     return (
         <>
@@ -129,7 +127,7 @@ const ShortTermFields = (
 
             <hr />
             <Row className="justify-content-center mt-4">
-                <AmenitiesResidential
+                <AmenitiesShortTerm
                     handleAmenityChange={handleAmenityChange}
                     selectedAmenities={selectedAmenities}
                     create={create}
