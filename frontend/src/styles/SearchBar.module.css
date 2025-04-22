@@ -27,6 +27,14 @@
   padding: 1rem 2rem;
 }
 
+.SearchFormShortTerm {
+  color: #000;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(77, 103, 101, 1);
+  padding: 1rem 2rem;
+}
+
 .SearchInput,
 .Select {
   font-size: 1rem;
@@ -49,6 +57,14 @@
   padding-bottom: 0;
   width: 100%;
   min-width: fit-content;
+}
+
+.DatePicker {
+  color: #4d6765 !important;
+  background-color: #fff !important;
+  border: 1px solid #4d6765;
+
+
 }
 
 .ListingsPerPageDropdown>*:hover,
@@ -118,16 +134,19 @@
 }
 
 .BlinkingInput {
-    animation: blink-caret 2s step-end infinite;
+  animation: blink-caret 2s step-end infinite;
 }
 
 @keyframes blink-caret {
-    from, to {
-        border-right-color: transparent;
-    }
-    50% {
-        border-right-color: black;
-    }
+
+  from,
+  to {
+    border-right-color: transparent;
+  }
+
+  50% {
+    border-right-color: black;
+  }
 }
 
 .AmenityCheckbox input[type="checkbox"] {
