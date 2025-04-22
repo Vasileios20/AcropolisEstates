@@ -44,7 +44,6 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
   const infoWindowRef = useRef(null);
   const { shortTermListing } = useRouteFlags();
   
-
   const handleMarkerClick = useCallback(
     (id) => {
       setInfoWindowShownId((prevId) => (prevId === id ? null : id));
@@ -156,13 +155,18 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
         <title>{`Listings`}</title>
         <meta name="keywords" content="real estate, Acropolis Estates, real estate properties, property location, city postcode, property address, property type, property price, minimum price, maximum price, floor area, minimum floor area, maximum floor area, properties for sale, land for sale, apartments for sale, retail properties, office properties, Athens properties, Attiki properties, Sterea Ellada properties, real estate listings, property search, property filters, real estate market" />
       </Helmet>
-      {!searchResults && <div className={` d-flex flex-column ${heroStyles.HeroImageListings}`}>
+      {!searchResults && <div className={shortTermListing ? `d-flex flex-column ${heroStyles.HeroImageShortTerm}` : ` d-flex flex-column ${heroStyles.HeroImageListings}`}>
 
-        <h1 className={heroStyles.HeaderListings} style={{ color: "#f3f3f3", backgroundColor: "transparent", }}>{t("propertiesPage.title")}</h1>
+        <h1 className={heroStyles.HeaderListings} style={{ color: "#f3f3f3", backgroundColor: "transparent", }}>{shortTermListing ? t("propertiesPage.shortTermTitle") : t("propertiesPage.title")}</h1>
         <SearchBar />
       </div>}
       <Container fluid className="px-lg-5 pt-5">
-        {searchResults && <SearchBar />}
+        {searchResults && !shortTermListing && <SearchBar />}
+        {searchResults && shortTermListing &&
+          <div className="px-lg-5 pt-5 mt-3">
+            <SearchBar />
+          </div>}
+
 
         <Row className="justify-content-between gx-0">
           <Col xs={12} lg={12} xl={8} className={`${styles.Listings__Container}`}>
@@ -170,7 +174,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
               <Row className="justify-content-between align-items-center px-1">
                 <Col xs={6} className="">
                   <p className="">
-                    {!searchResults ? `${array.length} ${t("propertiesPage.title2")}` : array.length === 0 ?
+                    {!searchResults ? ` ${t("propertiesPage.title2")}` : array.length === 0 ?
                       "" : array.length === 1 ?
                         `${array.length} ${t("propertiesPage.title1")}` : `${array.length} ${t("propertiesPage.title2")} `}
                   </p>
@@ -202,7 +206,7 @@ const ListingsPage = ({ array, hasLoaded, setListings, listings, message, search
                             ...listing.images.filter((image) => !image.is_first),
                           ];
                           const sold = listing?.amenities?.find(amenity => amenity.name === 'sold');
-                          
+
                           return (
                             <Col key={listing.id} xs={12} md={6} lg={4} className="mb-4 gx-4"
                               ref={(el) => (listingRefs.current[listing.id] = el)}>
