@@ -299,11 +299,12 @@ function ShortTermListingEditForm() {
     setSelectedMunicipality("");
   };
 
-  const handleMunicipalityChange = municipality => {
+  const handleMunicipalityChange = (municipality, municipality_gr) => {
     setSelectedMunicipality(municipality);
     setListingData((prevData) => ({
       ...prevData,
       municipality_id: municipality,
+      municipality_gr: municipality_gr,
     }));
   };
 
