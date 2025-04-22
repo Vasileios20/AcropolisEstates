@@ -40,10 +40,6 @@ const ShortTermBookingForm = ({ listingId }) => {
 
     const lng = i18n.language.startsWith('el') ? 'el' : 'en';
 
-    // const handleCheckboxChange = (e) => {
-    //     setIsChecked(e.target.checked);
-    // };
-
     useEffect(() => {
         const fetchUnavailableDates = async () => {
             try {
