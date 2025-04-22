@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filter
 from re_drf_api.permissions import IsAdminUserOrReadOnly, IsAdminUser
-from django.db.models import Count
+from django.db.models import Count, Q
 from rest_framework import generics, filters, status
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
@@ -20,6 +20,9 @@ from .serializers import (
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from django import forms
+from bookings.models import ShortTermBooking
+from datetime import datetime
 
 
 @api_view(['DELETE'])
@@ -139,6 +142,26 @@ class ShortTermListingFilter(filter.FilterSet):
 Filter class for filtering listings based on various criteria.
     """
 
+    def filter_availability_by_dates(self, queryset, name, value):
+        start_date = self.data.get("start_date")
+        end_date = self.data.get("end_date")
+
+        if start_date and end_date:
+            try:
+                start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+                end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+                overlapping = ShortTermBooking.objects.filter(
+                    Q(check_in__lt=end_date) & Q(check_out__gt=start_date)
+                ).values_list('listing_id', flat=True)
+
+                return queryset.exclude(id__in=overlapping)
+
+            except ValueError:
+                pass
+
+        return queryset
+
     # Get amenities filter
     amenities = filter.ModelMultipleChoiceFilter(
         field_name="amenities",
@@ -171,6 +194,58 @@ Filter class for filtering listings based on various criteria.
     municipality_id = filter.NumberFilter(
         field_name="municipality_id", lookup_expr="exact")
 
+    # availability_start = filter.DateFilter(
+    #     field_name="available_from",
+    #     method="filter_by_availability",
+    #     label="Available From",
+    #     widget=forms.DateInput(attrs={"type": "date"})
+    # )
+    # availability_end = filter.DateFilter(
+    #     field_name="available_to",
+    #     method="filter_by_availability",
+    #     label="Available To",
+    #     widget=forms.DateInput(attrs={"type": "date"})
+    # )
+
+    start_date = filter.DateFilter(
+        method="filter_availability_by_dates",
+        label="Start Date",
+        widget=forms.DateInput(attrs={"type": "date"})
+    )
+
+    end_date = filter.DateFilter(
+        method="filter_availability_by_dates",
+        label="End Date",
+        widget=forms.DateInput(attrs={"type": "date"})
+    )
+
+    min_guests = filter.NumberFilter(
+        field_name="max_guests", lookup_expr="gte")
+
+    min_adults = filter.NumberFilter(
+        field_name="max_adults", lookup_expr="gte")
+    min_children = filter.NumberFilter(
+        field_name="max_children", lookup_expr="gte")
+
+    def filter_by_availability(self, queryset, name, value):
+        """
+        Filter listings where both available_from <= start_date
+        and available_to >= end_date
+        """
+        start_date = self.data.get("availability_start")
+        end_date = self.data.get("availability_end")
+
+        if start_date and end_date:
+            return queryset.filter(
+                available_from__lte=start_date,
+                available_to__gte=end_date
+            )
+        elif start_date:
+            return queryset.filter(available_from__lte=start_date)
+        elif end_date:
+            return queryset.filter(available_to__gte=end_date)
+        return queryset
+
     class Meta:
         model = ShortTermListing
         fields = [
@@ -180,6 +255,10 @@ Filter class for filtering listings based on various criteria.
             "bedrooms",
             "bathrooms",
             "floor_area",
+            "region_id",
+            "county_id",
+            "municipality_id",
+            "amenities",
         ]
 
 
@@ -436,7 +515,6 @@ class ShortTermListingList(generics.ListCreateAPIView):
         "price",
         "-price",
         "municipality_id",
-        "county",
         "region_id",
         "postcode"
     ]
