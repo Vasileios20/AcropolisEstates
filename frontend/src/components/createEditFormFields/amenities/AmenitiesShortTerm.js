@@ -119,6 +119,36 @@ const AmenitiesShortTerm = (
         return a.name.localeCompare(b.name);
     })
 
+    const amenitiesApartmentRules = amenities.map(amenity => {
+        if (amenity.name === 'pets_allowed' ||
+            amenity.name === 'no_pets_allowed' ||
+            amenity.name === 'smoking_allowed' ||
+            amenity.name === 'no_smoking_allowed' ||
+            amenity.name === 'parties_allowed' ||
+            amenity.name === 'no_parties_allowed' ||
+            amenity.name === 'children_allowed' ||
+            amenity.name === 'no_children_allowed' ||
+            amenity.name === 'long_term_stay_allowed' ||
+            amenity.name === 'suitable_for_events' ||
+            amenity.name === 'suitable_for_disabled' ||
+            amenity.name === 'move_in_after_4' ||
+            amenity.name === 'move_out_before_11'
+        ) {
+            return amenity;
+        }
+        return null;
+    }
+    ).filter(amenity => amenity !== null);
+    const amenitiesApartmentRulesTranslated = amenitiesApartmentRules.map(amenity => {
+        return {
+            ...amenity,
+            name: t(`amenities.${amenity.name}`)
+        }
+    })
+    const amenitiesApartmentRulesTranslatedSorted = amenitiesApartmentRulesTranslated.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+    })
+
     const renderLabels = (amenities) => {
         const columns = [[], [], [], []];
         amenities.forEach((amenity, index) => {
@@ -166,6 +196,13 @@ const AmenitiesShortTerm = (
                 </Row>
                 <Row className="justify-content-center mx-auto">
                     {renderLabels(amenitiesAreaPlacesTranslatedSorted)}
+                </Row>
+                <hr />
+                <Row className="justify-content-center mx-auto">
+                    <Col sm={6} className="m-auto"><h4>{t('createEditForm.headers.shortTermApartmentRules')}</h4></Col>
+                </Row>
+                <Row className="justify-content-center mx-auto">
+                    {renderLabels(amenitiesApartmentRulesTranslatedSorted)}
                 </Row>
 
             </Container>
