@@ -49,7 +49,7 @@ const Price = ({
     const maxPriceOptionsToUse = { shortTermListing } ? maxShortTermPriceOptions : maxPriceOptions;
 
     return (
-        <Col xs={12} sm={6} className="text-start">
+        <Col xs={12} className={shortTermListing ? "col-md-12 col-lg-6" : "col-md-6"}>
             <Form.Group controlId="formGroupPrice">
                 <Form.Label className={`${styles.Label} mb-0`} style={{ fontWeight: "500" }}>
                     {t("searchBar.price")}
