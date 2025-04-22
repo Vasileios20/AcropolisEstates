@@ -19,12 +19,12 @@ import btnStyles from "../../styles/Button.module.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 
 import { formatPriceValue, getFloorValue } from "utils/formatting";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 
 const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
@@ -59,33 +59,167 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
   const description = props[descriptionKey];
   const amenitiesArray = amenities?.map((a) => a.name) || [];
 
-  const amenitiesList = amenitiesArray.map((amenity, id) => (
+  const amenitiesBuilidingFeatures = [
+    "parking",
+    "elevator_in_building",
+    "garden",
+    "swimming_pool",
+  ].map((amenity) => {
+    if (amenitiesArray.includes(amenity)) {
+      return t(`amenities.${amenity}`);
+    }
+    return null;
+  });
+  const amenitiesBuilidingFeaturesTranslated = amenitiesBuilidingFeatures.filter(Boolean);
+  const amenitiesBuilidingFeaturesTranslatedList = amenitiesBuilidingFeaturesTranslated.map((amenity, id) => (
     <div key={id} className={`${styles.Amenity}`}>
-      <span>{t(`amenities.${amenity}`)} </span>
-      <i className={`fa-solid fa-square-check ${styles.AmenityChecked}`}></i>
+      <span>{amenity} </span>
+      {/* <i className={`fa-solid fa-square-check ${styles.AmenityChecked}`}></i> */}
+    </div>
+  ));
+  const amenitiesAreaPlaces = [
+    "church",
+    "cinema",
+    "super_market",
+  ].map((amenity) => {
+    if (amenitiesArray.includes(amenity)) {
+      return t(`amenities.${amenity}`);
+    }
+    return null;
+  });
+
+  const amenitiesAreaPlacesTranslated = amenitiesAreaPlaces.filter(Boolean);
+  const amenitiesAreaPlacesTranslatedList = amenitiesAreaPlacesTranslated.map((amenity, id) => (
+    <div key={id} className={`${styles.Amenity}`}>
+      <span>{amenity} </span>
+      {/* <i className={`fa-solid fa-square-check ${styles.AmenityChecked}`}></i> */}
     </div>
   ));
 
+  const amenitiesApartmentRules = [
+    'move_in_after_4',
+    'move_out_before_11',
+    'pets_allowed',
+    'no_pets_allowed',
+    'smoking_allowed',
+    'no_smoking_allowed',
+    'parties_allowed',
+    'no_parties_allowed',
+    'children_allowed',
+    'no_children_allowed',
+    'long_term_stay_allowed',
+    'suitable_for_events',
+    'suitable_for_disabled',
+
+  ].map((amenity) => {
+    if (amenitiesArray.includes(amenity)) {
+      return t(`amenities.${amenity}`);
+    }
+    return null;
+  });
+  const amenitiesApartmentRulesTranslated = amenitiesApartmentRules.filter(Boolean);
+  const amenitiesApartmentRulesTranslatedList = amenitiesApartmentRulesTranslated.map((amenity, id) => (
+    <div key={id} className={`${styles.Amenity}`}>
+      <span>{amenity} </span>
+      {/* <i className={`fa-solid fa-square-check ${styles.AmenityChecked}`}></i> */}
+    </div>
+  ));
+
+  const amenitiesProperty = [
+    'air_conditioning',
+    'aluminum_shutters',
+    'balcony',
+    'bbq',
+    'bathroom',
+    'coffee_machine',
+    'dining_room',
+    'dishwasher',
+    'en_suite_toilet',
+    'equipment',
+    'fireplace',
+    'fire_detector',
+    'fire_extinguisher',
+    'fridge_freezer',
+    'guest_toilet',
+    'guestroom',
+    'hair_dryer',
+    'hot_water_system',
+    'iron_iron_board',
+    'jacuzzi',
+    'kitchenette',
+    'microwave',
+    'hob_oven',
+    'patio',
+    'private_terrace',
+    'raised_floor',
+    'sauna',
+    'sea_view',
+    'security_door',
+    'shower',
+    'sitting_room',
+    'sofa_bed',
+    'private_swimming_pool',
+    'vacuum_cleaner',
+    'villa',
+    'washing_machine',
+    'water_pressure_system',
+    'window_blinds'
+  ].map((amenity) => {
+    if (amenitiesArray.includes(amenity)) {
+      return t(`amenities.${amenity}`);
+    }
+    return null;
+  });
+
+  const amenitiesPropertyTranslated = amenitiesProperty.filter(Boolean);
+  const amenitiesPropertyTranslatedList = amenitiesPropertyTranslated.map((amenity, id) => (
+    <div key={id} className={`${styles.Amenity}`}>
+      <span>{amenity} </span>
+      {/* <i className={`fa-solid fa-square-check ${styles.AmenityChecked}`}></i> */}
+    </div>
+  ));
+
+
+
   const shortTermListing = (
-    <Table className={`${styles.Listing__table} shadow`}>
-      <tbody>
+    <div className={`${styles.Listing__features}`}>
+      <div className="d-flex flex-wrap">
         {[
-          { label: t("propertyDetails.price"), value: `${currency} ${priceValue}` },
-          { label: t("propertyDetails.floorArea"), value: `${floor_area} m²` },
-          { label: t("propertyDetails.floorLevel"), value: floorValue },
-          { label: t("propertyDetails.bedrooms"), value: bedrooms },
-          { label: t("propertyDetails.kitchens"), value: kitchens },
-          { label: t("propertyDetails.bathrooms"), value: bathrooms },
-          { label: t("propertyDetails.wc"), value: wc },
-          { label: t("propertyDetails.livingRooms"), value: living_rooms },
-        ].map((feature, index) => (
-          <tr key={index}>
-            <td className={styles.tdWidth}>{feature.label}</td>
-            <td>{feature.value}</td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+          { label: t("propertyDetails.price"), value: `${currency}${priceValue}`, icon: "fa-tag" },
+          { label: t("propertyDetails.floorArea"), value: `${floor_area}m²`, icon: "fa-ruler-combined" },
+          { label: t("propertyDetails.floorLevel"), value: floorValue, icon: "fa-stairs" },
+          { label: t("propertyDetails.bedrooms"), value: bedrooms, icon: "fa-bed" },
+          { label: t("propertyDetails.kitchens"), value: kitchens, icon: "fa-utensils" },
+          { label: t("propertyDetails.bathrooms"), value: bathrooms, icon: "fa-bath" },
+          { label: t("propertyDetails.wc"), value: wc, icon: "fa-toilet" },
+          { label: t("propertyDetails.livingRooms"), value: living_rooms, icon: "fa-couch" }
+        ].map((feature, index) => {
+          const renderTooltip = (props) => (
+            <Tooltip
+              id="button-tooltip"
+              {...props}
+            >
+              {feature.label} {feature.value}
+            </Tooltip>
+          );
+
+          return (
+            <OverlayTrigger
+              key={index}
+              placement="bottom"
+              delay={{ show: 250, hide: 200 }}
+              overlay={renderTooltip}
+              trigger={["hover", "focus"]}
+            >
+              <div className={`mx-1 p-2 ${styles.Amenity} d-flex align-items-center mb-3`}>
+                <i className={`fa-solid ${feature.icon} ${styles.FeatureIcon} pe-1`}></i>
+                <span className={styles.FeatureValue}> {feature.value}</span>
+              </div>
+            </OverlayTrigger>
+          );
+        })}
+      </div>
+    </div>
   );
 
   useEffect(() => {
@@ -153,12 +287,18 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
             {shortTermListing}
 
             <Col className="my-5">
-              <h5 className="ps-2 pb-1">{t("propertiesPage.header2")}</h5>
-              <div className={`${styles.AmenitiesBox}`}>{amenitiesList}</div>
+              <h5 className="ps-2 pb-1">{t("amenities.header.apartmentAmenities")}</h5>
+              <div className={`${styles.AmenitiesBox}`}>{amenitiesPropertyTranslatedList}</div>
+              <h5 className="ps-2 pt-3 pb-1">{t("amenities.header.buildingAmenities")}</h5>
+              <div className={`${styles.AmenitiesBox}`}>{amenitiesBuilidingFeaturesTranslatedList}</div>
+              <h5 className="ps-2 pt-3 pb-1">{t("amenities.header.areaPlacesAmenities")}</h5>
+              <div className={`${styles.AmenitiesBox}`}>{amenitiesAreaPlacesTranslatedList}</div>
+              <h5 className="ps-2 pt-3 pb-1">{t("amenities.header.apartmentRules")}</h5>
+              <div className={`w-50`}>{amenitiesApartmentRulesTranslatedList}</div>
             </Col>
             <Col className="mx-auto my-5">
               {mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />}</Col>
-            
+
           </Col>
 
           <Col lg={6} className="mb-3 ms-auto">
