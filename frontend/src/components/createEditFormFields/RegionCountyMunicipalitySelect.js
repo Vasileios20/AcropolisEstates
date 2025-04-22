@@ -47,11 +47,11 @@ const RegionCountyMunicipalitySelect = ({
     );
 
     const selectedRegionObj = useMemo(() => regionsData.find(region => region.id === selectedRegion), [regionsData, selectedRegion]);
-  
+
     const counties = useMemo(() => selectedRegionObj?.counties || [], [selectedRegionObj]);
 
     const selectedCountyObj = useMemo(() => counties.find(county => county.id === selectedCounty), [counties, selectedCounty]);
-    
+
     const municipalities = useMemo(() => selectedCountyObj?.municipalities || [], [selectedCountyObj]);
 
     const handleSearchInputChange = (e) => {
@@ -63,7 +63,7 @@ const RegionCountyMunicipalitySelect = ({
             const filtered = municipalities.filter(municipality =>
                 municipality.greekName.toLowerCase().includes(value.toLowerCase()) ||
                 municipality.englishName.toLowerCase().includes(value.toLowerCase())
-                
+
             );
             setFilteredMunicipalities(filtered);
             setShowMunicipalityDropdown(true);
@@ -74,9 +74,9 @@ const RegionCountyMunicipalitySelect = ({
     };
 
     const handleMunicipalitySelect = (municipality) => {
-        onMunicipalityChange(municipality.id);
+        onMunicipalityChange(municipality.id, municipality.greekName);
         const name = lng === "el" ? municipality.greekName : municipality.englishName;
-        
+
         setSearchInput(name); // Set the selected municipality to the input field
         setShowMunicipalityDropdown(false); // Close the dropdown
     };
@@ -106,7 +106,7 @@ const RegionCountyMunicipalitySelect = ({
             <Col md={6} className="mb-2 mx-auto d-flex justify-content-between flex-column">
                 {selectedRegion && (
                     <>
-                        <label htmlFor="county_id" className="mb-2">{selectedRegion === 1 ? t("regionOptions.sectors") :  t("regionOptions.county") }</label>
+                        <label htmlFor="county_id" className="mb-2">{selectedRegion === 1 ? t("regionOptions.sectors") : t("regionOptions.county")}</label>
                         <select
                             id="county_id"
                             value={selectedCounty}

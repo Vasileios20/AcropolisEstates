@@ -161,7 +161,7 @@ function ListingCreateForm() {
 
     setListingData({ ...listingData, uploaded_images: newImages });
   };
-  
+
   const handleRegionChange = region => {
     setSelectedRegion(region);
     setListingData((prevData) => ({
@@ -181,11 +181,12 @@ function ListingCreateForm() {
     setSelectedMunicipality("");
   };
 
-  const handleMunicipalityChange = municipality => {
+  const handleMunicipalityChange = (municipality, municipality_gr) => {
     setSelectedMunicipality(municipality);
     setListingData((prevData) => ({
       ...prevData,
       municipality_id: municipality,
+      municipality_gr: municipality_gr,
     }));
   };
 
