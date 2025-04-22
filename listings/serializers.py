@@ -509,7 +509,9 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
             "is_owner",
             "profile_id",
             "amenities_ids",
-
+            "max_guests",
+            "max_adults",
+            "max_children",
         ]
 
     def to_representation(self, instance):
@@ -517,3 +519,15 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
         # Sort by order field
         ret['images'] = sorted(ret['images'], key=lambda x: x['order'])
         return ret
+
+    def validate(self, data):
+        max_guests = data.get("max_guests", 1)
+        max_adults = data.get("max_adults", 1)
+        max_children = data.get("max_children", 0)
+
+        if max_guests < max_adults + max_children:
+            raise serializers.ValidationError(
+                "Max guests must be greater than or equal"
+                "to the sum of max adults and max children."
+            )
+        return data
