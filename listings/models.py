@@ -404,6 +404,24 @@ class ShortTermListing(models.Model):
     amenities = models.ManyToManyField(
         Amenities, blank=True, related_name="short_term_listings")
     approved = models.BooleanField(default=False)
+    max_guests = models.PositiveIntegerField(
+        default=1, help_text="Total max people allowed")
+    max_adults = models.PositiveIntegerField(
+        default=1, help_text="Max number of adults")
+    max_children = models.PositiveIntegerField(
+        default=0, help_text="Max number of children")
+
+    def clean(self):
+        super().clean()
+        if self.max_guests < 1:
+            raise ValidationError(
+                {'max_guests': ("This field must be a positive number.")})
+
+        if self.max_guests < self.max_adults + self.max_children:
+            raise ValidationError({
+                'max_guests': ("Max guests must be greater than or equal to "
+                               "the sum of max adults and max children."),
+            })
 
     class Meta:
         ordering = ["-created_on"]
