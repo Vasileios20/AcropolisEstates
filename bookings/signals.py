@@ -11,11 +11,15 @@ def send_booking_confirmation_email(sender, instance, created, **kwargs):
     if not created:
         return
 
+    total_guests = instance.adults + instance.children
+
     context = {
         'first_name': instance.first_name,
         'last_name': instance.last_name,
         'check_in': instance.check_in.strftime('%d/%m/%Y'),
         'check_out': instance.check_out.strftime('%d/%m/%Y'),
+        'total_guests': total_guests,
+        'reference': instance.reference_number,
     }
 
     # Set up email
@@ -41,8 +45,9 @@ def send_booking_confirmation_email(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=ShortTermBooking)
 def notify_guest_when_admin_confirms(sender, instance, created, **kwargs):
-    # Only send if booking is now admin-confirmed AND already user-confirmed
 
+    # Only send if booking is now admin-confirmed AND already user-confirmed
+    total_guests = instance.adults + instance.children
     if not created and instance.admin_confirmed:
 
         context = {
@@ -50,6 +55,8 @@ def notify_guest_when_admin_confirms(sender, instance, created, **kwargs):
             'last_name': instance.last_name,
             'check_in': instance.check_in.strftime('%d/%m/%Y'),
             'check_out': instance.check_out.strftime('%d/%m/%Y'),
+            'total_guests': total_guests,
+            'reference': instance.reference_number,
 
         }
 
