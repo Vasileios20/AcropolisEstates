@@ -28,19 +28,33 @@ const ShortTermBookingForm = ({ listingId }) => {
         email: '',
         check_in: null,
         check_out: null,
+        adults: '',
+        children: '',
     });
 
     const [phoneValue, setPhoneValue] = useState();
-    const { first_name, last_name, email, check_in, check_out } = bookingData;
+    const { first_name, last_name, email, check_in, check_out, adults, children } = bookingData;
     const [errors, setErrors] = useState({});
 
     const [submitted, setSubmitted] = useState(false);
     const [disabledDates, setDisabledDates] = useState([]);
     const [isChecked, setIsChecked] = useState(false);
+    const [maxGuests, setMaxGuests] = useState({ adults: 0, children: 0 });
 
     const lng = i18n.language.startsWith('el') ? 'el' : 'en';
 
     useEffect(() => {
+        const fetchListingInfo = async () => {
+            try {
+                const { data } = await axiosReq.get(`/short-term-listings/${listingId}/`);
+                setMaxGuests({
+                    adults: data.max_adults || 0,
+                    children: data.max_children || 0,
+                });
+            } catch (err) {
+                console.error("Failed to fetch listing info", err);
+            }
+        };
         const fetchUnavailableDates = async () => {
             try {
                 const { data } = await axiosReq.get(`bookings/unavailable-dates/?listing=${listingId}`);
@@ -56,6 +70,7 @@ const ShortTermBookingForm = ({ listingId }) => {
             }
         };
 
+        fetchListingInfo();
         fetchUnavailableDates();
     }, [listingId]);
 
@@ -66,13 +81,48 @@ const ShortTermBookingForm = ({ listingId }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        let validationErrors = {};
+
+        // Check if terms checkbox is ticked
         if (!isChecked) {
-            setErrors({ ...errors, checkbox: [t("contactForm.errorMessage")] });
+            validationErrors.checkbox = [t("contactForm.errorMessage")];
+        }
+
+        // Required field checks
+        if (!first_name?.trim()) validationErrors.first_name = [t("bookingForm.requiredFirstName")];
+        if (!last_name?.trim()) validationErrors.last_name = [t("bookingForm.requiredLastName")];
+        if (!email?.trim()) validationErrors.email = [t("bookingForm.requiredEmail")];
+        if (!phoneValue?.trim()) validationErrors.phone_number = [t("bookingForm.requiredPhone")];
+
+        // Date logic
+        if (!check_in || !check_out) {
+            validationErrors.non_field_errors = [t("bookingForm.requiredDates")];
+        } else if (check_out <= check_in) {
+            validationErrors.non_field_errors = [t("bookingForm.invalidDateRange")];
+        }
+
+
+        // Check if adults and children exceed max limits
+        const maxTotal = maxGuests.adults + maxGuests.children;
+        if (parseInt(adults) + parseInt(children) > maxTotal) {
+            validationErrors.non_field_errors = [t("bookingForm.maxGuests", { max: maxTotal })];
+        }
+        if (parseInt(adults) > maxGuests.adults) {
+            validationErrors.adults = [t("bookingForm.maxAdults", { max: maxGuests.adults })];
+        }
+        if (parseInt(children) > maxGuests.children) {
+            validationErrors.children = [t("bookingForm.maxChildren", { max: maxGuests.children })];
+        }
+
+        // If we found errors, show them and stop submission
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
             setTimeout(() => {
                 setErrors({});
-            }, 2500);
+            }, 3000);
             return;
         }
+        
 
         const formData = {
             ...bookingData,
@@ -81,6 +131,8 @@ const ShortTermBookingForm = ({ listingId }) => {
             check_out: check_out?.toISOString().split('T')[0],
             listing: listingId,
             language: lng || 'en',
+            adults: parseInt(bookingData.adults),
+            children: parseInt(bookingData.children),
         };
 
         if (currentUser) {
@@ -93,11 +145,15 @@ const ShortTermBookingForm = ({ listingId }) => {
         } catch (error) {
             console.error(error.response?.data);
             setErrors(error.response?.data);
+            console.log('errorsSUBMIT', errors);
+
             setTimeout(() => {
                 setErrors({});
             }, 2500);
         }
     };
+    console.log('errors', errors);
+    
 
     if (submitted) {
         return <BookingSuccessMessage />;
@@ -149,6 +205,13 @@ const ShortTermBookingForm = ({ listingId }) => {
                             ))}
                         </span>
                     )}
+                    {/* {errors?.validationErrors?.non_field_errors && (
+                        <span className={styles.ErrorMessage}>
+                            {errors.phone_number.map((message, idx) => (
+                                <span key={idx}>{message}</span>
+                            ))}
+                        </span>
+                    )} */}
                 </div>
             </Form.Group>
 
@@ -210,6 +273,13 @@ const ShortTermBookingForm = ({ listingId }) => {
                                 ))}
                             </span>
                         )}
+                        {errors?.validationErrors?.phone_number && (
+                            <span className={styles.ErrorMessage}>
+                                {errors.phone_number.map((message, idx) => (
+                                    <span key={idx}>{message}</span>
+                                ))}
+                            </span>
+                        )}
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formGridEmail">
                         <Form.Control
@@ -224,6 +294,45 @@ const ShortTermBookingForm = ({ listingId }) => {
                         {errors.email && (
                             <span className={styles.ErrorMessage}>
                                 {errors.email.map((message, idx) => (
+                                    <span key={idx}>{message}</span>
+                                ))}
+                            </span>
+                        )}
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGridAdults">
+                        <Form.Control
+                            className={`${styles.Input} text-start`}
+                            type="number"
+                            name="adults"
+                            placeholder={t('bookingForm.adults')}
+                            value={adults}
+                            onChange={handleChange}
+                            min={0}
+                            required
+                        />
+                        {errors.adults && (
+                            <span className={styles.ErrorMessage}>
+                                {errors.adults.map((message, idx) => (
+                                    <span key={idx}>{message}</span>
+                                ))}
+                            </span>
+                        )}
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formGridChildren">
+                        <Form.Control
+                            className={`${styles.Input} text-start`}
+                            type="number"
+                            name="children"
+                            placeholder={t('bookingForm.children')}
+                            value={children}
+                            onChange={handleChange}
+                            min={0}
+                            required
+                        />
+                        {errors.children && (
+                            <span className={styles.ErrorMessage}>
+                                {errors.children.map((message, idx) => (
                                     <span key={idx}>{message}</span>
                                 ))}
                             </span>
