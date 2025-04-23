@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from listings.models import ShortTermListing
 from phonenumber_field.modelfields import PhoneNumberField
+from django.core.exceptions import ValidationError
 
 
 class ShortTermBooking(models.Model):
@@ -29,6 +30,21 @@ class ShortTermBooking(models.Model):
         choices=LANUGAGE_CHOICES,
         default='en',
     )
+    adults = models.PositiveIntegerField(default=1)
+    children = models.PositiveIntegerField(default=0)
+
+    @property
+    def total_guests(self):
+        return self.adults + self.children
+
+    def clean(self):
+        total = self.adults + self.children
+        if total > self.listing.max_guests:
+            raise ValidationError("Total guests exceed maximum allowed.")
+        if self.adults > self.listing.max_adults:
+            raise ValidationError("Too many adults.")
+        if self.children > self.listing.max_children:
+            raise ValidationError("Too many children.")
 
     def __str__(self):
         return (
