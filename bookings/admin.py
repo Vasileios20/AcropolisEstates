@@ -5,8 +5,8 @@ from .models import ShortTermBooking
 @admin.register(ShortTermBooking)
 class ShortTermBookingAdmin(admin.ModelAdmin):
     list_display = ('listing', 'first_name', 'last_name', 'email', 'check_in',
-                    'check_out', 'confirmed', 'admin_confirmed')
-    list_filter = ('listing', 'confirmed', 'user',
+                    'check_out', 'admin_confirmed')
+    list_filter = ('listing', 'user',
                    'admin_confirmed', 'check_in')
     search_fields = ('first_name', 'last_name',
                      'email', 'listing__description')

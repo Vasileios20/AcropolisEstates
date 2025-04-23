@@ -20,7 +20,6 @@ class ShortTermBooking(models.Model):
     check_in = models.DateField()
     check_out = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
-    confirmed = models.BooleanField(default=False)
     admin_confirmed = models.BooleanField(default=False)
     token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey(
