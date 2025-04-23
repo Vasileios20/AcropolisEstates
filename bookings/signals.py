@@ -43,7 +43,7 @@ def send_booking_confirmation_email(sender, instance, created, **kwargs):
 def notify_guest_when_admin_confirms(sender, instance, created, **kwargs):
     # Only send if booking is now admin-confirmed AND already user-confirmed
 
-    if not created and instance.admin_confirmed and instance.confirmed:
+    if not created and instance.admin_confirmed:
 
         context = {
             'first_name': instance.first_name,

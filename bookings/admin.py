@@ -13,7 +13,7 @@ class ShortTermBookingAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
     readonly_fields = ('created_at', 'token')
 
-    actions = ['mark_as_confirmed', 'mark_as_admin_confirmed']
+    actions = ['mark_as_admin_confirmed']
 
     def mark_as_admin_confirmed(self, request, queryset):
         """
@@ -27,14 +27,3 @@ class ShortTermBookingAdmin(admin.ModelAdmin):
     mark_as_admin_confirmed.short_description = (
         "Mark selected bookings as admin confirmed"
     )
-
-    def mark_as_confirmed(self, request, queryset):
-        """
-        Custom action to mark selected bookings as confirmed.
-        """
-        for booking in queryset:
-            booking.confirmed = True
-            booking.save()
-        self.message_user(
-            request, f"{queryset.count()} bookings marked as confirmed.")
-    mark_as_confirmed.short_description = "Mark selected bookings as confirmed"
