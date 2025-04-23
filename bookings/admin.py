@@ -5,13 +5,14 @@ from .models import ShortTermBooking
 @admin.register(ShortTermBooking)
 class ShortTermBookingAdmin(admin.ModelAdmin):
     list_display = ('listing', 'first_name', 'last_name', 'email', 'check_in',
-                    'check_out', 'admin_confirmed')
+                    'check_out', 'created_at', 'reference_number',
+                    'admin_confirmed')
     list_filter = ('listing', 'user',
                    'admin_confirmed', 'check_in')
     search_fields = ('first_name', 'last_name',
                      'email', 'listing__description')
     ordering = ('-created_at',)
-    readonly_fields = ('created_at', 'token')
+    readonly_fields = ('created_at', 'reference_number')
 
     actions = ['mark_as_admin_confirmed']
 
