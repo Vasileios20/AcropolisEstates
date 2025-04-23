@@ -1,14 +1,20 @@
 <html>
 
-<body style="font-family: Arial, sans-serif; line-height: 1.6; background-color: #f5f5f5; padding: 20px;">
+<body style="font-family: Lato, sans-serif; line-height: 1.6; background-color: #f5f5f5; padding: 20px;">
     <div style="max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px;">
         <div style="text-align: center; margin-bottom: 20px;">
-            <img src="https://www.acropolisestates.com/static/media/logo.149b6a3f343e11cfa975.png" alt="Acropolis Estates"
-                style="height: 80px;">
+            <img src="https://www.acropolisestates.com/static/media/logo.149b6a3f343e11cfa975.png"
+                alt="Acropolis Estates" style="height: 80px;">
         </div>
-        <h2 style="color: #847c3d;">Booking Request – Acropolis Estates</h2>
+        <h2 style="color: #847c3d;">Booking Request – Acropolis Estates - Booking reference {{ reference }}</h2>
         <p>Hi {{ first_name }} {{ last_name }},</p>
-        <p>Thank you for your booking request from <strong>{{ check_in }}</strong> to <strong>{{ check_out }}</strong>.
+        <p>Thank you for your booking request from <strong>{{ check_in }}</strong> to <strong>{{ check_out }}</strong>
+            for
+            {% if total_guests == 1 %}
+            <strong>{{ total_guests }}</strong> guest
+            {% else %}
+            </strong>{{ total_guests }}</strong> guests{% endif %}.
+
         </p>
         <p>Our team will review your request and get back to you shortly with a confirmation.</p>
         <p>If you have any questions in the meantime, feel free to reach out to us.</p>
