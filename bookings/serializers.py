@@ -15,7 +15,7 @@ class ShortTermBookingSerializer(serializers.ModelSerializer):
             'check_in',
             'check_out',
             'created_at',
-            'token',
+            'reference_number',
             'user',
             'language',
             'admin_confirmed',

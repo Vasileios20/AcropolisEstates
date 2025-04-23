@@ -6,6 +6,10 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.core.exceptions import ValidationError
 
 
+def generate_booking_reference():
+    return str(uuid.uuid4()).replace('-', '').upper()[:8]
+
+
 class ShortTermBooking(models.Model):
     LANUGAGE_CHOICES = (
         ('en', 'English'),
@@ -21,7 +25,8 @@ class ShortTermBooking(models.Model):
     check_out = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     admin_confirmed = models.BooleanField(default=False)
-    token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    reference_number = models.CharField(
+        max_length=20, unique=True, editable=False)
     user = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True)
     language = models.CharField(
@@ -44,6 +49,11 @@ class ShortTermBooking(models.Model):
             raise ValidationError("Too many adults.")
         if self.children > self.listing.max_children:
             raise ValidationError("Too many children.")
+
+    def save(self, *args, **kwargs):
+        if not self.reference:
+            self.reference = generate_booking_reference()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return (
