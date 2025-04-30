@@ -4,7 +4,6 @@ from .services import upload_to_backblaze
 from .utils import generate_unique_filename
 import json
 from pathlib import Path
-from django.forms import CharField
 from django.utils.safestring import mark_safe
 
 
@@ -64,7 +63,11 @@ class ListingLoacationAdminForm(forms.ModelForm):
 
     def render_location_json(self):
         # Used in the admin template to embed the data
-        return mark_safe(f"<script>window.locationMap = {json.dumps(self.municipality_map)};</script>")
+        location_map_json = json.dumps(self.municipality_map)
+        script_content = (
+            f"<script>window.locationMap = {location_map_json};</script>"
+        )
+        return mark_safe(script_content)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -148,7 +151,8 @@ class ListingLoacationAdminForm(forms.ModelForm):
                         if self.instance.municipality_id == municipality_id:
                             initial_municipality_name = municipality_name
             else:
-                # Still populate municipality_map even if this isn't the selected region
+                # Still populate municipality_map even if this isn't the
+                # selected region
                 for county in region.get("counties", []):
                     county_id = county["id"]
                     county_name = county["county"]
@@ -194,123 +198,6 @@ class ListingLoacationAdminForm(forms.ModelForm):
 
         return cleaned_data
 
-# class ShortTermListingAdminForm(forms.ModelForm):
-    # language = forms.ChoiceField(
-    #     choices=LANGUAGE_CHOICES, required=False, label="Language")
-    # municipality_display = forms.ChoiceField(
-    #     label="Municipality", required=False)
-
-    # class Meta:
-    #     model = ShortTermListing
-    #     fields = "__all__"
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
-    #     # Set default language to English
-    #     selected_lang = self.data.get("language") or "en"
-    #     self.fields["language"].initial = selected_lang
-
-    #     # Load correct JSON
-    #     json_file = f"regions_{selected_lang}.json"
-    #     file_path = Path(__file__).resolve().parent.parent / \
-    #         "listings" / "static" / "listings" / json_file
-
-    #     try:
-    #         with open(file_path, "r", encoding="utf-8") as f:
-    #             # ✅ Access the "regions" array
-    #             data = json.load(f)
-    #     except FileNotFoundError:
-    #         data = []
-
-    #     municipality_choices = []
-    #     self.municipality_map = {}
-
-    #     for region in data.get("regions", []):
-    #         region_id = region["id"]
-    #         for county in region.get("counties", []):
-    #             county_id = county["id"]
-    #             raw_municipalities = county.get("municipalities", [])
-
-    #             municipalities = []
-    #             for item in raw_municipalities:
-    #                 if isinstance(item, list):
-    #                     municipalities.extend(item)
-    #                 elif isinstance(item, dict):
-    #                     municipalities.append(item)
-
-    #             for municipality in municipalities:
-    #                 municipality_id = municipality["id"]
-    #                 name = municipality["municipality"]
-
-    #                 municipality_choices.append((name, name))
-    #                 self.municipality_map[name] = {
-    #                     "region_id": region_id,
-    #                     "county_id": county_id,
-    #                     "municipality_id": municipality_id,
-    #                 }
-
-    #     self.fields["municipality_display"].choices = municipality_choices
-
-    #     current_region = None
-    #     current_county = None
-
-    #     if self.instance and self.instance.pk:
-    #         current_region = self.instance.region_id
-    #         current_county = self.instance.county_id
-    #         current_municipality = self.instance.municipality
-    #         self.initial["municipality_display"] = current_municipality
-
-    #     self.fields["region_display"] = CharField(
-    #         label="Region", required=False, disabled=True
-    #     )
-    #     self.fields["county_display"] = CharField(
-    #         label="County", required=False, disabled=True
-    #     )
-
-    #     self.initial["region_display"] = next(
-    #         (r["region"] for r in data.get("regions", [])
-    #          if r["id"] == current_region),
-    #         ""
-    #     )
-    #     for region in data.get("regions", []):
-    #         if region["id"] == current_region:
-    #             for county in region.get("counties", []):
-    #                 if county["id"] == current_county:
-    #                     self.initial["county_display"] = county["county"]
-    #                     break
-
-    #     if self.instance and self.instance.pk:
-    #         current_region = self.instance.region_id
-    #         current_county = self.instance.county_id
-    #         current_municipality = self.instance.municipality_id
-
-    #         for name, ids in self.municipality_map.items():
-    #             if (
-    #                 ids["region_id"] == current_region
-    #                 and ids["county_id"] == current_county
-    #                 and ids["municipality_id"] == current_municipality
-    #             ):
-    #                 self.initial["municipality_display"] = name
-    #                 break
-
-    #     # Hide the actual database fields
-    #     self.fields["region_id"].widget = forms.HiddenInput()
-    #     self.fields["county_id"].widget = forms.HiddenInput()
-    #     self.fields["municipality_id"].widget = forms.HiddenInput()
-
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     selected = cleaned_data.get("municipality_display")
-
-    #     if selected and selected in self.municipality_map:
-    #         ids = self.municipality_map[selected]
-    #         cleaned_data["region_id"] = ids["region_id"]
-    #         cleaned_data["county_id"] = ids["county_id"]
-    #         cleaned_data["municipality_id"] = ids["municipality_id"]
-
-    #     return cleaned_data
-
 
 class ListingHeatingSystemAdminForm(forms.ModelForm):
     class Meta:
@@ -338,7 +225,9 @@ class ListingHeatingSystemAdminForm(forms.ModelForm):
             'placeholder': 'Select Heating System',
         })
         self.fields['heating_system'].label = 'Heating System'
-        self.fields['heating_system'].help_text = 'Select the heating system for the listing.'
+        self.fields['heating_system'].help_text = (
+            'Select the heating system for the listing.'
+        )
         self.fields['heating_system'].error_messages = {
             'required': 'Please select a heating system.',
         }
