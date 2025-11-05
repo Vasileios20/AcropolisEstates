@@ -658,7 +658,8 @@
         "invalidDateRange": "Check-out must be after check-in.",
         "maxGuests": "Total guests cannot exceed {{max}}",
         "maxAdults": "Maximum adults allowed: {{max}}",
-        "maxChildren": "Maximum children allowed: {{max}}"
+        "maxChildren": "Maximum children allowed: {{max}}",
+        "message": "Special Requests or Message"
     },
     "mapMarker": {
         "noLocation": "No Location Available",
