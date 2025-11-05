@@ -17835,552 +17835,550 @@
                     "county": "Ξάνθη",
                     "area": 1793,
                     "municipalities": [
-                        [
-                            {
-                                "id": 1,
-                                "municipality": "Ξάνθη"
-                            },
-                            {
-                                "id": 2,
-                                "municipality": "Ξάνθη (κέντρο)"
-                            },
-                            {
-                                "id": 3,
-                                "municipality": "Άβατο"
-                            },
-                            {
-                                "id": 4,
-                                "municipality": "Άβδηρα"
-                            },
-                            {
-                                "id": 5,
-                                "municipality": "Άγιος Αθανάσιος"
-                            },
-                            {
-                                "id": 6,
-                                "municipality": "Αιώρα"
-                            },
-                            {
-                                "id": 7,
-                                "municipality": "Άκαρπο"
-                            },
-                            {
-                                "id": 8,
-                                "municipality": "Αλκυόνη"
-                            },
-                            {
-                                "id": 9,
-                                "municipality": "Άλμα"
-                            },
-                            {
-                                "id": 10,
-                                "municipality": "Άνω Θέρμες"
-                            },
-                            {
-                                "id": 11,
-                                "municipality": "Άνω Καρυόφυτο"
-                            },
-                            {
-                                "id": 12,
-                                "municipality": "Αυξεντίου"
-                            },
-                            {
-                                "id": 13,
-                                "municipality": "Βανιάνο"
-                            },
-                            {
-                                "id": 14,
-                                "municipality": "Βαφαίικα"
-                            },
-                            {
-                                "id": 15,
-                                "municipality": "Βελοχώρι"
-                            },
-                            {
-                                "id": 16,
-                                "municipality": "Βιομηχανική Περιοχή Ξάνθης (Εύμοιρο)"
-                            },
-                            {
-                                "id": 17,
-                                "municipality": "Γαλάνη"
-                            },
-                            {
-                                "id": 18,
-                                "municipality": "Γενισέα"
-                            },
-                            {
-                                "id": 19,
-                                "municipality": "Γκιώνα"
-                            },
-                            {
-                                "id": 20,
-                                "municipality": "Γλαύκη"
-                            },
-                            {
-                                "id": 21,
-                                "municipality": "Γοργόνα"
-                            },
-                            {
-                                "id": 22,
-                                "municipality": "Γρήγορο"
-                            },
-                            {
-                                "id": 23,
-                                "municipality": "Δαφνώνας"
-                            },
-                            {
-                                "id": 24,
-                                "municipality": "Δέκαρχο"
-                            },
-                            {
-                                "id": 25,
-                                "municipality": "Δημάρι"
-                            },
-                            {
-                                "id": 26,
-                                "municipality": "Διάσπαρτο"
-                            },
-                            {
-                                "id": 27,
-                                "municipality": "Διάφορο"
-                            },
-                            {
-                                "id": 28,
-                                "municipality": "Διομήδεια"
-                            },
-                            {
-                                "id": 29,
-                                "municipality": "Δρυμιά"
-                            },
-                            {
-                                "id": 30,
-                                "municipality": "Εξοχή"
-                            },
-                            {
-                                "id": 31,
-                                "municipality": "Εύλαλο"
-                            },
-                            {
-                                "id": 32,
-                                "municipality": "Εύμοιρο"
-                            },
-                            {
-                                "id": 33,
-                                "municipality": "Εχίνος"
-                            },
-                            {
-                                "id": 34,
-                                "municipality": "Ζουμπούλι"
-                            },
-                            {
-                                "id": 35,
-                                "municipality": "Ηλιοκέντημα"
-                            },
-                            {
-                                "id": 36,
-                                "municipality": "Θαλασσιά"
-                            },
-                            {
-                                "id": 37,
-                                "municipality": "Θέρμες"
-                            },
-                            {
-                                "id": 38,
-                                "municipality": "Καλλιθέα Ευμοίρου"
-                            },
-                            {
-                                "id": 39,
-                                "municipality": "Κάτω Καρυόφυτο"
-                            },
-                            {
-                                "id": 40,
-                                "municipality": "Κένταυρος"
-                            },
-                            {
-                                "id": 41,
-                                "municipality": "Κιμμέρια"
-                            },
-                            {
-                                "id": 42,
-                                "municipality": "Κίρρα"
-                            },
-                            {
-                                "id": 43,
-                                "municipality": "Κομνηνά"
-                            },
-                            {
-                                "id": 44,
-                                "municipality": "Κοσσός"
-                            },
-                            {
-                                "id": 45,
-                                "municipality": "Κότινο"
-                            },
-                            {
-                                "id": 46,
-                                "municipality": "Κοττάνη"
-                            },
-                            {
-                                "id": 47,
-                                "municipality": "Κοτύλη"
-                            },
-                            {
-                                "id": 48,
-                                "municipality": "Κουτσό"
-                            },
-                            {
-                                "id": 49,
-                                "municipality": "Κρεμαστή"
-                            },
-                            {
-                                "id": 50,
-                                "municipality": "Κύκνος"
-                            },
-                            {
-                                "id": 51,
-                                "municipality": "Κύρνος"
-                            },
-                            {
-                                "id": 52,
-                                "municipality": "Κυψέλη"
-                            },
-                            {
-                                "id": 53,
-                                "municipality": "Λάγος"
-                            },
-                            {
-                                "id": 54,
-                                "municipality": "Λαμπρινό"
-                            },
-                            {
-                                "id": 55,
-                                "municipality": "Λειβαδίτης"
-                            },
-                            {
-                                "id": 56,
-                                "municipality": "Λεύκη"
-                            },
-                            {
-                                "id": 57,
-                                "municipality": "Λευκόπετρα"
-                            },
-                            {
-                                "id": 58,
-                                "municipality": "Λουτρά Ποταμιάς"
-                            },
-                            {
-                                "id": 59,
-                                "municipality": "Λυκοδρόμιο"
-                            },
-                            {
-                                "id": 60,
-                                "municipality": "Μάγγανα"
-                            },
-                            {
-                                "id": 61,
-                                "municipality": "Μαγικό"
-                            },
-                            {
-                                "id": 62,
-                                "municipality": "Μάνδρα"
-                            },
-                            {
-                                "id": 63,
-                                "municipality": "Μάνταινα"
-                            },
-                            {
-                                "id": 64,
-                                "municipality": "Μεγάλο Τύμπανο"
-                            },
-                            {
-                                "id": 65,
-                                "municipality": "Μέδουσα"
-                            },
-                            {
-                                "id": 66,
-                                "municipality": "Μελίβοια"
-                            },
-                            {
-                                "id": 67,
-                                "municipality": "Μέλισσα"
-                            },
-                            {
-                                "id": 68,
-                                "municipality": "Μέσες Θέρμες"
-                            },
-                            {
-                                "id": 69,
-                                "municipality": "Μικρό Τύμπανο"
-                            },
-                            {
-                                "id": 70,
-                                "municipality": "Μονή Ταξιαρχών"
-                            },
-                            {
-                                "id": 71,
-                                "municipality": "Μύκη"
-                            },
-                            {
-                                "id": 72,
-                                "municipality": "Μυρωδάτο"
-                            },
-                            {
-                                "id": 73,
-                                "municipality": "Νέα Αμισός"
-                            },
-                            {
-                                "id": 74,
-                                "municipality": "Νέα Κεσσάνη"
-                            },
-                            {
-                                "id": 75,
-                                "municipality": "Νέα Μορσίνη"
-                            },
-                            {
-                                "id": 76,
-                                "municipality": "Νέο Εράσμιο"
-                            },
-                            {
-                                "id": 77,
-                                "municipality": "Νέος Ζυγός"
-                            },
-                            {
-                                "id": 78,
-                                "municipality": "Νεοχώρι"
-                            },
-                            {
-                                "id": 79,
-                                "municipality": "Όλβιο"
-                            },
-                            {
-                                "id": 80,
-                                "municipality": "Ορφανό"
-                            },
-                            {
-                                "id": 81,
-                                "municipality": "Παλαιά Μορσίνη"
-                            },
-                            {
-                                "id": 82,
-                                "municipality": "Παλαιό Εράσμιο"
-                            },
-                            {
-                                "id": 83,
-                                "municipality": "Παλαιό Κατράμι"
-                            },
-                            {
-                                "id": 84,
-                                "municipality": "Παλαιό Όλβιο"
-                            },
-                            {
-                                "id": 85,
-                                "municipality": "Παλαιός Ζυγός"
-                            },
-                            {
-                                "id": 86,
-                                "municipality": "Πανεπιστημιούπολη"
-                            },
-                            {
-                                "id": 87,
-                                "municipality": "Πασχαλιά"
-                            },
-                            {
-                                "id": 88,
-                                "municipality": "Πάχνη"
-                            },
-                            {
-                                "id": 89,
-                                "municipality": "Πεζούλα"
-                            },
-                            {
-                                "id": 90,
-                                "municipality": "Πετεινός"
-                            },
-                            {
-                                "id": 91,
-                                "municipality": "Πετροχώρι"
-                            },
-                            {
-                                "id": 92,
-                                "municipality": "Πηγάδια"
-                            },
-                            {
-                                "id": 93,
-                                "municipality": "Πίλημα"
-                            },
-                            {
-                                "id": 94,
-                                "municipality": "Πολύσιτο"
-                            },
-                            {
-                                "id": 95,
-                                "municipality": "Ποταμιά"
-                            },
-                            {
-                                "id": 96,
-                                "municipality": "Ποταμοχώρι"
-                            },
-                            {
-                                "id": 97,
-                                "municipality": "Προσήλιο"
-                            },
-                            {
-                                "id": 98,
-                                "municipality": "Σάτρες"
-                            },
-                            {
-                                "id": 99,
-                                "municipality": "Σέλερο"
-                            },
-                            {
-                                "id": 100,
-                                "municipality": "Σέλινο"
-                            },
-                            {
-                                "id": 101,
-                                "municipality": "Σεμέλη"
-                            },
-                            {
-                                "id": 102,
-                                "municipality": "Σήμαντρα"
-                            },
-                            {
-                                "id": 103,
-                                "municipality": "Σιρόκο"
-                            },
-                            {
-                                "id": 104,
-                                "municipality": "Σκάλα Αβδήρων"
-                            },
-                            {
-                                "id": 105,
-                                "municipality": "Σμίνθη"
-                            },
-                            {
-                                "id": 106,
-                                "municipality": "Σούνιο"
-                            },
-                            {
-                                "id": 107,
-                                "municipality": "Σταυρούπολη"
-                            },
-                            {
-                                "id": 108,
-                                "municipality": "Συδινή"
-                            },
-                            {
-                                "id": 109,
-                                "municipality": "Τέμενος"
-                            },
-                            {
-                                "id": 110,
-                                "municipality": "Τοξότες"
-                            },
-                            {
-                                "id": 111,
-                                "municipality": "Φελώνη"
-                            },
-                            {
-                                "id": 112,
-                                "municipality": "Φίλια"
-                            },
-                            {
-                                "id": 113,
-                                "municipality": "Χρυσό"
-                            },
-                            {
-                                "id": 114,
-                                "municipality": "Ωραίο"
-                            },
-                            {
-                                "id": 115,
-                                "municipality": "Άγιος Βλάσιος"
-                            },
-                            {
-                                "id": 116,
-                                "municipality": "Άγιος Γεώργιος - Καπνέμποροι "
-                            },
-                            {
-                                "id": 117,
-                                "municipality": "Άγιος Νικόλαος"
-                            },
-                            {
-                                "id": 118,
-                                "municipality": "Ασά - Πάρκο Μεγάλου Αλεξάνδρου - Κασκανές"
-                            },
-                            {
-                                "id": 119,
-                                "municipality": "Αστικός Συνοικισμός"
-                            },
-                            {
-                                "id": 120,
-                                "municipality": "Γυμναστήριο "
-                            },
-                            {
-                                "id": 121,
-                                "municipality": "Δώδεκα Απόστολοι "
-                            },
-                            {
-                                "id": 122,
-                                "municipality": "Καπναποθήκες - ΚΤΕΛ "
-                            },
-                            {
-                                "id": 123,
-                                "municipality": "Κέντρο "
-                            },
-                            {
-                                "id": 124,
-                                "municipality": "Κυψέλη "
-                            },
-                            {
-                                "id": 125,
-                                "municipality": "Λαχανόκηποι - Πετρελαιοαποθήκες"
-                            },
-                            {
-                                "id": 126,
-                                "municipality": "Μεξικάνα"
-                            },
-                            {
-                                "id": 127,
-                                "municipality": "Παλιά Αστυνομία"
-                            },
-                            {
-                                "id": 128,
-                                "municipality": "Παλιά Πόλη "
-                            },
-                            {
-                                "id": 129,
-                                "municipality": "Παλιές Βιοτεχνίες και Καπνομάγαζα"
-                            },
-                            {
-                                "id": 130,
-                                "municipality": "Παλιές Εργατικές Κατοικίες"
-                            },
-                            {
-                                "id": 131,
-                                "municipality": "Πανόραμα - Υδραγωγείο "
-                            },
-                            {
-                                "id": 132,
-                                "municipality": "Περιαστικό Άλσος"
-                            },
-                            {
-                                "id": 133,
-                                "municipality": "Ρέμβη (Ξάνθη)"
-                            },
-                            {
-                                "id": 134,
-                                "municipality": "Σαμακώβ "
-                            },
-                            {
-                                "id": 135,
-                                "municipality": "Σταθμός"
-                            },
-                            {
-                                "id": 136,
-                                "municipality": "Χρύσα"
-                            }
-                        ]
+                        {
+                            "id": 1,
+                            "municipality": "Ξάνθη"
+                        },
+                        {
+                            "id": 2,
+                            "municipality": "Ξάνθη (κέντρο)"
+                        },
+                        {
+                            "id": 3,
+                            "municipality": "Άβατο"
+                        },
+                        {
+                            "id": 4,
+                            "municipality": "Άβδηρα"
+                        },
+                        {
+                            "id": 5,
+                            "municipality": "Άγιος Αθανάσιος"
+                        },
+                        {
+                            "id": 6,
+                            "municipality": "Αιώρα"
+                        },
+                        {
+                            "id": 7,
+                            "municipality": "Άκαρπο"
+                        },
+                        {
+                            "id": 8,
+                            "municipality": "Αλκυόνη"
+                        },
+                        {
+                            "id": 9,
+                            "municipality": "Άλμα"
+                        },
+                        {
+                            "id": 10,
+                            "municipality": "Άνω Θέρμες"
+                        },
+                        {
+                            "id": 11,
+                            "municipality": "Άνω Καρυόφυτο"
+                        },
+                        {
+                            "id": 12,
+                            "municipality": "Αυξεντίου"
+                        },
+                        {
+                            "id": 13,
+                            "municipality": "Βανιάνο"
+                        },
+                        {
+                            "id": 14,
+                            "municipality": "Βαφαίικα"
+                        },
+                        {
+                            "id": 15,
+                            "municipality": "Βελοχώρι"
+                        },
+                        {
+                            "id": 16,
+                            "municipality": "Βιομηχανική Περιοχή Ξάνθης (Εύμοιρο)"
+                        },
+                        {
+                            "id": 17,
+                            "municipality": "Γαλάνη"
+                        },
+                        {
+                            "id": 18,
+                            "municipality": "Γενισέα"
+                        },
+                        {
+                            "id": 19,
+                            "municipality": "Γκιώνα"
+                        },
+                        {
+                            "id": 20,
+                            "municipality": "Γλαύκη"
+                        },
+                        {
+                            "id": 21,
+                            "municipality": "Γοργόνα"
+                        },
+                        {
+                            "id": 22,
+                            "municipality": "Γρήγορο"
+                        },
+                        {
+                            "id": 23,
+                            "municipality": "Δαφνώνας"
+                        },
+                        {
+                            "id": 24,
+                            "municipality": "Δέκαρχο"
+                        },
+                        {
+                            "id": 25,
+                            "municipality": "Δημάρι"
+                        },
+                        {
+                            "id": 26,
+                            "municipality": "Διάσπαρτο"
+                        },
+                        {
+                            "id": 27,
+                            "municipality": "Διάφορο"
+                        },
+                        {
+                            "id": 28,
+                            "municipality": "Διομήδεια"
+                        },
+                        {
+                            "id": 29,
+                            "municipality": "Δρυμιά"
+                        },
+                        {
+                            "id": 30,
+                            "municipality": "Εξοχή"
+                        },
+                        {
+                            "id": 31,
+                            "municipality": "Εύλαλο"
+                        },
+                        {
+                            "id": 32,
+                            "municipality": "Εύμοιρο"
+                        },
+                        {
+                            "id": 33,
+                            "municipality": "Εχίνος"
+                        },
+                        {
+                            "id": 34,
+                            "municipality": "Ζουμπούλι"
+                        },
+                        {
+                            "id": 35,
+                            "municipality": "Ηλιοκέντημα"
+                        },
+                        {
+                            "id": 36,
+                            "municipality": "Θαλασσιά"
+                        },
+                        {
+                            "id": 37,
+                            "municipality": "Θέρμες"
+                        },
+                        {
+                            "id": 38,
+                            "municipality": "Καλλιθέα Ευμοίρου"
+                        },
+                        {
+                            "id": 39,
+                            "municipality": "Κάτω Καρυόφυτο"
+                        },
+                        {
+                            "id": 40,
+                            "municipality": "Κένταυρος"
+                        },
+                        {
+                            "id": 41,
+                            "municipality": "Κιμμέρια"
+                        },
+                        {
+                            "id": 42,
+                            "municipality": "Κίρρα"
+                        },
+                        {
+                            "id": 43,
+                            "municipality": "Κομνηνά"
+                        },
+                        {
+                            "id": 44,
+                            "municipality": "Κοσσός"
+                        },
+                        {
+                            "id": 45,
+                            "municipality": "Κότινο"
+                        },
+                        {
+                            "id": 46,
+                            "municipality": "Κοττάνη"
+                        },
+                        {
+                            "id": 47,
+                            "municipality": "Κοτύλη"
+                        },
+                        {
+                            "id": 48,
+                            "municipality": "Κουτσό"
+                        },
+                        {
+                            "id": 49,
+                            "municipality": "Κρεμαστή"
+                        },
+                        {
+                            "id": 50,
+                            "municipality": "Κύκνος"
+                        },
+                        {
+                            "id": 51,
+                            "municipality": "Κύρνος"
+                        },
+                        {
+                            "id": 52,
+                            "municipality": "Κυψέλη"
+                        },
+                        {
+                            "id": 53,
+                            "municipality": "Λάγος"
+                        },
+                        {
+                            "id": 54,
+                            "municipality": "Λαμπρινό"
+                        },
+                        {
+                            "id": 55,
+                            "municipality": "Λειβαδίτης"
+                        },
+                        {
+                            "id": 56,
+                            "municipality": "Λεύκη"
+                        },
+                        {
+                            "id": 57,
+                            "municipality": "Λευκόπετρα"
+                        },
+                        {
+                            "id": 58,
+                            "municipality": "Λουτρά Ποταμιάς"
+                        },
+                        {
+                            "id": 59,
+                            "municipality": "Λυκοδρόμιο"
+                        },
+                        {
+                            "id": 60,
+                            "municipality": "Μάγγανα"
+                        },
+                        {
+                            "id": 61,
+                            "municipality": "Μαγικό"
+                        },
+                        {
+                            "id": 62,
+                            "municipality": "Μάνδρα"
+                        },
+                        {
+                            "id": 63,
+                            "municipality": "Μάνταινα"
+                        },
+                        {
+                            "id": 64,
+                            "municipality": "Μεγάλο Τύμπανο"
+                        },
+                        {
+                            "id": 65,
+                            "municipality": "Μέδουσα"
+                        },
+                        {
+                            "id": 66,
+                            "municipality": "Μελίβοια"
+                        },
+                        {
+                            "id": 67,
+                            "municipality": "Μέλισσα"
+                        },
+                        {
+                            "id": 68,
+                            "municipality": "Μέσες Θέρμες"
+                        },
+                        {
+                            "id": 69,
+                            "municipality": "Μικρό Τύμπανο"
+                        },
+                        {
+                            "id": 70,
+                            "municipality": "Μονή Ταξιαρχών"
+                        },
+                        {
+                            "id": 71,
+                            "municipality": "Μύκη"
+                        },
+                        {
+                            "id": 72,
+                            "municipality": "Μυρωδάτο"
+                        },
+                        {
+                            "id": 73,
+                            "municipality": "Νέα Αμισός"
+                        },
+                        {
+                            "id": 74,
+                            "municipality": "Νέα Κεσσάνη"
+                        },
+                        {
+                            "id": 75,
+                            "municipality": "Νέα Μορσίνη"
+                        },
+                        {
+                            "id": 76,
+                            "municipality": "Νέο Εράσμιο"
+                        },
+                        {
+                            "id": 77,
+                            "municipality": "Νέος Ζυγός"
+                        },
+                        {
+                            "id": 78,
+                            "municipality": "Νεοχώρι"
+                        },
+                        {
+                            "id": 79,
+                            "municipality": "Όλβιο"
+                        },
+                        {
+                            "id": 80,
+                            "municipality": "Ορφανό"
+                        },
+                        {
+                            "id": 81,
+                            "municipality": "Παλαιά Μορσίνη"
+                        },
+                        {
+                            "id": 82,
+                            "municipality": "Παλαιό Εράσμιο"
+                        },
+                        {
+                            "id": 83,
+                            "municipality": "Παλαιό Κατράμι"
+                        },
+                        {
+                            "id": 84,
+                            "municipality": "Παλαιό Όλβιο"
+                        },
+                        {
+                            "id": 85,
+                            "municipality": "Παλαιός Ζυγός"
+                        },
+                        {
+                            "id": 86,
+                            "municipality": "Πανεπιστημιούπολη"
+                        },
+                        {
+                            "id": 87,
+                            "municipality": "Πασχαλιά"
+                        },
+                        {
+                            "id": 88,
+                            "municipality": "Πάχνη"
+                        },
+                        {
+                            "id": 89,
+                            "municipality": "Πεζούλα"
+                        },
+                        {
+                            "id": 90,
+                            "municipality": "Πετεινός"
+                        },
+                        {
+                            "id": 91,
+                            "municipality": "Πετροχώρι"
+                        },
+                        {
+                            "id": 92,
+                            "municipality": "Πηγάδια"
+                        },
+                        {
+                            "id": 93,
+                            "municipality": "Πίλημα"
+                        },
+                        {
+                            "id": 94,
+                            "municipality": "Πολύσιτο"
+                        },
+                        {
+                            "id": 95,
+                            "municipality": "Ποταμιά"
+                        },
+                        {
+                            "id": 96,
+                            "municipality": "Ποταμοχώρι"
+                        },
+                        {
+                            "id": 97,
+                            "municipality": "Προσήλιο"
+                        },
+                        {
+                            "id": 98,
+                            "municipality": "Σάτρες"
+                        },
+                        {
+                            "id": 99,
+                            "municipality": "Σέλερο"
+                        },
+                        {
+                            "id": 100,
+                            "municipality": "Σέλινο"
+                        },
+                        {
+                            "id": 101,
+                            "municipality": "Σεμέλη"
+                        },
+                        {
+                            "id": 102,
+                            "municipality": "Σήμαντρα"
+                        },
+                        {
+                            "id": 103,
+                            "municipality": "Σιρόκο"
+                        },
+                        {
+                            "id": 104,
+                            "municipality": "Σκάλα Αβδήρων"
+                        },
+                        {
+                            "id": 105,
+                            "municipality": "Σμίνθη"
+                        },
+                        {
+                            "id": 106,
+                            "municipality": "Σούνιο"
+                        },
+                        {
+                            "id": 107,
+                            "municipality": "Σταυρούπολη"
+                        },
+                        {
+                            "id": 108,
+                            "municipality": "Συδινή"
+                        },
+                        {
+                            "id": 109,
+                            "municipality": "Τέμενος"
+                        },
+                        {
+                            "id": 110,
+                            "municipality": "Τοξότες"
+                        },
+                        {
+                            "id": 111,
+                            "municipality": "Φελώνη"
+                        },
+                        {
+                            "id": 112,
+                            "municipality": "Φίλια"
+                        },
+                        {
+                            "id": 113,
+                            "municipality": "Χρυσό"
+                        },
+                        {
+                            "id": 114,
+                            "municipality": "Ωραίο"
+                        },
+                        {
+                            "id": 115,
+                            "municipality": "Άγιος Βλάσιος"
+                        },
+                        {
+                            "id": 116,
+                            "municipality": "Άγιος Γεώργιος - Καπνέμποροι "
+                        },
+                        {
+                            "id": 117,
+                            "municipality": "Άγιος Νικόλαος"
+                        },
+                        {
+                            "id": 118,
+                            "municipality": "Ασά - Πάρκο Μεγάλου Αλεξάνδρου - Κασκανές"
+                        },
+                        {
+                            "id": 119,
+                            "municipality": "Αστικός Συνοικισμός"
+                        },
+                        {
+                            "id": 120,
+                            "municipality": "Γυμναστήριο "
+                        },
+                        {
+                            "id": 121,
+                            "municipality": "Δώδεκα Απόστολοι "
+                        },
+                        {
+                            "id": 122,
+                            "municipality": "Καπναποθήκες - ΚΤΕΛ "
+                        },
+                        {
+                            "id": 123,
+                            "municipality": "Κέντρο "
+                        },
+                        {
+                            "id": 124,
+                            "municipality": "Κυψέλη "
+                        },
+                        {
+                            "id": 125,
+                            "municipality": "Λαχανόκηποι - Πετρελαιοαποθήκες"
+                        },
+                        {
+                            "id": 126,
+                            "municipality": "Μεξικάνα"
+                        },
+                        {
+                            "id": 127,
+                            "municipality": "Παλιά Αστυνομία"
+                        },
+                        {
+                            "id": 128,
+                            "municipality": "Παλιά Πόλη "
+                        },
+                        {
+                            "id": 129,
+                            "municipality": "Παλιές Βιοτεχνίες και Καπνομάγαζα"
+                        },
+                        {
+                            "id": 130,
+                            "municipality": "Παλιές Εργατικές Κατοικίες"
+                        },
+                        {
+                            "id": 131,
+                            "municipality": "Πανόραμα - Υδραγωγείο "
+                        },
+                        {
+                            "id": 132,
+                            "municipality": "Περιαστικό Άλσος"
+                        },
+                        {
+                            "id": 133,
+                            "municipality": "Ρέμβη (Ξάνθη)"
+                        },
+                        {
+                            "id": 134,
+                            "municipality": "Σαμακώβ "
+                        },
+                        {
+                            "id": 135,
+                            "municipality": "Σταθμός"
+                        },
+                        {
+                            "id": 136,
+                            "municipality": "Χρύσα"
+                        }
                     ]
                 }
             ]
