@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.react-datepicker__header {
+  background-color: rgba(77, 103, 101, 0.7) !important;
+  color: white;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: rgba(77, 103, 101, 0.7) !important;
+  color: white;
+}
