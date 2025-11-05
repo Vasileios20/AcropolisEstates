@@ -21,6 +21,9 @@ class ShortTermBookingSerializer(serializers.ModelSerializer):
             'admin_confirmed',
             'adults',
             'children',
+            'message',
+            'total_price',
+            'total_nights',
         ]
 
     def validate(self, data):

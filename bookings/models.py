@@ -36,10 +36,17 @@ class ShortTermBooking(models.Model):
     )
     adults = models.PositiveIntegerField(default=1)
     children = models.PositiveIntegerField(default=0)
+    message = models.TextField(blank=True)
 
     @property
     def total_guests(self):
         return self.adults + self.children
+
+    def total_nights(self):
+        return (self.check_out - self.check_in).days
+
+    def total_price(self):
+        return self.total_nights() * self.listing.price
 
     def clean(self):
         total = self.adults + self.children
