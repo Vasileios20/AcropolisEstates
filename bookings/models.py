@@ -51,8 +51,8 @@ class ShortTermBooking(models.Model):
             raise ValidationError("Too many children.")
 
     def save(self, *args, **kwargs):
-        if not self.reference:
-            self.reference = generate_booking_reference()
+        if not self.reference_number:
+            self.reference_number = generate_booking_reference()
         super().save(*args, **kwargs)
 
     def __str__(self):
