@@ -7,6 +7,8 @@ import styles from "../styles/Footer.module.css";
 import { axiosReq } from "../api/axiosDefaults";
 import { Form } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
+import Image from "react-bootstrap/Image";
+import logo from "../assets/logo_sillogos_mesiton.jpeg";
 
 
 const Footer = () => {
@@ -36,19 +38,22 @@ const Footer = () => {
     <Container fluid className={`${styles.Footer}`}>
       <Container>
         <Row className="pt-3 justify-content-between">
-          <Col sm={3} className="d-flex flex-column">
-            <h5>Acropolis Estates</h5>
-            <Link to="/about" className={`${styles.link}`}>
-              {t("footer.about")}
-            </Link>
-            <div className={styles.Social}>
-              <a href="https://www.facebook.com/profile.php?id=100063495071258" target="_blank"
-                aria-label="Visit our Facebook page" rel="noreferrer"><i className="fa-brands fa-facebook"></i></a>
-              <a href="https://www.instagram.com/acropolis_estates/" target="_blank" aria-label="Visit our Instagram page" rel="noreferrer"><i
-                className="fa-brands fa-instagram"></i></a>
-              <a href="https://www.linkedin.com/company/acropolis-estates/about/?viewAsMember=true" target="_blank" aria-label="Visit our LinkedIn page" rel="noreferrer"><i
-                className="fa-brands fa-linkedin"></i></a>
+          <Col sm={3} className="d-flex flex-wrap justify-content-between">
+            <div className={`d-flex flex-column`}>
+              <h5>Acropolis Estates</h5>
+              <Link to="/about" className={`${styles.link}`}>
+                {t("footer.about")}
+              </Link>
+              <div className={styles.Social}>
+                <a href="https://www.facebook.com/profile.php?id=100063495071258" target="_blank"
+                  aria-label="Visit our Facebook page" rel="noreferrer"><i className="fa-brands fa-facebook"></i></a>
+                <a href="https://www.instagram.com/acropolis_estates/" target="_blank" aria-label="Visit our Instagram page" rel="noreferrer"><i
+                  className="fa-brands fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/company/acropolis-estates/about/?viewAsMember=true" target="_blank" aria-label="Visit our LinkedIn page" rel="noreferrer"><i
+                  className="fa-brands fa-linkedin"></i></a>
+              </div >
             </div>
+
           </Col>
 
           <Col sm={3} className={`d-flex flex-column ${styles.MobileMarginTop}`}>
@@ -76,7 +81,7 @@ const Footer = () => {
 
 
           </Col>
-          <Col sm={3} className={`${styles.MobileMarginTop}`}>
+          <Col sm={3} className={`${styles.MobileMarginTop} `}>
             <h5 className="">{t("footer.contact.title")}</h5>
             <div className="">
 
@@ -95,6 +100,10 @@ const Footer = () => {
                 {t("footer.contact.phone")}
               </p>
             </div>
+
+          </Col>
+          <Col sm={12} md={1} className={`d-flex justify-content-start justify-content-md-end align-items-center my-auto pe-0 ${styles.MobileMarginTop}`}>
+            <Image src={logo} alt="Acropolis Estates Logo" height={75} />
           </Col>
 
         </Row>
