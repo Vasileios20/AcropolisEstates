@@ -79,3 +79,46 @@ def notify_guest_when_admin_confirms(sender, instance, created, **kwargs):
         )
         email.attach_alternative(html_content, "text/html")
         email.send()
+
+
+@receiver(post_save, sender=ShortTermBooking)
+def notify_admin_of_new_booking(sender, instance, created, **kwargs):
+    if created:
+        total_guests = instance.adults + instance.children
+
+        context = {
+            'first_name': instance.first_name,
+            'last_name': instance.last_name,
+            'check_in': instance.check_in.strftime('%d/%m/%Y'),
+            'check_out': instance.check_out.strftime('%d/%m/%Y'),
+            'total_guests': total_guests,
+            'adults': instance.adults,
+            'children': instance.children,
+            'reference': instance.reference_number,
+            'listing': instance.listing,
+            'email': instance.email,
+            'phone_number': instance.phone_number,
+            'message': instance.message,
+            'total_price': instance.total_price,
+            'total_nights': instance.total_nights,
+            'currency': instance.listing.currency,
+        }
+
+        language = getattr(instance, 'language', 'en')
+        if language == 'el':
+            subject = 'Επιβεβαίωση Κράτησης – Acropolis Estates'
+            html_template = 'emails/admin_new_booking_notification_el.html'
+        else:
+            subject = 'New Booking Request Received'
+            html_template = 'emails/admin_new_booking_notification.html'
+
+        html_content = render_to_string(html_template, context)
+
+        email = EmailMultiAlternatives(
+            subject,
+            html_content,
+            settings.DEFAULT_FROM_EMAIL,
+            [settings.SERVER_EMAIL]
+        )
+        email.attach_alternative(html_content, "text/html")
+        email.send()

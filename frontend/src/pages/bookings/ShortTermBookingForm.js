@@ -30,10 +30,11 @@ const ShortTermBookingForm = ({ listingId }) => {
         check_out: null,
         adults: '',
         children: '',
+        message: '',
     });
 
     const [phoneValue, setPhoneValue] = useState();
-    const { first_name, last_name, email, check_in, check_out, adults, children } = bookingData;
+    const { first_name, last_name, email, check_in, check_out, adults, children, message } = bookingData;
     const [errors, setErrors] = useState({});
 
     const [submitted, setSubmitted] = useState(false);
@@ -122,7 +123,7 @@ const ShortTermBookingForm = ({ listingId }) => {
             }, 3000);
             return;
         }
-        
+
 
         const formData = {
             ...bookingData,
@@ -133,6 +134,7 @@ const ShortTermBookingForm = ({ listingId }) => {
             language: lng || 'en',
             adults: parseInt(bookingData.adults),
             children: parseInt(bookingData.children) || 0,
+            message: message.trim(),
         };
 
         if (currentUser) {
@@ -152,7 +154,7 @@ const ShortTermBookingForm = ({ listingId }) => {
             }, 2500);
         }
     };
-    
+
     if (submitted) {
         return <BookingSuccessMessage />;
     }
@@ -336,6 +338,25 @@ const ShortTermBookingForm = ({ listingId }) => {
                             </span>
                         )}
                     </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGridMessage">
+                        <Form.Control
+                            as="textarea"
+                            rows={3}
+                            className={`${styles.Input} text-start`}
+                            name="message"
+                            placeholder={t('bookingForm.message')}
+                            value={message}
+                            onChange={handleChange}
+                        />
+                        {errors.message && (
+                            <span className={styles.ErrorMessage}>
+                                {errors.message.map((message, idx) => (
+                                    <span key={idx}>{message}</span>
+                                ))}
+                            </span>
+                        )}
+                    </Form.Group>
+
 
                     <TermsCheckbox errors={errors} isChecked={isChecked} setIsChecked={setIsChecked} />
 

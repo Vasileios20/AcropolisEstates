@@ -6,7 +6,7 @@ from .models import ShortTermBooking
 class ShortTermBookingAdmin(admin.ModelAdmin):
     list_display = ('listing', 'first_name', 'last_name', 'email', 'check_in',
                     'check_out', 'created_at', 'reference_number',
-                    'admin_confirmed')
+                    'admin_confirmed', 'total_nights', 'total_price')
     list_filter = ('listing', 'user',
                    'admin_confirmed', 'check_in')
     search_fields = ('first_name', 'last_name',

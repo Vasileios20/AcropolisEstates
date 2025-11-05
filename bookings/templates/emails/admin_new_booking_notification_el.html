@@ -1,0 +1,33 @@
+<html lang="el">
+
+<body style="font-family: Lato, sans-serif; line-height: 1.6; background-color: #f5f5f5; padding: 20px;">
+    <div style="max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="https://www.acropolisestates.com/static/media/logo.149b6a3f343e11cfa975.png"
+                alt="Acropolis Estates" style="height: 80px;">
+        </div>
+        <h2 style="color: #847c3d;">Αίτημα Κράτησης – Acropolis Estates - Αριθμός κράτησης {{ reference }}</h2>
+        <p>Γεια σας,</p>
+        <p>Έχετε λάβει ένα νέο αίτημα κράτησης για την ιδιοκτησία <strong>{{ listing.title }}</strong>.</p>
+        <h3 style="color: #847c3d;">Λεπτομέρειες Κράτησης:</h3>
+        <ul>
+            <li><strong>Όνομα Πελάτη:</strong> {{ first_name }} {{ last_name }}</li>
+            <li><strong>Email Πελάτη:</strong> {{ email }}</li>
+            <li><strong>Τηλέφωνο Πελάτη:</strong> {{ phone_number }}</li>
+            <li><strong>Ημερομηνίες Κράτησης:</strong> {{ check_in }} έως {{ check_out }}</li>
+            <li><strong>Αριθμός Ενηλίκων:</strong> {{ adults }}</li>
+            <li><strong>Αριθμός Παιδιών:</strong> {{ children }}</li>
+            <li><strong>Χρόνος Διαμονής (Νύχτες):</strong> {{ total_nights }}</li>
+            {% if message %}
+            <li><strong>Μήνυμα Πελάτη:</strong> {{ message }}</li>
+            {% endif %}
+            <li><strong>Συνολική Τιμή Κράτησης:</strong> {{ currency }}{{ total_price }}</li>
+        </ul>
+        <p>Παρακαλούμε συνδεθείτε στο διαχειριστικό σας περιβάλλον για να επιβεβαιώσετε ή να απορρίψετε την κράτηση.</p>
+        <p>Ευχαριστούμε που χρησιμοποιείτε την Acropolis Estates!</p>
+        <hr style="margin-top: 40px; border-color: #eee;">
+        <p style="font-size: 12px; color: #888;">Αυτό είναι ένα αυτόματο μήνυμα. Παρακαλούμε μην απαντήσετε.</p>
+    </div>
+</body>
+
+</html>
