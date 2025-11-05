@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useCurrentUser } from 'contexts/CurrentUserContext';
@@ -132,7 +132,7 @@ const ShortTermBookingForm = ({ listingId }) => {
             listing: listingId,
             language: lng || 'en',
             adults: parseInt(bookingData.adults),
-            children: parseInt(bookingData.children),
+            children: parseInt(bookingData.children) || 0,
         };
 
         if (currentUser) {
@@ -152,9 +152,7 @@ const ShortTermBookingForm = ({ listingId }) => {
             }, 2500);
         }
     };
-    console.log('errors', errors);
     
-
     if (submitted) {
         return <BookingSuccessMessage />;
     }
