@@ -90,9 +90,6 @@ const NavBar = () => {
       <NavDropdown.Item className={styles.NavDropdownItem} href="/listings">
         {t("services.properties")}
       </NavDropdown.Item>
-      <NavDropdown.Item className={styles.NavDropdownItem} href="/short-term-listings">
-        {t("services.shortTermRental")}
-      </NavDropdown.Item>
     </NavDropdown>
   );
 
