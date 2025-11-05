@@ -14,10 +14,15 @@
   background-image: url("../assets/properties.jpg");
 }
 
+.HeroImageShortTerm {
+  background-image: url("../assets/hero3.jpg");
+}
+
 .HeroImageAdv,
 .HeroImageAssetMgmt,
 .HeroImageVal,
-.HeroImageListings {
+.HeroImageListings,
+.HeroImageShortTerm {
   background-size: cover;
   background-position: center;
   height: 100vh;

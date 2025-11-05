@@ -2,21 +2,27 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filter
 from re_drf_api.permissions import IsAdminUserOrReadOnly, IsAdminUser
-from django.db.models import Count
+from django.db.models import Count, Q
 from rest_framework import generics, filters, status
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Listing, Images, Amenities, Owner, OwnerFile
+from .models import (Listing, Images, Amenities, Owner,
+                     OwnerFile, ShortTermListing, ShortTermImages)
 from .serializers import (
     ListingSerializer,
     ImagesSerializer,
     AmenitiesSerializer,
     OwnerSerializer,
     OwnerFileSerializer,
+    ShortTermImagesSerializer,
+    ShortTermListingSerializer,
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from django import forms
+from bookings.models import ShortTermBooking
+from datetime import datetime
 
 
 @api_view(['DELETE'])
@@ -54,6 +60,19 @@ def reorder_images(request, listing_id):
     # Update the ordering in the database
     for idx, image_id in enumerate(reordered_ids):
         Images.objects.filter(
+            id=image_id, listing=listing).update(order=idx)
+
+    return Response({"detail": "Images reordered successfully."})
+
+
+@api_view(['PUT'])
+def reorder_images_short_term(request, listing_id):
+    listing = get_object_or_404(ShortTermListing, id=listing_id)
+    reordered_ids = request.data.get('reordered_image_ids', [])
+
+    # Update the ordering in the database
+    for idx, image_id in enumerate(reordered_ids):
+        ShortTermImages.objects.filter(
             id=image_id, listing=listing).update(order=idx)
 
     return Response({"detail": "Images reordered successfully."})
@@ -115,6 +134,131 @@ Filter class for filtering listings based on various criteria.
             "construction_year",
             "floor_area",
             "heating_system",
+        ]
+
+
+class ShortTermListingFilter(filter.FilterSet):
+    """
+Filter class for filtering listings based on various criteria.
+    """
+
+    def filter_availability_by_dates(self, queryset, name, value):
+        start_date = self.data.get("start_date")
+        end_date = self.data.get("end_date")
+
+        if start_date and end_date:
+            try:
+                start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+                end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+                overlapping = ShortTermBooking.objects.filter(
+                    Q(check_in__lt=end_date) & Q(check_out__gt=start_date)
+                ).values_list('listing_id', flat=True)
+
+                return queryset.exclude(id__in=overlapping)
+
+            except ValueError:
+                pass
+
+        return queryset
+
+    # Get amenities filter
+    amenities = filter.ModelMultipleChoiceFilter(
+        field_name="amenities",
+        # filter only amenities that are not blank
+        queryset=Amenities.objects.all().exclude(name=""),
+        conjoined=True,
+    )
+
+    min_price = filter.NumberFilter(field_name="price", lookup_expr="gte")
+    max_price = filter.NumberFilter(field_name="price", lookup_expr="lte")
+
+    min_bedrooms = filter.NumberFilter(
+        field_name="bedrooms", lookup_expr="gte")
+    max_bedrooms = filter.NumberFilter(
+        field_name="bedrooms", lookup_expr="lte")
+
+    min_floor_area = filter.NumberFilter(
+        field_name="floor_area", lookup_expr="gte")
+    max_floor_area = filter.NumberFilter(
+        field_name="floor_area", lookup_expr="lte")
+
+    min_floor = filter.NumberFilter(
+        field_name="floor", lookup_expr="lte")
+    max_floor = filter.NumberFilter(
+        field_name="floor", lookup_expr="lte")
+    region_id = filter.NumberFilter(
+        field_name="region_id", lookup_expr="exact")
+    county_id = filter.NumberFilter(
+        field_name="county_id", lookup_expr="exact")
+    municipality_id = filter.NumberFilter(
+        field_name="municipality_id", lookup_expr="exact")
+
+    # availability_start = filter.DateFilter(
+    #     field_name="available_from",
+    #     method="filter_by_availability",
+    #     label="Available From",
+    #     widget=forms.DateInput(attrs={"type": "date"})
+    # )
+    # availability_end = filter.DateFilter(
+    #     field_name="available_to",
+    #     method="filter_by_availability",
+    #     label="Available To",
+    #     widget=forms.DateInput(attrs={"type": "date"})
+    # )
+
+    start_date = filter.DateFilter(
+        method="filter_availability_by_dates",
+        label="Start Date",
+        widget=forms.DateInput(attrs={"type": "date"})
+    )
+
+    end_date = filter.DateFilter(
+        method="filter_availability_by_dates",
+        label="End Date",
+        widget=forms.DateInput(attrs={"type": "date"})
+    )
+
+    min_guests = filter.NumberFilter(
+        field_name="max_guests", lookup_expr="gte")
+
+    min_adults = filter.NumberFilter(
+        field_name="max_adults", lookup_expr="gte")
+    min_children = filter.NumberFilter(
+        field_name="max_children", lookup_expr="gte")
+
+    def filter_by_availability(self, queryset, name, value):
+        """
+        Filter listings where both available_from <= start_date
+        and available_to >= end_date
+        """
+        start_date = self.data.get("availability_start")
+        end_date = self.data.get("availability_end")
+
+        if start_date and end_date:
+            return queryset.filter(
+                available_from__lte=start_date,
+                available_to__gte=end_date
+            )
+        elif start_date:
+            return queryset.filter(available_from__lte=start_date)
+        elif end_date:
+            return queryset.filter(available_to__gte=end_date)
+        return queryset
+
+    class Meta:
+        model = ShortTermListing
+        fields = [
+            "agent_name",
+            "price",
+            "floor",
+            "bedrooms",
+            "bathrooms",
+            "floor_area",
+            "region_id",
+            "county_id",
+            "municipality_id",
+            "amenities",
         ]
 
 
@@ -199,10 +343,8 @@ class ListingList(generics.ListCreateAPIView):
     filterset_class = ListingFilter
     search_fields = [
         "municipality",
-        "municipality_gr",
         "municipality_id",
         "county",
-        "county_gr",
         "county_id",
         "region_id",
         "postcode",
@@ -337,4 +479,116 @@ class BulkCreateAmenitiesView(APIView):
         return Response(
             {"error": "Expected a list of amenities"},
             status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class ShortTermListingList(generics.ListCreateAPIView):
+    """
+    List all short-term listings, or create a new short-term listing.
+    """
+
+    queryset = ShortTermListing.objects.annotate(
+        listing_count=Count("agent_name__listing")
+    ).filter(approved=True)
+
+    serializer_class = ShortTermListingSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter
+    ]
+    parser_classes = [MultiPartParser, FormParser]
+    filterset_class = ShortTermListingFilter
+    search_fields = [
+        "municipality",
+        "municipality_id",
+        "county",
+        "county_id",
+        "region_id",
+        "postcode",
+    ]
+    ordering_fields = [
+        "listing_count",  # Annotated field
+        "created_on",
+        "-created_on",
+        "price",
+        "-price",
+        "municipality_id",
+        "region_id",
+        "postcode"
+    ]
+    ordering = ["-listing_count"]
+
+    def get_queryset(self):
+        """
+        Dynamically apply filtering and ordering based on request parameters.
+        """
+        queryset = super().get_queryset()
+        ordering = self.request.query_params.get("ordering")
+        # Ensure dynamic ordering works with filters
+        if ordering:
+            queryset = queryset.order_by(ordering)
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(agent_name=self.request.user)
+
+
+class ShortTermListingDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a short-term listing.
+    """
+
+    queryset = ShortTermListing.objects.all()
+    serializer_class = ShortTermListingSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["agent_name", "price"]
+
+    search_fields = [
+        "agent_name__username",
+        "municipality",
+        "price",
+        "postcode"
+    ]
+
+
+class DeleteShortTermImages(generics.DestroyAPIView):
+    """
+    API view for deleting images associated with a short-term listing.
+    """
+    queryset = ShortTermImages.objects.all()
+    serializer_class = ShortTermImagesSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
+    def delete(self, request, *args, **kwargs):
+        listing_id = self.kwargs.get("listing_id")
+        image_ids = request.data.get("image_ids", [])
+
+        if not listing_id or not image_ids:
+            return Response(
+                {"error": "Listing ID or image IDs not provided"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Check if the listing exists
+        try:
+            listing = ShortTermListing.objects.get(id=listing_id)
+        except ShortTermListing.DoesNotExist:
+            return Response(
+                {"error": "Listing not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Delete images with the specified IDs
+        deleted_count, _ = ShortTermImages.objects.filter(
+            id__in=image_ids, listing=listing).delete()
+
+        listing.save()  # Save to trigger any updates if necessary
+
+        return Response(
+            {"message": f"{deleted_count} images deleted"},
+            status=status.HTTP_204_NO_CONTENT,
         )

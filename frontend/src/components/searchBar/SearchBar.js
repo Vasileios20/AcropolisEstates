@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -13,7 +14,12 @@ import AdvancedFiltersModal from "./AdvancedFiltersModal";
 import { SaleTypeSearch } from "./SaleTypeSearch";
 import { ButtonsSearch } from "./ButtonsSearch";
 import LocationType from "./LocationType";
-import PriceSurface from "./PriceSurface";
+import Price from "./Price";
+import Surface from "./Surface";
+import ShortTermSearchFields from "components/searchBar/ShortTermSearchFields";
+
+import { useRouteFlags } from "contexts/RouteProvider";
+
 
 const SearchBar = () => {
   /**
@@ -36,6 +42,8 @@ const SearchBar = () => {
     constructionYear: { min: "", max: "" },
     floor: { min: "", max: "" },
     heating_system: "",
+    startDate: "",
+    endDate: "",
   });
 
   const history = useHistory();
@@ -44,6 +52,7 @@ const SearchBar = () => {
   const [errors, setErrors] = useState("");
   const [empty, setEmpty] = useState(false);
   const { regionsData } = useFetchLocationData();
+  const { shortTermListing } = useRouteFlags();
 
   // Fetch the search parameters from the URL and set the state.
   useMemo(() => {
@@ -63,21 +72,26 @@ const SearchBar = () => {
       constructionYear: { min: params.get('min_construction_year'), max: params.get('max_construction_year') },
       floor: { min: params.get('min_floor'), max: params.get('max_floor') },
       heating_system: params.get('heating_system'),
+      startDate: params.get('start_date'),
+      endDate: params.get('end_date'),
     };
     setFilters(filters);
     setUpdate(false);
   }, [history.location.search]);
 
+
   // Submit the search form.
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Fetch the listings from the API using the search parameters.
-    let path = `/listings/?sale_type=${filters.saleType}`;
+    let path = shortTermListing ? `/short-term-listings/?` : `/listings/?sale_type=${filters.saleType}`;
     if (filters.municipalityId) {
       path += `&region_id=${filters.regionId}&county_id=${filters.countyId}&municipality_id=${filters.municipalityId}`;
     }
     if (empty) {
-      path = `/listings/?sale_type=${filters.saleType}`;
+      path = shortTermListing
+        ? `/short-term-listings/?`
+        : `/listings/?sale_type=${filters.saleType}`;
     }
     if (filters.type) {
       path += `&type=${filters.type}`;
@@ -120,7 +134,12 @@ const SearchBar = () => {
         path += `&amenities=${amenity}`;
       });
     }
-
+    if (filters.startDate) {
+      path += `&start_date=${filters.startDate}`;
+    }
+    if (filters.endDate) {
+      path += `&end_date=${filters.endDate}`;
+    }
 
     try {
       const { data } = await axiosReq.get(`${path}`);
@@ -144,7 +163,15 @@ const SearchBar = () => {
           filters.price.min ||
           filters.price.max ||
           filters.surface.min ||
-          filters.surface.max)
+          filters.surface.max
+          || filters.bedrooms.min ||
+          filters.bedrooms.max ||
+          filters.constructionYear.min ||
+          filters.constructionYear.max ||
+          filters.floor.min ||
+          filters.floor.max ||
+          filters.heating_system ||
+          filters.amenities.length > 0)
       ) {
         setUpdate(true);
       } else {
@@ -162,6 +189,14 @@ const SearchBar = () => {
     filters.surface.max,
     filters.saleType,
     location.pathname,
+    filters.bedrooms.min,
+    filters.bedrooms.max,
+    filters.constructionYear.min,
+    filters.constructionYear.max,
+    filters.floor.min,
+    filters.floor.max,
+    filters.heating_system,
+    filters.amenities,
   ]);
 
   const handleMunicipalitySelect = (municipality) => {
@@ -188,7 +223,7 @@ const SearchBar = () => {
   return (
     <Container className="mb-5" style={{ fontSize: "0.8rem" }}>
       <Form
-        className={`${styles.SearchForm}`}
+        className={shortTermListing ? `${styles.SearchFormShortTerm}` : `${styles.SearchForm}`}
         onSubmit={handleSubmit}
       >
         <Row className="align-items-center justify-content-center">
@@ -200,7 +235,7 @@ const SearchBar = () => {
                 </Alert>
               ))}
           <Row className="mb-1 align-items-center justify-content-start gx-0 gx-md-1">
-            <Col xs={6} className="mb-1">
+            <Col xs={6} className={shortTermListing ? "d-none" : "mb-1"}>
               <SaleTypeSearch
                 errors={errors}
                 setErrors={setErrors}
@@ -211,7 +246,7 @@ const SearchBar = () => {
             </Col>
 
 
-            <Col xs={6} className="mb-1 d-flex align-items-center justify-content-end">
+            <Col xs={shortTermListing ? 12 : 6} className="mb-1 d-flex align-items-center justify-content-end">
               <AdvancedFiltersModal
                 onApplyFilters={handleFilters}
                 filters={filters}
@@ -226,38 +261,65 @@ const SearchBar = () => {
               />
             </Col>
           </Row>
-          <Row className="g-1">
-            <Col xs={12} md={6} lg={7} xl={6}  className="mb-1">
-              <LocationType
-                filters={filters}
-                setFilters={setFilters}
-                onSearch={handleMunicipalitySelect}
-                regionsData={regionsData}
-                history={history}
-                empty={empty}
-                setEmpty={setEmpty}
-                handleChange={handleChange}
-              />
-            </Col>
-            <Col xs={12} md={12} lg={12} xl={6} className="mb-1 d-none d-md-block">
-              <PriceSurface
-                filters={filters}
-                setFilters={setFilters}
-              />
 
-            </Col>
-            <Col xs={12} lg={12} className="pt-3 d-flex align-items-center justify-content-lg-end">
-              <ButtonsSearch
-                filters={filters}
-                setFilters={setFilters}
-                update={update}
-              />
-            </Col>
+          {!shortTermListing && (
+            <Row className="g-1">
+              <Col xs={12} md={6} lg={7} xl={6} className="mb-1">
+                <LocationType
+                  filters={filters}
+                  setFilters={setFilters}
+                  onSearch={handleMunicipalitySelect}
+                  regionsData={regionsData}
+                  history={history}
+                  empty={empty}
+                  setEmpty={setEmpty}
+                  handleChange={handleChange}
+                />
+              </Col>
 
-          </Row>
+              <Col xs={12} md={12} lg={12} xl={6} className="mb-1 d-none d-md-block">
+                <Row className="g-1 align-items-center justify-content-evenly justify-content-lg-start">
+                  <Price
+                    filters={filters}
+                    setFilters={setFilters}
+                  />
+                  <Surface
+                    filters={filters}
+                    setFilters={setFilters}
+                  />
+                </Row>
+              </Col>
+
+              <Col xs={12} lg={12} className="pt-3 d-flex align-items-center justify-content-lg-end">
+                <ButtonsSearch
+                  filters={filters}
+                  setFilters={setFilters}
+                  update={update}
+                />
+              </Col>
+
+            </Row>
+          )}
+
+          {shortTermListing && (
+
+            <ShortTermSearchFields
+              filters={filters}
+              setFilters={setFilters}
+              handleChange={handleChange}
+              handleMunicipalitySelect={handleMunicipalitySelect}
+              regionsData={regionsData}
+              history={history}
+              empty={empty}
+              setEmpty={setEmpty}
+              update={update}
+              onSearch={handleSubmit}
+            />
+
+          )}
         </Row>
-      </Form>
-    </Container>
+      </Form >
+    </Container >
   );
 };
 

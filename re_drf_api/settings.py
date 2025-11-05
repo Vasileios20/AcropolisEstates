@@ -114,9 +114,11 @@ INSTALLED_APPS = [
     "listings",
     "wishlist",
     "contact",
+    "bookings",
 ]
 
 SITE_ID = 1
+SITE_URL = "https://acropolisestates.com"
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

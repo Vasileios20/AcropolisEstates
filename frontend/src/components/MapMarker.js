@@ -5,6 +5,9 @@ import {
   APIProvider,
   Map,
 } from "@vis.gl/react-google-maps";
+import { t } from "i18next";
+import { Trans } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const MapMarker = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
   /**
@@ -58,7 +61,7 @@ const MapMarker = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
             </AdvancedMarker>
           </Map>
         </APIProvider>
-      ) : (
+      ) : latitude && longitude ? (
         <div className="text-center">
           <h5>Enable cookies to view the map</h5>
           <p
@@ -67,6 +70,15 @@ const MapMarker = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
           >
             Click here to enable cookies
           </p>
+        </div>
+      ) : (
+        <div className="text-center">
+          <h5>{t("mapMarker.noLocation")}</h5>
+          <p className="text-start">
+            <Trans i18nKey="mapMarker.description" components={{
+              1: <Link to="/contact" style={{ textDecoration: "underline" }} />
+            }} /></p>
+
         </div>
       )}
     </>

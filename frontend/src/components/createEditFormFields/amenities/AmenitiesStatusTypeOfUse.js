@@ -34,7 +34,7 @@ export const AmenitiesTypeOfUse = ({ amenities, create, selectedAmenities, handl
     )
 
     const renderLabels = (amenities) => {
-        const columns = [[], [], [], []]; // Assuming 4 columns
+        const columns = [[], [], [], []];
         amenities.forEach((amenity, index) => {
             columns[index % 4].push(amenity);
         });

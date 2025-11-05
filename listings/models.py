@@ -347,3 +347,111 @@ class Images(models.Model):
 
     class Meta:
         verbose_name_plural = "Images"
+
+
+class ShortTermListing(models.Model):
+    """
+    Short Term Listing model
+    """
+
+    agent_name = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing_owner = models.ForeignKey(
+        Owner, on_delete=models.CASCADE, related_name="short_term_listings",
+        null=True, blank=True
+    )
+    description = models.TextField(blank=True)
+    description_gr = models.TextField(blank=True)
+    address_number = models.IntegerField(
+        validators=[validate_zero], null=True, blank=True)
+    address_street = models.CharField(max_length=255, blank=True)
+    address_street_gr = models.CharField(max_length=255, blank=True)
+    postcode = models.CharField(max_length=255, blank=True)
+    municipality = models.CharField(max_length=255, blank=True)
+    municipality_gr = models.CharField(max_length=255, blank=True)
+    municipality_id = models.IntegerField(null=True, blank=True)
+    county_id = models.IntegerField(null=True, blank=True)
+    region_id = models.IntegerField(null=True, blank=True)
+    price = models.FloatField(
+        validators=[validate_zero], null=True, blank=True)
+    currency = models.CharField(max_length=255, default="€", blank=True)
+    floor_area = models.FloatField(
+        validators=[validate_zero], null=True, blank=True)
+    bedrooms = models.IntegerField(
+        validators=[validate_zero], null=True, blank=True)
+    wc = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    floor = models.IntegerField(null=True, blank=True)
+    kitchens = models.IntegerField(
+        validators=[validate_zero], null=True, blank=True)
+    bathrooms = models.IntegerField(
+        validators=[validate_zero], null=True, blank=True)
+    living_rooms = models.IntegerField(
+        validators=[validate_zero], null=True, blank=True)
+    latitude = models.FloatField(default=0.0, null=True, blank=True)
+    longitude = models.FloatField(default=0.0, null=True, blank=True)
+    distance_from_sea = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_city = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_airport = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_village = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    distance_from_port = models.IntegerField(
+        validators=[validate_zero], default=0, null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    amenities = models.ManyToManyField(
+        Amenities, blank=True, related_name="short_term_listings")
+    approved = models.BooleanField(default=False)
+    max_guests = models.PositiveIntegerField(
+        default=1, help_text="Total max people allowed")
+    max_adults = models.PositiveIntegerField(
+        default=1, help_text="Max number of adults")
+    max_children = models.PositiveIntegerField(
+        default=0, help_text="Max number of children")
+
+    def clean(self):
+        super().clean()
+        if self.max_guests < 1:
+            raise ValidationError(
+                {'max_guests': ("This field must be a positive number.")})
+
+        if self.max_guests < self.max_adults + self.max_children:
+            raise ValidationError({
+                'max_guests': ("Max guests must be greater than or equal to "
+                               "the sum of max adults and max children."),
+            })
+
+    class Meta:
+        ordering = ["-created_on"]
+
+    def __str__(self):
+        return f"Short Term Listing ST000{self.id}"
+
+
+class ShortTermImages(models.Model):
+    """
+    Short Term Images model
+    """
+
+    listing = models.ForeignKey(
+        ShortTermListing, on_delete=models.CASCADE, related_name="images"
+    )
+    url = models.URLField(max_length=255, blank=True, null=True)
+    is_first = models.BooleanField(default=False, null=True)
+    order = models.PositiveIntegerField(default=0, null=True)
+
+    def __str__(self):
+        return f"{self.listing}'s image"
+
+    def save(self, *args, **kwargs):
+        if self.is_first:
+            ShortTermImages.objects.filter(
+                listing=self.listing,
+                is_first=True
+            ).update(is_first=False)
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = "Short Term Images"

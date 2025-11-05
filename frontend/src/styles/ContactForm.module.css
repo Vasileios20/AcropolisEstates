@@ -50,28 +50,6 @@
   padding-top: 10px;
 }
 
-.Checkbox {
-  font-size: 12px;
-  line-height: 18px;
-  padding-top: 10px;
-}
-
-.Checkbox > input {
-  height: 1rem;
-  width: 1rem;
-  border: 1px solid #aeaeb9;
-}
-
-.Checkbox > label {
-  padding-left: 5px;
-  padding-top: 2.5px;
-}
-
-.Checkbox > input:checked {
-  background-color: rgba(77, 103, 101, 1);
-  border-color: rgba(77, 103, 101, 1);
-}
-
 .ErrorMessage {
   color: rgb(201, 0, 0);
   font-size: 0.8rem;

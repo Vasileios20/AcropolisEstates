@@ -7,10 +7,12 @@ import btnStyles from "../../styles/Button.module.css";
 import { SaleTypeSearch } from "./SaleTypeSearch";
 import ButtonsAdvancedFilters from "./ButtonsAdvancedFilters";
 import LocationType from "./LocationType";
-import PriceSurface from "./PriceSurface";
+import Price from "./Price";
+import Surface from "./Surface";
 import Bedrooms from "./Bedrooms";
 import YearBuilt from "./YearBuilt";
 import HeatingSystem from "./HeatingSystem";
+import { useRouteFlags } from "contexts/RouteProvider";
 
 const AdvancedFiltersModal = ({
     filters,
@@ -26,6 +28,8 @@ const AdvancedFiltersModal = ({
 }) => {
     const [show, setShow] = useState(false);
     const [availableAmenities, setAvailableAmenities] = useState([]);
+    const { shortTermListing } = useRouteFlags();
+
 
     useEffect(() => {
         const fetchAmenities = async () => {
@@ -34,7 +38,7 @@ const AdvancedFiltersModal = ({
 
                 const filteredAmenities = response.data.results.filter(
                     (amenity) => [
-                        "solar_water_heating", "parking", "elevator_in_building", 
+                        "solar_water_heating", "parking", "elevator_in_building",
                         "double_glass", "balcony", "furnished", "garden",
                         "fireplace", "air_conditioning", "underfloor_heating",
                         "attic", "veranda", "balcony", "furnished", "renovated", "storage", "bright",
@@ -47,7 +51,7 @@ const AdvancedFiltersModal = ({
                     ...amenity,
                     name: amenity.name
                 }));
-            
+
 
                 setAvailableAmenities(filteredAmenities); // Expecting an array
             } catch (error) {
@@ -96,12 +100,12 @@ const AdvancedFiltersModal = ({
                     <Modal.Title>{t("searchBar.advancedFilters")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className={styles.ModalBody}>
-                    <Row className="mb-3 align-items-center justify-content-around">
+                    <Row className={shortTermListing ? "d-none" : "mb-3 align-items-center justify-content-around"}>
                         <Col xs={12} className="mb-1 d-flex align-items-center">
                             <SaleTypeSearch filters={filters} setFilters={setFilters} handleChange={handleChange} />
                         </Col>
                     </Row>
-                    <Row className="g-1 align-items-center justify-content-start col-md-6">
+                    <Row className={shortTermListing ? "" : "g-1 align-items-center justify-content-start col-md-6"}>
                         <LocationType
                             filters={filters}
                             setFilters={setFilters}
@@ -114,20 +118,25 @@ const AdvancedFiltersModal = ({
                         />
                     </Row>
                     <Row className="g-1 align-items-center justify-content-start col-md-9">
-                        <PriceSurface
+                        <Price
                             filters={filters}
                             setFilters={setFilters}
                         />
+                        <Surface
+                            filters={filters}
+                            setFilters={setFilters}
+                        />
+
                     </Row>
 
                     <Row className="g-1 align-items-center justify-content-start col-md-9">
                         <Bedrooms filters={filters} setFilters={setFilters} />
                     </Row>
 
-                    <Row className="g-1 align-items-center justify-content-start col-md-9">
+                    <Row className={shortTermListing ? "d-none" : "g-1 align-items-center justify-content-start col-md-9"}>
                         <YearBuilt filters={filters} setFilters={setFilters} />
                     </Row>
-                    <Row className="g-1 align-items-center justify-content-start">
+                    <Row className={shortTermListing ? "d-none" : "g-1 align-items-center justify-content-start col-md-9"}>
                         <HeatingSystem filters={filters} setFilters={setFilters} handleChange={handleChange} />
                     </Row>
 
