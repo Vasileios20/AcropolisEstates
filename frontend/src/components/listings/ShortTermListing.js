@@ -97,8 +97,8 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
   ));
 
   const amenitiesApartmentRules = [
-    'move_in_after_4',
-    'move_out_before_11',
+    'check_in_after_3',
+    'check_out_before_11',
     'pets_allowed',
     'no_pets_allowed',
     'smoking_allowed',

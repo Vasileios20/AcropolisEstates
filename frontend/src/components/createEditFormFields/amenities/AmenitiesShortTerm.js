@@ -131,8 +131,8 @@ const AmenitiesShortTerm = (
             amenity.name === 'long_term_stay_allowed' ||
             amenity.name === 'suitable_for_events' ||
             amenity.name === 'suitable_for_disabled' ||
-            amenity.name === 'move_in_after_4' ||
-            amenity.name === 'move_out_before_11'
+            amenity.name === 'check_in_after_3' ||
+            amenity.name === 'check_out_before_11'
         ) {
             return amenity;
         }
