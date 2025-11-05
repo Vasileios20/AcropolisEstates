@@ -6,6 +6,7 @@
         "properties": "Ακίνητα",
         "contact": "Επικοινωνία",
         "addListing": "Προσθήκη Ακινήτου",
+        "addShortTermRental": "Προσθήκη Βραχυχρόνιας Μίσθωσης",
         "messages": "Μηνύματα"
     },
     "services": {
@@ -13,7 +14,8 @@
         "valuation": "Εκτίμηση Ακινήτων",
         "financialAdvice": "Συμβουλευτικές Υπηρεσίες",
         "assetManagement": "Διαχείριση Ακινήτων",
-        "properties": "Διαθέσιμα Ακίνητα"
+        "properties": "Διαθέσιμα Ακίνητα",
+        "shortTermRental": "Βραχυχρόνιες Μισθώσεις"
     },
     "homePage": {
         "title": "Καλώς ήρθατε στην Acropolis Estates",
@@ -85,6 +87,7 @@
         "title": "Διαθέσιμα Ακίνητα",
         "title1": "Διαθέσιμo Ακίνητo",
         "title2": "Διαθέσιμα Ακίνητα",
+        "shortTermTitle": "Διαθέσιμα Ακίνητα",
         "noProperties": "Δεν υπάρχουν διαθέσιμα ακίνητα",
         "rent": "Ενοικίαση",
         "buy": "Αγορά",
@@ -177,6 +180,9 @@
         "longitude": "Γεωγραφικό Μήκος",
         "latitude": "Γεωγραφικό Πλάτος",
         "currency": "Νόμισμα",
+        "maxGuests": "Μέγιστος Αριθμός Επισκεπτών",
+        "maxAdults": "Μέγιστος Αριθμός Ενηλίκων",
+        "maxChildren": "Μέγιστος Αριθμός Παιδιών",
         "types": {
             "title": "Τύπος Ακινήτου",
             "residential": "Κατοικία",
@@ -203,7 +209,7 @@
             "title": "Κουφώματα",
             "aluminium": "Αλουμίνιο",
             "wooden": "Ξύλινο",
-            "PVC": "PVC",
+            "pvc": "PVC",
             "iron": "Σίδερο",
             "": "N/A"
         },
@@ -448,6 +454,13 @@
         "cookiePolicy": "Πολιτική Cookies"
     },
     "amenities": {
+        "header": {
+            "apartmentAmenities": "Παροχές Διαμερίσματος",
+            "buildingAmenities": "Παροχές Κτηρίου",
+            "areaPlacesAmenities": "Παροχές Περιοχής",
+            "apartmentRules": "Κανόνες Διαμερίσματος"
+            
+        },
         "title": "Παροχές",
         "solar_water_heating": "Ηλιακός θερμοσίφωνας",
         "storage_room": "Αποθηκευτικός Χώρος",
@@ -516,7 +529,55 @@
         "auction": "Πληστηριασμός",
         "under_offer": "Υπό Προσφορά",
         "3_phase_electricity": "Τριφασικό Ρεύμα",
-        "loading_unloading_bay": "Πλατφόρμα Φόρτωσης/Εκφόρτωσης"
+        "loading_unloading_bay": "Πλατφόρμα Φόρτωσης/Εκφόρτωσης",
+        "church": "Εκκλησία",
+        "cinema": "Σινεμά",
+        "super_market": "Σούπερ Μάρκετ",
+        "aluminum_shutters": "Αλουμινένια Ρολά",
+        "bathroom": "Μπάνιο",
+        "coffee_machine": "Καφετιέρα",
+        "dining_room": "Τραπεζαρία",
+        "dishwasher": "Πλυντήριο Πιάτων",
+        "en_suite_toilet": "Μπάνιο Στην Κρεβατοκάμαρα",
+        "equipment": "Εξοπλισμός",
+        "fire_detector": "de",
+        "fire_extinguisher": "Πυροσβεστήρας",
+        "fridge_freezer": "Ψυγείο/Καταψύκτης",
+        "guest_toilet": "WC Επισκεπτών",
+        "guestroom": "Δωμάτιο Επισκεπτών",
+        "hair_dryer": "Στεγνωτήρας Μαλλιών",
+        "hot_water_system": "Θερμοσίφωνας",
+        "iron_iron_board": "Σίδερο/Σιδερώστρα",
+        "jacuzzi": "Τζακούζι",
+        "kitchenette": "Κουζινάκι",
+        "microwave": "Φούρνος Μικροκυμάτων",
+        "hob_oven": "Εστίες/Φούρνος",
+        "patio": "Πεζούλι",
+        "private_terrace": "Ιδιωτική Ταράτσα",
+        "raised_floor": "Ανασηκωμένο Δάπεδο",
+        "sauna": "Σάουνα",
+        "sea_view": "Θέα Θάλασσα",
+        "shower": "Ντους",
+        "sitting_room": "Καθιστικό",
+        "sofa_bed": "Καναπές Κρεβάτι",
+        "private_swimming_pool": "Ιδιωτική Πισίνα",
+        "vacuum_cleaner": "Ηλεκτρική Σκούπα",
+        "villa": "Βίλα",
+        "washing_machine": "Πλυντήριο Ρούχων",
+        "water_pressure_system": "Σύστημα Υδρορροής",
+        "window_blinds": "Ρολά",
+        "no_pets_allowed": "Δεν Επιτρέπονται Κατοικίδια",
+        "smoking_allowed": "Επιτρέπεται το Κάπνισμα",
+        "no_smoking_allowed": "Δεν Επιτρέπεται το Κάπνισμα",
+        "parties_allowed": "Επιτρέπονται Πάρτι",
+        "no_parties_allowed": "Δεν Επιτρέπονται Πάρτι",
+        "children_allowed": "Επιτρέπονται Παιδιά",
+        "no_children_allowed": "Δεν Επιτρέπονται Παιδιά",
+        "long_term_stay_allowed": "Επιτρέπεται Μακροχρόνια Διαμονή",
+        "suitable_for_events": "Κατάλληλο για Εκδηλώσεις",
+        "suitable_for_disabled": "Κατάλληλο για Άτομα με Αναπηρία",
+        "check_in_after_3": "Άφιξη μετά τις 4 μ.μ.",
+        "check_out_before_11": "Αναχώρηση πριν τις 11 π.μ."
     },
     "createEditForm": {
         "button": {
@@ -532,6 +593,11 @@
             "landTechincal": "Τεχνικά Χαρακτηριστικά Οικοπέδου",
             "residential": "Κατοικία",
             "residentialTechnical": "Τεχνικά Χαρακτηριστικά Κατοικίας",
+            "shortTermTechnical": "Τεχνικά Χαρακτηριστικά Βραχυχρόνιας Μίσθωσης",
+            "shortTermPropertyAmenities": "Παροχές Ακινήτου",
+            "shortTermBuildingAmenities": "Παροχές Κτιρίου",
+            "shortTermAreaPlacesAmenities": "Κοντινές Τοποθεσίες",
+            "shortTermApartmentRules": "Κανονισμοί Διαμερίσματος",
             "residentialBuildingTechnical": "Τεχνικά Χαρακτηριστικά Κτιρίου",
             "residentialBuildingFeatures": "Χαρακτηριστικά Κτιρίου",
             "commercial": "Εμπορικό",
@@ -573,6 +639,32 @@
         "total": "Σύνολο",
         "tooltip": "Οι τιμές είναι ενδεικτικές και δεν αποτελλούν δεσμευτική προσφορά. Οι τελικοι όροι δανεισμού διέπονται απο τις απαιτήσεις του εκάστοτε τραπεζικού ιδρύματος και απο την πιστολητπική ικανότητα του δανειολήπτη.",
         "textInterested": "Ενδιαφέρεστε για δάνειο; Επικοινωνήστε μαζί μας για να σας βοηθήσουμε να βρείτε το καλύτερο δάνειο για εσάς."
-        
+    },
+    "bookingForm": {
+        "title": "Κάντε Κράτηση",
+        "firstName": "Όνομα",
+        "lastName": "Επώνυμο",
+        "phone": "Τηλέφωνο",
+        "email": "Το Email σας",
+        "checkIn": "Ημερομηνία Άφιξης",
+        "checkOut": "Ημερομηνία Αναχώρησης",
+        "adults": "Ενήλικες",
+        "children": "Παιδιά",
+        "submit": "Υποβολή Κράτησης",
+        "success": "Ευχαριστούμε! Η κράτησή σας υποβλήθηκε επιτυχώς. Θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατό.",
+        "error": "Κάτι πήγε στραβά. Παρακαλώ προσπαθήστε ξανά.",
+        "requiredFirstName": "Απαιτείται το όνομα.",
+        "requiredLastName": "Απαιτείται το επώνυμο.",
+        "requiredEmail": "Email είναι υποχρεωτικό.",
+        "requiredPhone": "Απαιτείται το τηλέφωνο.",
+        "requiredDates": "Απαιτούνται ημερομηνίες.",
+        "invalidDateRange": "Η ημερομηνία αναχώρησης πρέπει να είναι μετά την ημερομηνία άφιξης.",
+        "maxGuests": "Μέγιστος αριθμός επισκεπτών: {{max}}",
+        "maxAdults": "Μέγιστο {{max}} ενήλικες",
+        "maxChildren": "Μέγιστο {{max}} παιδιά"
+    },
+    "mapMarker": {
+        "noLocation": "Ο χάρτης δεν είναι διαθέσιμος",
+        "description": "Λυπούμαστε, αλλά δεν έχουμε πληροφορίες σχετικά με την τοποθεσία αυτού του ακινήτου. <1>Επικοινωνήστε</1> μαζί μας για περισσότερες λεπτομέρειες."
     }
 }
