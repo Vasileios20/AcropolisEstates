@@ -254,7 +254,7 @@ function ShortTermListingEditForm() {
     }
 
     try {
-      await axiosReq.delete(`/listings/${id}/images/`, {
+      await axiosReq.delete(`/short-term-listings/${id}/images/`, {
         data: {
           image_ids: selectedImages, // Send all selected image IDs for bulk deletion
         },
