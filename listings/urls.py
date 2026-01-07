@@ -21,7 +21,7 @@ urlpatterns = [
     path("short-term-listings/<int:pk>/",
          views.ShortTermListingDetail.as_view()),
     path("short-term-listings/<int:listing_id>/images/",
-         views.DeleteImageView.as_view()),
+         views.DeleteShortTermImages.as_view()),
     path("short-term-listings/<int:listing_id>/images/reorder-images/",
          views.reorder_images_short_term),
 ]
