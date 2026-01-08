@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.exceptions import ValidationError
+from decimal import Decimal
 from django.utils.translation import gettext_lazy as _
 
 
@@ -205,8 +206,14 @@ class Listing(models.Model):
         choices=sale_type_filter_choices, default="sale",
         max_length=255, blank=True
     )
-    price = models.FloatField(
-        validators=[validate_zero], null=True, blank=True)
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[validate_zero],
+        null=True,
+        blank=True,
+        default=Decimal("0.00")
+    )
     currency = models.CharField(max_length=255, default="€", blank=True)
     description = models.TextField(blank=True)
     description_gr = models.TextField(blank=True)
@@ -371,8 +378,14 @@ class ShortTermListing(models.Model):
     municipality_id = models.IntegerField(null=True, blank=True)
     county_id = models.IntegerField(null=True, blank=True)
     region_id = models.IntegerField(null=True, blank=True)
-    price = models.FloatField(
-        validators=[validate_zero], null=True, blank=True)
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[validate_zero],
+        null=True,
+        blank=True,
+        default=Decimal("0.00")
+    )
     currency = models.CharField(max_length=255, default="€", blank=True)
     floor_area = models.FloatField(
         validators=[validate_zero], null=True, blank=True)
@@ -455,3 +468,20 @@ class ShortTermImages(models.Model):
 
     class Meta:
         verbose_name_plural = "Short Term Images"
+
+
+class ShortTermPriceOverride(models.Model):
+    listing = models.ForeignKey(
+        "ShortTermListing",
+        on_delete=models.CASCADE,
+        related_name="price_overrides",
+    )
+    date = models.DateField()
+    price = models.PositiveIntegerField()
+
+    class Meta:
+        unique_together = ("listing", "date")
+        ordering = ["date"]
+
+    def __str__(self):
+        return f"{self.listing.id} – {self.date} – {self.price}"
