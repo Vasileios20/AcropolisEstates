@@ -1,7 +1,7 @@
 from django.contrib import admin
 from listings.models import (
     Listing, Images, Amenities, Owner, OwnerFile,
-    ShortTermListing, ShortTermImages
+    ShortTermListing, ShortTermImages, ShortTermPriceOverride
 )
 from django.utils.html import format_html
 from .forms import ImagesAdminForm, ListingLoacationAdminForm
@@ -154,10 +154,17 @@ class ShortTermListingForm(forms.ModelForm):
         fields = '__all__'
 
 
+class ShortTermPriceOverrideInline(admin.TabularInline):
+    model = ShortTermPriceOverride
+    extra = 0
+    ordering = ("date",)
+
+
 @admin.register(ShortTermListing)
 class ShortTermListingAdmin(admin.ModelAdmin):
     form = ListingLoacationAdminForm
     change_form_template = "admin/listings/shortterm_change_form.html"
+    inlines = [ShortTermPriceOverrideInline]
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
