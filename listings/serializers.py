@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     Listing, Images, Amenities, Owner, OwnerFile,
-    ShortTermListing, ShortTermImages
+    ShortTermListing, ShortTermImages, ShortTermPriceOverride
 )
 from django.core.files.images import get_image_dimensions
 from .services import upload_to_backblaze
@@ -340,6 +340,12 @@ class ShortTermImagesSerializer(serializers.ModelSerializer):
         fields = ["id", "listing", "url", "is_first", "order"]
 
 
+class ShortTermPriceOverrideSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShortTermPriceOverride
+        fields = ["date", "price"]
+
+
 class ShortTermListingSerializer(serializers.ModelSerializer):
     """
     Serializer class for the ShortTermListing model.
@@ -352,6 +358,8 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
     agent_name = serializers.ReadOnlyField(source="agent_name.username")
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source="agent_name.profile.id")
+    price_overrides = ShortTermPriceOverrideSerializer(
+        many=True, read_only=True)
     listing_owner = serializers.PrimaryKeyRelatedField(
         queryset=Owner.objects.all(),
         allow_null=True,
@@ -512,6 +520,8 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
             "max_guests",
             "max_adults",
             "max_children",
+            "price",
+            "price_overrides",
         ]
 
     def to_representation(self, instance):
