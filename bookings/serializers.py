@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import ShortTermBooking
+from bookings.utils import calculate_booking_price
 
 
 class ShortTermBookingSerializer(serializers.ModelSerializer):
@@ -25,6 +26,12 @@ class ShortTermBookingSerializer(serializers.ModelSerializer):
             'total_price',
             'total_nights',
         ]
+        read_only_fields = (
+            'total_price',
+            'total_nights',
+            'reference_number',
+            'created_at',
+        )
 
     def validate(self, data):
         listing = data['listing']
@@ -41,13 +48,16 @@ class ShortTermBookingSerializer(serializers.ModelSerializer):
         )
         if self.context['request'].method == 'PUT':
             overlapping = overlapping.exclude(id=self.instance.id)
+
         if overlapping.exists():
             raise serializers.ValidationError(
-                "These dates are already booked.")
+                "These dates are already booked."
+            )
 
         if total_guests < 1:
             raise serializers.ValidationError(
-                "Total guests must be at least 1.")
+                "Total guests must be at least 1."
+            )
 
         if total_guests > listing.max_guests:
             raise serializers.ValidationError(
@@ -65,3 +75,17 @@ class ShortTermBookingSerializer(serializers.ModelSerializer):
             )
 
         return data
+
+    def create(self, validated_data):
+        listing = validated_data['listing']
+        check_in = validated_data['check_in']
+        check_out = validated_data['check_out']
+
+        total_nights, total_price = calculate_booking_price(
+            listing, check_in, check_out
+        )
+
+        validated_data['total_nights'] = total_nights
+        validated_data['total_price'] = total_price
+
+        return super().create(validated_data)
