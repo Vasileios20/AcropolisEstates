@@ -180,9 +180,9 @@ class ListingLoacationAdminForm(forms.ModelForm):
         })
 
         # Hide actual model fields
-        # self.fields["region_id"].widget = forms.HiddenInput()
-        # self.fields["county_id"].widget = forms.HiddenInput()
-        # self.fields["municipality_id"].widget = forms.HiddenInput()
+        self.fields["region_id"].widget = forms.HiddenInput()
+        self.fields["county_id"].widget = forms.HiddenInput()
+        self.fields["municipality_id"].widget = forms.HiddenInput()
 
     def clean(self):
         cleaned_data = super().clean()
