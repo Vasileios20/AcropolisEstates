@@ -12,7 +12,12 @@ class ShortTermBookingAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name',
                      'email', 'listing__description')
     ordering = ('-created_at',)
-    readonly_fields = ('created_at', 'reference_number')
+    readonly_fields = (
+        'created_at',
+        'reference_number',
+        'total_price',
+        'total_nights',
+    )
 
     actions = ['mark_as_admin_confirmed']
 
