@@ -541,3 +541,9 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
                 "to the sum of max adults and max children."
             )
         return data
+
+
+class AvailabilityDaySerializer(serializers.Serializer):
+    date = serializers.DateField()
+    available = serializers.BooleanField()
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)
