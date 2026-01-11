@@ -16,15 +16,13 @@ from .serializers import (
     OwnerFileSerializer,
     ShortTermImagesSerializer,
     ShortTermListingSerializer,
-    AvailabilityDaySerializer,
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import ValidationError
 from django import forms
 from bookings.models import ShortTermBooking
-from datetime import datetime
+from datetime import datetime, date
 from bookings.utils import (get_listing_availability)
 
 
@@ -602,32 +600,32 @@ class ListingAvailabilityView(APIView):
     Returns per-day availability & price for a listing.
     """
 
-    def get(self, request, listing_id):
+    def get(self, request, *args, **kwargs):
+        listing_id = kwargs.get("listing_id")
         start = request.query_params.get("start")
         end = request.query_params.get("end")
 
         if not start or not end:
             return Response(
-                {"error": "start and end query params required"},
+                {"error": "start and end parameters required"},
                 status=400
             )
 
         try:
-            start_date = datetime.strptime(start, "%Y-%m-%d").date()
-            end_date = datetime.strptime(end, "%Y-%m-%d").date()
+            start_date = date.fromisoformat(start)
+            end_date = date.fromisoformat(end)
         except ValueError:
-            raise ValidationError("Dates must be in YYYY-MM-DD format")
+            return Response(
+                {"error": "Invalid date format (YYYY-MM-DD)"},
+                status=400
+            )
 
-        if end_date <= start_date:
-            raise ValidationError("End date must be after start date")
-
-        listing = get_object_or_404(ShortTermListing, pk=listing_id)
+        listing = ShortTermListing.objects.get(pk=listing_id)
 
         data = get_listing_availability(
-            listing=listing,
-            start_date=start_date,
-            end_date=end_date,
+            listing,
+            start_date,
+            end_date
         )
 
-        serializer = AvailabilityDaySerializer(data, many=True)
-        return Response(serializer.data)
+        return Response(data)
