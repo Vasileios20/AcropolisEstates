@@ -1,9 +1,24 @@
 from django.contrib import admin
-from .models import ShortTermBooking
+from .models import ShortTermBooking, ShortTermBookingNight
+
+
+class ShortTermBookingNightInline(admin.TabularInline):
+    model = ShortTermBookingNight
+    extra = 0
+    readonly_fields = ("date", "price")
+    can_delete = False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(ShortTermBooking)
 class ShortTermBookingAdmin(admin.ModelAdmin):
+    inlines = [ShortTermBookingNightInline]
+
     list_display = ('listing', 'first_name', 'last_name', 'email', 'check_in',
                     'check_out', 'created_at', 'reference_number',
                     'admin_confirmed', 'total_nights', 'total_price')
@@ -33,3 +48,12 @@ class ShortTermBookingAdmin(admin.ModelAdmin):
     mark_as_admin_confirmed.short_description = (
         "Mark selected bookings as admin confirmed"
     )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj and obj.admin_confirmed:
+            return self.readonly_fields + (
+                'check_in',
+                'check_out',
+                'listing',
+            )
+        return self.readonly_fields
