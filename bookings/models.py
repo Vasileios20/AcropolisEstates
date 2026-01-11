@@ -51,6 +51,8 @@ class ShortTermBooking(models.Model):
         return self.adults + self.children
 
     def clean(self):
+        super().clean()
+
         total = self.total_guests
         if total > self.listing.max_guests:
             raise ValidationError("Total guests exceed maximum allowed.")
@@ -59,19 +61,114 @@ class ShortTermBooking(models.Model):
         if self.children > self.listing.max_children:
             raise ValidationError("Too many children.")
 
+        # Lock confirmed bookings
+        if self.pk:
+            old = ShortTermBooking.objects.get(pk=self.pk)
+            if old.admin_confirmed:
+                if (
+                    old.check_in != self.check_in or
+                    old.check_out != self.check_out or
+                    old.listing_id != self.listing_id
+                ):
+                    raise ValidationError(
+                        "Confirmed bookings cannot have their dates "
+                        "or listing changed."
+                    )
+
+        # Prevent overlaps (admin included)
+        overlapping = ShortTermBooking.objects.filter(
+            listing=self.listing,
+            check_in__lt=self.check_out,
+            check_out__gt=self.check_in,
+        )
+
+        if self.pk:
+            overlapping = overlapping.exclude(pk=self.pk)
+
+        if overlapping.exists():
+            raise ValidationError(
+                "This listing is already booked for the selected dates."
+            )
+
+    def can_recalculate_price(self):
+        """
+        Only allow recalculation if booking is not admin-confirmed
+        """
+        return not self.admin_confirmed
+
     def save(self, *args, **kwargs):
+        creating = self.pk is None
+
         if not self.reference_number:
             self.reference_number = generate_booking_reference()
-        if self.listing and self.check_in and self.check_out:
-            nights, price = calculate_booking_price(
-                self.listing, self.check_in, self.check_out
+
+        recalculate = False
+
+        if not creating:
+            old = ShortTermBooking.objects.get(pk=self.pk)
+            if (
+                old.check_in != self.check_in or
+                old.check_out != self.check_out
+            ) and self.can_recalculate_price():
+                recalculate = True
+
+        nights = []
+
+        if (
+            (creating or recalculate) and
+            self.listing and
+            self.check_in and
+            self.check_out
+        ):
+            nights_count, total_price, nights = calculate_booking_price(
+                self.listing,
+                self.check_in,
+                self.check_out
             )
-            self.total_nights = nights
-            self.total_price = price
+            self.total_nights = nights_count
+            self.total_price = total_price
+
         super().save(*args, **kwargs)
+
+        if creating or recalculate:
+            from .models import ShortTermBookingNight
+
+            # Always rebuild nights
+            ShortTermBookingNight.objects.filter(booking=self).delete()
+
+            ShortTermBookingNight.objects.bulk_create([
+                ShortTermBookingNight(
+                    booking=self,
+                    date=date,
+                    price=price
+                )
+                for date, price in nights
+            ])
 
     def __str__(self):
         return (
             f"{self.first_name} {self.last_name} - {self.listing} "
             f"({self.check_in} to {self.check_out})"
         )
+
+
+class ShortTermBookingNight(models.Model):
+    booking = models.ForeignKey(
+        "ShortTermBooking",
+        on_delete=models.CASCADE,
+        related_name="nights",
+    )
+    date = models.DateField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        ordering = ["date"]
+        unique_together = ("booking", "date")
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            raise ValidationError("Booking nights cannot be modified.")
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.booking.id} – {self.date} – {self.price}"
