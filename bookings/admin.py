@@ -52,8 +52,14 @@ class ShortTermBookingAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         if obj and obj.admin_confirmed:
             return self.readonly_fields + (
+                'listing',
                 'check_in',
                 'check_out',
-                'listing',
+                'adults',
+                'children',
+                'total_price',
+                'total_nights',
+                'reference_number',
+                'created_at',
             )
         return self.readonly_fields
