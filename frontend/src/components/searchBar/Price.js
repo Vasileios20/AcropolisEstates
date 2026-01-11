@@ -45,8 +45,8 @@ const Price = ({
 
     const priceMin = parseInt(String(filters?.price?.min)).toLocaleString("de-DE", { useGrouping: true });
     const priceMax = parseInt(String(filters?.price?.max)).toLocaleString("de-DE", { useGrouping: true });
-    const priceOptionsToUse = { shortTermListing } ? shortTermPriceOptions : priceOptions;
-    const maxPriceOptionsToUse = { shortTermListing } ? maxShortTermPriceOptions : maxPriceOptions;
+    const priceOptionsToUse = shortTermListing ? shortTermPriceOptions : priceOptions;
+    const maxPriceOptionsToUse = shortTermListing ? maxShortTermPriceOptions : maxPriceOptions;
 
     return (
         <Col xs={12} className={shortTermListing ? "col-md-12 col-lg-6" : "col-md-6"}>
