@@ -16,13 +16,16 @@ from .serializers import (
     OwnerFileSerializer,
     ShortTermImagesSerializer,
     ShortTermListingSerializer,
+    AvailabilityDaySerializer,
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import ValidationError
 from django import forms
 from bookings.models import ShortTermBooking
 from datetime import datetime
+from bookings.utils import (get_listing_availability)
 
 
 @api_view(['DELETE'])
@@ -592,3 +595,39 @@ class DeleteShortTermImages(generics.DestroyAPIView):
             {"message": f"{deleted_count} images deleted"},
             status=status.HTTP_204_NO_CONTENT,
         )
+
+
+class ListingAvailabilityView(APIView):
+    """
+    Returns per-day availability & price for a listing.
+    """
+
+    def get(self, request, listing_id):
+        start = request.query_params.get("start")
+        end = request.query_params.get("end")
+
+        if not start or not end:
+            return Response(
+                {"error": "start and end query params required"},
+                status=400
+            )
+
+        try:
+            start_date = datetime.strptime(start, "%Y-%m-%d").date()
+            end_date = datetime.strptime(end, "%Y-%m-%d").date()
+        except ValueError:
+            raise ValidationError("Dates must be in YYYY-MM-DD format")
+
+        if end_date <= start_date:
+            raise ValidationError("End date must be after start date")
+
+        listing = get_object_or_404(ShortTermListing, pk=listing_id)
+
+        data = get_listing_availability(
+            listing=listing,
+            start_date=start_date,
+            end_date=end_date,
+        )
+
+        serializer = AvailabilityDaySerializer(data, many=True)
+        return Response(serializer.data)
