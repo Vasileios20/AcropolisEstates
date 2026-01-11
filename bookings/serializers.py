@@ -74,6 +74,15 @@ class ShortTermBookingSerializer(serializers.ModelSerializer):
                 f"Children exceed maximum allowed ({listing.max_children})."
             )
 
+        if self.instance and self.instance.admin_confirmed:
+            if (
+                self.instance.check_in != check_in or
+                self.instance.check_out != check_out
+            ):
+                raise serializers.ValidationError(
+                    "Confirmed bookings cannot change dates."
+                )
+
         return data
 
     def create(self, validated_data):
