@@ -485,3 +485,27 @@ class ShortTermPriceOverride(models.Model):
 
     def __str__(self):
         return f"{self.listing.id} – {self.date} – {self.price}"
+
+
+class ShortTermSeasonalPrice(models.Model):
+    listing = models.ForeignKey(
+        "ShortTermListing",
+        on_delete=models.CASCADE,
+        related_name="seasonal_prices",
+    )
+    start_date = models.DateField()
+    end_date = models.DateField()
+    price = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ["start_date"]
+
+    def clean(self):
+        if self.start_date >= self.end_date:
+            raise ValidationError("End date must be after start date.")
+
+    def __str__(self):
+        return (
+            f"{self.listing.id}: {self.start_date} → "
+            f"{self.end_date} (€{self.price})"
+        )
