@@ -1,5 +1,6 @@
+from datetime import timedelta
 from rest_framework import generics
-from .models import ShortTermBooking
+from .models import ShortTermBooking, ShortTermBookingNight
 from .serializers import ShortTermBookingSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -29,6 +30,10 @@ class ShortTermBookingDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UnavailableDatesView(APIView):
+    """
+    Backward-compatible endpoint.
+    Returns blocked date ranges based on booking nights.
+    """
 
     def get(self, request, *args, **kwargs):
         listing_id = request.query_params.get("listing")
@@ -38,13 +43,38 @@ class UnavailableDatesView(APIView):
                 status=400
             )
 
-        bookings = ShortTermBooking.objects.filter(listing_id=listing_id)
+        nights = (
+            ShortTermBookingNight.objects
+            .filter(booking__listing_id=listing_id)
+            .select_related("booking")
+            .order_by("date")
+        )
 
-        data = [
-            {
-                "check_in": booking.check_in,
-                "check_out": booking.check_out
-            }
-            for booking in bookings
-        ]
-        return Response(data)
+        # Convert nights → ranges (frontend-friendly)
+        ranges = []
+        current_start = None
+        last_date = None
+
+        for night in nights:
+            if current_start is None:
+                current_start = night.date
+                last_date = night.date
+                continue
+
+            if night.date == last_date + timedelta(days=1):
+                last_date = night.date
+            else:
+                ranges.append({
+                    "check_in": current_start,
+                    "check_out": last_date + timedelta(days=1),
+                })
+                current_start = night.date
+                last_date = night.date
+
+        if current_start:
+            ranges.append({
+                "check_in": current_start,
+                "check_out": last_date + timedelta(days=1),
+            })
+
+        return Response(ranges)
