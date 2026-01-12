@@ -90,7 +90,7 @@ class ShortTermBookingSerializer(serializers.ModelSerializer):
         check_in = validated_data['check_in']
         check_out = validated_data['check_out']
 
-        total_nights, total_price = calculate_booking_price(
+        total_nights, total_price, _ = calculate_booking_price(
             listing, check_in, check_out
         )
 
