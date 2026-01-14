@@ -15,7 +15,7 @@ import styles from "../../App.module.css";
 import { axiosReq } from 'api/axiosDefaults';
 import BookingSuccessMessage from 'pages/bookings/BookingSuccessMessage';
 import TermsCheckbox from 'components/TermsCheckbox';
-import { format, differenceInDays } from 'date-fns';
+import { format, differenceInDays, addDays, isBefore, isEqual } from 'date-fns';
 
 const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
     const { t, i18n } = useTranslation();
@@ -41,10 +41,10 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
     const [submitted, setSubmitted] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
-    
+
     // Data state
     const [availability, setAvailability] = useState([]);
-    const [disabledDates, setDisabledDates] = useState([]);
+    const [bookedRanges, setBookedRanges] = useState([]); // Store actual booking ranges
     const [maxGuests, setMaxGuests] = useState({ adults: 0, children: 0 });
     const [loading, setLoading] = useState(true);
     const [priceSummary, setPriceSummary] = useState({ nights: 0, total: null });
@@ -59,7 +59,7 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
         return { start, end };
     }, []);
 
-    const availabilityMap = useMemo(() => 
+    const availabilityMap = useMemo(() =>
         availability.reduce((acc, day) => {
             acc[day.date] = day;
             return acc;
@@ -67,16 +67,96 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
         [availability]
     );
 
+    // Calculate disabled dates for check-in (cannot check in on occupied nights)
+    const disabledCheckInDates = useMemo(() => {
+        return bookedRanges.flatMap(({ check_in, check_out }) => {
+            const start = new Date(check_in);
+            const end = new Date(check_out);
+            const days = [];
+            let current = new Date(start);
+
+            // Block all nights EXCEPT the checkout day (which is available for next check-in)
+            while (current < end) {
+                days.push(new Date(current));
+                current.setDate(current.getDate() + 1);
+            }
+            return days;
+        });
+    }, [bookedRanges]);
+
+    // Find the first blocked date after check-in to limit checkout
+    const getMaxCheckoutDate = useCallback((checkInDate) => {
+        if (!checkInDate) return null;
+
+        // Find the next booking that starts after our check-in
+        const nextBooking = bookedRanges
+            .map(range => new Date(range.check_in))
+            .filter(date => date > checkInDate)
+            .sort((a, b) => a - b)[0];
+
+        if (nextBooking) {
+            // Allow checkout ON the day of next check-in (same day turnover)
+            return nextBooking;
+        }
+
+        // No blocking booking found, allow up to 6 months
+        return addDays(checkInDate, 180);
+    }, [bookedRanges]);
+
+    const maxCheckoutDate = useMemo(() =>
+        check_in ? getMaxCheckoutDate(check_in) : null,
+        [check_in, getMaxCheckoutDate]
+    );
+
     const datesSelected = Boolean(check_in && check_out);
-    
+
     const minStayMet = useMemo(() => {
         if (!check_in || !check_out) return true;
         const nights = differenceInDays(check_out, check_in);
-        // You can add minimum stay logic here
         return nights >= 1;
     }, [check_in, check_out]);
 
-    // Fetch listing info (max guests, etc.)
+    // Filter function for check-in calendar
+    const filterCheckInDate = useCallback((date) => {
+        const key = format(date, "yyyy-MM-dd");
+
+        // Must be available according to pricing
+        if (availabilityMap[key]?.available === false) {
+            return false;
+        }
+
+        // Cannot check in on a date that's in the middle of a booking
+        const isBlocked = disabledCheckInDates.some(blockedDate =>
+            isEqual(new Date(blockedDate).setHours(0, 0, 0, 0), new Date(date).setHours(0, 0, 0, 0))
+        );
+
+        return !isBlocked;
+    }, [availabilityMap, disabledCheckInDates]);
+
+    // Filter function for check-out calendar
+    const filterCheckOutDate = useCallback((date) => {
+        if (!check_in) return true;
+
+        // Must be after check-in
+        if (!isBefore(check_in, date)) return false;
+
+        // Cannot checkout beyond the next booking's check-in
+        if (maxCheckoutDate && isBefore(maxCheckoutDate, date)) return false;
+
+        // Check if there's a booking that would conflict
+        const hasConflict = bookedRanges.some(({ check_in: bookedIn, check_out: bookedOut }) => {
+            const bookedStart = new Date(bookedIn);
+            const bookedEnd = new Date(bookedOut);
+
+            // Our checkout must be on or before the next booking's check-in
+            // This allows same-day turnover
+            return isBefore(bookedStart, date) && isBefore(date, bookedEnd);
+        });
+
+        return !hasConflict;
+    }, [check_in, bookedRanges, maxCheckoutDate]);
+
+    // Fetch listing info
     useEffect(() => {
         const fetchListingInfo = async () => {
             try {
@@ -99,28 +179,16 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
             try {
                 const [availabilityRes, bookedRes] = await Promise.all([
                     axiosReq.get(
-                        `/short-term-listings/${listingId}/availability/?start=${dateRange.start.toISOString().split("T")[0]}&end=${dateRange.end.toISOString().split("T")[0]}`
+                        `/short-term-listings/${listingId}/availability/?start=${format(dateRange.start, 'yyyy-MM-dd')}&end=${format(dateRange.end, 'yyyy-MM-dd')}`
                     ),
                     axiosReq.get(`bookings/unavailable-dates/?listing=${listingId}`)
                 ]);
 
                 setAvailability(availabilityRes.data);
 
-                // Process booked dates
-                const disabled = bookedRes.data.flatMap(({ check_in, check_out }) => {
-                    const start = new Date(check_in);
-                    const end = new Date(check_out);
-                    const days = [];
-                    let current = new Date(start);
+                // Store the actual booking ranges (not individual dates)
+                setBookedRanges(bookedRes.data);
 
-                    while (current < end) {
-                        days.push(new Date(current));
-                        current.setDate(current.getDate() + 1);
-                    }
-                    return days;
-                });
-
-                setDisabledDates(disabled);
             } catch (err) {
                 console.error("Initial data fetch failed", err);
             } finally {
@@ -151,7 +219,7 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
                 if (dayInfo?.available) {
                     total += Number(dayInfo.price);
                 }
-                current.setDate(current.getDate() + 1);
+                current = addDays(current, 1);
             }
 
             const priceData = { nights, total };
@@ -165,11 +233,11 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
     // Handle month change in calendar
     const handleMonthChange = useCallback(async (date) => {
         const start = new Date(date.getFullYear(), date.getMonth(), 1);
-        const end = new Date(date.getFullYear(), date.getMonth() + 2, 0);
+        const end = new Date(date.getFullYear(), date.getMonth() + 6, 0);
 
         try {
             const { data } = await axiosReq.get(
-                `/short-term-listings/${listingId}/availability/?start=${start.toISOString().split("T")[0]}&end=${end.toISOString().split("T")[0]}`
+                `/short-term-listings/${listingId}/availability/?start=${format(start, 'yyyy-MM-dd')}&end=${format(end, 'yyyy-MM-dd')}`
             );
 
             setAvailability(prev => {
@@ -228,7 +296,7 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
 
         const maxTotal = maxGuests.adults + maxGuests.children;
         const totalGuests = parseInt(adults) + parseInt(children);
-        
+
         if (totalGuests > maxTotal) {
             validationErrors.non_field_errors = [t("bookingForm.maxGuests", { max: maxTotal })];
         }
@@ -302,7 +370,6 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
                         <DatePicker
                             className={`${styles.Input} text-start w-100`}
                             selected={check_in}
-                            excludeDates={disabledDates}
                             selectsStart
                             startDate={check_in}
                             endDate={check_out}
@@ -316,10 +383,7 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
                             }))}
                             onMonthChange={handleMonthChange}
                             renderDayContents={renderDayContents}
-                            filterDate={(date) => {
-                                const key = format(date, "yyyy-MM-dd");
-                                return availabilityMap[key]?.available !== false;
-                            }}
+                            filterDate={filterCheckInDate}
                         />
                     </div>
 
@@ -331,17 +395,18 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
                         <DatePicker
                             className={`${styles.Input} text-start w-100`}
                             selected={check_out}
-                            excludeDates={disabledDates}
                             selectsEnd
                             startDate={check_in}
                             endDate={check_out}
-                            minDate={check_in || new Date()}
+                            minDate={check_in ? addDays(check_in, 1) : null}
+                            maxDate={maxCheckoutDate}
                             placeholderText={t('bookingForm.checkOut')}
                             dateFormat="dd-MM-yyyy"
                             disabled={!check_in}
                             onChange={(date) => setBookingData(prev => ({ ...prev, check_out: date }))}
                             onMonthChange={handleMonthChange}
                             renderDayContents={renderDayContents}
+                            filterDate={filterCheckOutDate}
                         />
                     </div>
                 </div>
@@ -550,7 +615,7 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
 
                         <Form.Group className="mb-3">
                             <Form.Label>
-                                {t('bookingForm.message')} 
+                                {t('bookingForm.message')}
                                 <small className="text-muted ms-1">({t('bookingForm.optional')})</small>
                             </Form.Label>
                             <Form.Control
