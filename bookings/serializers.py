@@ -4,6 +4,37 @@ from bookings.utils import calculate_booking_price
 
 
 class ShortTermBookingSerializer(serializers.ModelSerializer):
+    subtotal = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        read_only=True
+    )
+    vat = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        read_only=True
+    )
+    municipality_tax = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        read_only=True
+    )
+    climate_crisis_fee = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        read_only=True
+    )
+    cleaning_fee = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        read_only=True
+    )
+    service_fee = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        read_only=True
+    )
+
     class Meta:
         model = ShortTermBooking
         fields = [
@@ -25,13 +56,19 @@ class ShortTermBookingSerializer(serializers.ModelSerializer):
             'message',
             'total_price',
             'total_nights',
+            'subtotal',
+            'vat',
+            'municipality_tax',
+            'climate_crisis_fee',
+            'cleaning_fee',
+            'service_fee',
         ]
-        read_only_fields = (
-            'total_price',
-            'total_nights',
-            'reference_number',
-            'created_at',
-        )
+        read_only_fields = [
+            'total_nights', 'subtotal', 'vat',
+            'municipality_tax', 'climate_crisis_fee',
+            'cleaning_fee', 'service_fee',
+            'total_price', 'created_at'
+        ]
 
     def validate(self, data):
         listing = data['listing']
@@ -90,11 +127,38 @@ class ShortTermBookingSerializer(serializers.ModelSerializer):
         check_in = validated_data['check_in']
         check_out = validated_data['check_out']
 
-        total_nights, total_price, _ = calculate_booking_price(
-            listing, check_in, check_out
-        )
+        # Calculate all pricing components
+        price_data = calculate_booking_price(listing, check_in, check_out)
 
-        validated_data['total_nights'] = total_nights
-        validated_data['total_price'] = total_price
+        # Add calculated values to validated data
+        validated_data['total_nights'] = price_data['nights']
+        validated_data['subtotal'] = price_data['subtotal']
+        validated_data['vat'] = price_data['vat']
+        validated_data['municipality_tax'] = price_data['municipality_tax']
+        validated_data['climate_crisis_fee'] = price_data['climate_crisis_fee']
+        validated_data['cleaning_fee'] = price_data['cleaning_fee']
+        validated_data['service_fee'] = price_data['service_fee']
+        validated_data['total_price'] = price_data['total']
 
         return super().create(validated_data)
+
+    def to_representation(self, instance):
+        """Include all price components in the response"""
+        data = super().to_representation(instance)
+
+        # If these fields don't exist on the model yet,
+        # calculate them on the fly
+        if not hasattr(instance, 'subtotal'):
+            price_data = calculate_booking_price(
+                instance.listing,
+                instance.check_in,
+                instance.check_out
+            )
+            data['subtotal'] = price_data['subtotal']
+            data['vat'] = price_data['vat']
+            data['municipality_tax'] = price_data['municipality_tax']
+            data['climate_crisis_fee'] = price_data['climate_crisis_fee']
+            data['cleaning_fee'] = price_data['cleaning_fee']
+            data['service_fee'] = price_data['service_fee']
+
+        return data
