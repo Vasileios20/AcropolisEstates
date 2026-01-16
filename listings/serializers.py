@@ -388,6 +388,9 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
         queryset=Amenities.objects.all(),
         source='amenities'
     )
+    vat_rate_display = serializers.SerializerMethodField()
+    municipality_tax_rate_display = serializers.SerializerMethodField()
+    service_fee_rate_display = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
         return self.context["request"].user == obj.agent_name
@@ -481,6 +484,22 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
         # Call the parent class update method for the rest of the data
         return super().update(instance, validated_data)
 
+    def get_vat_rate_display(self, obj):
+        """Convert 0.13 -> 13.0 for display."""
+        return float(obj.vat_rate / 100) if obj.vat_rate else 0
+
+    def get_municipality_tax_rate_display(self, obj):
+        """Convert 0.015 -> 1.5 for display."""
+        return (
+            float(
+                obj.municipality_tax_rate / 100
+            ) if obj.municipality_tax_rate else 0
+        )
+
+    def get_service_fee_rate_display(self, obj):
+        """Convert 0.05 -> 5.0 for display."""
+        return float(obj.service_fee_rate / 100) if obj.service_fee_rate else 0
+
     class Meta:
         model = ShortTermListing
         fields = [
@@ -522,6 +541,14 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
             "max_children",
             "price",
             "price_overrides",
+            "vat_rate",
+            "municipality_tax_rate",
+            "climate_crisis_fee_per_night",
+            "cleaning_fee",
+            "service_fee_rate",
+            "vat_rate_display",
+            "municipality_tax_rate_display",
+            "service_fee_rate_display",
         ]
 
     def to_representation(self, instance):
