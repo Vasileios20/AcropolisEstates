@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
@@ -49,12 +49,39 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
     latitude,
     amenities,
     currency,
+    vat_rate_display,
+    municipality_tax_rate_display,
+    climate_crisis_fee_per_night,
+    vat_rate,
+    municipality_tax_rate,
+    service_fee_rate,
+    cleaning_fee,
   } = props;
+
+  const listingTaxRates = useMemo(() => ({
+    vatRate: vat_rate_display || 0,
+    municipalityTaxRate: municipality_tax_rate_display || 0,
+    serviceFee: service_fee_rate || 0,
+    vat: vat_rate || 0,
+    municipalityTax: municipality_tax_rate || 0,
+    climateCrisisFeeRate: climate_crisis_fee_per_night || 0,
+    cleaningFee: cleaning_fee || 0,
+  }), [
+    vat_rate_display,
+    municipality_tax_rate_display,
+    vat_rate,
+    municipality_tax_rate,
+    service_fee_rate,
+    climate_crisis_fee_per_night,
+    cleaning_fee
+  ]);
+
 
   const lng = i18n.language;
   const [mapReady, setMapReady] = useState(false);
   const priceValue = formatPriceValue(price);
   const floorValue = getFloorValue(floor, t);
+
 
   const descriptionKey = lng === "el" ? "description_gr" : "description";
   const description = props[descriptionKey];
@@ -186,7 +213,7 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
     <div className={`${styles.Listing__features}`}>
       <div className="d-flex flex-wrap">
         {[
-          { label: t("propertyDetails.price"), value: `${currency}${priceValue}`, icon: "fa-tag" },
+          // { label: t("propertyDetails.price"), value: `${currency}${priceValue}`, icon: "fa-tag" },
           { label: t("propertyDetails.floorArea"), value: `${floor_area}m²`, icon: "fa-ruler-combined" },
           { label: t("propertyDetails.floorLevel"), value: floorValue, icon: "fa-stairs" },
           { label: t("propertyDetails.bedrooms"), value: bedrooms, icon: "fa-bed" },
@@ -309,6 +336,7 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
                   <ShortTermBookingForm
                     listingId={id}
                     onPriceUpdate={setPriceSummary}
+                    listingTaxRates={listingTaxRates}
                   />
                 </Card.Body>
               </Card>
@@ -337,7 +365,7 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
                 {priceSummary.total !== null ? (
                   <>
                     <div className="fw-bold fs-5">
-                      €{priceSummary.total.toFixed(2)}
+                      {currency}{priceSummary.total.toFixed(2)}
                     </div>
                     <small className="text-muted">
                       {priceSummary.nights} {priceSummary.nights > 1 ? t("bookingForm.nights") : t("bookingForm.night")}
@@ -381,6 +409,7 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
               <ShortTermBookingForm
                 listingId={id}
                 onPriceUpdate={setPriceSummary}
+                listingTaxRates={listingTaxRates}
               />
             </Modal.Body>
           </Modal>
