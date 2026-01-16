@@ -1,6 +1,6 @@
 export function formatPriceValue(price) {
-    if (typeof price === "number" && !isNaN(price)) {
-        return price.toLocaleString("de-DE");
+    if (price !== null && price !== undefined && !isNaN(price)) {
+        return parseInt(String(price)).toLocaleString("de-DE", { useGrouping: true })
     }
     return "";
 }

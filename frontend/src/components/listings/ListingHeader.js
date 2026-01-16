@@ -124,9 +124,7 @@ const ListingHeader = React.memo((props) => {
         {residential}
 
         <div className="m-0">
-          <h6 className={styles.Listing__price}>
-            {t("propertyDetails.price")}: {props?.currency} {priceValue}
-          </h6>
+          
           <h6 className={styles.Listing__price}>ID: AE000{props.id}</h6>
         </div>
       </div>
