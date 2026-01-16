@@ -61,5 +61,10 @@ class ShortTermBookingAdmin(admin.ModelAdmin):
                 'total_nights',
                 'reference_number',
                 'created_at',
+                'vat_rate',
+                'municipality_tax_rate',
+                'climate_crisis_fee_per_night',
+                'cleaning_fee',
+                'service_fee_rate',
             )
         return self.readonly_fields
