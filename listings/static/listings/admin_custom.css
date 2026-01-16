@@ -1,0 +1,103 @@
+/* Make the taxes & fees section more prominent when expanded */ 
+.taxes-fees-section {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    border-left: 4px solid #4CAF50;
+    color: #666;
+}
+
+/* Style the tax input fields */
+#id_vat_rate,
+#id_municipality_tax_rate,
+#id_climate_crisis_fee_per_night,
+#id_cleaning_fee,
+#id_service_fee_rate {
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 14px;
+    padding: 8px;
+    width: 150px;
+}
+
+/* Add helpful icons next to tax fields */
+.field-vat_rate label:before,
+.field-municipality_tax_rate label:before,
+.field-climate_crisis_fee_per_night label:before,
+.field-cleaning_fee label:before,
+.field-service_fee_rate label:before {
+    content: "💰 ";
+    margin-right: 5px;
+}
+
+/* Style the location section */
+.field-region_display,
+.field-county_display,
+.field-municipality_display {
+    display: inline-block;
+    width: 32%;
+    margin-right: 1%;
+}
+
+/* Make language selector more prominent */
+.field-language {
+    background: #e3f2fd;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.field-language label {
+    font-weight: bold;
+    color: #1976d2;
+}
+
+/* Inline forms styling */
+.inline-group {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 20px 0;
+    background: #fafafa;
+}
+
+.inline-group h2 {
+    background: #4CAF50;
+    color: white;
+    padding: 8px 12px;
+    margin: -10px -10px 10px -10px;
+    border-radius: 4px 4px 0 0;
+}
+
+/* Price field highlighting */
+.field-price input {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2e7d32;
+    border: 2px solid #4CAF50;
+}
+
+/* Hidden fields (region_id, county_id, municipality_id) */
+.field-region_id,
+.field-county_id,
+.field-municipality_id {
+    display: none;
+}
+
+/* Help text styling */
+.help {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+    .field-region_display,
+    .field-county_display,
+    .field-municipality_display {
+        width: 100%;
+        margin-right: 0;
+        display: block;
+    }
+}
