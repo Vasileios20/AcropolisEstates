@@ -17,7 +17,11 @@ import BookingSuccessMessage from 'pages/bookings/BookingSuccessMessage';
 import TermsCheckbox from 'components/TermsCheckbox';
 import { format, differenceInDays, addDays, isBefore, isEqual } from 'date-fns';
 
-const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
+const ShortTermBookingForm = ({
+    listingId,
+    onPriceUpdate,
+    listingTaxRates
+}) => {
     const { t, i18n } = useTranslation();
     const currentUser = useCurrentUser();
     const lng = i18n.language.startsWith('el') ? 'el' : 'en';
@@ -46,8 +50,16 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
     const [availability, setAvailability] = useState([]);
     const [bookedRanges, setBookedRanges] = useState([]); // Store actual booking ranges
     const [maxGuests, setMaxGuests] = useState({ adults: 0, children: 0 });
+    const [currency, setCurrency] = useState('€');
     const [loading, setLoading] = useState(true);
-    const [priceSummary, setPriceSummary] = useState({ nights: 0, total: null });
+    const [priceSummary, setPriceSummary] = useState({
+        nights: 0,
+        subtotal: null,
+        vat: null,
+        municipality_tax: null,
+        climate_crisis_fee: null,
+        total: null
+    });
 
     const { check_in, check_out, adults, children, first_name, last_name, email, message } = bookingData;
 
@@ -165,6 +177,7 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
                     adults: data.max_adults || 4,
                     children: data.max_children || 2,
                 });
+                setCurrency(data.currency || '€');
             } catch (err) {
                 console.error("Failed to fetch listing info", err);
             }
@@ -202,7 +215,14 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
     // Calculate price when dates change
     useEffect(() => {
         if (!check_in || !check_out) {
-            const emptyPrice = { nights: 0, total: null };
+            const emptyPrice = {
+                nights: 0,
+                subtotal: null,
+                vat: null,
+                municipality_tax: null,
+                climate_crisis_fee: null,
+                total: null
+            };
             setPriceSummary(emptyPrice);
             if (onPriceUpdate) onPriceUpdate(emptyPrice);
             return;
@@ -211,24 +231,42 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
         const calculatePrice = () => {
             const nights = differenceInDays(check_out, check_in);
             let current = new Date(check_in);
-            let total = 0;
+            let subtotal = 0;
 
+            // Calculate subtotal (base accommodation price)
             while (current < check_out) {
                 const key = format(current, 'yyyy-MM-dd');
                 const dayInfo = availabilityMap[key];
                 if (dayInfo?.available) {
-                    total += Number(dayInfo.price);
+                    subtotal += Number(dayInfo.price);
                 }
                 current = addDays(current, 1);
             }
 
-            const priceData = { nights, total };
+            // Calculate taxes and fees (matching backend logic)
+            const VAT_RATE = listingTaxRates.vatRate;
+            const MUNICIPALITY_TAX_RATE = listingTaxRates.municipalityTaxRate;
+            const CLIMATE_CRISIS_FEE_PER_NIGHT = listingTaxRates.climateCrisisFeeRate;
+
+            const vat = subtotal * VAT_RATE;
+            const municipality_tax = subtotal * MUNICIPALITY_TAX_RATE;
+            const climate_crisis_fee = CLIMATE_CRISIS_FEE_PER_NIGHT * nights;
+            const total = subtotal + vat + municipality_tax + climate_crisis_fee;
+
+            const priceData = {
+                nights,
+                subtotal,
+                vat,
+                municipality_tax,
+                climate_crisis_fee,
+                total
+            };
             setPriceSummary(priceData);
             if (onPriceUpdate) onPriceUpdate(priceData);
         };
 
         calculatePrice();
-    }, [check_in, check_out, availabilityMap, onPriceUpdate]);
+    }, [check_in, check_out, availabilityMap, onPriceUpdate, listingTaxRates]);
 
     // Handle month change in calendar
     const handleMonthChange = useCallback(async (date) => {
@@ -344,14 +382,14 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
         const dayInfo = availabilityMap[iso];
 
         return (
-            <div title={dayInfo?.available ? `€${dayInfo.price} / night` : t('bookingForm.unavailable')}>
+            <div title={dayInfo?.available ? `${currency}${dayInfo.price} / night` : t('bookingForm.unavailable')}>
                 <div>{day}</div>
                 <small className="text-muted d-block">
-                    {!loading && dayInfo?.available ? `€${dayInfo.price}` : '\u00A0'}
+                    {!loading && dayInfo?.available ? `${currency}${dayInfo.price}` : '\u00A0'}
                 </small>
             </div>
         );
-    }, [availabilityMap, loading, t]);
+    }, [availabilityMap, loading, t, currency]);
 
     if (submitted) {
         return <BookingSuccessMessage />;
@@ -421,15 +459,34 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
 
                 {priceSummary.total !== null && (
                     <div className="p-3 border rounded bg-light mb-3">
+                        {/* Accommodation Cost */}
                         <div className="d-flex justify-content-between mb-2 small">
                             <span>
-                                €{(priceSummary.total / priceSummary.nights).toFixed(2)} × {priceSummary.nights} {priceSummary.nights > 1 ? t("bookingForm.nights") : t("bookingForm.night")}
+                                {currency}{(priceSummary.subtotal / priceSummary.nights).toFixed(2)} × {priceSummary.nights} {priceSummary.nights > 1 ? t("bookingForm.nights") : t("bookingForm.night")}
                             </span>
-                            <span>€{priceSummary.total.toFixed(2)}</span>
+                            <span>{currency}{priceSummary.subtotal.toFixed(2)}</span>
                         </div>
+
+                        {/* Tax Breakdown */}
+                        <div className="small text-muted mb-2">
+                            <div className="d-flex justify-content-between">
+                                <span>{t("bookingForm.vat")} ({listingTaxRates?.vat}%)</span>
+                                <span>{currency}{priceSummary.vat.toFixed(2)}</span>
+                            </div>
+                            <div className="d-flex justify-content-between">
+                                <span>{t("bookingForm.municipalityTax")} ({listingTaxRates?.municipalityTax}%)</span>
+                                <span>{currency}{priceSummary.municipality_tax.toFixed(2)}</span>
+                            </div>
+                            <div className="d-flex justify-content-between">
+                                <span>{t("bookingForm.climateFee")} ({listingTaxRates?.climateCrisisFeeRate}/{t("bookingForm.night")})</span>
+                                <span>{currency}{priceSummary.climate_crisis_fee.toFixed(2)}</span>
+                            </div>
+                        </div>
+
+                        {/* Total */}
                         <div className="d-flex justify-content-between fw-bold border-top pt-2">
                             <span>{t("bookingForm.total")}</span>
-                            <span>€{priceSummary.total.toFixed(2)}</span>
+                            <span>{currency}{priceSummary.total.toFixed(2)}</span>
                         </div>
                     </div>
                 )}
@@ -471,7 +528,10 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="bg-light p-3 rounded mb-4">
-                        <div className="d-flex justify-content-between mb-2">
+                        <h6 className="mb-3">{t('bookingForm.bookingSummary')}</h6>
+
+                        {/* Dates */}
+                        <div className="d-flex justify-content-between mb-2 small">
                             <div>
                                 <strong>{t('bookingForm.checkIn')}:</strong> {check_in?.toLocaleDateString(lng)}
                             </div>
@@ -479,9 +539,30 @@ const ShortTermBookingForm = ({ listingId, onPriceUpdate }) => {
                                 <strong>{t('bookingForm.checkOut')}:</strong> {check_out?.toLocaleDateString(lng)}
                             </div>
                         </div>
-                        <div className="d-flex justify-content-between fw-bold">
-                            <span>{priceSummary.nights} {priceSummary.nights > 1 ? t("bookingForm.nights") : t("bookingForm.night")}</span>
-                            <span>€{priceSummary.total?.toFixed(2)}</span>
+
+                        {/* Price Breakdown */}
+                        <div className="border-top pt-2 mt-2">
+                            <div className="d-flex justify-content-between mb-1 small">
+                                <span>{priceSummary.nights} {priceSummary.nights > 1 ? t("bookingForm.nights") : t("bookingForm.night")}</span>
+                                <span>{currency}{priceSummary.subtotal?.toFixed(2)}</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-1 small text-muted">
+                                <span>{t("bookingForm.vat")}</span>
+                                <span>{currency}{priceSummary.vat?.toFixed(2)}</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-1 small text-muted">
+                                <span>{t("bookingForm.municipalityTax")}</span>
+                                <span>{currency}{priceSummary.municipality_tax?.toFixed(2)}</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-2 small text-muted">
+                                <span>{t("bookingForm.climateFee")}</span>
+                                <span>{currency}{priceSummary.climate_crisis_fee?.toFixed(2)}</span>
+                            </div>
+
+                            <div className="d-flex justify-content-between fw-bold border-top pt-2">
+                                <span>{t("bookingForm.total")}</span>
+                                <span>{currency}{priceSummary.total?.toFixed(2)}</span>
+                            </div>
                         </div>
                     </div>
 

@@ -1,0 +1,14 @@
+.sticky-booking {
+    position: sticky;
+    top: 90px;
+}
+
+.calendarLoading {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.calendarReady {
+    opacity: 1;
+    transition: opacity 250ms ease-in-out;
+}

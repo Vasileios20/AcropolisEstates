@@ -12,13 +12,151 @@ code {
     monospace;
 }
 
+/* DatePicker Header */
 .react-datepicker__header {
-  background-color: rgba(77, 103, 101, 0.7) !important;
+  background-color: #4d6765 !important;
   color: white;
+  border-bottom: none !important;
 }
 
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: white !important;
+}
+
+/* Regular day cells */
+.react-datepicker__day {
+  margin: 0.2rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+}
+
+.react-datepicker__day:hover:not(.react-datepicker__day--disabled) {
+  background-color: rgba(77, 103, 101, 0.1) !important;
+}
+
+/* Price display under dates */
+.react-datepicker__day small {
+  display: block;
+  font-size: 0.65rem;
+  color: #065f46;
+  line-height: 1;
+  margin-top: 2px;
+  min-height: 0.65rem;
+  visibility: visible;
+}
+
+/* Reserve space even when price is empty */
+.react-datepicker__day div {
+  min-height: 1.2rem;
+}
+
+/* Selected start and end dates - solid color */
 .react-datepicker__day--selected,
+.react-datepicker__day--range-start,
+.react-datepicker__day--range-end {
+  background-color: #4d6765 !important;
+  color: white !important;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+/* Make sure selected dates don't get the in-range styling */
+.react-datepicker__day--range-start.react-datepicker__day--in-range,
+.react-datepicker__day--range-end.react-datepicker__day--in-range {
+  background-color: #4d6765 !important;
+  color: white !important;
+}
+
+/* Days inside the selected range - light background */
+.react-datepicker__day--in-range:not(.react-datepicker__day--range-start):not(.react-datepicker__day--range-end) {
+  background-color: rgba(77, 103, 101, 0.15) !important;
+  color: #064e3b !important;
+  border-radius: 0;
+  max-height: 3rem;
+}
+
+/* Hover preview when selecting range */
+.react-datepicker__day--in-selecting-range:not(.react-datepicker__day--disabled) {
+  background-color: rgba(77, 103, 101, 0.2) !important;
+  color: #064e3b !important;
+}
+
+/* Keyboard selected (remove if interfering) */
 .react-datepicker__day--keyboard-selected {
+  background-color: rgba(77, 103, 101, 0.3) !important;
+  color: #064e3b !important;
+}
+
+/* Disabled (booked) dates */
+.react-datepicker__day--disabled {
+  background-color: #f3f4f6 !important;
+  color: #9ca3af !important;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.react-datepicker__day--disabled:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* Remove outline on focus */
+.react-datepicker__day:focus {
+  outline: none;
+}
+
+/* Rounded corners for range edges */
+.react-datepicker__day--range-start {
+  border-top-left-radius: 6px !important;
+  border-bottom-left-radius: 6px !important;
+}
+
+.react-datepicker__day--range-end {
+  border-top-right-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+}
+
+/* Calendar container */
+.react-datepicker {
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Navigation arrows */
+.react-datepicker__navigation-icon::before {
+  border-color: white !important;
+}
+
+.react-datepicker__navigation:hover *::before {
+  border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Force consistent height for all day cells */
+.react-datepicker__day>div {
+  display: flex;
+  flex-direction: column;
+  min-height: 3rem;
+  justify-content: space-between;
+}
+
+/* Ensure small tag space is always reserved */
+.react-datepicker__day>div::after {
+  content: '';
+  display: block;
+  min-height: 0.65rem;
+}
+
+.btn.disabled,
+.btn:disabled,
+fieldset:disabled .btn {
+  color: aliceblue;
+  pointer-events: none;
   background-color: rgba(77, 103, 101, 0.7) !important;
-  color: white;
+  border-color: rgb(77, 103, 101);
+  opacity: var(--bs-btn-disabled-opacity);
 }
