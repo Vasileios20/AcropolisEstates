@@ -26,6 +26,42 @@ class ShortTermBooking(models.Model):
     check_in = models.DateField()
     check_out = models.DateField()
     total_nights = models.PositiveIntegerField(default=0)
+    subtotal = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal('0.00'),
+        help_text="Base accommodation cost before taxes"
+    )
+    vat = models.DecimalField(
+        max_digits=10,
+        decimal_places=3,
+        default=Decimal('0.000'),
+        help_text="13% VAT"
+    )
+    municipality_tax = models.DecimalField(
+        max_digits=10,
+        decimal_places=3,
+        default=Decimal('0.000'),
+        help_text="Municipality accommodation tax"
+    )
+    climate_crisis_fee = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal('0.00'),
+        help_text="Climate Crisis Resilience Fee"
+    )
+    cleaning_fee = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal('0.00'),
+        help_text="One-time cleaning fee"
+    )
+    service_fee = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal('0.00'),
+        help_text="Platform/service fee"
+    )
     total_price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -106,14 +142,21 @@ class ShortTermBooking(models.Model):
 
         if creating:
             if self.listing and self.check_in and self.check_out:
-                nights_count, total_price, nights = calculate_booking_price(
+                price_data = calculate_booking_price(
                     self.listing,
                     self.check_in,
                     self.check_out
                 )
-                self.total_nights = nights_count
-                self.total_price = total_price
 
+                # Unpack from dictionary
+                self.total_nights = price_data['nights']
+                self.subtotal = price_data['subtotal']
+                self.vat = price_data['vat']
+                self.municipality_tax = price_data['municipality_tax']
+                self.climate_crisis_fee = price_data['climate_crisis_fee']
+                self.cleaning_fee = price_data['cleaning_fee']
+                self.service_fee = price_data['service_fee']
+                self.total_price = price_data['total']
         else:
             old = ShortTermBooking.objects.get(pk=self.pk)
 
@@ -160,7 +203,7 @@ class ShortTermBooking(models.Model):
 
     def __str__(self):
         return (
-            f"{self.first_name} {self.last_name} - {self.listing} "
+            f"{self.reference_number} - {self.listing} "
             f"({self.check_in} to {self.check_out})"
         )
 
