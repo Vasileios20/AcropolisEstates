@@ -12,7 +12,7 @@
 #id_municipality_tax_rate,
 #id_climate_crisis_fee_per_night,
 #id_cleaning_fee,
-#id_service_fee_rate {
+#id_service_fee {
     font-family: 'Monaco', 'Menlo', monospace;
     font-size: 14px;
     padding: 8px;
@@ -24,7 +24,7 @@
 .field-municipality_tax_rate label:before,
 .field-climate_crisis_fee_per_night label:before,
 .field-cleaning_fee label:before,
-.field-service_fee_rate label:before {
+.field-service_fee label:before {
     content: "💰 ";
     margin-right: 5px;
 }

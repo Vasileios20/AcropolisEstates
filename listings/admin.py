@@ -12,6 +12,7 @@ from listings.models import (
     ShortTermSeasonalPrice
 )
 from .forms import ImagesAdminForm, ListingLocationAdminForm
+from decimal import Decimal
 
 
 # ============================================================================
@@ -75,7 +76,8 @@ class ListingAdmin(admin.ModelAdmin):
         "type",
         "description",
         "agent_name__username",
-        "municipality_gr"
+        "municipality_gr",
+        "id"
     )
 
     list_per_page = 25
@@ -211,6 +213,7 @@ class ShortTermListingAdmin(admin.ModelAdmin):
 
     list_display = (
         'id',
+        'title_display',
         'agent_name',
         'municipality_gr',
         'price',
@@ -239,6 +242,8 @@ class ShortTermListingAdmin(admin.ModelAdmin):
             'fields': (
                 'agent_name',
                 'listing_owner',
+                'title',
+                'title_gr',
                 'approved',
             ),
             'classes': ('wide',)
@@ -309,36 +314,9 @@ class ShortTermListingAdmin(admin.ModelAdmin):
                 'municipality_tax_rate',
                 'climate_crisis_fee_per_night',
                 'cleaning_fee',
-                'service_fee_rate',
+                'service_fee',
             ),
-            'classes': ('collapse',),
-            'description': format_html(
-                '<div style="background: #000; padding: 10px; '
-                'border-radius: 4px; margin-bottom: 10px;">'
-                '<strong>📋 Tax Configuration Guide:</strong><br>'
-                '<ul style="margin: 5px 0; padding-left: 20px;">'
-                '<li><strong>VAT Rate:</strong> Standard is 13% '
-                'for short-term rentals in Greece</li>'
-                '<li><strong>Municipality Tax:</strong> 0.5% - 4% '
-                '(varies by location and property type)</li>'
-                '<li><strong>Climate Crisis Fee:</strong> '
-                '€0.50 - €10.00 per night'
-                '<ul style="font-size: 0.9em; color: #666;">'
-                '<li>€0.50/night: 1-2 star hotels, rooms to let</li>'
-                '<li>€1.50/night: 3-star hotels</li>'
-                '<li>€3.00/night: 4-star hotels</li>'
-                '<li>€4.00/night: 5-star hotels</li>'
-                '<li>€10.00/night: Luxury suites</li>'
-                '</ul></li>'
-                '<li><strong>Cleaning Fee:</strong> '
-                'One-time charge (optional)</li>'
-                '<li><strong>Service Fee:</strong> '
-                'Platform/booking commission % (optional)</li>'
-                '</ul>'
-                '<em style="color: #856404;">⚠️ Consult with your '
-                'accountant for the correct rates for your property type.'
-                '</em></div>'
-            )
+            'classes': ('collapse',)
         }),
         ('Amenities', {
             'fields': ('amenities',),
@@ -363,13 +341,36 @@ class ShortTermListingAdmin(admin.ModelAdmin):
             context["location_json_script"] = form.render_location_json()
         return super().render_change_form(request, context, *args, **kwargs)
 
+    def title_display(self, obj):
+        """Display title with fallback"""
+        if obj.title:
+            return obj.title
+        return f"ST{str(obj.id).zfill(6)}"
+    title_display.short_description = "Title"
+    title_display.admin_order_field = 'title'
+
     def display_vat_rate(self, obj):
-        """Display VAT rate with percentage sign."""
-        return f"{obj.vat_rate}%"
+        """Display VAT rate with percentage sign and proper formatting."""
+        if obj.vat_rate:
+            # Normalize to 2 decimal places
+            normalized = Decimal(str(obj.vat_rate)).quantize(Decimal('0.01'))
+            return f"{normalized:.2f}%"
+        return "-"
     display_vat_rate.short_description = "VAT Rate"
 
     def save_model(self, request, obj, form, change):
-        """Add custom logic before saving if needed."""
+        """Normalize decimal fields before saving."""
+        decimal_fields = [
+            'vat_rate', 'municipality_tax_rate', 'service_fee',
+            'climate_crisis_fee_per_night', 'cleaning_fee', 'price'
+        ]
+
+        for field_name in decimal_fields:
+            value = getattr(obj, field_name, None)
+            if value is not None:
+                normalized = Decimal(str(value)).quantize(Decimal('0.01'))
+                setattr(obj, field_name, normalized)
+
         super().save_model(request, obj, form, change)
 
     class Media:
