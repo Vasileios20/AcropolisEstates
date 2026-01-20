@@ -54,14 +54,14 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
     climate_crisis_fee_per_night,
     vat_rate,
     municipality_tax_rate,
-    service_fee_rate,
+    service_fee,
     cleaning_fee,
   } = props;
 
   const listingTaxRates = useMemo(() => ({
     vatRate: vat_rate_display || 0,
     municipalityTaxRate: municipality_tax_rate_display || 0,
-    serviceFee: service_fee_rate || 0,
+    serviceFee: service_fee || 0,
     vat: vat_rate || 0,
     municipalityTax: municipality_tax_rate || 0,
     climateCrisisFeeRate: climate_crisis_fee_per_night || 0,
@@ -71,7 +71,7 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
     municipality_tax_rate_display,
     vat_rate,
     municipality_tax_rate,
-    service_fee_rate,
+    service_fee,
     climate_crisis_fee_per_night,
     cleaning_fee
   ]);
