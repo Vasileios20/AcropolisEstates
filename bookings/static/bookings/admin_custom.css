@@ -1,0 +1,12 @@
+#nights-group table {
+    display: table !important;
+}
+
+#nights-group table tr {
+    display: table-row !important;
+}
+
+#nights-group table td,
+#nights-group table th {
+    display: table-cell !important;
+}
