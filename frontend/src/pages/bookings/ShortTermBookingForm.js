@@ -194,7 +194,7 @@ const ShortTermBookingForm = ({
                     axiosReq.get(
                         `/short-term-listings/${listingId}/availability/?start=${format(dateRange.start, 'yyyy-MM-dd')}&end=${format(dateRange.end, 'yyyy-MM-dd')}`
                     ),
-                    axiosReq.get(`bookings/unavailable-dates/?listing=${listingId}`)
+                    axiosReq.get(`short-term-bookings/unavailable-dates/?listing=${listingId}`)
                 ]);
 
                 setAvailability(availabilityRes.data);
@@ -366,7 +366,7 @@ const ShortTermBookingForm = ({
         if (currentUser) formData.user = currentUser.id;
 
         try {
-            await axios.post('bookings/', formData);
+            await axios.post('short-term-bookings/', formData);
             setSubmitted(true);
             setShowDetailsModal(false);
         } catch (error) {
@@ -467,26 +467,14 @@ const ShortTermBookingForm = ({
                             <span>{currency}{priceSummary.subtotal.toFixed(2)}</span>
                         </div>
 
-                        {/* Tax Breakdown */}
-                        <div className="small text-muted mb-2">
-                            <div className="d-flex justify-content-between">
-                                <span>{t("bookingForm.vat")} ({listingTaxRates?.vat}%)</span>
-                                <span>{currency}{priceSummary.vat.toFixed(2)}</span>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <span>{t("bookingForm.municipalityTax")} ({listingTaxRates?.municipalityTax}%)</span>
-                                <span>{currency}{priceSummary.municipality_tax.toFixed(2)}</span>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <span>{t("bookingForm.climateFee")} ({listingTaxRates?.climateCrisisFeeRate}/{t("bookingForm.night")})</span>
-                                <span>{currency}{priceSummary.climate_crisis_fee.toFixed(2)}</span>
-                            </div>
-                        </div>
-
                         {/* Total */}
                         <div className="d-flex justify-content-between fw-bold border-top pt-2">
                             <span>{t("bookingForm.total")}</span>
                             <span>{currency}{priceSummary.total.toFixed(2)}</span>
+
+                        </div>
+                        <div className="text-center mt-1">
+                            <small className="text-muted">{t("bookingForm.includesTaxesAndFees")}</small>
                         </div>
                     </div>
                 )}
@@ -546,23 +534,12 @@ const ShortTermBookingForm = ({
                                 <span>{priceSummary.nights} {priceSummary.nights > 1 ? t("bookingForm.nights") : t("bookingForm.night")}</span>
                                 <span>{currency}{priceSummary.subtotal?.toFixed(2)}</span>
                             </div>
-                            <div className="d-flex justify-content-between mb-1 small text-muted">
-                                <span>{t("bookingForm.vat")}</span>
-                                <span>{currency}{priceSummary.vat?.toFixed(2)}</span>
-                            </div>
-                            <div className="d-flex justify-content-between mb-1 small text-muted">
-                                <span>{t("bookingForm.municipalityTax")}</span>
-                                <span>{currency}{priceSummary.municipality_tax?.toFixed(2)}</span>
-                            </div>
-                            <div className="d-flex justify-content-between mb-2 small text-muted">
-                                <span>{t("bookingForm.climateFee")}</span>
-                                <span>{currency}{priceSummary.climate_crisis_fee?.toFixed(2)}</span>
-                            </div>
 
                             <div className="d-flex justify-content-between fw-bold border-top pt-2">
                                 <span>{t("bookingForm.total")}</span>
                                 <span>{currency}{priceSummary.total?.toFixed(2)}</span>
                             </div>
+                            <span><small>{t("bookingForm.includesTaxesAndFees")}</small></span>
                         </div>
                     </div>
 
