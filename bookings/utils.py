@@ -76,7 +76,7 @@ def calculate_booking_price(listing, check_in, check_out):
     vat_rate = Decimal(listing.vat_rate) / Decimal('100')
     municipality_tax_rate = Decimal(
         listing.municipality_tax_rate) / Decimal('100')
-    service_fee_rate = Decimal(listing.service_fee_rate) / Decimal('100')
+    service_fee = Decimal(listing.service_fee)  # One-time fee
 
     # Calculate taxes and fees
     vat = subtotal * vat_rate
@@ -84,8 +84,7 @@ def calculate_booking_price(listing, check_in, check_out):
     climate_crisis_fee = Decimal(
         listing.climate_crisis_fee_per_night) * num_nights
     cleaning_fee = Decimal(listing.cleaning_fee)  # One-time fee
-    service_fee = subtotal * service_fee_rate
-
+    service_fee = Decimal(listing.service_fee)  # One-time fee
     # Total price
     total = subtotal + vat + municipality_tax + \
         climate_crisis_fee + cleaning_fee + service_fee
