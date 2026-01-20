@@ -3,14 +3,41 @@ from .services import upload_to_backblaze
 from .models import Images, ShortTermListing
 from django.utils.safestring import mark_safe
 from django import forms
+from django.forms.widgets import NumberInput
 from pathlib import Path
 import json
+from decimal import Decimal, InvalidOperation
 
 
 LANGUAGE_CHOICES = [
     ("en", "English"),
     ("el", "Ελληνικά (Greek)"),
 ]
+
+
+class DecimalNumberInput(NumberInput):
+    """
+    Custom NumberInput widget that formats decimal values
+    to exactly 2 decimal places.
+    This fixes the issue where 13.00 displays as 13.000 in the input field.
+    """
+
+    def format_value(self, value):
+        """Format the value to exactly 2 decimal places."""
+        if value is None or value == '':
+            return None
+
+        try:
+            # Convert to Decimal and normalize to 2 decimal places
+            decimal_value = Decimal(str(value))
+            normalized = decimal_value.quantize(Decimal('0.01'))
+            # Return as string with exactly 2 decimal places
+            result = f"{normalized:.2f}"
+            print(f"DecimalNumberInput.format_value: {value} -> {result}")
+            return result
+        except (ValueError, TypeError, InvalidOperation) as e:
+            print(f"DecimalNumberInput.format_value error: {e}")
+            return value
 
 
 class ImagesAdminForm(forms.ModelForm):
@@ -83,40 +110,6 @@ class ListingLocationAdminForm(forms.ModelForm):
         help_text="Municipality/City"
     )
 
-    # Override tax rate fields to ensure proper validation
-    vat_rate = forms.DecimalField(
-        label="VAT Rate (%)",
-        min_value=0,
-        max_value=100,
-        max_digits=5,
-        decimal_places=2,  # Allows 13.25
-        required=False,
-        initial=13.00,
-        help_text="Enter as percentage (e.g., 13 or 13.25 for 13.25%)"
-    )
-
-    municipality_tax_rate = forms.DecimalField(
-        label="Municipality Tax Rate (%)",
-        min_value=0,
-        max_value=100,
-        max_digits=5,
-        decimal_places=2,  # Allows 1.25
-        required=False,
-        initial=1.50,
-        help_text="Enter as percentage (e.g., 1.5 or 1.25 for 1.25%)"
-    )
-
-    service_fee_rate = forms.DecimalField(
-        label="Service Fee Rate (%)",
-        min_value=0,
-        max_value=100,
-        max_digits=5,
-        decimal_places=2,  # Allows 5.50
-        required=False,
-        initial=0.00,
-        help_text="Enter as percentage (e.g., 5 or 5.5 for 5.5%)"
-    )
-
     class Meta:
         model = ShortTermListing
         fields = "__all__"
@@ -127,19 +120,42 @@ class ListingLocationAdminForm(forms.ModelForm):
             'municipality_id': forms.HiddenInput(),
             'municipality_gr': forms.HiddenInput(),
 
-            # Non-percentage fee fields (EUR amounts)
-            'climate_crisis_fee_per_night': forms.NumberInput(attrs={
+            # DECIMAL FIELDS WITH CUSTOM WIDGET - THIS IS THE FIX!
+            'vat_rate': DecimalNumberInput(attrs={
+                'step': '0.01',
+                'min': '0',
+                'max': '100',
+            }),
+            'municipality_tax_rate': DecimalNumberInput(attrs={
+                'step': '0.01',
+                'min': '0',
+                'max': '100',
+            }),
+            'service_fee': DecimalNumberInput(attrs={
+                'step': '0.01',
+                'min': '0',
+                'max': '100',
+            }),
+            'climate_crisis_fee_per_night': DecimalNumberInput(attrs={
                 'step': '0.01',
                 'min': '0',
                 'placeholder': '1.50'
             }),
-            'cleaning_fee': forms.NumberInput(attrs={
+            'cleaning_fee': DecimalNumberInput(attrs={
                 'step': '0.01',
                 'min': '0',
                 'placeholder': '0.00'
             }),
+            'price': DecimalNumberInput(attrs={
+                'step': '0.01',
+                'min': '0',
+            }),
         }
         help_texts = {
+            'vat_rate': 'Enter as percentage (e.g., 13.00 for 13%)',
+            'municipality_tax_rate': (
+                'Enter as percentage (e.g., 1.50 for 1.5%)'),
+            'service_fee': 'Enter as percentage (e.g., 5.00 for 5%)',
             'climate_crisis_fee_per_night': 'Amount in EUR per night',
             'cleaning_fee': 'One-time fee in EUR',
         }
@@ -319,6 +335,52 @@ class ListingLocationAdminForm(forms.ModelForm):
         )
         return mark_safe(script_content)
 
+    def clean_vat_rate(self):
+        """Ensure VAT rate is stored with exactly 2 decimal places"""
+        value = self.cleaned_data.get('vat_rate')
+        if value is not None:
+            normalized = Decimal(str(value)).quantize(Decimal('0.01'))
+            print(f"clean_vat_rate: {value} -> {normalized}")
+            return normalized
+        return value
+
+    def clean_municipality_tax_rate(self):
+        """
+        Ensure municipality tax rate is stored with exactly 2 decimal places
+        """
+        value = self.cleaned_data.get('municipality_tax_rate')
+        if value is not None:
+            return Decimal(str(value)).quantize(Decimal('0.01'))
+        return value
+
+    def clean_service_fee(self):
+        """Ensure service fee rate is stored with exactly 2 decimal places"""
+        value = self.cleaned_data.get('service_fee')
+        if value is not None:
+            return Decimal(str(value)).quantize(Decimal('0.01'))
+        return value
+
+    def clean_climate_crisis_fee_per_night(self):
+        """Ensure climate crisis fee is stored with exactly 2 decimal places"""
+        value = self.cleaned_data.get('climate_crisis_fee_per_night')
+        if value is not None:
+            return Decimal(str(value)).quantize(Decimal('0.01'))
+        return value
+
+    def clean_cleaning_fee(self):
+        """Ensure cleaning fee is stored with exactly 2 decimal places"""
+        value = self.cleaned_data.get('cleaning_fee')
+        if value is not None:
+            return Decimal(str(value)).quantize(Decimal('0.01'))
+        return value
+
+    def clean_price(self):
+        """Ensure price is stored with exactly 2 decimal places"""
+        value = self.cleaned_data.get('price')
+        if value is not None:
+            return Decimal(str(value)).quantize(Decimal('0.01'))
+        return value
+
     def clean(self):
         """
         Validate form and populate hidden ID fields.
@@ -376,17 +438,17 @@ class ListingLocationAdminForm(forms.ModelForm):
                 "Municipality tax rate must be between 0 and 100"
             )
 
-        service_fee_rate = cleaned_data.get("service_fee_rate")
-        if (service_fee_rate is not None and
-                not (0 <= service_fee_rate <= 100)):
+        service_fee = cleaned_data.get("service_fee")
+        if (service_fee is not None and
+                not (0 <= service_fee <= 100)):
             self.add_error(
-                "service_fee_rate",
+                "service_fee",
                 "Service fee rate must be between 0 and 100"
             )
 
         # Validate precision (max 2 decimal places for percentages)
         for field_name in [
-            'vat_rate', 'municipality_tax_rate', 'service_fee_rate'
+            'vat_rate', 'municipality_tax_rate', 'service_fee'
         ]:
             value = cleaned_data.get(field_name)
             if value is not None:
@@ -397,7 +459,7 @@ class ListingLocationAdminForm(forms.ModelForm):
                     if len(decimal_part) > 2:
                         self.add_error(
                             field_name,
-                            (f"Maximum 2 decimal places allowed."
+                            (f"Maximum 2 decimal places allowed. "
                              f"You entered {len(decimal_part)} "
                              f"decimal places.")
                         )
