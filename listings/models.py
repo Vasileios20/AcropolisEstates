@@ -380,6 +380,22 @@ class ShortTermListing(models.Model):
         Owner, on_delete=models.CASCADE, related_name="short_term_listings",
         null=True, blank=True
     )
+    title = models.CharField(
+        max_length=200,
+        blank=True,
+        default='',
+        help_text=(
+            'Property title/name (e.g., "Cozy Apartment in Athens Center")'
+        )
+    )
+    title_gr = models.CharField(
+        max_length=200,
+        blank=True,
+        default='',
+        help_text=(
+            'Τίτλος ακινήτου (π.χ., "Άνετο Διαμέρισμα στο Κέντρο Αθήνας")'
+        )
+    )
     description = models.TextField(blank=True)
     description_gr = models.TextField(blank=True)
     address_number = models.IntegerField(
@@ -466,11 +482,11 @@ class ShortTermListing(models.Model):
         help_text="One-time cleaning fee in EUR"
     )
     # Optional: Service/Platform fee
-    service_fee_rate = models.DecimalField(
-        max_digits=5,
+    service_fee = models.DecimalField(
+        max_digits=8,
         decimal_places=2,
         default=Decimal('0.00'),
-        help_text="Service fee percentage (e.g., 5.50 for 5.5%)"
+        help_text="One-time service/platform fee in EUR"
     )
 
     def clean(self):
@@ -489,7 +505,10 @@ class ShortTermListing(models.Model):
         ordering = ["-created_on"]
 
     def __str__(self):
-        return f"Short Term Listing ST000{self.id} - €{self.price}/night"
+        if self.title:
+            return f"{self.title} (ST{str(self.id).zfill(6)})"
+        return (f"Short Term Listing ST{str(self.id).zfill(6)} - "
+                f"€{self.price}/night")
 
 
 class ShortTermImages(models.Model):
