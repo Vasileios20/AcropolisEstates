@@ -390,7 +390,7 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
     )
     vat_rate_display = serializers.SerializerMethodField()
     municipality_tax_rate_display = serializers.SerializerMethodField()
-    service_fee_rate_display = serializers.SerializerMethodField()
+    service_fee_display = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
         return self.context["request"].user == obj.agent_name
@@ -496,15 +496,17 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
             ) if obj.municipality_tax_rate else 0
         )
 
-    def get_service_fee_rate_display(self, obj):
+    def get_service_fee_display(self, obj):
         """Convert 0.05 -> 5.0 for display."""
-        return float(obj.service_fee_rate / 100) if obj.service_fee_rate else 0
+        return float(obj.service_fee / 100) if obj.service_fee else 0
 
     class Meta:
         model = ShortTermListing
         fields = [
             "id",
             "agent_name",
+            "title",
+            "title_gr",
             "description",
             "description_gr",
             "address_number",
@@ -545,10 +547,10 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
             "municipality_tax_rate",
             "climate_crisis_fee_per_night",
             "cleaning_fee",
-            "service_fee_rate",
+            "service_fee",
             "vat_rate_display",
             "municipality_tax_rate_display",
-            "service_fee_rate_display",
+            "service_fee_display",
         ]
 
     def to_representation(self, instance):
