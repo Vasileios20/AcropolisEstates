@@ -691,7 +691,8 @@
         "vat": "VAT",
         "municipalityTax": "Municipality Tax",
         "climateFee": "Climate Crisis Fee",
-        "bookingSummary": "Booking Summary"
+        "bookingSummary": "Booking Summary",
+        "includesTaxesAndFees": "Includes taxes and fees"
     },
     "mapMarker": {
         "noLocation": "No Location Available",

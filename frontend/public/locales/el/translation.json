@@ -694,7 +694,8 @@
         "vat": "ΦΠΑ",
         "municipalityTax": "Δημοτικό Τέλος",
         "climateFee": "Τέλος Κλιματικής Αλλαγής",
-        "bookingSummary": "Σύνολο Κράτησης"
+        "bookingSummary": "Σύνολο Κράτησης",
+        "includesTaxesAndFees": "Συμπεριλαμβάνονται φόροι και τέλη"
     },
     "mapMarker": {
         "noLocation": "Ο χάρτης δεν είναι διαθέσιμος",
