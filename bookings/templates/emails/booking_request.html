@@ -7,11 +7,11 @@
                 alt="Acropolis Estates" style="height: 80px;">
         </div>
 
-        <h2 style="color: #847c3d;">Booking Confirmation – Acropolis Estates</h2>
+        <h2 style="color: #847c3d;">Booking Request Received – Acropolis Estates</h2>
         <p style="font-size: 14px; color: #666;">Booking Reference: <strong>{{ reference }}</strong></p>
 
         <p>Hi {{ first_name }} {{ last_name }},</p>
-        <p>Great news! Your booking has been confirmed by our team.</p>
+        <p>Thank you for your booking request! We have received your request and our team will review it shortly.</p>
 
         <!-- Booking Details -->
         <div
@@ -70,25 +70,6 @@
                     </td>
                 </tr>
 
-                {% if has_discount %}
-                <tr style="background-color: #ffe6e6;">
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-                        <strong style="color: #e74c3c;">
-                            Discount
-                            {% if discount_type == 'percentage' %}
-                            ({{ discount_value }}%)
-                            {% else %}
-                            ({{ currency }}{{ discount_value }})
-                            {% endif %}
-                        </strong>
-                    </td>
-                    <td
-                        style="padding: 8px; text-align: right; border-bottom: 1px solid #ddd; color: #e74c3c; font-weight: bold;">
-                        -{{ currency }}{{ discount_amount }}
-                    </td>
-                </tr>
-                {% endif %}
-
                 <tr style="border-top: 2px solid #333; background-color: #847c3d; color: white;">
                     <td style="padding: 12px 8px;">
                         <strong style="font-size: 16px;">TOTAL PRICE</strong>
@@ -103,16 +84,13 @@
             </p>
         </div>
 
-        {% if has_discount %}
-        <div
-            style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 12px; margin: 20px 0; text-align: center;">
-            <strong style="color: #155724;">You saved {{ currency }}{{ discount_amount }}!</strong>
+        <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;">
+            <p style="margin: 0;"><strong>What's Next?</strong></p>
+            <p style="margin: 5px 0 0 0;">Our team will review your request and send you a confirmation email within 24
+                hours.</p>
         </div>
-        {% endif %}
 
-        <p>We look forward to welcoming you and ensuring you have a wonderful stay!</p>
-        <p>If you have any questions, please don't hesitate to contact us.</p>
-
+        <p>If you have any questions in the meantime, feel free to reach out to us.</p>
         <p>Thank you for choosing Acropolis Estates!</p>
 
         <hr style="margin-top: 40px; border-color: #eee;">
