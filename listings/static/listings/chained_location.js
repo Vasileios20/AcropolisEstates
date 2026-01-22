@@ -1,5 +1,3 @@
-// listings/static/listings/chained_location.js
-
 document.addEventListener("DOMContentLoaded", function () {
     const regionSelect = document.getElementById("id_region_display");
     const countySelect = document.getElementById("id_county_display");
@@ -29,11 +27,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         countySelect.innerHTML = '<option value="">---------</option>';
 
+        // Sort counties alphabetically
         Array.from(counties).sort().forEach(county => {
             const option = document.createElement('option');
             option.value = county;
             option.textContent = county;
-            option.selected = county === selectedCounty;
+            if (county === selectedCounty) {
+                option.selected = true;
+            }
             countySelect.appendChild(option);
         });
 
@@ -49,41 +50,46 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /**
-     * Filter and populate municipality dropdown based on region and county
+     * Filter and populate municipality dropdown
      */
     function filterMunicipalities(regionName, countyName, selectedMunicipality = null) {
         if (!municipalitySelect) return;
 
         const municipalities = [];
 
-        Object.entries(locationMap).forEach(([name, item]) => {
+        // Collect municipalities for this region/county
+        Object.entries(locationMap).forEach(([municipalityKey, item]) => {
             if (
                 (!regionName || item.region_name === regionName) &&
                 (!countyName || item.county_name === countyName)
             ) {
                 municipalities.push({
-                    name: name,
+                    key: municipalityKey,  // This is the municipality name
+                    name: item.municipality_name,  // Display name
                     data: item
                 });
             }
         });
 
-        // Sort alphabetically
+        // Sort alphabetically by name
         municipalities.sort((a, b) => a.name.localeCompare(b.name));
 
+        // Update municipality dropdown
         municipalitySelect.innerHTML = '<option value="">---------</option>';
 
-        municipalities.forEach(({ name, data }) => {
+        municipalities.forEach(muni => {
             const option = document.createElement('option');
-            option.value = name;
-            option.textContent = name;
-            option.dataset.regionId = data.region_id;
-            option.dataset.countyId = data.county_id;
-            option.dataset.municipalityId = data.municipality_id;
+            option.value = muni.key;  // Value = municipality name (key in locationMap)
+            option.textContent = muni.name;  // Display = municipality name
+
+            // Store data attributes for easy access
+            option.dataset.regionId = muni.data.region_id;
+            option.dataset.countyId = muni.data.county_id;
+            option.dataset.municipalityId = muni.data.municipality_id;
 
             // Check if this is the selected municipality
             const savedMunicipality = municipalitySelect.getAttribute("data-selected");
-            if (name === savedMunicipality || name === selectedMunicipality) {
+            if (muni.key === savedMunicipality || muni.key === selectedMunicipality) {
                 option.selected = true;
             }
 
@@ -98,22 +104,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectedOption = municipalitySelect.options[municipalitySelect.selectedIndex];
 
         if (selectedOption && selectedOption.value) {
-            const municipalityName = selectedOption.value;
-            const data = locationMap[municipalityName];
+            const municipalityKey = selectedOption.value;
+            const data = locationMap[municipalityKey];
 
-            if (data) {
-                if (regionIdField) regionIdField.value = data.region_id;
-                if (countyIdField) countyIdField.value = data.county_id;
-                if (municipalityIdField) municipalityIdField.value = data.municipality_id;
-                if (municipalityGrField) municipalityGrField.value = data.municipality_name;
-
-                console.log('Updated hidden fields:', {
-                    region_id: data.region_id,
-                    county_id: data.county_id,
-                    municipality_id: data.municipality_id,
-                    municipality_name: data.municipality_name
-                });
-            }
+        } else {
+            // Clear hidden fields when no selection
+            if (regionIdField) regionIdField.value = '';
+            if (countyIdField) countyIdField.value = '';
+            if (municipalityIdField) municipalityIdField.value = '';
+            if (municipalityGrField) municipalityGrField.value = '';
         }
     }
 
@@ -129,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (regionIdField) regionIdField.value = '';
             if (countyIdField) countyIdField.value = '';
             if (municipalityIdField) municipalityIdField.value = '';
+            if (municipalityGrField) municipalityGrField.value = '';
         });
     }
 
@@ -140,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Clear municipality hidden fields when county changes
             if (municipalityIdField) municipalityIdField.value = '';
+            if (municipalityGrField) municipalityGrField.value = '';
         });
     }
 
@@ -153,6 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (langField) {
         langField.addEventListener("change", function () {
             const selectedLang = langField.value;
+
             const url = new URL(window.location.href);
             url.searchParams.set("language", selectedLang);
 
@@ -171,17 +173,14 @@ document.addEventListener("DOMContentLoaded", function () {
      * Initial population on page load (for editing existing records)
      */
     function initializeSelections() {
-        if (!regionSelect || !regionSelect.value) return;
+        if (!regionSelect || !regionSelect.value) {
+            return;
+        }
 
         const selectedRegion = regionSelect.value;
         const selectedCounty = countySelect?.value;
         const selectedMunicipality = municipalitySelect?.getAttribute("data-selected");
 
-        console.log('Initializing with:', {
-            region: selectedRegion,
-            county: selectedCounty,
-            municipality: selectedMunicipality
-        });
 
         // Populate counties for the selected region
         filterCounties(selectedRegion, selectedCounty);
@@ -229,6 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 e.preventDefault();
                 return false;
             }
+
         });
     }
 });
