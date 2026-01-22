@@ -246,7 +246,7 @@ class ListingLocationAdminForm(forms.ModelForm):
         self.region_choices = [("", "---------")]
         self.county_choices = [("", "---------")]
         self.municipality_choices = [("", "---------")]
-        self.municipality_map = {}
+        self.municipality_map = {}  # Maps unique_key -> location data
 
         for region in self.location_data.get("regions", []):
             region_id = region["id"]
@@ -258,16 +258,24 @@ class ListingLocationAdminForm(forms.ModelForm):
                 county_name = county["county"]
                 self.county_choices.append((county_name, county_name))
 
-                for municipality in county.get("municipalities", []):
+                for municipality in county.get(
+                        "municipalities", []):
                     municipality_id = municipality["id"]
                     municipality_name = municipality["municipality"]
 
-                    self.municipality_choices.append(
-                        (municipality_name, municipality_name)
+                    # Use unique composite key
+                    unique_key = (
+                        f"{region_id}-{county_id}-{municipality_id}"
                     )
 
-                    # Store mapping for JavaScript
-                    self.municipality_map[municipality_name] = {
+                    display_value = municipality_name
+
+                    self.municipality_choices.append(
+                        (unique_key, display_value)
+                    )
+
+                    # Store mapping with unique key
+                    self.municipality_map[unique_key] = {
                         "region_id": region_id,
                         "region_name": region_name,
                         "county_id": county_id,
@@ -334,6 +342,39 @@ class ListingLocationAdminForm(forms.ModelForm):
         )
         return mark_safe(script_content)
 
+    def _lookup_municipality_name_in_language(self, region_id, county_id,
+                                              municipality_id, language):
+        """
+        Look up municipality name from alternate language JSON.
+
+        Args:
+            region_id (int): Region ID
+            county_id (int): County ID
+            municipality_id (int): Municipality ID
+            language (str): Language code ('en' or 'el')
+
+        Returns:
+            str: Municipality name in requested language, or None if not found
+        """
+        try:
+            # Load the alternate language JSON
+            alternate_data = self._load_location_data(language)
+
+            # Find the municipality with matching IDs
+            for region in alternate_data.get("regions", []):
+                if region["id"] == region_id:
+                    for county in region.get("counties", []):
+                        if county["id"] == county_id:
+                            for municipality in county.get(
+                                    "municipalities", []):
+                                if municipality["id"] == municipality_id:
+                                    return municipality["municipality"]
+
+            return None
+
+        except Exception as e:
+            return f"Error loading {language} JSON: {e}"
+
     def clean_vat_rate(self):
         """Ensure VAT rate is stored with exactly 2 decimal places"""
         value = self.cleaned_data.get('vat_rate')
@@ -393,16 +434,42 @@ class ListingLocationAdminForm(forms.ModelForm):
         """
         cleaned_data = super().clean()
         selected_municipality = cleaned_data.get("municipality_display")
+        selected_language = cleaned_data.get("language", "en")
 
         if (selected_municipality and
                 selected_municipality in self.municipality_map):
             ids = self.municipality_map[selected_municipality]
 
-            # Populate hidden fields
+            # Populate hidden ID fields
             cleaned_data["region_id"] = ids["region_id"]
             cleaned_data["county_id"] = ids["county_id"]
             cleaned_data["municipality_id"] = ids["municipality_id"]
-            cleaned_data["municipality_gr"] = ids["municipality_name"]
+
+            # Get municipality name in CURRENT language
+            current_language_name = ids["municipality_name"]
+
+            # Look up municipality name in ALTERNATE language
+            alternate_language = "en" if selected_language == "el" else "el"
+            alternate_name = self._lookup_municipality_name_in_language(
+                ids["region_id"],
+                ids["county_id"],
+                ids["municipality_id"],
+                alternate_language
+            )
+
+            # Populate BOTH fields with proper language separation
+            if selected_language == "el":
+                # El selected: municipality_gr = Greek, municipality = English
+                cleaned_data["municipality_gr"] = current_language_name
+                cleaned_data["municipality"] = (
+                    alternate_name if alternate_name else current_language_name
+                )
+            else:
+                # En selected: municipality = English, municipality_gr = Greek
+                cleaned_data["municipality"] = current_language_name
+                cleaned_data["municipality_gr"] = (
+                    alternate_name if alternate_name else current_language_name
+                )
 
         elif selected_municipality:
             # Municipality selected but not in map
