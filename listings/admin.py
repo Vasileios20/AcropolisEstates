@@ -58,6 +58,7 @@ class ListingAdmin(admin.ModelAdmin):
         "type",
         "sub_type",
         "sale_type",
+        "municipality_gr",
         "price",
         "approved",
         "agent_name",
@@ -78,6 +79,13 @@ class ListingAdmin(admin.ModelAdmin):
         "agent_name__username",
         "municipality_gr",
         "id"
+    )
+
+    readonly_fields = (
+        'created_on',
+        'updated_on',
+        'municipality',
+        'municipality_gr',
     )
 
     list_per_page = 25
@@ -101,6 +109,7 @@ class ListingAdmin(admin.ModelAdmin):
                 'region_display',
                 'county_display',
                 'municipality_display',
+                'municipality',
                 'municipality_gr',
                 'region_id',
                 'county_id',
@@ -170,6 +179,10 @@ class ListingAdmin(admin.ModelAdmin):
             'fields': ('amenities',),
             'classes': ('collapse',)
         }),
+        ('Metadata', {
+            'fields': ('created_on', 'updated_on'),
+            'classes': ('collapse',)
+        }),
     )
 
     def get_form(self, request, obj=None, **kwargs):
@@ -235,7 +248,12 @@ class ShortTermListingAdmin(admin.ModelAdmin):
         'description_gr'
     )
 
-    readonly_fields = ('created_on', 'updated_on')
+    readonly_fields = (
+        'created_on',
+        'updated_on',
+        'municipality',
+        'municipality_gr',
+    )
 
     fieldsets = (
         ('Basic Information', {
@@ -254,6 +272,7 @@ class ShortTermListingAdmin(admin.ModelAdmin):
                 'region_display',
                 'county_display',
                 'municipality_display',
+                'municipality',
                 'municipality_gr',
                 'region_id',
                 'county_id',
