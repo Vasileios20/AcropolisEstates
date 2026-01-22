@@ -1,13 +1,48 @@
-from django import forms
-from .models import Images, ShortTermListing
-from .services import upload_to_backblaze
 from .utils import generate_unique_filename
-import json
-from pathlib import Path
+from .services import upload_to_backblaze
+from .models import Images, ShortTermListing
 from django.utils.safestring import mark_safe
+from django import forms
+from django.forms.widgets import NumberInput
+from pathlib import Path
+import json
+from decimal import Decimal, InvalidOperation
+
+
+LANGUAGE_CHOICES = [
+    ("en", "English"),
+    ("el", "Ελληνικά (Greek)"),
+]
+
+
+class DecimalNumberInput(NumberInput):
+    """
+    Custom NumberInput widget that formats decimal values
+    to exactly 2 decimal places.
+    This fixes the issue where 13.00 displays as 13.000 in the input field.
+    """
+
+    def format_value(self, value):
+        """Format the value to exactly 2 decimal places."""
+        if value is None or value == '':
+            return None
+
+        try:
+            # Convert to Decimal and normalize to 2 decimal places
+            decimal_value = Decimal(str(value))
+            normalized = decimal_value.quantize(Decimal('0.01'))
+            # Return as string with exactly 2 decimal places
+            result = f"{normalized:.2f}"
+            print(f"DecimalNumberInput.format_value: {value} -> {result}")
+            return result
+        except (ValueError, TypeError, InvalidOperation) as e:
+            print(f"DecimalNumberInput.format_value error: {e}")
+            return value
 
 
 class ImagesAdminForm(forms.ModelForm):
+    """Form for uploading listing images to Backblaze."""
+
     file = forms.FileField(
         widget=forms.ClearableFileInput(attrs={'multiple': False}),
         required=False,
@@ -19,15 +54,17 @@ class ImagesAdminForm(forms.ModelForm):
         fields = ['listing', 'url', 'is_first', 'order']
 
     def save(self, commit=True):
+        """Upload file to Backblaze and save URL to instance."""
         instance = super().save(commit=False)
-        file = self.cleaned_data['file']
+        file = self.cleaned_data.get('file')
 
         if file:
             filename = generate_unique_filename(
-                instance.listing.id, instance.listing.id + 1)
+                instance.listing.id,
+                instance.listing.id + 1
+            )
             file_url = upload_to_backblaze(file, filename)
             instance.url = file_url
-            instance.save()
 
         if commit:
             instance.save()
@@ -35,203 +72,394 @@ class ImagesAdminForm(forms.ModelForm):
         return instance
 
 
-LANGUAGE_CHOICES = [
-    ("en", "English"),
-    ("el", "Greek"),
-]
+class ListingLocationAdminForm(forms.ModelForm):
+    """
+    Admin form with chained location dropdowns and tax configuration.
 
+    Provides cascading region -> county -> municipality selection
+    with language support (Greek/English) and integrated tax field
+    configuration for Greek short-term rental regulations.
 
-class ListingLoacationAdminForm(forms.ModelForm):
+    Tax Rate Storage Strategy:
+    Store as percentage (13.25) and convert to decimal (0.1325)
+    during calculation.
+    """
+
     language = forms.ChoiceField(
-        choices=LANGUAGE_CHOICES, required=False, label="Language")
-    region_display = forms.ChoiceField(label="Region", required=False)
-    county_display = forms.ChoiceField(label="County", required=False)
-    municipality_display = forms.ChoiceField(
-        label="Municipality", required=False)
+        choices=LANGUAGE_CHOICES,
+        required=True,
+        label="Language",
+        help_text="Select language to load location data"
+    )
 
-    class Media:
-        js = ("listings/chained_location.js",)
+    region_display = forms.ChoiceField(
+        label="Region",
+        required=False,
+        help_text="Select region first"
+    )
+
+    county_display = forms.ChoiceField(
+        label="County",
+        required=False,
+        help_text="County within selected region"
+    )
+
+    municipality_display = forms.ChoiceField(
+        label="Municipality",
+        required=True,
+        help_text="Municipality/City"
+    )
 
     class Meta:
         model = ShortTermListing
         fields = "__all__"
         widgets = {
-            'region': forms.Select(),      # Add these
-            'county': forms.Select(),
-            'municipality': forms.Select(),
+            # Hide actual model fields - populated by JavaScript
+            'region_id': forms.HiddenInput(),
+            'county_id': forms.HiddenInput(),
+            'municipality_id': forms.HiddenInput(),
+            'municipality_gr': forms.HiddenInput(),
+
+            # DECIMAL FIELDS WITH CUSTOM WIDGET - THIS IS THE FIX!
+            'vat_rate': DecimalNumberInput(attrs={
+                'step': '0.01',
+                'min': '0',
+                'max': '100',
+            }),
+            'municipality_tax_rate': DecimalNumberInput(attrs={
+                'step': '0.01',
+                'min': '0',
+                'max': '100',
+            }),
+            'service_fee': DecimalNumberInput(attrs={
+                'step': '0.01',
+                'min': '0',
+                'max': '100',
+            }),
+            'climate_crisis_fee_per_night': DecimalNumberInput(attrs={
+                'step': '0.01',
+                'min': '0',
+                'placeholder': '1.50'
+            }),
+            'cleaning_fee': DecimalNumberInput(attrs={
+                'step': '0.01',
+                'min': '0',
+                'placeholder': '0.00'
+            }),
+            'price': DecimalNumberInput(attrs={
+                'step': '0.01',
+                'min': '0',
+            }),
+        }
+        help_texts = {
+            'vat_rate': 'Enter as percentage (e.g., 13.00 for 13%)',
+            'municipality_tax_rate': (
+                'Enter as percentage (e.g., 1.50 for 1.5%)'),
+            'service_fee': 'Enter as percentage (e.g., 5.00 for 5%)',
+            'climate_crisis_fee_per_night': 'Amount in EUR per night',
+            'cleaning_fee': 'One-time fee in EUR',
         }
 
+    class Media:
+        js = ("listings/chained_location.js",)
+        css = {
+            'all': ('listings/admin_custom.css',)
+        }
+
+    def __init__(self, *args, **kwargs):
+        """Initialize form with location data and tax fields."""
+        super().__init__(*args, **kwargs)
+
+        # Detect selected language
+        selected_lang = self._detect_language()
+        self.fields["language"].initial = selected_lang
+
+        # Load location data for selected language
+        self.location_data = self._load_location_data(selected_lang)
+
+        # Build choices and municipality map
+        self._build_location_choices()
+
+        # Set initial values for existing records
+        self._set_initial_values()
+
+    def _detect_language(self):
+        """
+        Detect language from multiple sources.
+
+        Priority: POST data > instance field > request > default
+
+        Returns:
+            str: Language code ('en' or 'el')
+        """
+        # 1. From POST data (form submission)
+        selected_lang = self.data.get("language")
+
+        # 2. From existing instance
+        if not selected_lang and self.instance.pk:
+            # Infer from municipality_gr field presence
+            selected_lang = "el" if self.instance.municipality_gr else "en"
+
+        # 3. From request (if available)
+        if not selected_lang and hasattr(self, 'request'):
+            selected_lang = self.request.GET.get("language")
+
+            if not selected_lang:
+                accept_lang = self.request.META.get(
+                    "HTTP_ACCEPT_LANGUAGE", ""
+                )
+                selected_lang = "el" if accept_lang.startswith("el") else "en"
+
+        # 4. Default fallback
+        return selected_lang or "en"
+
+    def _load_location_data(self, language):
+        """
+        Load JSON location data for specified language.
+
+        Args:
+            language (str): Language code ('en' or 'el')
+
+        Returns:
+            dict: Location hierarchy data
+        """
+        json_file = f"regions_{language}.json"
+        file_path = (
+            Path(__file__).resolve().parent.parent
+            / "listings" / "static" / "listings" / json_file
+        )
+
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except FileNotFoundError:
+            print(f"Warning: {json_file} not found, using empty data")
+            return {"regions": []}
+
+    def _build_location_choices(self):
+        """
+        Build dropdown choices and create municipality mapping.
+
+        Creates self.region_choices, self.county_choices,
+        self.municipality_choices, and self.municipality_map
+        for JavaScript interaction.
+        """
+        self.region_choices = [("", "---------")]
+        self.county_choices = [("", "---------")]
+        self.municipality_choices = [("", "---------")]
+        self.municipality_map = {}
+
+        for region in self.location_data.get("regions", []):
+            region_id = region["id"]
+            region_name = region["region"]
+            self.region_choices.append((region_name, region_name))
+
+            for county in region.get("counties", []):
+                county_id = county["id"]
+                county_name = county["county"]
+                self.county_choices.append((county_name, county_name))
+
+                for municipality in county.get("municipalities", []):
+                    municipality_id = municipality["id"]
+                    municipality_name = municipality["municipality"]
+
+                    self.municipality_choices.append(
+                        (municipality_name, municipality_name)
+                    )
+
+                    # Store mapping for JavaScript
+                    self.municipality_map[municipality_name] = {
+                        "region_id": region_id,
+                        "region_name": region_name,
+                        "county_id": county_id,
+                        "county_name": county_name,
+                        "municipality_id": municipality_id,
+                        "municipality_name": municipality_name,
+                    }
+
+        # Apply choices to fields
+        self.fields["region_display"].choices = self.region_choices
+        self.fields["county_display"].choices = self.county_choices
+        self.fields["municipality_display"].choices = (
+            self.municipality_choices
+        )
+
+    def _set_initial_values(self):
+        """Set initial dropdown values when editing existing records."""
+        if not self.instance.pk:
+            return
+
+        initial_region_name = None
+        initial_county_name = None
+        initial_municipality_name = None
+
+        # Find names corresponding to saved IDs
+        for region in self.location_data.get("regions", []):
+            if self.instance.region_id == region["id"]:
+                initial_region_name = region["region"]
+
+                for county in region.get("counties", []):
+                    if self.instance.county_id == county["id"]:
+                        initial_county_name = county["county"]
+
+                        for muni in county.get("municipalities", []):
+                            if self.instance.municipality_id == muni["id"]:
+                                initial_municipality_name = (
+                                    muni["municipality"]
+                                )
+                                break
+
+        # Set initial values
+        self.fields["region_display"].initial = initial_region_name
+        self.fields["county_display"].initial = initial_county_name
+        self.fields["municipality_display"].initial = (
+            initial_municipality_name
+        )
+
+        # Store selected municipality for JavaScript
+        if initial_municipality_name:
+            self.fields["municipality_display"].widget.attrs.update({
+                "data-selected": initial_municipality_name
+            })
+
     def render_location_json(self):
-        # Used in the admin template to embed the data
+        """
+        Render JavaScript with location map data.
+
+        Returns:
+            SafeString: Script tag with location data as JSON
+        """
         location_map_json = json.dumps(self.municipality_map)
         script_content = (
             f"<script>window.locationMap = {location_map_json};</script>"
         )
         return mark_safe(script_content)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def clean_vat_rate(self):
+        """Ensure VAT rate is stored with exactly 2 decimal places"""
+        value = self.cleaned_data.get('vat_rate')
+        if value is not None:
+            normalized = Decimal(str(value)).quantize(Decimal('0.01'))
+            print(f"clean_vat_rate: {value} -> {normalized}")
+            return normalized
+        return value
 
-        selected_lang = self.data.get("language")
+    def clean_municipality_tax_rate(self):
+        """
+        Ensure municipality tax rate is stored with exactly 2 decimal places
+        """
+        value = self.cleaned_data.get('municipality_tax_rate')
+        if value is not None:
+            return Decimal(str(value)).quantize(Decimal('0.01'))
+        return value
 
-        # If not available, try from instance (editing existing record)
-        if not selected_lang:
-            selected_lang = getattr(self.instance, "language", None)
+    def clean_service_fee(self):
+        """Ensure service fee rate is stored with exactly 2 decimal places"""
+        value = self.cleaned_data.get('service_fee')
+        if value is not None:
+            return Decimal(str(value)).quantize(Decimal('0.01'))
+        return value
 
-        # If still none, try to detect from Accept-Language header
-        if not selected_lang and hasattr(self, 'request'):
-            selected_lang = self.request.GET.get(
-                "language")  # ✅ from query param
-            if not selected_lang:
-                accept_lang = self.request.META.get("HTTP_ACCEPT_LANGUAGE", "")
-                if accept_lang.startswith("el"):
-                    selected_lang = "el"
-                else:
-                    selected_lang = "en"
+    def clean_climate_crisis_fee_per_night(self):
+        """Ensure climate crisis fee is stored with exactly 2 decimal places"""
+        value = self.cleaned_data.get('climate_crisis_fee_per_night')
+        if value is not None:
+            return Decimal(str(value)).quantize(Decimal('0.01'))
+        return value
 
-        # Final fallback
-        selected_lang = selected_lang or "en"
+    def clean_cleaning_fee(self):
+        """Ensure cleaning fee is stored with exactly 2 decimal places"""
+        value = self.cleaned_data.get('cleaning_fee')
+        if value is not None:
+            return Decimal(str(value)).quantize(Decimal('0.01'))
+        return value
 
-        # Set the initial language choice
-        self.fields["language"].initial = selected_lang
-
-        # Load the correct language-based JSON
-        json_file = f"regions_{selected_lang}.json"
-        file_path = Path(__file__).resolve().parent.parent / \
-            "listings" / "static" / "listings" / json_file
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except FileNotFoundError:
-            data = {"regions": []}
-
-        self.location_data = data
-
-        self.region_choices = []
-        self.county_choices = []
-        self.municipality_choices = []
-        self.municipality_map = {}
-
-        # Track initial values
-        initial_region_name = None
-        initial_county_name = None
-        initial_municipality_name = None
-
-        for region in data.get("regions", []):
-            region_id = region["id"]
-            region_name = region["region"]
-            self.region_choices.append((region_name, region_name))
-
-            if self.instance.pk and self.instance.region_id == region_id:
-                initial_region_name = region_name
-
-                for county in region.get("counties", []):
-                    county_id = county["id"]
-                    county_name = county["county"]
-                    self.county_choices.append((county_name, county_name))
-
-                    if self.instance.county_id == county_id:
-                        initial_county_name = county_name
-
-                    for municipality in county.get("municipalities", []):
-                        municipality_id = municipality["id"]
-                        municipality_name = municipality["municipality"]
-                        self.municipality_choices.append(
-                            (municipality_name, municipality_name))
-
-                        self.municipality_map[municipality_name] = {
-                            "region_id": region_id,
-                            "region_name": region_name,
-                            "county_id": county_id,
-                            "county_name": county_name,
-                            "municipality_id": municipality_id,
-                            "municipality_name": municipality_name,
-                        }
-
-                        if self.instance.municipality_id == municipality_id:
-                            initial_municipality_name = municipality_name
-            else:
-                # Still populate municipality_map even if this isn't the
-                # selected region
-                for county in region.get("counties", []):
-                    county_id = county["id"]
-                    county_name = county["county"]
-                    for municipality in county.get("municipalities", []):
-                        municipality_id = municipality["id"]
-                        municipality_name = municipality["municipality"]
-                        self.municipality_map[municipality_name] = {
-                            "region_id": region_id,
-                            "region_name": region_name,
-                            "county_id": county_id,
-                            "county_name": county_name,
-                            "municipality_id": municipality_id,
-                        }
-
-        self.fields["region_display"].choices = self.region_choices
-        self.fields["county_display"].choices = self.county_choices
-        self.fields["municipality_display"].choices = self.municipality_choices
-
-        self.fields["region_display"].initial = initial_region_name
-        self.fields["county_display"].initial = initial_county_name
-        self.fields["municipality_display"].initial = initial_municipality_name
-
-        self.fields["municipality_display"].widget.attrs.update({
-            "data-selected": initial_municipality_name
-        })
-
-        # Hide actual model fields
-        # self.fields["region_id"].widget = forms.HiddenInput()
-        # self.fields["county_id"].widget = forms.HiddenInput()
-        # self.fields["municipality_id"].widget = forms.HiddenInput()
+    def clean_price(self):
+        """Ensure price is stored with exactly 2 decimal places"""
+        value = self.cleaned_data.get('price')
+        if value is not None:
+            return Decimal(str(value)).quantize(Decimal('0.01'))
+        return value
 
     def clean(self):
-        cleaned_data = super().clean()
-        selected = cleaned_data.get("municipality_display")
+        """
+        Validate form and populate hidden ID fields.
 
-        if selected and selected in self.municipality_map:
-            ids = self.municipality_map[selected]
+        Returns:
+            dict: Cleaned form data
+
+        Raises:
+            ValidationError: If municipality is invalid or tax rates
+                           are out of range
+        """
+        cleaned_data = super().clean()
+        selected_municipality = cleaned_data.get("municipality_display")
+
+        if (selected_municipality and
+                selected_municipality in self.municipality_map):
+            ids = self.municipality_map[selected_municipality]
+
+            # Populate hidden fields
             cleaned_data["region_id"] = ids["region_id"]
             cleaned_data["county_id"] = ids["county_id"]
             cleaned_data["municipality_id"] = ids["municipality_id"]
-
             cleaned_data["municipality_gr"] = ids["municipality_name"]
+
+        elif selected_municipality:
+            # Municipality selected but not in map
+            raise forms.ValidationError(
+                f"Invalid municipality selected: {selected_municipality}"
+            )
+
+        # Validate tax rates
+        self._validate_tax_rates(cleaned_data)
 
         return cleaned_data
 
+    def _validate_tax_rates(self, cleaned_data):
+        """
+        Validate that tax rates are within acceptable ranges.
 
-class ListingHeatingSystemAdminForm(forms.ModelForm):
-    class Meta:
-        model = ShortTermListing
-        fields = "__all__"
-        widgets = {
-            'heating_system': forms.Select(),
-        }
-        labels = {
-            'heating_system': 'Heating System',
-        }
-        help_texts = {
-            'heating_system': 'Select the heating system for the listing.',
-        }
-        error_messages = {
-            'heating_system': {
-                'required': 'Please select a heating system.',
-            },
-        }
+        Args:
+            cleaned_data (dict): Form cleaned data
+        """
+        vat_rate = cleaned_data.get("vat_rate")
+        if vat_rate is not None and not (0 <= vat_rate <= 100):
+            self.add_error(
+                "vat_rate",
+                "VAT rate must be between 0 and 100"
+            )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['heating_system'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Select Heating System',
-        })
-        self.fields['heating_system'].label = 'Heating System'
-        self.fields['heating_system'].help_text = (
-            'Select the heating system for the listing.'
-        )
-        self.fields['heating_system'].error_messages = {
-            'required': 'Please select a heating system.',
-        }
-        self.fields['heating_system'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Select Heating System',
-        })
+        municipality_tax_rate = cleaned_data.get("municipality_tax_rate")
+        if (municipality_tax_rate is not None and
+                not (0 <= municipality_tax_rate <= 100)):
+            self.add_error(
+                "municipality_tax_rate",
+                "Municipality tax rate must be between 0 and 100"
+            )
+
+        service_fee = cleaned_data.get("service_fee")
+        if (service_fee is not None and
+                not (0 <= service_fee <= 100)):
+            self.add_error(
+                "service_fee",
+                "Service fee rate must be between 0 and 100"
+            )
+
+        # Validate precision (max 2 decimal places for percentages)
+        for field_name in [
+            'vat_rate', 'municipality_tax_rate', 'service_fee'
+        ]:
+            value = cleaned_data.get(field_name)
+            if value is not None:
+                # Check if more than 2 decimal places
+                str_value = str(value)
+                if '.' in str_value:
+                    decimal_part = str_value.split('.')[1]
+                    if len(decimal_part) > 2:
+                        self.add_error(
+                            field_name,
+                            (f"Maximum 2 decimal places allowed. "
+                             f"You entered {len(decimal_part)} "
+                             f"decimal places.")
+                        )

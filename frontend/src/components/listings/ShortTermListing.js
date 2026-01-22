@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
@@ -31,6 +31,7 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
   const history = useHistory();
   const userStatus = useUserStatus();
   const { t, i18n } = useTranslation();
+  const [priceSummary, setPriceSummary] = useState({ nights: 0, total: null });
 
   const {
     id,
@@ -48,12 +49,39 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
     latitude,
     amenities,
     currency,
+    vat_rate_display,
+    municipality_tax_rate_display,
+    climate_crisis_fee_per_night,
+    vat_rate,
+    municipality_tax_rate,
+    service_fee,
+    cleaning_fee,
   } = props;
+
+  const listingTaxRates = useMemo(() => ({
+    vatRate: vat_rate_display || 0,
+    municipalityTaxRate: municipality_tax_rate_display || 0,
+    serviceFee: service_fee || 0,
+    vat: vat_rate || 0,
+    municipalityTax: municipality_tax_rate || 0,
+    climateCrisisFeeRate: climate_crisis_fee_per_night || 0,
+    cleaningFee: cleaning_fee || 0,
+  }), [
+    vat_rate_display,
+    municipality_tax_rate_display,
+    vat_rate,
+    municipality_tax_rate,
+    service_fee,
+    climate_crisis_fee_per_night,
+    cleaning_fee
+  ]);
+
 
   const lng = i18n.language;
   const [mapReady, setMapReady] = useState(false);
   const priceValue = formatPriceValue(price);
   const floorValue = getFloorValue(floor, t);
+
 
   const descriptionKey = lng === "el" ? "description_gr" : "description";
   const description = props[descriptionKey];
@@ -185,7 +213,7 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
     <div className={`${styles.Listing__features}`}>
       <div className="d-flex flex-wrap">
         {[
-          { label: t("propertyDetails.price"), value: `${currency}${priceValue}`, icon: "fa-tag" },
+          // { label: t("propertyDetails.price"), value: `${currency}${priceValue}`, icon: "fa-tag" },
           { label: t("propertyDetails.floorArea"), value: `${floor_area}m²`, icon: "fa-ruler-combined" },
           { label: t("propertyDetails.floorLevel"), value: floorValue, icon: "fa-stairs" },
           { label: t("propertyDetails.bedrooms"), value: bedrooms, icon: "fa-bed" },
@@ -255,53 +283,41 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
         <meta name="keywords" content={`Features, amenities, real estate, Acropolis Estates, price, bedroom, apartment, name, floor, area, heating, email, acropolis, estates, london,  `} />
       </Helmet>
       <Container className="mt-5 pt-2">
-
         <ListingImages images={images} listing_id={id} amenities={amenities} />
 
         <Row className="justify-content-start">
-
-          <Col lg={6} className="mb-3 h-100">
+          {/* Main Content Column */}
+          <Col lg={7} xl={8} className="mb-3">
             <div className={styles.Listing__cardBodyListing}>
               <ListingHeader {...props} listingPage={listingPage} />
             </div>
+
             <div className="my-4">
               <h5>{lng === "el" ? t("propertyDetails.description_gr") : t("propertyDetails.description")}</h5>
               <p>{description}</p>
             </div>
 
-          </Col>
-          <Col lg={6} className="mb-3 ps-5 d-none d-lg-block">
-            <Card className="shadow border-0 p-2">
-              <Card.Body>
-                <Card.Title className='text-center border-bottom mb-2 pb-1'>{t('bookingForm.title')}</Card.Title>
-                <ShortTermBookingForm listingId={id} />
-              </Card.Body>
-            </Card>
-
-          </Col>
-        </Row>
-        <Row>
-          <h5>{t("propertiesPage.header1")}</h5>
-          <Col lg={6} className="mb-3">
-
+            <h5>{t("propertiesPage.header1")}</h5>
             {shortTermListing}
 
-            <Col className="my-5">
+            <div className="my-5">
               <h5 className="ps-2 pb-1">{t("amenities.header.apartmentAmenities")}</h5>
               <div className={`${styles.AmenitiesBox}`}>{amenitiesPropertyTranslatedList}</div>
+
               <h5 className="ps-2 pt-3 pb-1">{t("amenities.header.buildingAmenities")}</h5>
               <div className={`${styles.AmenitiesBox}`}>{amenitiesBuilidingFeaturesTranslatedList}</div>
+
               <h5 className="ps-2 pt-3 pb-1">{t("amenities.header.areaPlacesAmenities")}</h5>
               <div className={`${styles.AmenitiesBox}`}>{amenitiesAreaPlacesTranslatedList}</div>
+
               <h5 className="ps-2 pt-3 pb-1">{t("amenities.header.apartmentRules")}</h5>
               <div className={`w-50`}>{amenitiesApartmentRulesTranslatedList}</div>
-            </Col>
-            <Col className="mx-auto my-5">
-              {mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />}</Col>
+            </div>
 
-          </Col>
+            <div className="mx-auto my-5">
+              {mapReady && <MapMarker {...props} setShowCookieBanner={setShowCookieBanner} nonEssentialConsent={nonEssentialConsent} />}
+            </div>
 
-          <Col lg={6} className="mb-3 ms-auto">
             {userStatus && (
               <Card className="shadow-sm border-0 p-3 mt-4">
                 <StaffCard {...props} handleDelete={handleDelete} handleEdit={handleEdit} />
@@ -309,28 +325,95 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
             )}
           </Col>
 
-          <div className="d-lg-none">
-            <div className={`${styles.stickyBookingForm} d-flex`}>
+          {/* Sticky Booking Form Column */}
+          <Col lg={5} xl={4} className="mb-3 d-none d-lg-block">
+            <div className={styles.stickyBookingForm}>
+              <Card className="shadow border-0 p-2">
+                <Card.Body>
+                  <Card.Title className='text-center border-bottom mb-2 pb-1'>
+                    {t('bookingForm.title')}
+                  </Card.Title>
+                  <ShortTermBookingForm
+                    listingId={id}
+                    onPriceUpdate={setPriceSummary}
+                    listingTaxRates={listingTaxRates}
+                  />
+                </Card.Body>
+              </Card>
+            </div>
+          </Col>
+        </Row>
+
+        {/* Mobile Sticky Booking Bar */}
+        <div className="d-lg-none">
+          <div
+            className={styles.stickyMobileBooking}
+            style={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: 'white',
+              borderTop: '1px solid #e0e0e0',
+              padding: '12px 16px',
+              boxShadow: '0 -2px 8px rgba(0,0,0,0.1)',
+              zIndex: 1000,
+            }}
+          >
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                {priceSummary.total !== null ? (
+                  <>
+                    <div className="fw-bold fs-5">
+                      {currency}{priceSummary.total.toFixed(2)}
+                    </div>
+                    <small className="text-muted">
+                      {priceSummary.nights} {priceSummary.nights > 1 ? t("bookingForm.nights") : t("bookingForm.night")}
+                    </small>
+                  </>
+                ) : (
+                  <>
+                    <div className="fw-bold fs-5">
+                      {currency}{priceValue}
+                    </div>
+                    <small className="text-muted">
+                      {t("bookingForm.perNight")}
+                    </small>
+                  </>
+                )}
+              </div>
+
               <Button
                 variant="primary"
-                className={` ${btnStyles.AngryOcean} mt-3 mx-auto w-50`}
+                className={btnStyles.AngryOcean}
                 onClick={handleShow}
+                style={{
+                  padding: '10px 24px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                }}
               >
-                {t("bookingForm.title")}
+                {t("bookingForm.checkAvailability")}
               </Button>
-
-              <Modal show={showBookingModal} onHide={handleClose} centered>
-                <Modal.Header closeButton>
-                  <Modal.Title>{t("bookingForm.title")}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <ShortTermBookingForm listingId={id} />
-                </Modal.Body>
-              </Modal>
             </div>
           </div>
 
-        </Row>
+          {/* Spacer so content isn't hidden */}
+          <div style={{ height: '80px' }}></div>
+
+          <Modal show={showBookingModal} onHide={handleClose} centered fullscreen="sm-down">
+            <Modal.Header closeButton>
+              <Modal.Title>{t("bookingForm.title")}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ShortTermBookingForm
+                listingId={id}
+                onPriceUpdate={setPriceSummary}
+                listingTaxRates={listingTaxRates}
+              />
+            </Modal.Body>
+          </Modal>
+        </div>
       </Container>
     </>
   );

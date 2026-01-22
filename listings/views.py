@@ -22,7 +22,8 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from django import forms
 from bookings.models import ShortTermBooking
-from datetime import datetime
+from datetime import datetime, date
+from bookings.utils import (get_listing_availability)
 
 
 @api_view(['DELETE'])
@@ -592,3 +593,39 @@ class DeleteShortTermImages(generics.DestroyAPIView):
             {"message": f"{deleted_count} images deleted"},
             status=status.HTTP_204_NO_CONTENT,
         )
+
+
+class ListingAvailabilityView(APIView):
+    """
+    Returns per-day availability & price for a listing.
+    """
+
+    def get(self, request, *args, **kwargs):
+        listing_id = kwargs.get("listing_id")
+        start = request.query_params.get("start")
+        end = request.query_params.get("end")
+
+        if not start or not end:
+            return Response(
+                {"error": "start and end parameters required"},
+                status=400
+            )
+
+        try:
+            start_date = date.fromisoformat(start)
+            end_date = date.fromisoformat(end)
+        except ValueError:
+            return Response(
+                {"error": "Invalid date format (YYYY-MM-DD)"},
+                status=400
+            )
+
+        listing = ShortTermListing.objects.get(pk=listing_id)
+
+        data = get_listing_availability(
+            listing,
+            start_date,
+            end_date
+        )
+
+        return Response(data)

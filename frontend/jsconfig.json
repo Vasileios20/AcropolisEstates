@@ -8,5 +8,5 @@
       "react-bootstrap": ["node_modules/react-bootstrap"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "../temp/DragAndDropImages.js"]
 }

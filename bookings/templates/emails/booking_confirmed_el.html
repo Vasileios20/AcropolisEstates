@@ -6,12 +6,116 @@
             <img src="https://www.acropolisestates.com/static/media/logo.149b6a3f343e11cfa975.png"
                 alt="Acropolis Estates" style="height: 80px;">
         </div>
-        <h2 style="color: #847c3d;">Επιβεβαίωση Κράτησης – Acropolis Estates - Αριθμός κράτησης {{ reference }}</h2>
+
+        <h2 style="color: #847c3d;">Επιβεβαίωση Κράτησης – Acropolis Estates</h2>
+        <p style="font-size: 14px; color: #666;">Αριθμός Κράτησης: <strong>{{ reference }}</strong></p>
+
         <p>Γεια σας {{ first_name }} {{ last_name }},</p>
-        <p>Η κράτησή σας από <strong>{{ check_in }}</strong> έως <strong>{{ check_out }}</strong> για
-            {% if total_guests == 1 %} <strong>{{ total_guests }}</strong> άτομο
-            {% else %} <strong>{{ total_guests }}</strong> άτομα{% endif %} έχει επιβεβαιωθεί από τον διαχειριστή.</p>
+        <p>Υπέροχα νέα! Η κράτησή σας έχει επιβεβαιωθεί από την ομάδα μας.</p>
+
+        <!-- Booking Details -->
+        <div
+            style="background-color: #f0f7ff; padding: 20px; border-radius: 5px; margin: 25px 0; border-left: 4px solid #847c3d;">
+            <h3 style="color: #847c3d; margin-top: 0; margin-bottom: 15px;">{{ listing_title }}</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 8px 0; color: #666;">
+                        <strong>Άφιξη:</strong>
+                    </td>
+                    <td style="padding: 8px 0; text-align: right;">
+                        {{ check_in }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px 0; color: #666;">
+                        <strong>Αναχώρηση:</strong>
+                    </td>
+                    <td style="padding: 8px 0; text-align: right;">
+                        {{ check_out }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px 0; color: #666;">
+                        <strong>Επισκέπτες:</strong>
+                    </td>
+                    <td style="padding: 8px 0; text-align: right;">
+                        {% if total_guests == 1 %}
+                        {{ total_guests }} άτομο
+                        {% else %}
+                        {{ total_guests }} άτομα
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px 0; color: #666;">
+                        <strong>Διανυκτερεύσεις:</strong>
+                    </td>
+                    <td style="padding: 8px 0; text-align: right;">
+                        {{ total_nights }} {% if total_nights == 1 %}διανυκτέρευση{% else %}διανυκτερεύσεις{% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Simplified Price Summary -->
+        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 25px 0;">
+            <h3 style="color: #847c3d; margin-top: 0;">Περίληψη Τιμής</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #ddd;">
+                        <strong>Διαμονή ({{ total_nights }} {% if total_nights == 1 %}διανυκτέρευση{% else
+                            %}διανυκτερεύσεις{% endif %})</strong>
+                    </td>
+                    <td style="padding: 8px 0; text-align: right; border-bottom: 1px solid #ddd;">
+                        {{ currency }}{{ subtotal }}
+                    </td>
+                </tr>
+
+                {% if has_discount %}
+                <tr style="background-color: #ffe6e6;">
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <strong style="color: #e74c3c;">
+                            Έκπτωση
+                            {% if discount_type == 'percentage' %}
+                            ({{ discount_value }}%)
+                            {% else %}
+                            ({{ currency }}{{ discount_value }})
+                            {% endif %}
+                        </strong>
+                    </td>
+                    <td
+                        style="padding: 8px; text-align: right; border-bottom: 1px solid #ddd; color: #e74c3c; font-weight: bold;">
+                        -{{ currency }}{{ discount_amount }}
+                    </td>
+                </tr>
+                {% endif %}
+
+                <tr style="border-top: 2px solid #333; background-color: #847c3d; color: white;">
+                    <td style="padding: 12px 8px;">
+                        <strong style="font-size: 16px;">ΣΥΝΟΛΙΚΗ ΤΙΜΗ</strong>
+                    </td>
+                    <td style="padding: 12px 8px; text-align: right;">
+                        <strong style="font-size: 18px;">{{ currency }}{{ total_price }}</strong>
+                    </td>
+                </tr>
+            </table>
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #666; text-align: center;">
+                <em>Οι φόροι και οι χρεώσεις περιλαμβάνονται</em>
+            </p>
+        </div>
+
+        {% if has_discount %}
+        <div
+            style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 12px; margin: 20px 0; text-align: center;">
+            <strong style="color: #155724;">Εξοικονομήσατε {{ currency }}{{ discount_amount }}!</strong>
+        </div>
+        {% endif %}
+
+        <p>Ανυπομονούμε να σας καλωσορίσουμε και να σας εξασφαλίσουμε μια υπέροχη διαμονή!</p>
+        <p>Εάν έχετε οποιεσδήποτε ερωτήσεις, μη διστάσετε να επικοινωνήσετε μαζί μας.</p>
+
         <p>Σας ευχαριστούμε για την προτίμησή σας!</p>
+
         <hr style="margin-top: 40px; border-color: #eee;">
         <p style="font-size: 12px; color: #888;">Αυτό είναι ένα αυτόματο μήνυμα. Παρακαλούμε μην απαντήσετε.</p>
     </div>

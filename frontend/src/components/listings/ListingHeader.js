@@ -115,20 +115,16 @@ const ListingHeader = React.memo((props) => {
   const renderShortTermListing = () => (
     <div className={styles.Listing__cardBody}>
       <div className={styles.Listing__header}>
+        <div className="m-0">
+          <h6 className={styles.Listing__price}>{lng === "el" ? props.title_gr : props.title}</h6>
+        </div>
+        {residential}
         <div className={styles.Listing__headerListingDetails}>
           {props.municipality_id
             ? `${municipalityName?.municipality}, ${props.postcode}`
-            : `${fallbackMunicipality}, ${fallbackCounty}, ${props.postcode}`}
+            : `${fallbackMunicipality}, ${fallbackCounty}`}
         </div>
 
-        {residential}
-
-        <div className="m-0">
-          <h6 className={styles.Listing__price}>
-            {t("propertyDetails.price")}: {props?.currency} {priceValue}
-          </h6>
-          <h6 className={styles.Listing__price}>ID: AE000{props.id}</h6>
-        </div>
       </div>
     </div>
   );

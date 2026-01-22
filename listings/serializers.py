@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     Listing, Images, Amenities, Owner, OwnerFile,
-    ShortTermListing, ShortTermImages
+    ShortTermListing, ShortTermImages, ShortTermPriceOverride
 )
 from django.core.files.images import get_image_dimensions
 from .services import upload_to_backblaze
@@ -340,6 +340,12 @@ class ShortTermImagesSerializer(serializers.ModelSerializer):
         fields = ["id", "listing", "url", "is_first", "order"]
 
 
+class ShortTermPriceOverrideSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShortTermPriceOverride
+        fields = ["date", "price"]
+
+
 class ShortTermListingSerializer(serializers.ModelSerializer):
     """
     Serializer class for the ShortTermListing model.
@@ -352,6 +358,8 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
     agent_name = serializers.ReadOnlyField(source="agent_name.username")
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source="agent_name.profile.id")
+    price_overrides = ShortTermPriceOverrideSerializer(
+        many=True, read_only=True)
     listing_owner = serializers.PrimaryKeyRelatedField(
         queryset=Owner.objects.all(),
         allow_null=True,
@@ -380,6 +388,9 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
         queryset=Amenities.objects.all(),
         source='amenities'
     )
+    vat_rate_display = serializers.SerializerMethodField()
+    municipality_tax_rate_display = serializers.SerializerMethodField()
+    service_fee_display = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
         return self.context["request"].user == obj.agent_name
@@ -473,11 +484,29 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
         # Call the parent class update method for the rest of the data
         return super().update(instance, validated_data)
 
+    def get_vat_rate_display(self, obj):
+        """Convert 0.13 -> 13.0 for display."""
+        return float(obj.vat_rate / 100) if obj.vat_rate else 0
+
+    def get_municipality_tax_rate_display(self, obj):
+        """Convert 0.015 -> 1.5 for display."""
+        return (
+            float(
+                obj.municipality_tax_rate / 100
+            ) if obj.municipality_tax_rate else 0
+        )
+
+    def get_service_fee_display(self, obj):
+        """Convert 0.05 -> 5.0 for display."""
+        return float(obj.service_fee / 100) if obj.service_fee else 0
+
     class Meta:
         model = ShortTermListing
         fields = [
             "id",
             "agent_name",
+            "title",
+            "title_gr",
             "description",
             "description_gr",
             "address_number",
@@ -512,6 +541,16 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
             "max_guests",
             "max_adults",
             "max_children",
+            "price",
+            "price_overrides",
+            "vat_rate",
+            "municipality_tax_rate",
+            "climate_crisis_fee_per_night",
+            "cleaning_fee",
+            "service_fee",
+            "vat_rate_display",
+            "municipality_tax_rate_display",
+            "service_fee_display",
         ]
 
     def to_representation(self, instance):
@@ -531,3 +570,9 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
                 "to the sum of max adults and max children."
             )
         return data
+
+
+class AvailabilityDaySerializer(serializers.Serializer):
+    date = serializers.DateField()
+    available = serializers.BooleanField()
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)

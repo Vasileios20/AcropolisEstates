@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.exceptions import ValidationError
+from decimal import Decimal
 from django.utils.translation import gettext_lazy as _
 
 
@@ -188,6 +189,12 @@ class Listing(models.Model):
     construction_year_choices = [(i, i)
                                  for i in range(1900, datetime.now().year + 1)]
 
+    currency_choices = [
+        ("€", "Euro (€)"),
+        ("$", "US Dollar ($)"),
+        ("£", "British Pound (£)"),
+    ]
+
     agent_name = models.ForeignKey(User, on_delete=models.CASCADE)
     listing_owner = models.ForeignKey(
         Owner, on_delete=models.CASCADE, related_name="listings",
@@ -205,9 +212,18 @@ class Listing(models.Model):
         choices=sale_type_filter_choices, default="sale",
         max_length=255, blank=True
     )
-    price = models.FloatField(
-        validators=[validate_zero], null=True, blank=True)
-    currency = models.CharField(max_length=255, default="€", blank=True)
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[validate_zero],
+        null=True,
+        blank=True,
+        default=Decimal("0.00")
+    )
+    currency = models.CharField(
+        max_length=255, default="€", blank=True,
+        choices=currency_choices
+    )
     description = models.TextField(blank=True)
     description_gr = models.TextField(blank=True)
     address_number = models.IntegerField(
@@ -353,11 +369,32 @@ class ShortTermListing(models.Model):
     """
     Short Term Listing model
     """
+    currency_choices = [
+        ("€", "Euro (€)"),
+        ("$", "US Dollar ($)"),
+        ("£", "British Pound (£)"),
+    ]
 
     agent_name = models.ForeignKey(User, on_delete=models.CASCADE)
     listing_owner = models.ForeignKey(
         Owner, on_delete=models.CASCADE, related_name="short_term_listings",
         null=True, blank=True
+    )
+    title = models.CharField(
+        max_length=200,
+        blank=True,
+        default='',
+        help_text=(
+            'Property title/name (e.g., "Cozy Apartment in Athens Center")'
+        )
+    )
+    title_gr = models.CharField(
+        max_length=200,
+        blank=True,
+        default='',
+        help_text=(
+            'Τίτλος ακινήτου (π.χ., "Άνετο Διαμέρισμα στο Κέντρο Αθήνας")'
+        )
     )
     description = models.TextField(blank=True)
     description_gr = models.TextField(blank=True)
@@ -371,9 +408,18 @@ class ShortTermListing(models.Model):
     municipality_id = models.IntegerField(null=True, blank=True)
     county_id = models.IntegerField(null=True, blank=True)
     region_id = models.IntegerField(null=True, blank=True)
-    price = models.FloatField(
-        validators=[validate_zero], null=True, blank=True)
-    currency = models.CharField(max_length=255, default="€", blank=True)
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[validate_zero],
+        null=True,
+        blank=True,
+        default=Decimal("0.00")
+    )
+    currency = models.CharField(
+        max_length=255, default="€", blank=True,
+        choices=currency_choices
+    )
     floor_area = models.FloatField(
         validators=[validate_zero], null=True, blank=True)
     bedrooms = models.IntegerField(
@@ -410,6 +456,38 @@ class ShortTermListing(models.Model):
         default=1, help_text="Max number of adults")
     max_children = models.PositiveIntegerField(
         default=0, help_text="Max number of children")
+    vat_rate = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal('13.00'),
+        help_text="VAT rate percentage (e.g., 13.25 for 13.25%)"
+    )
+    municipality_tax_rate = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal('1.50'),
+        help_text="Municipality tax rate percentage (e.g., 1.25 for 1.25%)"
+    )
+    climate_crisis_fee_per_night = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=Decimal('1.50'),
+        help_text="Climate Crisis Resilience Fee per night in EUR"
+    )
+    # Optional: Cleaning fee
+    cleaning_fee = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        default=Decimal('0.00'),
+        help_text="One-time cleaning fee in EUR"
+    )
+    # Optional: Service/Platform fee
+    service_fee = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        default=Decimal('0.00'),
+        help_text="One-time service/platform fee in EUR"
+    )
 
     def clean(self):
         super().clean()
@@ -427,7 +505,10 @@ class ShortTermListing(models.Model):
         ordering = ["-created_on"]
 
     def __str__(self):
-        return f"Short Term Listing ST000{self.id}"
+        if self.title:
+            return f"{self.title} (ST{str(self.id).zfill(6)})"
+        return (f"Short Term Listing ST{str(self.id).zfill(6)} - "
+                f"€{self.price}/night")
 
 
 class ShortTermImages(models.Model):
@@ -455,3 +536,44 @@ class ShortTermImages(models.Model):
 
     class Meta:
         verbose_name_plural = "Short Term Images"
+
+
+class ShortTermPriceOverride(models.Model):
+    listing = models.ForeignKey(
+        "ShortTermListing",
+        on_delete=models.CASCADE,
+        related_name="price_overrides",
+    )
+    date = models.DateField()
+    price = models.PositiveIntegerField()
+
+    class Meta:
+        unique_together = ("listing", "date")
+        ordering = ["date"]
+
+    def __str__(self):
+        return f"{self.listing.id} – {self.date} – {self.price}"
+
+
+class ShortTermSeasonalPrice(models.Model):
+    listing = models.ForeignKey(
+        "ShortTermListing",
+        on_delete=models.CASCADE,
+        related_name="seasonal_prices",
+    )
+    start_date = models.DateField()
+    end_date = models.DateField()
+    price = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ["start_date"]
+
+    def clean(self):
+        if self.start_date >= self.end_date:
+            raise ValidationError("End date must be after start date.")
+
+    def __str__(self):
+        return (
+            f"{self.listing.id}: {self.start_date} → "
+            f"{self.end_date} (€{self.price})"
+        )

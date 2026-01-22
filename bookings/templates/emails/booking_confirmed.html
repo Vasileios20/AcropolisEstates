@@ -1,4 +1,4 @@
-<html lang="el">
+<html>
 
 <body style="font-family: Lato, sans-serif; line-height: 1.6; background-color: #f5f5f5; padding: 20px;">
     <div style="max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px;">
@@ -6,15 +6,115 @@
             <img src="https://www.acropolisestates.com/static/media/logo.149b6a3f343e11cfa975.png"
                 alt="Acropolis Estates" style="height: 80px;">
         </div>
-        <h2 style="color: #847c3d;">Booking Confirmation – Acropolis Estates - Booking reference {{ reference }}</h2>
-        <p>Hello {{ first_name }} {{ last_name }},</p>
-        <p>Your booking from <strong>{{ check_in }}</strong> to <strong>{{ check_out }}</strong> for
-            {% if total_guests == 1 %}
-            <strong>{{ total_guests }}</strong> guest
-            {% else %}
-            <strong>{{ total_guests }}</strong> guests{% endif %} has been confirmed by the administrator.
-        </p>
-        <p>Thank you for choosing us!</p>
+
+        <h2 style="color: #847c3d;">Booking Confirmation – Acropolis Estates</h2>
+        <p style="font-size: 14px; color: #666;">Booking Reference: <strong>{{ reference }}</strong></p>
+
+        <p>Hi {{ first_name }} {{ last_name }},</p>
+        <p>Great news! Your booking has been confirmed by our team.</p>
+
+        <!-- Booking Details -->
+        <div
+            style="background-color: #f0f7ff; padding: 20px; border-radius: 5px; margin: 25px 0; border-left: 4px solid #847c3d;">
+            <h3 style="color: #847c3d; margin-top: 0; margin-bottom: 15px;">{{ listing_title }}</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 8px 0; color: #666;">
+                        <strong>Check-in:</strong>
+                    </td>
+                    <td style="padding: 8px 0; text-align: right;">
+                        {{ check_in }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px 0; color: #666;">
+                        <strong>Check-out:</strong>
+                    </td>
+                    <td style="padding: 8px 0; text-align: right;">
+                        {{ check_out }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px 0; color: #666;">
+                        <strong>Guests:</strong>
+                    </td>
+                    <td style="padding: 8px 0; text-align: right;">
+                        {% if total_guests == 1 %}
+                        {{ total_guests }} guest
+                        {% else %}
+                        {{ total_guests }} guests
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px 0; color: #666;">
+                        <strong>Nights:</strong>
+                    </td>
+                    <td style="padding: 8px 0; text-align: right;">
+                        {{ total_nights }} night{% if total_nights > 1 %}s{% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Simplified Price Summary -->
+        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 25px 0;">
+            <h3 style="color: #847c3d; margin-top: 0;">Price Summary</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #ddd;">
+                        <strong>Accommodation ({{ total_nights }} night{% if total_nights > 1 %}s{% endif %})</strong>
+                    </td>
+                    <td style="padding: 8px 0; text-align: right; border-bottom: 1px solid #ddd;">
+                        {{ currency }}{{ subtotal }}
+                    </td>
+                </tr>
+
+                {% if has_discount %}
+                <tr style="background-color: #ffe6e6;">
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                        <strong style="color: #e74c3c;">
+                            Discount
+                            {% if discount_type == 'percentage' %}
+                            ({{ discount_value }}%)
+                            {% else %}
+                            ({{ currency }}{{ discount_value }})
+                            {% endif %}
+                        </strong>
+                    </td>
+                    <td
+                        style="padding: 8px; text-align: right; border-bottom: 1px solid #ddd; color: #e74c3c; font-weight: bold;">
+                        -{{ currency }}{{ discount_amount }}
+                    </td>
+                </tr>
+                {% endif %}
+
+                <tr style="border-top: 2px solid #333; background-color: #847c3d; color: white;">
+                    <td style="padding: 12px 8px;">
+                        <strong style="font-size: 16px;">TOTAL PRICE</strong>
+                    </td>
+                    <td style="padding: 12px 8px; text-align: right;">
+                        <strong style="font-size: 18px;">{{ currency }}{{ total_price }}</strong>
+                    </td>
+                </tr>
+            </table>
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #666; text-align: center;">
+                <em>Taxes and fees included</em>
+            </p>
+        </div>
+
+        {% if has_discount %}
+        <div
+            style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 12px; margin: 20px 0; text-align: center;">
+            <strong style="color: #155724;">You saved {{ currency }}{{ discount_amount }}!</strong>
+        </div>
+        {% endif %}
+
+        <p>We look forward to welcoming you and ensuring you have a wonderful stay!</p>
+        <p>If you have any questions, please don't hesitate to contact us.</p>
+
+        <p>Thank you for choosing Acropolis Estates!</p>
+
         <hr style="margin-top: 40px; border-color: #eee;">
         <p style="font-size: 12px; color: #888;">This is an automated message. Please do not reply.</p>
     </div>
