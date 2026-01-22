@@ -118,7 +118,6 @@ class ListingLocationAdminForm(forms.ModelForm):
             'region_id': forms.HiddenInput(),
             'county_id': forms.HiddenInput(),
             'municipality_id': forms.HiddenInput(),
-            'municipality_gr': forms.HiddenInput(),
 
             # DECIMAL FIELDS WITH CUSTOM WIDGET - THIS IS THE FIX!
             'vat_rate': DecimalNumberInput(attrs={
