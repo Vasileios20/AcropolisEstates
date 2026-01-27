@@ -195,19 +195,6 @@ Filter class for filtering listings based on various criteria.
     municipality_id = filter.NumberFilter(
         field_name="municipality_id", lookup_expr="exact")
 
-    # availability_start = filter.DateFilter(
-    #     field_name="available_from",
-    #     method="filter_by_availability",
-    #     label="Available From",
-    #     widget=forms.DateInput(attrs={"type": "date"})
-    # )
-    # availability_end = filter.DateFilter(
-    #     field_name="available_to",
-    #     method="filter_by_availability",
-    #     label="Available To",
-    #     widget=forms.DateInput(attrs={"type": "date"})
-    # )
-
     start_date = filter.DateFilter(
         method="filter_availability_by_dates",
         label="Start Date",
@@ -490,7 +477,7 @@ class ShortTermListingList(generics.ListCreateAPIView):
 
     queryset = ShortTermListing.objects.annotate(
         listing_count=Count("agent_name__listing")
-    ).filter(approved=True)
+    )
 
     serializer_class = ShortTermListingSerializer
     permission_classes = [IsAdminUserOrReadOnly]
