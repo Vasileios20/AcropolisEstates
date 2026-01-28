@@ -58,7 +58,7 @@ const AmenitiesShortTerm = (
             return amenity;
         } else {
             console.log();
-            
+
         }
         return null;
     }).filter(amenity => amenity !== null);
@@ -156,20 +156,25 @@ const AmenitiesShortTerm = (
         });
         return columns.map((column, colIndex) => (
             <Col key={colIndex} className="mx-auto p-2 text-start">
-                {column.slice(0, 10).map((amenity) => (
-                    <div key={amenity.id} className="ms-5 p-2">
-                        <label className="p-2 border shadow">
-                            <input
-                                className="m-1"
-                                type="checkbox"
-                                value={amenity.id}
-                                checked={create ? null : selectedAmenities.includes(amenity.id)}
-                                onChange={handleAmenityChange}
-                            />
-                            {amenity.name.replace(/_/g, " ")}
-                        </label>
-                    </div>
-                ))}
+                {column.slice(0, 10).map((amenity) => {
+                    // Ensure amenity.id is an integer for comparison
+                    const amenityIdInt = typeof amenity.id === 'string' ? parseInt(amenity.id, 10) : amenity.id;
+                    const isChecked = selectedAmenities?.includes(amenityIdInt);
+
+                    return (
+                        <div key={amenity.id} className="ms-5 p-2">
+                            <label className="p-2 border shadow">
+                                <input
+                                    className="m-1"
+                                    type="checkbox"
+                                    checked={isChecked}
+                                    onChange={() => handleAmenityChange(amenityIdInt)}
+                                />
+                                {amenity.name.replace(/_/g, " ")}
+                            </label>
+                        </div>
+                    );
+                })}
             </Col>
         ));
     }

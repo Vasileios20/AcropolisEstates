@@ -38,6 +38,31 @@ export const AmenitiesLand = (
         return a.name.localeCompare(b.name);
     })
 
+     const renderLabels = (amenities) => {
+        const columns = [[], [], [], []];
+        amenities.forEach((amenity, index) => {
+            columns[index % 4].push(amenity);
+        });
+        return columns.map((column, colIndex) => (
+            <Col key={colIndex} className="mx-auto p-2 text-start">
+                {column.slice(0, 10).map((amenity) => (
+                    <div key={amenity.id} className="ms-5 p-2">
+                        <label className="p-2 border shadow">
+                            <input
+                                className="m-1"
+                                type="checkbox"
+
+                                checked={selectedAmenities?.includes(amenity.id)}
+                                onChange={() => handleAmenityChange(amenity.id)}
+                            />
+                            {amenity.name.replace(/_/g, " ")}
+                        </label>
+                    </div>
+                ))}
+            </Col>
+        ));
+    }
+
     return (
         <>
             <Container>
@@ -45,20 +70,7 @@ export const AmenitiesLand = (
                     <Col sm={12} className="m-auto text-center"><h4>{t('createEditForm.headers.land')}</h4></Col>
                     <Col>
                         <Row className="justify-content-center">
-                            {amenitiesLandTranslatedSorted.map((amenity) => (
-                                <Col sm={3} key={amenity.id} className="m-1 p-2 text-center">
-                                    <label className="p-2 border shadow">
-                                        <input
-                                            className="m-1"
-                                            type="checkbox"
-                                            value={amenity.id}
-                                            checked={create ? null : selectedAmenities.includes(amenity.id)}
-                                            onChange={handleAmenityChange}
-                                        />
-                                        {amenity.name.replace(/_/g, " ")}
-                                    </label>
-                                </Col>
-                            ))}
+                            {renderLabels(amenitiesLandTranslatedSorted)}
                         </Row>
                     </Col>
                 </Row>

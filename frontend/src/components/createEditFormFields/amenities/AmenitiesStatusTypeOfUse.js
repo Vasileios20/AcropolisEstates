@@ -25,13 +25,11 @@ export const AmenitiesTypeOfUse = ({ amenities, create, selectedAmenities, handl
             ...amenity,
             name: t(`amenities.${amenity.name}`)
         }
-    }
-    )
+    })
 
     const amenitiesTypeOfUseTranslatedSorted = amenitiesTypeOfUseTranslated.sort((a, b) => {
         return a.name.localeCompare(b.name);
-    }
-    )
+    })
 
     const renderLabels = (amenities) => {
         const columns = [[], [], [], []];
@@ -40,23 +38,29 @@ export const AmenitiesTypeOfUse = ({ amenities, create, selectedAmenities, handl
         });
         return columns.map((column, colIndex) => (
             <Col key={colIndex} className="mx-auto p-2 text-start">
-                {column.slice(0, 10).map((amenity) => (
-                    <div key={amenity.id} className="ms-5 p-2">
-                        <label className="p-2 border shadow">
-                            <input
-                                className="m-1"
-                                type="checkbox"
-                                value={amenity.id}
-                                checked={create ? null : selectedAmenities.includes(amenity.id)}
-                                onChange={handleAmenityChange}
-                            />
-                            {amenity.name.replace(/_/g, " ")}
-                        </label>
-                    </div>
-                ))}
+                {column.slice(0, 10).map((amenity) => {
+                    // Ensure amenity.id is an integer for comparison
+                    const amenityIdInt = typeof amenity.id === 'string' ? parseInt(amenity.id, 10) : amenity.id;
+                    const isChecked = selectedAmenities?.includes(amenityIdInt) || false;
+
+                    return (
+                        <div key={amenity.id} className="ms-5 p-2">
+                            <label className="p-2 border shadow">
+                                <input
+                                    className="m-1"
+                                    type="checkbox"
+                                    checked={isChecked}
+                                    onChange={() => handleAmenityChange(amenityIdInt)}
+                                />
+                                {amenity.name.replace(/_/g, " ")}
+                            </label>
+                        </div>
+                    );
+                })}
             </Col>
         ));
     };
+
     return (
         <>
             <Row className="justify-content-center mx-auto">
@@ -88,38 +92,42 @@ export const AmenitiesStatus = ({ amenities, create, selectedAmenities, handleAm
             ...amenity,
             name: t(`amenities.${amenity.name}`)
         }
-    }
-    )
+    })
 
     const amenitiesStatusTranslatedSorted = amenitiesStatusTranslated.sort((a, b) => {
         return a.name.localeCompare(b.name);
-    }
-    )
+    })
 
     const renderLabels = (amenities) => {
-        const columns = [[], [], [], []]; // Assuming 4 columns
+        const columns = [[], [], [], []];
         amenities.forEach((amenity, index) => {
             columns[index % 4].push(amenity);
         });
         return columns.map((column, colIndex) => (
             <Col key={colIndex} className="mx-auto p-2 text-start">
-                {column.slice(0, 10).map((amenity) => (
-                    <div key={amenity.id} className="ms-5 p-2">
-                        <label className="p-2 border shadow">
-                            <input
-                                className="m-1"
-                                type="checkbox"
-                                value={amenity.id}
-                                checked={create ? null : selectedAmenities.includes(amenity.id)}
-                                onChange={handleAmenityChange}
-                            />
-                            {amenity.name.replace(/_/g, " ")}
-                        </label>
-                    </div>
-                ))}
+                {column.slice(0, 10).map((amenity) => {
+                    // Ensure amenity.id is an integer for comparison
+                    const amenityIdInt = typeof amenity.id === 'string' ? parseInt(amenity.id, 10) : amenity.id;
+                    const isChecked = selectedAmenities?.includes(amenityIdInt) || false;
+
+                    return (
+                        <div key={amenity.id} className="ms-5 p-2">
+                            <label className="p-2 border shadow">
+                                <input
+                                    className="m-1"
+                                    type="checkbox"
+                                    checked={isChecked}
+                                    onChange={() => handleAmenityChange(amenityIdInt)}
+                                />
+                                {amenity.name.replace(/_/g, " ")}
+                            </label>
+                        </div>
+                    );
+                })}
             </Col>
         ));
     };
+
     return (
         <>
             <Row className="justify-content-center mx-auto">

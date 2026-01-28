@@ -136,9 +136,8 @@ export const AmenitiesResidential = (
                             <input
                                 className="m-1"
                                 type="checkbox"
-                                value={amenity.id}
-                                checked={create ? null : selectedAmenities.includes(amenity.id)}
-                                onChange={handleAmenityChange}
+                                checked={selectedAmenities?.includes(amenity.id)}
+                                onChange={() => handleAmenityChange(amenity.id)}
                             />
                             {amenity.name.replace(/_/g, " ")}
                         </label>
