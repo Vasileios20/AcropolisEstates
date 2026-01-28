@@ -114,16 +114,18 @@ export default function AdminShortTermListings() {
             render: (id) => <strong>#{id}</strong>,
         },
         {
-            title: t('Agent Name'),
+            title: t('propertyDetails.agentName'),
             dataIndex: 'agent_name',
             key: 'agent_name',
+            width: 150,
             sorter: (a, b) => (a.agent_name || '').localeCompare(b.agent_name || ''),
             sortOrder: sortedInfo.columnKey === 'agent_name' ? sortedInfo.order : null,
         },
         {
-            title: t('Municipality'),
+            title: lng === 'el' ? t('propertyDetails.municipality_gr') : t('propertyDetails.municipality'),
             dataIndex: 'municipality_id',
             key: 'municipality_id',
+            width: 200,
             sorter: (a, b) => {
                 const nameA = getMunicipalityName(a.municipality_id, a.county_id, a.region_id);
                 const nameB = getMunicipalityName(b.municipality_id, b.county_id, b.region_id);
@@ -133,15 +135,15 @@ export default function AdminShortTermListings() {
             render: (municipalityId, record) => {
                 const name = getMunicipalityName(municipalityId, record.county_id, record.region_id);
                 return name === t('N/A')
-                    ? <Tag color="red">{t('Update Required')}</Tag>
+                    ? <Tag color="red">{t('propertyDetails.updateRequired')}</Tag>
                     : name;
             },
         },
         {
-            title: 'Max Guests',
+            title: t('propertyDetails.maxGuests'),
             dataIndex: 'max_guests',
             key: 'max_guests',
-            width: 120,
+            width: 200,
             sorter: (a, b) => (a.max_guests || 0) - (b.max_guests || 0),
             render: (guests) => (
                 <Space>
@@ -151,9 +153,10 @@ export default function AdminShortTermListings() {
             ),
         },
         {
-            title: t('Price'),
+            title: t('propertyDetails.price'),
             dataIndex: 'price',
             key: 'price',
+            width: 100,
             sorter: (a, b) => (a.price || 0) - (b.price || 0),
             sortOrder: sortedInfo.columnKey === 'price' ? sortedInfo.order : null,
             render: (price, record) => price
@@ -161,13 +164,13 @@ export default function AdminShortTermListings() {
                 : '-',
         },
         {
-            title: t('Status'),
+            title: t('propertyDetails.status.title'),
             key: 'status',
-            width: 120,
+            width: 200,
             filters: [
-                { text: t('Approved'), value: 'approved' },
-                { text: t('Featured'), value: 'featured' },
-                { text: t('Pending'), value: 'pending' },
+                { text: t('propertyDetails.approved'), value: 'approved' },
+                { text: t('propertyDetails.featured'), value: 'featured' },
+                { text: t('propertyDetails.pending'), value: 'pending' },
             ],
             filteredValue: filteredInfo.status || null,
             onFilter: (value, record) => {
@@ -185,13 +188,13 @@ export default function AdminShortTermListings() {
                         <StarOutlined style={{ color: '#faad14', fontSize: '18px' }} />
                     )}
                     {!record.approved && !record.featured && (
-                        <Tag color="default">{t('Pending')}</Tag>
+                        <Tag color="default">{t('propertyDetails.status.pending')}</Tag>
                     )}
                 </Space>
             ),
         },
         {
-            title: t('Actions'),
+            title: t('propertyDetails.actions.title'),
             key: 'actions',
             width: 100,
             fixed: 'right',
@@ -203,7 +206,7 @@ export default function AdminShortTermListings() {
                     size="small"
                     style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                 >
-                    {t('View')}
+                    {t('propertyDetails.actions.viewListing')}
                 </Button>
             ),
         },
@@ -230,7 +233,7 @@ export default function AdminShortTermListings() {
         <div style={{ padding: '94px 24px 24px 24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
             {/* Header */}
             <Title level={2} style={{ marginBottom: '24px', color: '#1f1f1f' }}>
-                {t('Short-term Listings Management')}
+                {t('admin.listings.titleRentals')}
             </Title>
             <Button
                 type="primary"
@@ -239,7 +242,7 @@ export default function AdminShortTermListings() {
                 onClick={() => history.push('/frontend/admin/short-term-listings/create')}
                 style={{ backgroundColor: '#847c3d', borderColor: '#847c3d', marginBottom: '24px' }}
             >
-                {t('Add Short-term Listing')}
+                {t('admin.listings.addListing')}
             </Button>
 
             {/* Stats Cards */}
@@ -247,7 +250,7 @@ export default function AdminShortTermListings() {
                 <Col xs={24} sm={12} lg={6}>
                     <Card>
                         <Statistic
-                            title="Total Short-term"
+                            title={t('admin.dashboard.totalListings')}
                             value={stats.total}
                             prefix={<HomeOutlined style={{ color: '#1890ff' }} />}
                             styles={{ color: '#1890ff', fontSize: '32px', fontWeight: 'bold' }}
@@ -257,7 +260,7 @@ export default function AdminShortTermListings() {
                 <Col xs={24} sm={12} lg={6}>
                     <Card>
                         <Statistic
-                            title="Approved"
+                            title={t('admin.dashboard.approved')}
                             value={stats.approved}
                             prefix={<CheckCircleOutlined style={{ color: '#52c41a' }} />}
                             styles={{ color: '#52c41a', fontSize: '32px', fontWeight: 'bold' }}
@@ -267,7 +270,7 @@ export default function AdminShortTermListings() {
                 <Col xs={24} sm={12} lg={6}>
                     <Card>
                         <Statistic
-                            title="Featured"
+                            title={t('admin.dashboard.featured')}
                             value={stats.featured}
                             prefix={<StarFilled style={{ color: '#faad14' }} />}
                             styles={{ color: '#faad14', fontSize: '32px', fontWeight: 'bold' }}
@@ -277,7 +280,7 @@ export default function AdminShortTermListings() {
                 <Col xs={24} sm={12} lg={6}>
                     <Card>
                         <Statistic
-                            title="Pending"
+                            title={t('admin.dashboard.pending')}
                             value={stats.pending}
                             prefix={<ClockCircleOutlined style={{ color: '#ff4d4f' }} />}
                             styles={{ color: '#ff4d4f', fontSize: '32px', fontWeight: 'bold' }}
@@ -289,7 +292,7 @@ export default function AdminShortTermListings() {
             <Card>
                 <Space orientation="vertical" style={{ width: '100%', marginBottom: '16px' }}>
                     <Search
-                        placeholder={t('Search by ID, Agent, Type, Municipality, Price...')}
+                        placeholder={t('admin.listings.searchPlaceholder')}
                         allowClear
                         enterButton={<SearchOutlined />}
                         size="large"
@@ -308,7 +311,7 @@ export default function AdminShortTermListings() {
                     pagination={{
                         showSizeChanger: true,
                         showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} ${t('of')} ${total} ${t('owners')}`,
+                            `${range[0]}-${range[1]} ${t('of')} ${total} ${t('admin.listings.rentals')}`,
                         onChange: (page, size) => {
                             setCurrentPage(page);
                             setPageSize(size);
