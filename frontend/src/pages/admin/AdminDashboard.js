@@ -144,9 +144,9 @@ const AdminDashboard = () => {
             {/* Header */}
             <div style={{ marginBottom: '12px' }}>
                 <Title level={2} style={{ margin: 0, color: '#1f1f1f' }}>
-                    {t('Admin Dashboard')}
+                    {t('admin.dashboard.title')}
                 </Title>
-                <Text type="secondary">{t('Welcome back! Here\'s an overview of your properties.')}</Text>
+                <Text type="secondary">{t('admin.dashboard.welcomeMessage')}</Text>
             </div>
 
             {/* Main Stats Cards */}
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
                 <Col xs={24} sm={12} lg={6}>
                     <Card>
                         <Statistic
-                            title={t('Total Listings')}
+                            title={t('admin.dashboard.totalListings')}
                             value={stats.total}
                             prefix={<HomeOutlined style={{ color: '#1890ff' }} />}
                             styles={{ value: { color: '#1890ff', fontSize: '32px' } }}
@@ -164,7 +164,7 @@ const AdminDashboard = () => {
                 <Col xs={24} sm={12} lg={6}>
                     <Card>
                         <Statistic
-                            title={t('Approved')}
+                            title={t('admin.dashboard.approvedListings')}
                             value={stats.approved}
                             prefix={<CheckCircleOutlined style={{ color: '#52c41a' }} />}
                             styles={{ value: { color: '#52c41a', fontSize: '32px' } }}
@@ -179,7 +179,7 @@ const AdminDashboard = () => {
                 <Col xs={24} sm={12} lg={6}>
                     <Card>
                         <Statistic
-                            title={t('Featured')}
+                            title={t('admin.dashboard.featuredListings')}
                             value={stats.featured}
                             prefix={<StarOutlined style={{ color: '#faad14' }} />}
                             styles={{ value: { color: '#faad14', fontSize: '32px' } }}
@@ -189,7 +189,7 @@ const AdminDashboard = () => {
                 <Col xs={24} sm={12} lg={6}>
                     <Card>
                         <Statistic
-                            title={t('Pending Approval')}
+                            title={t('admin.dashboard.pendingApproval')}
                             value={stats.pending}
                             prefix={<ClockCircleOutlined style={{ color: '#ff4d4f' }} />}
                             styles={{ value: { color: '#ff4d4f', fontSize: '32px' } }}
@@ -201,7 +201,7 @@ const AdminDashboard = () => {
             <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
                 <Col xs={24} lg={12}>
                     <Card
-                        title={t('Property Types')}
+                        title={t('admin.dashboard.propertyTypes')}
                         extra={<FileTextOutlined />}
                     >
                         <Row gutter={16}>
@@ -232,7 +232,7 @@ const AdminDashboard = () => {
 
                 <Col xs={24} lg={12}>
                     <Card
-                        title={t('Sale Types')}
+                        title={t('admin.dashboard.saleTypes')}
                         extra={<FileTextOutlined />}
                     >
                         <Row gutter={16}>
@@ -256,27 +256,27 @@ const AdminDashboard = () => {
 
                 <Col xs={24} lg={12}>
                     <Card
-                        title="Short-term Rentals"
+                        title={t('admin.dashboard.shortTermRentals')}
                         extra={<CalendarOutlined />}
                     >
                         <Row gutter={16}>
                             <Col span={8}>
                                 <Statistic
-                                    title="Total"
+                                    title={t('admin.dashboard.total')}
                                     value={shortTermStats.total}
                                     styles={{ value: { color: '#fa8c16' } }}
                                         />
                             </Col>
                             <Col span={8}>
                                 <Statistic
-                                    title="Approved"
+                                    title={t('admin.dashboard.approved')}
                                     value={shortTermStats.approved}
                                     styles={{ value: { color: '#52c41a' } }}
                                         />
                             </Col>
                             <Col span={8}>
                                 <Statistic
-                                    title="Pending"
+                                    title={t('admin.dashboard.pending')}
                                     value={shortTermStats.pending}
                                     styles={{ value: { color: '#ff4d4f' } }}
                                         />
@@ -287,20 +287,20 @@ const AdminDashboard = () => {
 
                 <Col xs={24} lg={12}>
                     <Card
-                        title="Bookings"
+                        title={t('admin.dashboard.bookings')}
                         extra={<CalendarOutlined />}
                     >
                         <Row gutter={16}>
                             <Col span={12}>
                                 <Statistic
-                                    title="Total Bookings"
+                                    title={t('admin.dashboard.totalBookings')}
                                     value={bookingsStats.total}
                                     styles={{ value: { color: '#722ed1' } }}
                                         />
                             </Col>
                             <Col span={12}>
                                 <Statistic
-                                    title="Pending Confirmation"
+                                    title={t('admin.dashboard.pendingConfirmation')}
                                     value={bookingsStats.pending}
                                     styles={{ value: { color: '#ff4d4f' } }}
                                         />
@@ -312,7 +312,7 @@ const AdminDashboard = () => {
 
             {/* Quick Actions */}
             <Card
-                title={t('Quick Actions')}
+                title={t('admin.dashboard.quickActions')}
                 style={{ marginBottom: '24px' }}
             >
                 <Space size="large" wrap>
@@ -323,7 +323,7 @@ const AdminDashboard = () => {
                             icon={<PlusCircleOutlined />}
                             style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                         >
-                            {t('Add New Listing')}
+                            {t('admin.dashboard.addNewListing')}
                         </Button>
                     </Link>
                     <Link to="/frontend/admin/listings/owners/create">
@@ -333,7 +333,7 @@ const AdminDashboard = () => {
                             icon={<UserOutlined />}
                             style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
                         >
-                            {t('Add New Owner')}
+                            {t('admin.dashboard.addNewOwner')}
                         </Button>
                     </Link>
                     <Link to="/frontend/admin/listings">
@@ -341,7 +341,7 @@ const AdminDashboard = () => {
                             size="large"
                             icon={<HomeOutlined />}
                         >
-                            {t('View All Listings')}
+                            {t('admin.dashboard.viewAllListings')}
                         </Button>
                     </Link>
                     <Link to="/frontend/admin/short-term-listings">
@@ -350,7 +350,7 @@ const AdminDashboard = () => {
                             icon={<CalendarOutlined />}
                             style={{ borderColor: '#fa8c16', color: '#fa8c16' }}
                         >
-                            Short-term Rentals
+                            {t('admin.dashboard.shortTermRentals')}
                         </Button>
                     </Link>
                     <Link to="/frontend/admin/bookings">
@@ -359,7 +359,7 @@ const AdminDashboard = () => {
                             icon={<CalendarOutlined />}
                             style={{ borderColor: '#722ed1', color: '#722ed1' }}
                         >
-                            View Bookings
+                            {t('admin.dashboard.viewBookings')}
                         </Button>
                     </Link>
                     <Link to="/frontend/admin/contact_list">
@@ -367,7 +367,7 @@ const AdminDashboard = () => {
                             size="large"
                             icon={<MessageOutlined />}
                         >
-                            {t('View Messages')}
+                            {t('admin.dashboard.viewMessages')}
                         </Button>
                     </Link>
                 </Space>
@@ -381,10 +381,10 @@ const AdminDashboard = () => {
                             <div style={{ textAlign: 'center', padding: '20px 0' }}>
                                 <HomeOutlined style={{ fontSize: '48px', color: '#1890ff', marginBottom: '16px' }} />
                                 <Title level={4} style={{ margin: '0 0 8px 0' }}>
-                                    {t('Manage Listings')}
+                                    {t("admin.dashboard.manageListings")}
                                 </Title>
                                 <Text type="secondary">
-                                    {t('View, edit, and manage all property listings')}
+                                    {t('admin.dashboard.viewEditManageListings')}
                                 </Text>
                             </div>
                         </Link>
@@ -396,10 +396,10 @@ const AdminDashboard = () => {
                             <div style={{ textAlign: 'center', padding: '20px 0' }}>
                                 <HomeOutlined style={{ fontSize: '48px', color: '#fa8c16', marginBottom: '16px' }} />
                                 <Title level={4} style={{ margin: '0 0 8px 0' }}>
-                                    {t('Manage Short-term Rentals')}
+                                    {t('admin.dashboard.manageShortTermRentals')}
                                 </Title>
                                 <Text type="secondary">
-                                    {shortTermStats.total} short-term listings
+                                    {shortTermStats.total} {t('admin.dashboard.shortTermListings')}
                                 </Text>
                             </div>
                         </Link>
@@ -412,10 +412,10 @@ const AdminDashboard = () => {
                             <div style={{ textAlign: 'center', padding: '20px 0' }}>
                                 <CalendarOutlined style={{ fontSize: '48px', color: '#722ed1', marginBottom: '16px' }} />
                                 <Title level={4} style={{ margin: '0 0 8px 0' }}>
-                                    Manage Bookings
+                                    {t('admin.dashboard.manageBookings')}
                                 </Title>
                                 <Text type="secondary">
-                                    {bookingsStats.total} total • {bookingsStats.pending} pending
+                                    {bookingsStats.total} {t('admin.dashboard.totalBookings')} • {bookingsStats.pending} {t('admin.dashboard.pendingBookings')}
                                 </Text>
                             </div>
                         </Link>
@@ -428,10 +428,10 @@ const AdminDashboard = () => {
                             <div style={{ textAlign: 'center', padding: '20px 0' }}>
                                 <UserOutlined style={{ fontSize: '48px', color: '#52c41a', marginBottom: '16px' }} />
                                 <Title level={4} style={{ margin: '0 0 8px 0' }}>
-                                    {t('Manage Owners')}
+                                    {t('admin.dashboard.manageOwners')}
                                 </Title>
                                 <Text type="secondary">
-                                    {t('Total Owners')}: {totalOwners}
+                                    {t('admin.dashboard.totalOwners')}: {totalOwners}
                                 </Text>
                             </div>
                         </Link>
