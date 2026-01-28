@@ -50,6 +50,7 @@ export const ButtonsSearch = ({ filters, setFilters, update }) => {
                                     bedrooms: { min: "", max: "" },
                                     constructionYear: { min: "", max: "" },
                                     floor: { min: "", max: "" },
+                                    empty: false,
                                 });
                             }}>
                             {t("searchBar.btnClear")}
@@ -79,6 +80,7 @@ export const ButtonsSearch = ({ filters, setFilters, update }) => {
                                     bedrooms: { min: "", max: "" },
                                     constructionYear: { min: "", max: "" },
                                     floor: { min: "", max: "" },
+                                    empty: false,
                                 });
                             }}>
                             {t("searchBar.btnClear")}
