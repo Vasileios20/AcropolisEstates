@@ -8,5 +8,5 @@
       "react-bootstrap": ["node_modules/react-bootstrap"]
     }
   },
-  "include": ["src", "../temp/DragAndDropImages.js"]
+  "include": ["src", "../temp/DragAndDropImages.js", "../temp/frontendADMIN/AdminOwners.js", "../temp/frontendADMIN/ShortTermListingEditForm.js", "../temp/frontendADMIN/ShortTermListingCreateForm.js", "../temp/frontendADMIN/ListingCreateForm.js", "../temp/frontendADMIN/ListingEditForm.js"]
 }
