@@ -27,4 +27,7 @@ export const useRedirect = (useAuthStatus) => {
     };
     handleMount();
   }, [history, useAuthStatus]);
+
+  // Return null to satisfy React's hook requirements
+  return null;
 };
