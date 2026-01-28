@@ -33,10 +33,8 @@ class DecimalNumberInput(NumberInput):
             normalized = decimal_value.quantize(Decimal('0.01'))
             # Return as string with exactly 2 decimal places
             result = f"{normalized:.2f}"
-            print(f"DecimalNumberInput.format_value: {value} -> {result}")
             return result
-        except (ValueError, TypeError, InvalidOperation) as e:
-            print(f"DecimalNumberInput.format_value error: {e}")
+        except (ValueError, TypeError, InvalidOperation):
             return value
 
 
