@@ -102,7 +102,6 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
   const amenitiesBuilidingFeaturesTranslatedList = amenitiesBuilidingFeaturesTranslated.map((amenity, id) => (
     <div key={id} className={`${styles.Amenity}`}>
       <span>{amenity} </span>
-      {/* <i className={`fa-solid fa-square-check ${styles.AmenityChecked}`}></i> */}
     </div>
   ));
   const amenitiesAreaPlaces = [
@@ -203,7 +202,6 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
   const amenitiesPropertyTranslatedList = amenitiesPropertyTranslated.map((amenity, id) => (
     <div key={id} className={`${styles.Amenity}`}>
       <span>{amenity} </span>
-      {/* <i className={`fa-solid fa-square-check ${styles.AmenityChecked}`}></i> */}
     </div>
   ));
 
@@ -213,7 +211,6 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
     <div className={`${styles.Listing__features}`}>
       <div className="d-flex flex-wrap">
         {[
-          // { label: t("propertyDetails.price"), value: `${currency}${priceValue}`, icon: "fa-tag" },
           { label: t("propertyDetails.floorArea"), value: `${floor_area}m²`, icon: "fa-ruler-combined" },
           { label: t("propertyDetails.floorLevel"), value: floorValue, icon: "fa-stairs" },
           { label: t("propertyDetails.bedrooms"), value: bedrooms, icon: "fa-bed" },
@@ -268,7 +265,7 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
 
   // Edit listing
   const handleEdit = () => {
-    history.push(`/short-term-listings/${id}/edit`)
+    history.push(`/frontend/admin/short-term-listings/${id}/edit`)
   };
 
   const [showBookingModal, setShowBookingModal] = useState(false);

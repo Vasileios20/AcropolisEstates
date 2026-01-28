@@ -141,7 +141,7 @@ const Listing = ({ setShowCookieBanner, nonEssentialConsent, ...props }) => {
   };
 
   const handleEdit = () => {
-    history.push(`/listings/${id}/edit`);
+    history.push(`/frontend/admin/listings/${id}/edit`);
   };
 
   return (
