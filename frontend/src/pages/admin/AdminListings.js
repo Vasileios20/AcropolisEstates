@@ -99,7 +99,7 @@ export default function AdminListingsAntD() {
 
     const columns = [
         {
-            title: t('ID'),
+            title: "ID",
             dataIndex: 'id',
             key: 'id',
             width: 80,
@@ -108,14 +108,14 @@ export default function AdminListingsAntD() {
             render: (id) => <strong>#{id}</strong>,
         },
         {
-            title: t('Agent Name'),
+            title: t('propertyDetails.agentName'),
             dataIndex: 'agent_name',
             key: 'agent_name',
             sorter: (a, b) => (a.agent_name || '').localeCompare(b.agent_name || ''),
             sortOrder: sortedInfo.columnKey === 'agent_name' ? sortedInfo.order : null,
         },
         {
-            title: t('Type'),
+            title: t('propertyDetails.types.title'),
             dataIndex: 'type',
             key: 'type',
             filters: [
@@ -135,7 +135,7 @@ export default function AdminListingsAntD() {
             },
         },
         {
-            title: t('Sub Type'),
+            title: t('propertyDetails.subTypes.title'),
             dataIndex: 'sub_type',
             key: 'sub_type',
             sorter: (a, b) => (a.sub_type || '').localeCompare(b.sub_type || ''),
@@ -143,7 +143,7 @@ export default function AdminListingsAntD() {
             render: (subType) => subType ? t(`propertyDetails.subTypes.${subType}`) : '-',
         },
         {
-            title: t('Municipality'),
+            title: lng === 'el' ? t('propertyDetails.municipality_gr') : t('propertyDetails.municipality'),
             dataIndex: 'municipality_id',
             key: 'municipality_id',
             sorter: (a, b) => {
@@ -160,7 +160,7 @@ export default function AdminListingsAntD() {
             },
         },
         {
-            title: t('Sale Type'),
+            title: t('propertyDetails.typeSale'),
             dataIndex: 'sale_type',
             key: 'sale_type',
             filters: [
@@ -175,7 +175,7 @@ export default function AdminListingsAntD() {
             },
         },
         {
-            title: t('Floor Area'),
+            title: t('propertyDetails.floorArea'),
             dataIndex: 'floor_area',
             key: 'floor_area',
             sorter: (a, b) => (a.floor_area || 0) - (b.floor_area || 0),
@@ -183,7 +183,7 @@ export default function AdminListingsAntD() {
             render: (area) => area ? `${area} m²` : '-',
         },
         {
-            title: t('Land Area'),
+            title: t('propertyDetails.landArea'),
             dataIndex: 'land_area',
             key: 'land_area',
             sorter: (a, b) => (a.land_area || 0) - (b.land_area || 0),
@@ -191,7 +191,7 @@ export default function AdminListingsAntD() {
             render: (area) => area ? `${area} m²` : '-',
         },
         {
-            title: t('Price'),
+            title: t('propertyDetails.price'),
             dataIndex: 'price',
             key: 'price',
             sorter: (a, b) => (a.price || 0) - (b.price || 0),
@@ -201,13 +201,13 @@ export default function AdminListingsAntD() {
                 : '-',
         },
         {
-            title: t('Status'),
+            title: t('propertyDetails.status.title'),
             key: 'status',
-            width: 120,
+            width: 122,
             filters: [
-                { text: t('Approved'), value: 'approved' },
-                { text: t('Featured'), value: 'featured' },
-                { text: t('Pending'), value: 'pending' },
+                { text: t('propertyDetails.status.approved'), value: 'approved' },
+                { text: t('propertyDetails.status.featured'), value: 'featured' },
+                { text: t('propertyDetails.status.pending'), value: 'pending' },
             ],
             filteredValue: filteredInfo.status || null,
             onFilter: (value, record) => {
@@ -225,15 +225,15 @@ export default function AdminListingsAntD() {
                         <StarOutlined style={{ color: '#faad14', fontSize: '18px' }} />
                     )}
                     {!record.approved && !record.featured && (
-                        <Tag color="default">{t('Pending')}</Tag>
+                        <Tag color="default">{t('propertyDetails.status.pending')}</Tag>
                     )}
                 </Space>
             ),
         },
         {
-            title: t('Actions'),
+            title: t('propertyDetails.actions.title'),
             key: 'actions',
-            width: 100,
+            width: 120,
             fixed: 'right',
             render: (_, record) => (
                 <Button
@@ -243,7 +243,7 @@ export default function AdminListingsAntD() {
                     size="small"
                     style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                 >
-                    {t('View')}
+                    {t('propertyDetails.actions.viewListing')}
                 </Button>
             ),
         },
@@ -267,10 +267,10 @@ export default function AdminListingsAntD() {
     }
 
     return (
-        <div style={{ padding: '24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+        <div style={{ padding: '64px 24px 24px 24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
             {/* Header */}
             <Title level={2} style={{ marginBottom: '24px', color: '#1f1f1f' }}>
-                {t('Listings Management')}
+                {t('admin.listings.title')}
             </Title>
 
             {/* Stats Cards */}
@@ -281,7 +281,7 @@ export default function AdminListingsAntD() {
                             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }}>
                                 {stats.total}
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>{t('Total Listings')}</div>
+                            <div style={{ color: '#8c8c8c' }}>{t('admin.listings.totalListings')}</div>
                         </div>
                     </Card>
                 </Col>
@@ -291,7 +291,7 @@ export default function AdminListingsAntD() {
                             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }}>
                                 {stats.approved}
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>{t('Approved')}</div>
+                            <div style={{ color: '#8c8c8c' }}>{t('admin.listings.approved')}</div>
                         </div>
                     </Card>
                 </Col>
@@ -301,7 +301,7 @@ export default function AdminListingsAntD() {
                             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#faad14' }}>
                                 {stats.featured}
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>{t('Featured')}</div>
+                            <div style={{ color: '#8c8c8c' }}>{t('admin.listings.featured')}</div>
                         </div>
                     </Card>
                 </Col>
@@ -311,7 +311,7 @@ export default function AdminListingsAntD() {
                             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#ff4d4f' }}>
                                 {stats.pending}
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>{t('Pending')}</div>
+                            <div style={{ color: '#8c8c8c' }}>{t('admin.listings.pending')}</div>
                         </div>
                     </Card>
                 </Col>
@@ -321,7 +321,7 @@ export default function AdminListingsAntD() {
                             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }}>
                                 {stats.sold}
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>{t('Sold')}</div>
+                            <div style={{ color: '#8c8c8c' }}>{t('admin.listings.sold')}</div>
                         </div>
                     </Card>
                 </Col>
@@ -331,7 +331,7 @@ export default function AdminListingsAntD() {
             <Card>
                 <Space orientation="vertical" style={{ width: '100%', marginBottom: '16px' }}>
                     <Search
-                        placeholder={t('Search by ID, Agent, Type, Municipality, Price...')}
+                        placeholder={t('admin.listings.searchPlaceholder')}
                         allowClear
                         enterButton={<SearchOutlined />}
                         size="large"
@@ -351,7 +351,7 @@ export default function AdminListingsAntD() {
                         pageSize: 20,
                         showSizeChanger: true,
                         showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} ${t('of')} ${total} ${t('listings')}`,
+                            `${range[0]}-${range[1]} ${t('of')} ${total} ${t('admin.listings.listings')}`,
                     }}
                     rowClassName={(record, index) =>
                         index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
