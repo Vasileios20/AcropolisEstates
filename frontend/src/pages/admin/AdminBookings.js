@@ -36,6 +36,7 @@ import Forbidden403 from '../errors/Forbidden403';
 import { axiosReq } from "../../api/axiosDefaults";
 import dayjs from 'dayjs';
 import { App } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -46,6 +47,7 @@ export default function AdminBookings() {
     const userStatus = useUserStatus();
     const history = useHistory();
     const { message } = App.useApp();
+    const { t } = useTranslation();
 
     // UI State
     const [inputValue, setInputValue] = useState('');
@@ -277,14 +279,14 @@ export default function AdminBookings() {
     }, [allBookings]);
 
     const getStatusTag = (record) => {
-        const status = record.status || (record.admin_confirmed ? 'confirmed' : 'pending');
+        const status = record.status || (record.admin_confirmed ? t("admin.bookings.confirmedBooking") : t("admin.bookings.pendingBooking"));
 
         const statusConfig = {
-            pending: { color: 'warning', icon: <ClockCircleOutlined />, text: 'Pending' },
-            confirmed: { color: 'success', icon: <CheckCircleOutlined />, text: 'Confirmed' },
-            checked_in: { color: 'processing', icon: <CalendarOutlined />, text: 'Checked In' },
-            completed: { color: 'default', icon: <CheckCircleOutlined />, text: 'Completed' },
-            cancelled: { color: 'error', icon: <DeleteOutlined />, text: 'Cancelled' },
+            pending: { color: 'warning', icon: <ClockCircleOutlined />, text: t("admin.bookings.pendingBooking") },
+            confirmed: { color: 'success', icon: <CheckCircleOutlined />, text: t("admin.bookings.confirmedBooking") },
+            checked_in: { color: 'processing', icon: <CalendarOutlined />, text: t("admin.bookings.checkedIn") },
+            completed: { color: 'default', icon: <CheckCircleOutlined />, text: t("admin.bookings.checkedOut") },
+            cancelled: { color: 'error', icon: <DeleteOutlined />, text: t("admin.bookings.cancelled") },
         };
 
         const config = statusConfig[status] || statusConfig.pending;
@@ -324,7 +326,7 @@ export default function AdminBookings() {
     return (
         <div style={{ padding: '94px 24px 24px 24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
             <Title level={2} style={{ marginBottom: '24px', color: '#1f1f1f' }}>
-                Bookings Management
+                {t("admin.bookings.title")}
             </Title>
 
             {/* Stats Cards */}
@@ -335,7 +337,7 @@ export default function AdminBookings() {
                             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }}>
                                 {stats.total}
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>Total Bookings</div>
+                            <div style={{ color: '#8c8c8c' }}>{t("admin.bookings.totalBookings")}</div>
                         </div>
                     </Card>
                 </Col>
@@ -345,7 +347,7 @@ export default function AdminBookings() {
                             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }}>
                                 {stats.confirmed}
                             </div>
-                            <div style={{ value: { color: '#8c8c8c' } }}>Confirmed</div>
+                            <div style={{ color: '#8c8c8c' }}>{t("admin.bookings.confirmedBooking")}</div>
                         </div>
                     </Card>
                 </Col>
@@ -355,7 +357,7 @@ export default function AdminBookings() {
                             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#faad14' }}>
                                 {stats.pending}
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>Pending</div>
+                            <div style={{ color: '#8c8c8c' }}>{t("admin.bookings.pendingBooking")}</div>
                         </div>
                     </Card>
                 </Col>
@@ -365,7 +367,7 @@ export default function AdminBookings() {
                             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }}>
                                 €{stats.revenue.toFixed(2)}
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>Total Revenue</div>
+                            <div style={{ color: '#8c8c8c' }}>{t("admin.bookings.totalRevenue")}</div>
                         </div>
                     </Card>
                 </Col>
@@ -375,14 +377,14 @@ export default function AdminBookings() {
             {statistics && (
                 <Row gutter={16} style={{ marginBottom: '24px' }}>
                     <Col xs={24}>
-                        <Card title="Detailed Statistics">
+                        <Card title={t("admin.bookings.detailedStatistics")}>
                             <Row gutter={16}>
                                 <Col xs={12} sm={6}>
                                     <div style={{ textAlign: 'center' }}>
                                         <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
                                             {statistics.with_discount || 0}
                                         </div>
-                                        <div style={{ color: '#8c8c8c' }}>With Discount</div>
+                                        <div style={{ color: '#8c8c8c' }}>{t("admin.bookings.withDiscount")}</div>
                                     </div>
                                 </Col>
                                 <Col xs={12} sm={6}>
@@ -390,7 +392,7 @@ export default function AdminBookings() {
                                         <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
                                             €{parseFloat(statistics.total_discounts_given || 0).toFixed(2)}
                                         </div>
-                                        <div style={{ color: '#8c8c8c' }}>Total Discounts</div>
+                                        <div style={{ color: '#8c8c8c' }}>{t("admin.bookings.totalDiscounts")}</div>
                                     </div>
                                 </Col>
                                 <Col xs={12} sm={6}>
@@ -398,7 +400,7 @@ export default function AdminBookings() {
                                         <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
                                             {statistics.by_status?.checked_in || 0}
                                         </div>
-                                        <div style={{ color: '#8c8c8c' }}>Checked In</div>
+                                        <div style={{ color: '#8c8c8c' }}>{t("admin.bookings.checkedIn")}</div>
                                     </div>
                                 </Col>
                                 <Col xs={12} sm={6}>
@@ -406,7 +408,7 @@ export default function AdminBookings() {
                                         <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
                                             {statistics.by_status?.completed || 0}
                                         </div>
-                                        <div style={{ color: '#8c8c8c' }}>Completed</div>
+                                        <div style={{ color: '#8c8c8c' }}>{t("admin.bookings.completed")}</div>
                                     </div>
                                 </Col>
                             </Row>
@@ -418,7 +420,7 @@ export default function AdminBookings() {
             {/* Search Bar */}
             <div style={{ marginBottom: '16px' }}>
                 <Input
-                    placeholder="Search by ID, reference, name, email, or phone..."
+                    placeholder={t("admin.bookings.searchBookings")}
                     prefix={<SearchOutlined />}
                     suffix={searching ? <LoadingOutlined style={{ color: '#1890ff' }} /> : null}
                     allowClear
@@ -443,24 +445,24 @@ export default function AdminBookings() {
                                 borderBottom: '1px solid #f0f0f0',
                             }}>
                                 <th onClick={() => handleSort('id')} style={headerStyle}>
-                                    ID {sortField === 'id' && (sortOrder === 'ascend' ? '↑' : '↓')}
+                                    {t("admin.bookings.bookingID")} {sortField === 'id' && (sortOrder === 'ascend' ? '↑' : '↓')}
                                 </th>
                                 <th style={headerStyle}>Reference</th>
                                 <th onClick={() => handleSort('guest')} style={headerStyle}>
-                                    Guest {sortField === 'guest' && (sortOrder === 'ascend' ? '↑' : '↓')}
+                                    {t("admin.bookings.guestName")} {sortField === 'guest' && (sortOrder === 'ascend' ? '↑' : '↓')}
                                 </th>
                                 <th onClick={() => handleSort('check_in')} style={headerStyle}>
-                                    Check-in {sortField === 'check_in' && (sortOrder === 'ascend' ? '↑' : '↓')}
+                                    {t("admin.bookings.checkIn")} {sortField === 'check_in' && (sortOrder === 'ascend' ? '↑' : '↓')}
                                 </th>
                                 <th onClick={() => handleSort('total_nights')} style={headerStyle}>
-                                    Nights {sortField === 'total_nights' && (sortOrder === 'ascend' ? '↑' : '↓')}
+                                    {t("admin.bookings.nights")} {sortField === 'total_nights' && (sortOrder === 'ascend' ? '↑' : '↓')}
                                 </th>
-                                <th style={headerStyle}>Guests</th>
+                                <th style={headerStyle}>{t("admin.bookings.guests")}</th>
                                 <th onClick={() => handleSort('total_price')} style={headerStyle}>
-                                    Price {sortField === 'total_price' && (sortOrder === 'ascend' ? '↑' : '↓')}
+                                    {t("admin.bookings.price")} {sortField === 'total_price' && (sortOrder === 'ascend' ? '↑' : '↓')}
                                 </th>
-                                <th style={headerStyle}>Status</th>
-                                <th style={headerStyle}>Actions</th>
+                                <th style={headerStyle}>{t("admin.bookings.status")}</th>
+                                <th style={headerStyle}>{t("admin.bookings.actions")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -508,7 +510,7 @@ export default function AdminBookings() {
                                             </strong>
                                             {booking.has_discount && (
                                                 <div style={{ marginTop: '4px' }}>
-                                                    <Tooltip title={`Discount: ${booking.discount_type_display} - ${booking.discount_reason || 'No reason'}`}>
+                                                    <Tooltip title={`${t("admin.bookings.discount")}: ${booking.discount_type_display} - ${booking.discount_reason || t("admin.bookings.noReason")}`}>
                                                         <Tag color="orange" icon={<PercentageOutlined />} style={{ fontSize: '10px' }}>
                                                             -{booking.discount_type_display.replace(/off/g, ' ')}
                                                         </Tag>
@@ -522,7 +524,7 @@ export default function AdminBookings() {
                                     </td>
                                     <td style={cellStyle}>
                                         <Space size="small" wrap>
-                                            <Tooltip title="View">
+                                            <Tooltip title={t("admin.bookings.viewBooking")}>
                                                 <Button
                                                     type="primary"
                                                     size="small"
@@ -530,7 +532,7 @@ export default function AdminBookings() {
                                                     onClick={() => history.push(`/frontend/admin/bookings/${booking.id}`)}
                                                 />
                                             </Tooltip>
-                                            <Tooltip title="Change Status">
+                                            <Tooltip title={t("admin.bookings.changeStatus")}>
                                                 <Button
                                                     size="small"
                                                     icon={<EditOutlined />}
@@ -544,7 +546,7 @@ export default function AdminBookings() {
 
                                             {/* Discount buttons */}
                                             {!booking.has_discount ? (
-                                                <Tooltip title="Apply Discount">
+                                                <Tooltip title={t("admin.bookings.applyDiscount")}>
                                                     <Button
                                                         size="small"
                                                         icon={<GiftOutlined />}
@@ -557,13 +559,13 @@ export default function AdminBookings() {
                                                 </Tooltip>
                                             ) : (
                                                 <Popconfirm
-                                                    title="Remove discount?"
-                                                    description={`This will remove the €${parseFloat(booking.discount_amount || 0).toFixed(2)} discount.`}
+                                                    title={t("admin.bookings.removeDiscount")}
+                                                    description={`${t("admin.bookings.removeDiscountDescription")} €${parseFloat(booking.discount_amount || 0).toFixed(2)}.`}
                                                     onConfirm={() => handleRemoveDiscount(booking.id)}
-                                                    okText="Yes, remove"
-                                                    cancelText="Cancel"
+                                                    okText={t("admin.bookings.yesRemove")}
+                                                    cancelText={t("admin.bookings.cancel")}
                                                 >
-                                                    <Tooltip title="Remove Discount">
+                                                    <Tooltip title={t("admin.bookings.removeDiscount")}>
                                                         <Button
                                                             size="small"
                                                             danger
@@ -574,13 +576,13 @@ export default function AdminBookings() {
                                             )}
 
                                             <Popconfirm
-                                                title="Delete this booking?"
-                                                description="This action cannot be undone."
+                                                title={t("admin.bookings.deleteBooking")}
+                                                description={t("admin.bookings.deleteBookingDescription")}
                                                 onConfirm={() => handleDelete(booking.id)}
-                                                okText="Yes, delete"
-                                                cancelText="Cancel"
+                                                okText={t("admin.bookings.yesDelete")}
+                                                cancelText={t("admin.bookings.cancel")}
                                             >
-                                                <Tooltip title="Delete">
+                                                <Tooltip title={t("admin.bookings.deleteBooking")}>
                                                     <Button danger size="small" icon={<DeleteOutlined />} />
                                                 </Tooltip>
                                             </Popconfirm>
@@ -601,7 +603,7 @@ export default function AdminBookings() {
                     padding: '8px 0',
                 }}>
                     <div style={{ color: '#595959' }}>
-                        Showing {processedBookings.length > 0 ? startRecord : 0}-{endRecord} of {processedBookings.length} bookings
+                        {t("admin.bookings.showing")} {processedBookings.length > 0 ? startRecord : 0}-{endRecord} {t("admin.bookings.of")} {processedBookings.length} {t("admin.bookings.bookings")}
                     </div>
 
                     <Space>
@@ -623,18 +625,18 @@ export default function AdminBookings() {
                             disabled={currentPage === 1}
                             onClick={() => setCurrentPage(currentPage - 1)}
                         >
-                            Previous
+                            {t("admin.bookings.previous")}
                         </Button>
 
                         <span style={{ padding: '0 8px' }}>
-                            Page {currentPage} of {totalPages || 1}
+                            {t("admin.bookings.page")} {currentPage} {t("admin.bookings.of")} {totalPages || 1}
                         </span>
 
                         <Button
                             disabled={currentPage === totalPages || totalPages === 0}
                             onClick={() => setCurrentPage(currentPage + 1)}
                         >
-                            Next
+                            {t("admin.bookings.next")}
                         </Button>
                     </Space>
                 </div>
@@ -642,7 +644,7 @@ export default function AdminBookings() {
 
             {/* Status Update Modal */}
             <Modal
-                title="Update Booking Status"
+                title={t("admin.bookings.updateStatus")}
                 open={statusModalVisible}
                 onOk={handleUpdateStatus}
                 onCancel={() => {
@@ -650,25 +652,25 @@ export default function AdminBookings() {
                     setSelectedBooking(null);
                     setNewStatus('');
                 }}
-                okText="Update"
+                okText={t("admin.bookings.updateStatus")}
             >
                 {selectedBooking && (
                     <>
-                        <p>Booking: <strong>#{selectedBooking.id} - {selectedBooking.reference_number}</strong></p>
-                        <p>Guest: <strong>{selectedBooking.first_name} {selectedBooking.last_name}</strong></p>
+                        <p>{t("admin.bookings.booking")}: <strong>#{selectedBooking.id} - {selectedBooking.reference_number}</strong></p>
+                        <p>{t("admin.bookings.guestName")}: <strong>{selectedBooking.first_name} {selectedBooking.last_name}</strong></p>
                         <Divider />
                         <div style={{ marginBottom: '16px' }}>
-                            <label>New Status:</label>
+                            <label>{t("admin.bookings.newStatus")}:</label>
                             <Select
                                 style={{ width: '100%', marginTop: '8px' }}
                                 value={newStatus}
                                 onChange={setNewStatus}
                             >
-                                <Option value="pending">Pending</Option>
-                                <Option value="confirmed">Confirmed</Option>
-                                <Option value="checked_in">Checked In</Option>
-                                <Option value="completed">Completed</Option>
-                                <Option value="cancelled">Cancelled</Option>
+                                <Option value="pending">{t("admin.bookings.statusPending")}</Option>
+                                <Option value="confirmed">{t("admin.bookings.statusConfirmed")}</Option>
+                                <Option value="checked_in">{t("admin.bookings.statusCheckedIn")}</Option>
+                                <Option value="completed">{t("admin.bookings.statusCompleted")}</Option>
+                                <Option value="cancelled">{t("admin.bookings.statusCancelled")}</Option>
                             </Select>
                         </div>
                     </>
@@ -680,7 +682,7 @@ export default function AdminBookings() {
                 title={
                     <Space>
                         <GiftOutlined style={{ color: '#fa8c16' }} />
-                        <span>Apply Discount</span>
+                        <span>{t("admin.bookings.applyDiscount")}</span>
                     </Space>
                 }
                 open={discountModalVisible}
@@ -690,18 +692,18 @@ export default function AdminBookings() {
                     setSelectedBooking(null);
                     setDiscountData({ discount_type: 'percentage', discount_value: '', discount_reason: '' });
                 }}
-                okText="Apply Discount"
+                okText={t("admin.bookings.applyDiscount")}
                 okButtonProps={{ icon: <GiftOutlined /> }}
             >
                 {selectedBooking && (
                     <>
                         <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
-                            <Text strong>Booking #{selectedBooking.id}</Text>
+                            <Text strong>{t("admin.bookings.booking")} #{selectedBooking.reference_number}</Text>
                             <div style={{ marginTop: '8px' }}>
                                 <Text type="secondary">{selectedBooking.first_name} {selectedBooking.last_name}</Text>
                             </div>
                             <div style={{ marginTop: '4px' }}>
-                                <Text type="secondary">Current Price: </Text>
+                                <Text type="secondary">{t("admin.bookings.currentPrice")}: </Text>
                                 <Text strong style={{ color: '#52c41a' }}>€{parseFloat(selectedBooking.total_price).toFixed(2)}</Text>
                             </div>
                         </div>
@@ -709,20 +711,20 @@ export default function AdminBookings() {
                         <Divider />
 
                         <div style={{ marginBottom: '16px' }}>
-                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}>Discount Type:</label>
+                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}>{t("admin.bookings.discountType")}:</label>
                             <Select
                                 style={{ width: '100%' }}
                                 value={discountData.discount_type}
                                 onChange={(value) => setDiscountData({ ...discountData, discount_type: value })}
                             >
-                                <Option value="percentage">Percentage (%)</Option>
-                                <Option value="fixed">Fixed Amount (€)</Option>
+                                <Option value="percentage">{t("admin.bookings.discountPercentage")} (%)</Option>
+                                <Option value="fixed">{t("admin.bookings.fixedAmount")} (€)</Option>
                             </Select>
                         </div>
 
                         <div style={{ marginBottom: '16px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}>
-                                Discount Value:
+                                {discountData.discount_type === 'percentage' ? t("admin.bookings.discountPercentage") : t("admin.bookings.discountAmount")}:
                             </label>
                             <InputNumber
                                 style={{ width: '100%' }}
@@ -736,7 +738,7 @@ export default function AdminBookings() {
                             {discountData.discount_value && (
                                 <div style={{ marginTop: '8px', color: '#fa8c16' }}>
                                     <Text type="secondary">
-                                        New price: €
+                                        {t("admin.bookings.newPrice")}: €
                                         {discountData.discount_type === 'percentage'
                                             ? (parseFloat(selectedBooking.total_price) * (1 - discountData.discount_value / 100)).toFixed(2)
                                             : (parseFloat(selectedBooking.total_price) - discountData.discount_value).toFixed(2)
@@ -748,11 +750,11 @@ export default function AdminBookings() {
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}>
-                                Reason (optional):
+                                {t("admin.bookings.reasonOptional")}:
                             </label>
                             <TextArea
                                 rows={3}
-                                placeholder="e.g., Early bird discount, Repeat customer, Special promotion..."
+                                placeholder={t("admin.bookings.reasonPlaceholder")}
                                 value={discountData.discount_reason}
                                 onChange={(e) => setDiscountData({ ...discountData, discount_reason: e.target.value })}
                             />

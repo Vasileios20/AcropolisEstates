@@ -15,6 +15,7 @@ import {
     verticalListSortingStrategy
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useTranslation } from 'react-i18next';
 
 const { Dragger } = Upload;
 const { Text } = Typography;
@@ -35,6 +36,8 @@ const SortableImageItem = ({ id, url, index, onRemove, isFirst, total, onMoveUp,
         transition,
         opacity: isDragging ? 0.5 : 1,
     };
+
+    const { t } = useTranslation();
 
     return (
         <Card
@@ -63,7 +66,7 @@ const SortableImageItem = ({ id, url, index, onRemove, isFirst, total, onMoveUp,
                     fontWeight: 'bold',
                     zIndex: 1,
                 }}>
-                    <StarFilled /> Primary
+                    <StarFilled /> {t("admin.dragAndDrop.primary")}
                 </div>
             )}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -78,14 +81,14 @@ const SortableImageItem = ({ id, url, index, onRemove, isFirst, total, onMoveUp,
                         flexShrink: 0,
                     }}
                     preview={{
-                        cover: <div style={{ fontSize: '12px' }}>Preview</div>
+                        cover: <div style={{ fontSize: '12px' }}>{t("admin.dragAndDrop.preview")}</div>
                     }}
                 />
                 <div style={{ flex: 1 }}>
-                    <Text strong>Image {index + 1}</Text>
+                    <Text strong>{t("admin.dragAndDrop.image")} {index + 1}</Text>
                     <br />
                     <Text type="secondary" style={{ fontSize: '12px' }}>
-                        {isFirst ? 'Primary image' : `Position ${index + 1}`}
+                        {isFirst ? t("admin.dragAndDrop.primaryImage") : t("admin.dragAndDrop.position", { number: index + 1 })}
                     </Text>
                 </div>
                 <Space orientation="vertical" size="small">
@@ -131,6 +134,7 @@ const DragDropImageUploadAntD = ({
     maxImages = 40,
 }) => {
     const { message } = App.useApp();
+    const { t } = useTranslation();
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -255,12 +259,12 @@ const DragDropImageUploadAntD = ({
                     <InboxOutlined style={{ color: '#847c3d', fontSize: '48px' }} />
                 </p>
                 <p className="ant-upload-text" style={{ fontSize: '16px', fontWeight: 500 }}>
-                    Click or drag images to upload
+                    {t("admin.dragAndDrop.clickOrDragImages")}
                 </p>
                 <p className="ant-upload-hint" style={{ color: '#8c8c8c' }}>
                     {uploadedImages.length > 0
-                        ? `${uploadedImages.length} of ${maxImages} images uploaded. The first image will be the primary.`
-                        : `Upload up to ${maxImages} images. The first image will be the primary.`
+                        ? `${uploadedImages.length} of ${maxImages} ${t("admin.dragAndDrop.imagesUploaded")}. ${t("admin.dragAndDrop.firstImagePrimary")}`
+                        : `${t("admin.dragAndDrop.uploadLimit", { maxImages: maxImages })} ${t("admin.dragAndDrop.images")}.${t("admin.dragAndDrop.firstImagePrimary")}`
                     }
                 </p>
             </Dragger>
@@ -283,7 +287,7 @@ const DragDropImageUploadAntD = ({
             {uploadedImages.length > 0 && (
                 <div>
                     <Text strong style={{ marginBottom: '12px', display: 'block' }}>
-                        Uploaded Images (Use arrows to reorder)
+                        {t("admin.dragAndDrop.uploadedImages")}:
                     </Text>
                     <DndContext
                         sensors={sensors}

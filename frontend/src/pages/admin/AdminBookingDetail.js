@@ -28,6 +28,7 @@ import {
 import { axiosReq } from "../../api/axiosDefaults";
 import dayjs from 'dayjs';
 import { App } from 'antd';
+import { useTranslation } from "react-i18next";
 
 const BookingDetail = () => {
     const { id } = useParams();
@@ -35,6 +36,7 @@ const BookingDetail = () => {
     const [hasLoaded, setHasLoaded] = useState(false);
     const history = useHistory();
     const { message } = App.useApp();
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchBooking = async () => {
@@ -44,12 +46,12 @@ const BookingDetail = () => {
                 setHasLoaded(true);
             } catch (err) {
                 console.error('Error fetching booking:', err);
-                message.error('Failed to load booking details');
+                message.error(t('admin.bookings.failedToLoadBookingDetails'));
                 setHasLoaded(true);
             }
         };
         fetchBooking();
-    }, [id, message]);
+    }, [id, message, t]);
 
     const handleConfirm = async () => {
         try {
@@ -57,30 +59,30 @@ const BookingDetail = () => {
                 status: 'confirmed',
             });
             setBooking(data);
-            message.success('Booking confirmed successfully!');
+            message.success(t('admin.bookings.bookingConfirmedSuccessfully'));
         } catch (err) {
             console.error('Error confirming booking:', err);
-            message.error('Failed to confirm booking');
+            message.error(t('admin.bookings.failedToConfirmBooking'));
         }
     };
 
     const handleDelete = async () => {
         try {
             await axiosReq.delete(`/short-term-bookings/${id}/`);
-            message.success('Booking deleted successfully!');
+            message.success(t('admin.bookings.bookingDeletedSuccessfully'));
             history.push('/frontend/admin/bookings');
         } catch (err) {
             console.error('Error deleting booking:', err);
-            message.error('Failed to delete booking');
+            message.error(t('admin.bookings.failedToDeleteBooking'));
         }
     };
 
     if (!hasLoaded) {
-        return <div style={{ padding: '24px' }}>Loading...</div>;
+        return <div style={{ padding: '24px' }}>{t('admin.bookings.loading')}</div>;
     }
 
     if (!booking) {
-        return <div style={{ padding: '24px' }}>Booking not found</div>;
+        return <div style={{ padding: '24px' }}>{t('admin.bookings.bookingNotFound')}</div>;
     }
 
     const isUpcoming = dayjs(booking.check_in).isAfter(dayjs());
@@ -98,9 +100,9 @@ const BookingDetail = () => {
                             icon={<ArrowLeftOutlined />}
                             onClick={() => history.goBack()}
                         >
-                            Back
+                            {t('admin.bookings.back')}
                         </Button>
-                        <h2 style={{ margin: 0 }}>Booking Details</h2>
+                        <h2 style={{ margin: 0 }}>{t('admin.bookings.bookingDetails')}</h2>
                     </Space>
                     <Space>
                         {!booking.admin_confirmed && (
@@ -111,18 +113,18 @@ const BookingDetail = () => {
                                 size="large"
                                 style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
                             >
-                                Confirm Booking
+                                {t('admin.bookings.confirmBooking')}
                             </Button>
                         )}
                         <Popconfirm
-                            title="Delete Booking"
-                            description="Are you sure you want to delete this booking?"
+                            title={t('admin.bookings.deleteBooking')}
+                            description={t('admin.bookings.deleteBookingConfirmation')}
                             onConfirm={handleDelete}
-                            okText="Yes"
-                            cancelText="No"
+                            okText={t('admin.bookings.yes')}
+                            cancelText={t('admin.bookings.no')}
                         >
                             <Button danger icon={<DeleteOutlined />} size="large">
-                                Delete
+                                {t('admin.bookings.delete')}
                             </Button>
                         </Popconfirm>
                     </Space>
@@ -133,7 +135,7 @@ const BookingDetail = () => {
                     <Col xs={24} sm={12} lg={6}>
                         <Card>
                             <Statistic
-                                title="Reference"
+                                title={t('admin.bookings.booking')}
                                 value={booking.reference_number}
                                 styles={{ fontSize: '16px', color: '#1890ff' }}
                             />
@@ -142,14 +144,14 @@ const BookingDetail = () => {
                     <Col xs={24} sm={12} lg={6}>
                         <Card>
                             <div style={{ textAlign: 'center' }}>
-                                <div style={{ marginBottom: '8px', color: '#888' }}>Status</div>
+                                <div style={{ marginBottom: '8px', color: '#888' }}>{t('admin.bookings.status')}</div>
                                 {booking.admin_confirmed ? (
                                     <Tag icon={<CheckCircleOutlined />} color="success" style={{ fontSize: '16px', padding: '8px 16px' }}>
-                                        Confirmed
+                                        {t('admin.bookings.confirmed')}
                                     </Tag>
                                 ) : (
                                     <Tag icon={<ClockCircleOutlined />} color="warning" style={{ fontSize: '16px', padding: '8px 16px' }}>
-                                        Pending
+                                        {t('admin.bookings.pending')}
                                     </Tag>
                                 )}
                             </div>
@@ -158,9 +160,9 @@ const BookingDetail = () => {
                     <Col xs={24} sm={12} lg={6}>
                         <Card>
                             <Statistic
-                                title="Total Nights"
+                                title={t('admin.bookings.totalNights')}
                                 value={totalNights}
-                                suffix="nights"
+                                suffix={t('admin.bookings.nights')}
                                 prefix={<CalendarOutlined />}
                                 styles={{ color: '#722ed1' }}
                             />
@@ -169,7 +171,7 @@ const BookingDetail = () => {
                     <Col xs={24} sm={12} lg={6}>
                         <Card>
                             <Statistic
-                                title="Total Guests"
+                                title={t('admin.bookings.totalGuests')}
                                 value={totalGuests}
                                 suffix={`(${booking.adults}A, ${booking.children}C)`}
                                 prefix={<UserOutlined />}
@@ -180,28 +182,28 @@ const BookingDetail = () => {
                 </Row>
 
                 {/* Guest Information */}
-                <Card title="Guest Information" style={{ marginBottom: '24px' }}>
+                <Card title={t('admin.bookings.guestInformation')} style={{ marginBottom: '24px' }}>
                     <Descriptions bordered column={2}>
-                        <Descriptions.Item label="Full Name" span={2}>
+                        <Descriptions.Item label={t('admin.bookings.fullName')} span={2}>
                             <strong>{booking.first_name} {booking.last_name}</strong>
                         </Descriptions.Item>
-                        <Descriptions.Item label={<><MailOutlined /> Email</>}>
+                        <Descriptions.Item label={<><MailOutlined /> {t('bookingForm.email')}</>}>
                             <a href={`mailto:${booking.email}`}>{booking.email}</a>
                         </Descriptions.Item>
-                        <Descriptions.Item label={<><PhoneOutlined /> Phone</>}>
+                        <Descriptions.Item label={<><PhoneOutlined /> {t('bookingForm.phone')}</>}>
                             <a href={`tel:${booking.phone_number}`}>{booking.phone_number}</a>
                         </Descriptions.Item>
-                        <Descriptions.Item label="Language">
-                            {booking.language === 'en' ? 'English' : 'Greek'}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Adults">
+                        {/* <Descriptions.Item label={t('bookingForm.language')}>
+                            {booking.language === 'en' ? t('bookingForm.english') : t('bookingForm.greek')}
+                        </Descriptions.Item> */}
+                        <Descriptions.Item label={t('bookingForm.adults')}>
                             {booking.adults || 0}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Children">
+                        <Descriptions.Item label={t('bookingForm.children')}>
                             {booking.children || 0}
                         </Descriptions.Item>
                         {booking.message && (
-                            <Descriptions.Item label="Message" span={2}>
+                            <Descriptions.Item label={t('bookingForm.message')} span={2}>
                                 {booking.message}
                             </Descriptions.Item>
                         )}
@@ -209,12 +211,12 @@ const BookingDetail = () => {
                 </Card>
 
                 {/* Stay Details */}
-                <Card title="Stay Details" style={{ marginBottom: '24px' }}>
+                <Card title={t('admin.bookings.stayDetails')} style={{ marginBottom: '24px' }}>
                     <Row gutter={16}>
                         <Col span={12}>
                             <Card>
                                 <Statistic
-                                    title="Check-in"
+                                    title={t('admin.bookings.checkIn')}
                                     value={dayjs(booking.check_in).format('MMMM DD, YYYY')}
                                     styles={{ fontSize: '18px', color: '#52c41a' }}
                                 />
@@ -226,7 +228,7 @@ const BookingDetail = () => {
                         <Col span={12}>
                             <Card>
                                 <Statistic
-                                    title="Check-out"
+                                    title={t('admin.bookings.checkOut')}
                                     value={dayjs(booking.check_out).format('MMMM DD, YYYY')}
                                     styles={{ fontSize: '18px', color: '#ff4d4f' }}
                                 />
@@ -237,8 +239,8 @@ const BookingDetail = () => {
                         </Col>
                     </Row>
                     <div style={{ marginTop: '16px', textAlign: 'center' }}>
-                        {isUpcoming && <Tag color="blue" style={{ fontSize: '14px', padding: '4px 12px' }}>Upcoming Stay</Tag>}
-                        {isPast && <Tag color="default" style={{ fontSize: '14px', padding: '4px 12px' }}>Past Stay</Tag>}
+                        {isUpcoming && <Tag color="blue" style={{ fontSize: '14px', padding: '4px 12px' }}>{t('admin.bookings.upcomingStay')}</Tag>}
+                        {isPast && <Tag color="default" style={{ fontSize: '14px', padding: '4px 12px' }}>{t('admin.bookings.pastStay')}</Tag>}
                     </div>
                 </Card>
 
@@ -247,34 +249,34 @@ const BookingDetail = () => {
                     title={
                         <span>
                             <EuroOutlined style={{ marginRight: '8px' }} />
-                            Price Breakdown
+                            {t('admin.bookings.priceBreakdown')}
                         </span>
                     }
                     style={{ marginBottom: '24px' }}
                 >
                     <Descriptions bordered column={1}>
-                        <Descriptions.Item label="Subtotal (Accommodation)">
+                        <Descriptions.Item label={t('admin.bookings.subtotal')}>
                             €{parseFloat(booking.subtotal || 0).toFixed(2)}
                         </Descriptions.Item>
-                        <Descriptions.Item label="VAT (13%)">
+                        <Descriptions.Item label={t('bookingForm.vat')}>
                             €{parseFloat(booking.vat || 0).toFixed(2)}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Municipality Tax">
+                        <Descriptions.Item label={t('bookingForm.municipalityTax')}>
                             €{parseFloat(booking.municipality_tax || 0).toFixed(2)}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Climate Crisis Fee">
+                        <Descriptions.Item label={t('bookingForm.climateFee')}>
                             €{parseFloat(booking.climate_crisis_fee || 0).toFixed(2)}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Cleaning Fee">
+                        <Descriptions.Item label={t('bookingForm.cleaningFee')}>
                             €{parseFloat(booking.cleaning_fee || 0).toFixed(2)}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Service Fee">
+                        <Descriptions.Item label={t('bookingForm.serviceFee')}>
                             €{parseFloat(booking.service_fee || 0).toFixed(2)}
                         </Descriptions.Item>
                     </Descriptions>
                     <Divider />
                     <div style={{ textAlign: 'right', fontSize: '24px', fontWeight: 'bold', color: '#52c41a' }}>
-                        Total: €{parseFloat(booking.total_price || 0).toFixed(2)}
+                        {t('bookingForm.total')}: €{parseFloat(booking.total_price || 0).toFixed(2)}
                     </div>
                 </Card>
 
@@ -283,15 +285,15 @@ const BookingDetail = () => {
                     title={
                         <span>
                             <HomeOutlined style={{ marginRight: '8px' }} />
-                            Property Information
+                            {t('admin.bookings.propertyInformation')}
                         </span>
                     }
                 >
                     <Descriptions bordered>
-                        <Descriptions.Item label="Listing ID">
+                        <Descriptions.Item label={t('admin.bookings.listingId')}>
                             {booking.listing}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Booked On">
+                        <Descriptions.Item label={t('admin.bookings.bookedOn')}>
                             {dayjs(booking.created_at).format('MMMM DD, YYYY HH:mm')}
                         </Descriptions.Item>
                     </Descriptions>

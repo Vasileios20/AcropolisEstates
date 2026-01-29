@@ -41,6 +41,10 @@ import styles from "../../styles/ListingCreateEditForm.module.css";
 import { Alert } from "react-bootstrap";
 import { App } from 'antd';
 import useFetchLocationData from "hooks/useFetchLocationData";
+import { AmenitiesLand } from "components/createEditFormFields/amenities/AmenitiesLand";
+import { AmenitiesResidential } from "components/createEditFormFields/amenities/AmenitiesResidential";
+import { AmenitiesCommercial } from "components/createEditFormFields/amenities/AmenitiesCommercial";
+import { ApprovedFeatureCheckbox } from "components/createEditFormFields/ApprovedFeatureCheckbox";
 
 const { Title } = Typography;
 
@@ -207,9 +211,6 @@ function AdminListingCreateForm() {
 
         switch (step) {
             case 0:
-                if (uploadedImages.length === 0) {
-                    newErrors.images = ["Please upload at least one image"];
-                }
                 break;
             case 1:
                 if (!listingData.type) newErrors.type = ["Type is required"];
@@ -346,11 +347,12 @@ function AdminListingCreateForm() {
     };
 
     const steps = [
-        { title: 'Images', icon: <PictureOutlined /> },
-        { title: 'Basic Info', icon: <InfoCircleOutlined /> },
-        { title: 'Location', icon: <EnvironmentOutlined /> },
-        { title: 'Details', icon: <ToolOutlined /> },
-        { title: 'Review', icon: <CheckCircleOutlined /> },
+        { title: t("admin.listingsForms.images"), icon: <PictureOutlined /> },
+        { title: t("admin.listingsForms.basicInfo"), icon: <InfoCircleOutlined /> },
+        { title: t("admin.listingsForms.location"), icon: <EnvironmentOutlined /> },
+        { title: t("admin.listingsForms.details"), icon: <ToolOutlined /> },
+        { title: t("admin.listingsForms.amenities"), icon: <SaveOutlined /> },
+        { title: t("admin.listingsForms.review"), icon: <CheckCircleOutlined /> },
     ];
 
     if (userStatus === false) {
@@ -366,10 +368,10 @@ function AdminListingCreateForm() {
     }
 
     return (
-        <div style={{ padding: '24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+        <div style={{ padding: '94px 24px 24px 24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
             <Card style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <Title level={2} style={{ textAlign: 'center', marginBottom: '32px' }}>
-                    Create New Listing
+                    {t("admin.listings.addListing")}
                 </Title>
 
                 <Steps
@@ -412,7 +414,7 @@ function AdminListingCreateForm() {
                     {/* Step 0: Images */}
                     {currentStep === 0 && (
                         <div>
-                            <Title level={4}>📸 Upload Property Images</Title>
+                            <Title level={4}>{t("admin.listingsForms.uploadImages")}</Title>
                             <DragDropImageUpload
                                 uploadedImages={uploadedImages}
                                 setUploadedImages={setUploadedImages}
@@ -425,7 +427,7 @@ function AdminListingCreateForm() {
                     {/* Step 1: Basic Info */}
                     {currentStep === 1 && (
                         <div>
-                            <Title level={4}>ℹ️ Basic Information</Title>
+                            <Title level={4}>{t("admin.listingsForms.basicInfo")}</Title>
                             <Owner
                                 listingData={listingData}
                                 handleChange={handleChange}
@@ -460,7 +462,7 @@ function AdminListingCreateForm() {
                     {/* Step 2: Location */}
                     {currentStep === 2 && (
                         <div>
-                            <Title level={4}>📍 Location Details</Title>
+                            <Title level={4}>{t("admin.listingsForms.locationDetails")}</Title>
                             <LocationFields
                                 listingData={listingData}
                                 handleChange={handleChange}
@@ -477,10 +479,10 @@ function AdminListingCreateForm() {
                         </div>
                     )}
 
-                    {/* Step 3: Technical Details & Amenities */}
+                    {/* Step 3: Technical Details */}
                     {currentStep === 3 && (
                         <div>
-                            <Title level={4}>🔧 Technical Details & Amenities</Title>
+                            <Title level={4}>{t("admin.listingsForms.technicalDetails")}</Title>
                             {listingData.type === 'residential' && (
                                 <ResidentialFields
                                     listingData={listingData}
@@ -513,30 +515,68 @@ function AdminListingCreateForm() {
                             )}
                         </div>
                     )}
-
-                    {/* Step 4: Review */}
+                    {/* Step 4: Amenities */}
                     {currentStep === 4 && (
                         <div>
-                            <Title level={4} style={{ textAlign: 'center' }}>✅ Review Your Listing</Title>
+                            <Title level={4}>{t("admin.listingsForms.technicalDetails")}</Title>
+                            {listingData.type === 'residential' && (
+                                <AmenitiesResidential
+                                    handleAmenityChange={handleAmenityChange}
+                                    selectedAmenities={selectedAmenities}
+                                    create={true}
+                                />
+                            )}
+                            {listingData.type === 'commercial' && (
+                                <AmenitiesCommercial
+                                    handleAmenityChange={handleAmenityChange}
+                                    selectedAmenities={selectedAmenities}
+                                    create={true}
+                                />
+                            )}
+                            {listingData.type === 'land' && (
+                                <AmenitiesLand
+                                    handleAmenityChange={handleAmenityChange}
+                                    selectedAmenities={selectedAmenities}
+                                    create={true}
+                                />
+                            )}
+                            <Card
+                                bordered={false}
+                                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', marginTop: '24px' }}
+                            >
+                                <ApprovedFeatureCheckbox
+                                    listingData={listingData}
+                                    handleChange={handleChange}
+                                    errors={errors}
+                                    t={t}
+                                />
+                            </Card>
+                        </div>
+                    )}
+
+                    {/* Step 5: Review */}
+                    {currentStep === 5 && (
+                        <div>
+                            <Title level={4} style={{ textAlign: 'center' }}>{t("admin.listingsForms.reviewYourListing")}</Title>
                             <Descriptions bordered column={2} style={{ marginTop: '24px' }}>
-                                <Descriptions.Item label="Images" span={2}>
+                                <Descriptions.Item label={t("admin.listingsForms.images")} span={2}>
                                     <Tag color="blue">{uploadedImages.length} images</Tag>
-                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(0)}>Edit</Button>
+                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(0)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.type")}>{listingData.type || '-'}</Descriptions.Item>
-                                <Descriptions.Item label={t("propertyDetails.saleType")}>{listingData.sale_type || '-'}</Descriptions.Item>
+                                <Descriptions.Item label={t("propertyDetails.typeSale")}>{listingData.sale_type || '-'}</Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.price")}>
                                     {listingData.currency} {listingData.price || '-'}
-                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(1)}>Edit</Button>
+                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(1)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.owner")}>{listingData.listing_owner || '-'}</Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.location")} span={2}>
                                     {t("propertyDetails.region")}: {regionName}, {t("regionOptions.county")}: {countyName}, {t("regionOptions.municipality")}: {municipalityName || '-'}
-                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(2)}>Edit</Button>
+                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(2)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
                                 <Descriptions.Item label={t("amenities.title")} span={2}>
                                     <Tag color="purple">{selectedAmenities.length} selected</Tag>
-                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(3)}>Edit</Button>
+                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(3)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
                             </Descriptions>
                         </div>
@@ -546,19 +586,18 @@ function AdminListingCreateForm() {
                 {/* Navigation */}
                 <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'space-between' }}>
                     <Space>
-                        {currentStep > 0 && <Button size="large" onClick={prevStep}>Previous</Button>}
-                        <Button size="large" icon={<CloseOutlined />} onClick={() => history.goBack()}>Cancel</Button>
+                        {currentStep > 0 && <Button size="large" onClick={prevStep}>{t("admin.listingsForms.previous")}</Button>}
+                        <Button size="large" icon={<CloseOutlined />} onClick={() => history.goBack()}>{t("admin.listingsForms.cancel")}</Button>
                     </Space>
 
-                    {currentStep < 4 ? (
+                    {currentStep < 5 ? (
                         <Button
                             type="primary"
                             size="large"
                             onClick={nextStep}
-                            disabled={currentStep === 0 && uploadedImages.length === 0}
                             style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                         >
-                            Continue
+                            {t("admin.listingsForms.continue")}
                         </Button>
                     ) : (
                         <Button
@@ -569,7 +608,7 @@ function AdminListingCreateForm() {
                             onClick={handleSubmit}
                             style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
                         >
-                            Submit Listing
+                            {t("admin.listingsForms.submitListing")}
                         </Button>
                     )}
                 </div>

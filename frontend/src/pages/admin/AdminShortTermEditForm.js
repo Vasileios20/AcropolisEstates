@@ -45,6 +45,7 @@ import useFetchOwners from "hooks/useFetchOwners";
 import { useTranslation } from "react-i18next";
 import DragDropImageUpload from "components/DragDropImageUpload";
 import useFetchLocationData from "hooks/useFetchLocationData";
+import { ApprovedFeatureCheckbox } from "components/createEditFormFields/ApprovedFeatureCheckbox";
 
 const { Title } = Typography;
 
@@ -482,12 +483,12 @@ function AdminShortTermEditForm() {
     };
 
     const steps = [
-        { title: 'Images', icon: <PictureOutlined /> },
-        { title: 'Basic Info', icon: <InfoCircleOutlined /> },
-        { title: 'Location', icon: <EnvironmentOutlined /> },
-        { title: 'Details', icon: <ToolOutlined /> },
-        { title: 'Amenities', icon: <CheckCircleOutlined /> },
-        { title: 'Review', icon: <CheckCircleOutlined /> },
+        { title: t("admin.listingsForms.images"), icon: <PictureOutlined /> },
+        { title: t("admin.listingsForms.basicInfo"), icon: <InfoCircleOutlined /> },
+        { title: t("admin.listingsForms.location"), icon: <EnvironmentOutlined /> },
+        { title: t("admin.listingsForms.details"), icon: <ToolOutlined /> },
+        { title: t("admin.listingsForms.amenities"), icon: <CheckCircleOutlined /> },
+        { title: t("admin.listingsForms.review"), icon: <CheckCircleOutlined /> },
     ];
 
     if (userStatus === false) {
@@ -506,7 +507,7 @@ function AdminShortTermEditForm() {
         <div style={{ padding: '94px 24px 24px 24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
             <Card style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <Title level={2} style={{ textAlign: 'center', marginBottom: '32px' }}>
-                    Edit Short-Term Rental
+                    {t("admin.listingsForms.editListing")}
                 </Title>
 
                 <Steps
@@ -549,14 +550,14 @@ function AdminShortTermEditForm() {
                     {/* Step 0: Images */}
                     {currentStep === 0 && (
                         <div>
-                            <Title level={4}>📸 Property Images</Title>
+                            <Title level={4}>{t("admin.listingsForms.propertyImagesOptional")}</Title>
 
                             {/* Existing Images */}
                             {existingImages.length > 0 && (
                                 <div style={{ marginBottom: '24px' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                                        <h5>Current Images ({existingImages.length})</h5>
-                                        <Tag color="blue">Drag images to reorder</Tag>
+                                        <h5>{t("admin.listingsForms.currentImages", { count: existingImages.length })}</h5>
+                                        <Tag color="blue">{t("admin.listingsForms.dragImagesToReorder")}</Tag>
                                     </div>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
                                         {existingImages.map((img, index) => (
@@ -653,7 +654,7 @@ function AdminShortTermEditForm() {
                             )}
 
                             {/* New Images Upload */}
-                            <h5>Add New Images</h5>
+                            <h5>{t("admin.listingsForms.addNewImages")}</h5>
                             <DragDropImageUpload
                                 uploadedImages={uploadedImages}
                                 setUploadedImages={setUploadedImages}
@@ -666,7 +667,7 @@ function AdminShortTermEditForm() {
                     {/* Step 1: Basic Info */}
                     {currentStep === 1 && (
                         <div>
-                            <Title level={4}>ℹ️ Basic Information</Title>
+                            <Title level={4}>{t("admin.listingsForms.basicInfo")}</Title>
                             <AgentOwner
                                 listingData={listingData}
                                 handleChange={handleChange}
@@ -727,7 +728,7 @@ function AdminShortTermEditForm() {
                     {/* Step 2: Location */}
                     {currentStep === 2 && (
                         <div>
-                            <Title level={4}>📍 Location Details</Title>
+                            <Title level={4}>Location Details</Title>
                             <LocationFields
                                 listingData={listingData}
                                 handleChange={handleChange}
@@ -747,7 +748,7 @@ function AdminShortTermEditForm() {
                     {/* Step 3: Property Details */}
                     {currentStep === 3 && (
                         <div>
-                            <Title level={4}>🏠 Property Details</Title>
+                            <Title level={4}>Property Details</Title>
                             <ShortTermFields
                                 listingData={listingData}
                                 handleChange={handleChange}
@@ -761,39 +762,53 @@ function AdminShortTermEditForm() {
                     {/* Step 4: Amenities */}
                     {currentStep === 4 && (
                         <div>
-                            <Title level={4}>✨ Amenities</Title>
+                            <Title level={4}>Amenities</Title>
                             <AmenitiesShortTerm
                                 handleAmenityChange={handleAmenityChange}
                                 selectedAmenities={selectedAmenities}
                             />
+                            <Card
+                                bordered={false}
+                                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', marginTop: '24px' }}
+                            >
+                                <ApprovedFeatureCheckbox
+                                    listingData={listingData}
+                                    handleChange={handleChange}
+                                    errors={errors}
+                                    t={t}
+                                />
+                            </Card>
                         </div>
                     )}
 
                     {/* Step 5: Review */}
                     {currentStep === 5 && (
                         <div>
-                            <Title level={4} style={{ textAlign: 'center' }}>✅ Review Your Changes</Title>
+                            <Title level={4} style={{ textAlign: 'center' }}>{t("admin.listingsForms.reviewYourChanges")}</Title>
                             <Descriptions bordered column={2} style={{ marginTop: '24px' }}>
-                                <Descriptions.Item label="Images" span={2}>
-                                    <Tag color="blue">{existingImages.length + uploadedImages.length} total images</Tag>
-                                    <Tag color="green">{uploadedImages.length} new</Tag>
-                                    {imagesToDelete.length > 0 && <Tag color="red">{imagesToDelete.length} to delete</Tag>}
-                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(0)}>Edit</Button>
+                                <Descriptions.Item label={t("admin.listingsForms.images")} span={2}>
+                                    <Tag color="blue">{t("admin.listingsForms.totalImages", { count: existingImages.length + uploadedImages.length, max: 40 })} </Tag>
+                                    <Tag color="green">{uploadedImages.length} {t("admin.listingsForms.new")}</Tag>
+                                    {imagesToDelete.length > 0 && <Tag color="red">{imagesToDelete.length} {t("admin.listingsForms.toDelete")}</Tag>}
+                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(0)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
-                                <Descriptions.Item label={t("propertyDetails.title")}>{listingData.title || '-'}</Descriptions.Item>
+                                <Descriptions.Item label={lng === "el" ? t("propertyDetails.rentalTitleGr") : t("propertyDetails.rentalTitle")}>
+                                    {lng === "el" ? listingData.title_gr || '-' : listingData.title || '-'}
+                                </Descriptions.Item>
+
                                 <Descriptions.Item label={t("propertyDetails.price")}>
                                     {listingData.currency} {listingData.price || '-'}
-                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(1)}>Edit</Button>
+                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(1)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.maxGuests")}>{listingData.max_guests || '-'}</Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.owner")}>{listingData.listing_owner || '-'}</Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.location")} span={2}>
-                                    {t("propertyDetails.region")}: {regionName}, {t("regionOptions.county")}: {countyName}, {t("regionOptions.municipality")}: {municipalityName || '-'}
-                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(2)}>Edit</Button>
+                                    {t("regionOptions.region")}: {regionName}, {t("regionOptions.county")}: {countyName}, {t("regionOptions.municipality")}: {municipalityName || '-'}
+                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(2)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
-                                <Descriptions.Item label="Amenities" span={2}>
-                                    <Tag color="purple">{selectedAmenities.length} selected</Tag>
-                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(4)}>Edit</Button>
+                                <Descriptions.Item label={t("amenities.title")} span={2}>
+                                    <Tag color="purple">{t("admin.listingsForms.selected")}: {selectedAmenities.length}</Tag>
+                                    <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(4)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
                             </Descriptions>
                         </div>
@@ -803,8 +818,8 @@ function AdminShortTermEditForm() {
                 {/* Navigation */}
                 <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'space-between' }}>
                     <Space>
-                        {currentStep > 0 && <Button size="large" onClick={prevStep}>Previous</Button>}
-                        <Button size="large" icon={<CloseOutlined />} onClick={() => history.push(`/admin/short-term-listings/${listingData.id}`)}>Cancel</Button>
+                        {currentStep > 0 && <Button size="large" onClick={prevStep}>{t("admin.listingsForms.previous")}</Button>}
+                        <Button size="large" icon={<CloseOutlined />} onClick={() => history.push(`/admin/short-term-listings/${listingData.id}`)}>{t("admin.listingsForms.cancel")}</Button>
                     </Space>
 
                     {currentStep < 5 ? (
@@ -814,7 +829,7 @@ function AdminShortTermEditForm() {
                             onClick={nextStep}
                             style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                         >
-                            Continue
+                            {t("admin.listingsForms.continue")}
                         </Button>
                     ) : (
                         <Button
@@ -825,7 +840,7 @@ function AdminShortTermEditForm() {
                             onClick={handleSubmit}
                             style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
                         >
-                            Update Listing
+                            {t("admin.listingsForms.updateListing")}
                         </Button>
                     )}
                 </div>
