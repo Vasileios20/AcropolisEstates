@@ -159,6 +159,32 @@ export default function AdminListingsAntD() {
                     : name;
             },
         },
+        lng === 'el' ?
+            {
+                title: t('propertyDetails.address'),
+                dataIndex: 'address_street_gr',
+                key: 'address_street_gr',
+                sorter: (a, b) => (a.address_street_gr || '').localeCompare(b.address_street_gr || ''),
+                sortOrder: sortedInfo.columnKey === 'address_street_gr' ? sortedInfo.order : null,
+                render: (address) => address || '-',
+            } :
+            {
+                title: t('propertyDetails.address'),
+                dataIndex: 'address_street',
+                key: 'address_street',
+                sorter: (a, b) => (a.address_street || '').localeCompare(b.address_street || ''),
+                sortOrder: sortedInfo.columnKey === 'address_street' ? sortedInfo.order : null,
+                render: (address) => address || '-',
+            },
+
+        {
+            title: t('propertyDetails.address_number'),
+            dataIndex: 'address_number',
+            key: 'address_number',
+            sorter: (a, b) => (a.address_number || '').localeCompare(b.address_number || ''),
+            sortOrder: sortedInfo.columnKey === 'address_number' ? sortedInfo.order : null,
+            render: (address) => address || '-',
+        },
         {
             title: t('propertyDetails.typeSale'),
             dataIndex: 'sale_type',
