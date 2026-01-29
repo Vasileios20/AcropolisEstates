@@ -8,7 +8,6 @@ import {
   useCurrentUser,
   useSetCurrentUser,
 } from "../contexts/CurrentUserContext";
-import Avatar from "./Avatar";
 import axios from "axios";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 import useUserStatus from "../hooks/useUserStatus";
@@ -19,20 +18,16 @@ import { useTranslation } from "react-i18next";
 import LanguageContext from '../contexts/LanguageContext';
 
 const NavBar = () => {
-  /**
-   * The NavBar component is a functional component that renders the navigation bar of the application.
-   * It contains links to the home page, the listings page, the about page, the contact page,
-   * the sign in page, the sign up page, the user's profile page, and the sign out page.
-   */
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
   const userStatus = useUserStatus();
   const { expanded, setExpanded, ref } = useClickOutsideToggle();
   const [servicesExpanded, setServicesExpanded] = useState(false);
+  const [listingsExpanded, setListingsExpanded] = useState(false);
+  const [adminExpanded, setAdminExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [scroll, setScroll] = useState(false);
   const { changeLanguage } = useContext(LanguageContext);
-
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
@@ -42,7 +37,6 @@ const NavBar = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      // setScroll(true);
       if (window.scrollY > 1) {
         setScroll(true);
       } else {
@@ -51,9 +45,23 @@ const NavBar = () => {
     });
   }, []);
 
-  const hanleServicesClick = () => {
+  const handleServicesClick = () => {
     if (isMobile) {
       setServicesExpanded(!servicesExpanded);
+      setExpanded(true);
+    }
+  };
+
+  const handleListingsClick = () => {
+    if (isMobile) {
+      setListingsExpanded(!listingsExpanded);
+      setExpanded(true);
+    }
+  };
+
+  const handleAdminClick = () => {
+    if (isMobile) {
+      setAdminExpanded(!adminExpanded);
       setExpanded(true);
     }
   };
@@ -72,11 +80,11 @@ const NavBar = () => {
     <NavDropdown
       className={`${styles.Navdropdown}`}
       title={t("services.title")}
-      id="basic-nav-dropdown"
+      id="services-dropdown"
       show={servicesExpanded}
       onMouseEnter={() => setServicesExpanded(true)}
       onMouseLeave={() => setServicesExpanded(false)}
-      onClick={hanleServicesClick}
+      onClick={handleServicesClick}
     >
       <NavDropdown.Item className={styles.NavDropdownItem} href="/assetManagement">
         {t("services.assetManagement")}
@@ -89,6 +97,94 @@ const NavBar = () => {
       </NavDropdown.Item>
       <NavDropdown.Item className={styles.NavDropdownItem} href="/listings">
         {t("services.properties")}
+      </NavDropdown.Item>
+      <NavDropdown.Divider />
+      <NavDropdown.Item className={styles.NavDropdownItem} href="/short-term-listings/">
+        {t("services.shortTermRentals")}
+      </NavDropdown.Item>
+    </NavDropdown>
+  );
+
+  const listingsDropdown = (
+    <NavDropdown
+      className={`${styles.Navdropdown}`}
+      title={t("nav.listings")}
+      id="listings-dropdown"
+      show={listingsExpanded}
+      onMouseEnter={() => setListingsExpanded(true)}
+      onMouseLeave={() => setListingsExpanded(false)}
+      onClick={handleListingsClick}
+    >
+      <NavDropdown.Header>{t("nav.regularListings")}</NavDropdown.Header>
+      <NavDropdown.Item
+        className={styles.NavDropdownItem}
+        href="/frontend/admin/listings/create"
+      >
+        ➕ {t("nav.addListing")}
+      </NavDropdown.Item>
+      <NavDropdown.Item
+        className={styles.NavDropdownItem}
+        href="/frontend/admin/listings/"
+      >
+        ✓ {t("nav.viewAllListings")}
+      </NavDropdown.Item>
+      <NavDropdown.Divider />
+      <NavDropdown.Header>{t("nav.shortTermRentals")}</NavDropdown.Header>
+      <NavDropdown.Item
+        className={styles.NavDropdownItem}
+        href="/frontend/admin/short-term-listings/create"
+      >
+        ➕ {t("nav.addRental")}
+      </NavDropdown.Item>
+      <NavDropdown.Item
+        className={styles.NavDropdownItem}
+        href="/frontend/admin/short-term-listings/"
+      >
+        ✓ {t("nav.viewAllRentals")}
+      </NavDropdown.Item>
+    </NavDropdown>
+  );
+
+  const adminDropdown = (
+    <NavDropdown
+      className={`${styles.Navdropdown}`}
+      title={t("nav.admin")}
+      id="admin-dropdown"
+      show={adminExpanded}
+      onMouseEnter={() => setAdminExpanded(true)}
+      onMouseLeave={() => setAdminExpanded(false)}
+      onClick={handleAdminClick}
+    >
+      <NavDropdown.Item
+        className={styles.NavDropdownItem}
+        href="/frontend/admin/bookings"
+      >
+        {t("nav.bookings")}
+      </NavDropdown.Item>
+      <NavDropdown.Item
+        className={styles.NavDropdownItem}
+        href="/frontend/admin/listings/owners"
+      >
+        {t("nav.owners")}
+      </NavDropdown.Item>
+      <NavDropdown.Item
+        className={styles.NavDropdownItem}
+        href="/frontend/admin/contact_list"
+      >
+        {t("nav.messages")}
+      </NavDropdown.Item>
+      <NavDropdown.Divider />
+      <NavDropdown.Item
+        className={styles.NavDropdownItem}
+        href="/frontend/admin/listings"
+      >
+        {t("nav.allListings")}
+      </NavDropdown.Item>
+      <NavDropdown.Item
+        className={styles.NavDropdownItem}
+        href="/frontend/admin/short-term-listings"
+      >
+        {t("nav.allShortTerm")}
       </NavDropdown.Item>
     </NavDropdown>
   );
@@ -110,56 +206,22 @@ const NavBar = () => {
       >
         {t("nav.contact")}
       </NavLink>
-
     </>
   );
 
   const staffIcons = (
     <>
-
-      <NavLink
-        className={styles.NavLink}
-        activeClassName={styles.Active}
-        to="/listings/create"
-      >
-        {t("nav.addListing")}
-      </NavLink>
-      <NavLink
-        className={styles.NavLink}
-        activeClassName={styles.Active}
-        to="/short-term-listings/create"
-      >
-        {t("nav.addShortTermRental")}
-      </NavLink>
-      <NavLink
-        className={styles.NavLink}
-        activeClassName={styles.Active}
-        to="/contact_list"
-      >
-        {t("nav.messages")}
-      </NavLink>
-      <NavLink
-        className={styles.NavLink}
-        activeClassName={styles.Active}
-        to="/listings/"
-      >Approved Listings</NavLink>
-      <NavLink
-        className={styles.NavLink}
-        activeClassName={styles.Active}
-        to="/short-term-listings/"
-      >Approved Short Term Listings</NavLink>
+      {listingsDropdown}
+      {adminDropdown}
+      <hr />
       <NavLink
         className={styles.NavLink}
         to={`/profiles/${currentUser?.profile_id}`}
       >
-        <Avatar
-          src={currentUser?.profile_image}
-          text={currentUser?.username}
-          height={25}
-        />
+        {currentUser?.username}
       </NavLink>
       <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
-        Sign out
+        {t("nav.logout")}
       </NavLink>
     </>
   );
@@ -173,26 +235,26 @@ const NavBar = () => {
       id="navBar"
     >
       <Container>
-        <NavLink to="/">
+        {!userStatus && <NavLink to="/">
           <Navbar.Brand>
             <img
               src={logo}
               alt="logo"
-              className={styles.NavLogo}
-            ></img>
+              className={userStatus ? styles.NavLogoAdmin : styles.NavLogo}
+            />
           </Navbar.Brand>
-        </NavLink>
+        </NavLink>}
 
         <Navbar.Toggle
           ref={ref}
           onClick={() => {
-            setExpanded(!expanded)
+            setExpanded(!expanded);
             document.getElementById("navBar").classList.add(`${styles.NavBarMobile}`);
           }}
           aria-controls="basic-navbar-nav"
         />
-        <Navbar.Collapse id="basic-navbar-nav" className={styles.flecGrow}>
-          <Nav className="ml-auto text-left">
+        <Navbar.Collapse id="basic-navbar-nav" className={`${styles.flecGrow} ms-auto`}>
+          <Nav className="ms-auto text-left">
             {userStatus ? (
               <NavLink
                 exact
@@ -200,33 +262,32 @@ const NavBar = () => {
                 activeClassName={styles.Active}
                 to="/frontend/admin"
               >
-                Admin home
+                {t("nav.dashboard")}
               </NavLink>
-            )
-              : (
-                <NavLink
-                  exact
-                  className={styles.NavLink}
-                  activeClassName={styles.Active}
-                  to="/"
-                >
-                  {t("nav.home")}
-                </NavLink>
-              )}
+            ) : (
+              <NavLink
+                exact
+                className={styles.NavLink}
+                activeClassName={styles.Active}
+                to="/"
+              >
+                {t("nav.home")}
+              </NavLink>
+            )}
 
             {userStatus ? staffIcons : userIcons}
           </Nav>
           <div className={`${styles.LngBtnContainer} d-md-none d-flex`}>
-            <button type="submit" onClick={() => changeLanguage('el')} className={`${styles.LngBtn} ${styles.LngBtnGR}`}></button>
-            <button type="submit" onClick={() => changeLanguage('en')} className={`${styles.LngBtn} ${styles.LngBtnEN}`}></button>
+            <button type="submit" onClick={() => changeLanguage('el')} className={`${styles.LngBtn} ${styles.LngBtnGR}`} />
+            <button type="submit" onClick={() => changeLanguage('en')} className={`${styles.LngBtn} ${styles.LngBtnEN}`} />
           </div>
         </Navbar.Collapse>
       </Container>
       <div className={`${styles.LngBtnContainer} d-none d-md-flex`}>
-        <button type="submit" onClick={() => changeLanguage('el')} className={`${styles.LngBtn} ${styles.LngBtnGR}`}></button>
-        <button type="submit" onClick={() => changeLanguage('en')} className={`${styles.LngBtn} ${styles.LngBtnEN}`}></button>
+        <button type="submit" onClick={() => changeLanguage('el')} className={`${styles.LngBtn} ${styles.LngBtnGR}`} />
+        <button type="submit" onClick={() => changeLanguage('en')} className={`${styles.LngBtn} ${styles.LngBtnEN}`} />
       </div>
-    </Navbar >
+    </Navbar>
   );
 };
 

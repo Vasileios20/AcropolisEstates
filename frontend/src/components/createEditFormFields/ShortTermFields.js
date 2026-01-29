@@ -6,7 +6,6 @@ import Alert from 'react-bootstrap/Alert';
 import styles from '../../styles/ListingCreateEditForm.module.css';
 import { useTranslation } from 'react-i18next';
 import { useRouteFlags } from 'contexts/RouteProvider';
-import AmenitiesShortTerm from 'components/createEditFormFields/amenities/AmenitiesShortTerm';
 
 
 const ShortTermFields = (
@@ -126,13 +125,7 @@ const ShortTermFields = (
 
 
             <hr />
-            <Row className="justify-content-center mt-4">
-                <AmenitiesShortTerm
-                    handleAmenityChange={handleAmenityChange}
-                    selectedAmenities={selectedAmenities}
-                    create={create}
-                />
-            </Row>
+            
         </>
     );
 };

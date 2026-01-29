@@ -1,108 +1,97 @@
 import React from "react";
+import { Form, Select, Row, Col } from 'antd';
+import { HomeOutlined, ShopOutlined, DollarOutlined } from '@ant-design/icons';
 
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Alert from "react-bootstrap/Alert";
-
-import styles from "../../styles/ListingCreateEditForm.module.css";
-
+const { Option } = Select;
 
 const TypeSaleSub = ({
     listingData,
     handleChange,
-    handleShow,
-    handleClose,
-    show,
-    owners,
     errors,
     t,
 }) => {
+    const handleSelectChange = (name) => (value) => {
+        handleChange({
+            target: {
+                name: name,
+                value: value,
+            },
+        });
+    };
+
     return (
-        <>
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="sale_type">
-                        <Form.Label>{t("propertyDetails.typeField")}</Form.Label>
-                        <Form.Control
-                            className={`${styles.Input}`}
-                            as="select"
-                            name="sale_type"
-                            value={listingData.sale_type}
-                            onChange={handleChange}
-                        >
-                            <option>---</option>
-                            <option value="rent">{t("propertyDetails.typeRent")}</option>
-                            <option value="sale">{t("propertyDetails.typeSale")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.sale_type?.map((message, idx) => (
-                        <Alert variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
-                </Col>
-            </Row>
+        <Row gutter={[16, 16]}>
+            <Col xs={24} md={8}>
+                <Form.Item
+                    label={t("propertyDetails.typeField")}
+                    validateStatus={errors?.sale_type ? "error" : ""}
+                    help={errors?.sale_type?.[0]}
+                    required
+                >
+                    <Select
+                        value={listingData.sale_type || undefined}
+                        onChange={handleSelectChange("sale_type")}
+                        placeholder={t("propertyDetails.typeField")}
+                        suffixIcon={<DollarOutlined />}
+                        size="large"
+                    >
+                        <Option value="rent">{t("propertyDetails.typeRent")}</Option>
+                        <Option value="sale">{t("propertyDetails.typeSale")}</Option>
+                    </Select>
+                </Form.Item>
+            </Col>
 
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="type">
-                        <Form.Label>{t("propertyDetails.types.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="type"
-                            value={listingData.type}
-                            onChange={handleChange}
-                        >
-                            <option>---</option>
-                            <option value="land">{t("propertyDetails.types.land")}</option>
-                            <option value="commercial">{t("propertyDetails.types.commercial")}</option>
-                            <option value="residential">{t("propertyDetails.types.residential")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.type?.map((message, idx) => (
-                        <Alert variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
-                </Col>
-            </Row>
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="sub_type">
-                        <Form.Label>{t("propertyDetails.subTypes.title")}</Form.Label>
-                        <Form.Control
-                            className={`${styles.Input}`}
-                            as="select"
-                            name="sub_type"
-                            value={listingData.sub_type}
-                            onChange={handleChange}
-                        >
-                            <option>---</option>
-                            <option value="apartment">{t("propertyDetails.subTypes.apartment")}</option>
-                            <option value="house">{t("propertyDetails.subTypes.house")}</option>
-                            <option value="maisonette">{t("propertyDetails.subTypes.maisonette")}</option>
-                            <option value="bungalow">{t("propertyDetails.subTypes.bungalow")}</option>
-                            <option value="villa">{t("propertyDetails.subTypes.villa")}</option>
-                            <option value="hotel">{t("propertyDetails.subTypes.hotel")}</option>
-                            <option value="office">{t("propertyDetails.subTypes.office")}</option>
-                            <option value="retail">{t("propertyDetails.subTypes.retail")}</option>
-                            <option value="warehouse">{t("propertyDetails.subTypes.warehouse")}</option>
-                            <option value="mixed_use">{t("propertyDetails.subTypes.mixed_use")}</option>
-                            <option value="industrial">{t("propertyDetails.subTypes.industrial")}</option>
-                            <option value="other">{t("propertyDetails.subTypes.other")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.sub_type?.map((message, idx) => (
-                        <Alert variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
-                </Col>
-            </Row>
-        </>
-    )
-}
+            <Col xs={24} md={8}>
+                <Form.Item
+                    label={t("propertyDetails.types.title")}
+                    validateStatus={errors?.type ? "error" : ""}
+                    help={errors?.type?.[0]}
+                    required
+                >
+                    <Select
+                        value={listingData.type || undefined}
+                        onChange={handleSelectChange("type")}
+                        placeholder={t("propertyDetails.types.title")}
+                        suffixIcon={<HomeOutlined />}
+                        size="large"
+                    >
+                        <Option value="land">{t("propertyDetails.types.land")}</Option>
+                        <Option value="commercial">{t("propertyDetails.types.commercial")}</Option>
+                        <Option value="residential">{t("propertyDetails.types.residential")}</Option>
+                    </Select>
+                </Form.Item>
+            </Col>
 
-export default TypeSaleSub
+            <Col xs={24} md={8}>
+                <Form.Item
+                    label={t("propertyDetails.subTypes.title")}
+                    validateStatus={errors?.sub_type ? "error" : ""}
+                    help={errors?.sub_type?.[0]}
+                >
+                    <Select
+                        value={listingData.sub_type || undefined}
+                        onChange={handleSelectChange("sub_type")}
+                        placeholder={t("propertyDetails.subTypes.title")}
+                        suffixIcon={<ShopOutlined />}
+                        size="large"
+                    >
+                        <Option value="apartment">{t("propertyDetails.subTypes.apartment")}</Option>
+                        <Option value="house">{t("propertyDetails.subTypes.house")}</Option>
+                        <Option value="maisonette">{t("propertyDetails.subTypes.maisonette")}</Option>
+                        <Option value="bungalow">{t("propertyDetails.subTypes.bungalow")}</Option>
+                        <Option value="villa">{t("propertyDetails.subTypes.villa")}</Option>
+                        <Option value="hotel">{t("propertyDetails.subTypes.hotel")}</Option>
+                        <Option value="office">{t("propertyDetails.subTypes.office")}</Option>
+                        <Option value="retail">{t("propertyDetails.subTypes.retail")}</Option>
+                        <Option value="warehouse">{t("propertyDetails.subTypes.warehouse")}</Option>
+                        <Option value="mixed_use">{t("propertyDetails.subTypes.mixed_use")}</Option>
+                        <Option value="industrial">{t("propertyDetails.subTypes.industrial")}</Option>
+                        <Option value="other">{t("propertyDetails.subTypes.other")}</Option>
+                    </Select>
+                </Form.Item>
+            </Col>
+        </Row>
+    );
+};
+
+export default TypeSaleSub;

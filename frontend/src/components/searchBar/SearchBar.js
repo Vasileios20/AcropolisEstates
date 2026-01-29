@@ -52,7 +52,8 @@ const SearchBar = () => {
   const [errors, setErrors] = useState("");
   const [empty, setEmpty] = useState(false);
   const { regionsData } = useFetchLocationData();
-  const { shortTermListing } = useRouteFlags();
+  const { shortTermListings } = useRouteFlags();
+  
 
   // Fetch the search parameters from the URL and set the state.
   useMemo(() => {
@@ -84,12 +85,12 @@ const SearchBar = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Fetch the listings from the API using the search parameters.
-    let path = shortTermListing ? `/short-term-listings/?` : `/listings/?sale_type=${filters.saleType}`;
+    let path = shortTermListings ? `/short-term-listings/?` : `/listings/?sale_type=${filters.saleType}`;
     if (filters.municipalityId) {
       path += `&region_id=${filters.regionId}&county_id=${filters.countyId}&municipality_id=${filters.municipalityId}`;
     }
-    if (empty) {
-      path = shortTermListing
+    if (!filters.municipalityId) {
+      path = location.pathname === "/short-term-listings/" && !location.search
         ? `/short-term-listings/?`
         : `/listings/?sale_type=${filters.saleType}`;
     }
@@ -223,7 +224,7 @@ const SearchBar = () => {
   return (
     <Container className="mb-5" style={{ fontSize: "0.8rem" }}>
       <Form
-        className={shortTermListing ? `${styles.SearchFormShortTerm}` : `${styles.SearchForm}`}
+        className={shortTermListings ? `${styles.SearchFormShortTerm}` : `${styles.SearchForm}`}
         onSubmit={handleSubmit}
       >
         <Row className="align-items-center justify-content-center">
@@ -235,7 +236,7 @@ const SearchBar = () => {
                 </Alert>
               ))}
           <Row className="mb-1 align-items-center justify-content-start gx-0 gx-md-1">
-            <Col xs={6} className={shortTermListing ? "d-none" : "mb-1"}>
+            <Col xs={6} className={shortTermListings ? "d-none" : "mb-1"}>
               <SaleTypeSearch
                 errors={errors}
                 setErrors={setErrors}
@@ -246,7 +247,7 @@ const SearchBar = () => {
             </Col>
 
 
-            <Col xs={shortTermListing ? 12 : 6} className="mb-1 d-flex align-items-center justify-content-end">
+            <Col xs={shortTermListings ? 12 : 6} className="mb-1 d-flex align-items-center justify-content-end">
               <AdvancedFiltersModal
                 onApplyFilters={handleFilters}
                 filters={filters}
@@ -262,7 +263,7 @@ const SearchBar = () => {
             </Col>
           </Row>
 
-          {!shortTermListing && (
+          {!shortTermListings && (
             <Row className="g-1">
               <Col xs={12} md={6} lg={7} xl={6} className="mb-1">
                 <LocationType
@@ -301,7 +302,7 @@ const SearchBar = () => {
             </Row>
           )}
 
-          {shortTermListing && (
+          {shortTermListings && (
 
             <ShortTermSearchFields
               filters={filters}

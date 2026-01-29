@@ -1,11 +1,13 @@
 from datetime import timedelta
-from rest_framework import generics, status
+from rest_framework import generics, status, filters
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import ShortTermBooking, ShortTermBookingNight
 from .serializers import (
@@ -19,29 +21,93 @@ class ShortTermBookingCreateView(generics.ListCreateAPIView):
     """
     API view to retrieve and create short term bookings.
 
-    GET: List all bookings (admin only)
+    GET: List all bookings (admin only) with search and filtering
     POST: Create new booking (anyone)
+
+    Query Parameters:
+    - search: Search by reference, name, email, phone
+    - status: Filter by status (pending, confirmed, checked_in, completed, cancelled)
+    - has_discount: Filter by discount (true/false)
+    - ordering: Order by field (id, check_in, total_price, -created_at, etc.)
+    - check_in_after: Filter bookings checking in after this date (YYYY-MM-DD)
+    - check_in_before: Filter bookings checking in before this date (YYYY-MM-DD)
     """
-    queryset = ShortTermBooking.objects.all()
     serializer_class = ShortTermBookingSerializer
+    filter_backends = [DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter]
+    ordering_fields = ['id', 'check_in',
+                       'check_out', 'total_price', 'created_at']
+    ordering = ['-created_at']  # Default ordering
+    search_fields = [
+        'reference_number',
+        'first_name',
+        'last_name',
+        'email',
+        'phone_number',
+        'id',
+    ]
 
     def get_queryset(self):
-        """Filter bookings based on user permissions"""
+        """Filter bookings based on user permissions and query params"""
+        # Base queryset based on permissions
         if self.request.user.is_staff:
-            # Admin sees all bookings
-            return ShortTermBooking.objects.all().select_related(
+            queryset = ShortTermBooking.objects.all().select_related(
                 'listing',
                 'user',
                 'discount_applied_by'
-            ).order_by('-created_at')
+            )
         elif self.request.user.is_authenticated:
-            # Users see only their own bookings
-            return ShortTermBooking.objects.filter(
+            queryset = ShortTermBooking.objects.filter(
                 user=self.request.user
-            ).select_related('listing').order_by('-created_at')
+            ).select_related('listing')
         else:
-            # Anonymous users see nothing on list
-            return ShortTermBooking.objects.none()
+            queryset = ShortTermBooking.objects.none()
+
+        # Apply search
+        search = self.request.query_params.get('search', None)
+        if search:
+            queryset = queryset.filter(
+                Q(reference_number__icontains=search) |
+                Q(first_name__icontains=search) |
+                Q(last_name__icontains=search) |
+                Q(email__icontains=search) |
+                Q(phone_number__icontains=search) |
+                Q(id__icontains=search)
+            )
+
+        # Filter by status
+        status_filter = self.request.query_params.get('status', None)
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
+
+        # Filter by discount
+        has_discount = self.request.query_params.get('has_discount', None)
+        if has_discount is not None:
+            if has_discount.lower() == 'true':
+                queryset = queryset.filter(discount_type__isnull=False)
+            elif has_discount.lower() == 'false':
+                queryset = queryset.filter(discount_type__isnull=True)
+
+        # Filter by check-in date range
+        check_in_after = self.request.query_params.get('check_in_after', None)
+        if check_in_after:
+            queryset = queryset.filter(check_in__gte=check_in_after)
+
+        check_in_before = self.request.query_params.get(
+            'check_in_before', None)
+        if check_in_before:
+            queryset = queryset.filter(check_in__lte=check_in_before)
+
+        # Filter by admin confirmed (backward compatibility)
+        admin_confirmed = self.request.query_params.get(
+            'admin_confirmed', None)
+        if admin_confirmed is not None:
+            if admin_confirmed.lower() == 'true':
+                queryset = queryset.filter(admin_confirmed=True)
+            elif admin_confirmed.lower() == 'false':
+                queryset = queryset.filter(admin_confirmed=False)
+
+        return queryset.order_by('-created_at')
 
     def perform_create(self, serializer):
         """Set user if authenticated"""

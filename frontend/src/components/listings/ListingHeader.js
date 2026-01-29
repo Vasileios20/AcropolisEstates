@@ -119,12 +119,6 @@ const ListingHeader = React.memo((props) => {
           <h6 className={styles.Listing__price}>{lng === "el" ? props.title_gr : props.title}</h6>
         </div>
         {residential}
-        <div className={styles.Listing__headerListingDetails}>
-          {props.municipality_id
-            ? `${municipalityName?.municipality}, ${props.postcode}`
-            : `${fallbackMunicipality}, ${fallbackCounty}`}
-        </div>
-
       </div>
     </div>
   );
