@@ -59,6 +59,8 @@ function App() {
   const [nonEssentialConsent, setNonEssentialConsent] = useState(getCookieConsentValue("nonEssentialCookies") === "true");
   const { t } = useTranslation();
 
+  const isAdminPanel = location.pathname.startsWith('/frontend/admin');
+
   if (cookieConsent === "false") {
     setCookieConsent(false);
   }
@@ -139,7 +141,7 @@ function App() {
 
                 </Switch>
               </Container>
-              <Footer />
+              {!isAdminPanel && <Footer />}
               <>
                 <CookieConsent
                   location="bottom"
