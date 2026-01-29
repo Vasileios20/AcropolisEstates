@@ -1,60 +1,43 @@
 import React from "react";
-
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Alert from "react-bootstrap/Alert";
+import { Form, Checkbox, Row, Col } from 'antd';
 
 export const ApprovedFeatureCheckbox = ({
     listingData,
-    handleChange,
     handleChecked,
-    handleShow,
-    handleClose,
-    show,
-    owners,
     errors,
     t,
 }) => {
     return (
-        <>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group>
-                        <Form.Label>{t("propertyDetails.approved")}</Form.Label>
-                        <Form.Check
-                            type="checkbox"
-                            name="approved"
-                            checked={listingData.approved}
-                            onChange={handleChecked}
-                        />
-                    </Form.Group>
-                </Col>
-            </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group>
-                        <Form.Label>{t("propertyDetails.featured")}</Form.Label>
-                        <Form.Check
-                            type="checkbox"
-                            name="featured"
-                            checked={listingData.featured}
-                            onChange={handleChecked}
-                        />
-                    </Form.Group>
-                </Col>
-            </Row>
+        <Row gutter={[16, 24]} style={{ marginTop: '24px' }}>
+            <Col xs={24} md={12}>
+                <Form.Item
+                    validateStatus={errors?.approved ? "error" : ""}
+                    help={errors?.approved?.[0]}
+                >
+                    <Checkbox
+                        name="approved"
+                        checked={listingData.approved}
+                        onChange={handleChecked}
+                    >
+                        {t("propertyDetails.approved")}
+                    </Checkbox>
+                </Form.Item>
+            </Col>
 
-            {errors?.images?.map((message, idx) => (
-                <Alert variant="warning" key={idx}>
-                    {message}
-                </Alert>
-            ))}
-            {errors?.is_first?.map((message, idx) => (
-                <Alert variant="warning" key={idx}>
-                    {message}
-                </Alert>
-            ))}
-        </>
-    )
-}
+            <Col xs={24} md={12}>
+                <Form.Item
+                    validateStatus={errors?.featured ? "error" : ""}
+                    help={errors?.featured?.[0]}
+                >
+                    <Checkbox
+                        name="featured"
+                        checked={listingData.featured}
+                        onChange={handleChecked}
+                    >
+                        {t("propertyDetails.featured")}
+                    </Checkbox>
+                </Form.Item>
+            </Col>
+        </Row>
+    );
+};

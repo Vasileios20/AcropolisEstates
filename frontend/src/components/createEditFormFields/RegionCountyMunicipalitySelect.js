@@ -1,9 +1,10 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Row, Col, Select, AutoComplete, Form } from "antd";
+
 import useFetchLocationData from "../../hooks/useFetchLocationData";
-import styles from "../../styles/RegionCountyMunicipality.module.css";
+
+const { Option } = Select;
 
 const RegionCountyMunicipalitySelect = ({
     onRegionChange,
@@ -18,9 +19,7 @@ const RegionCountyMunicipalitySelect = ({
     const { t, i18n } = useTranslation();
     const lng = i18n?.language;
 
-    const [searchInput, setSearchInput] = useState("");
-    const [filteredMunicipalities, setFilteredMunicipalities] = useState([]);
-    const [showMunicipalityDropdown, setShowMunicipalityDropdown] = useState(false);
+    const [municipalitySearch, setMunicipalitySearch] = useState("");
 
     // Update selected region, county, and municipality when listing data changes
     useEffect(() => {
@@ -33,125 +32,163 @@ const RegionCountyMunicipalitySelect = ({
         if (listingData.municipality_id && listingData.municipality_id !== selectedMunicipality) {
             onMunicipalityChange(listingData.municipality_id);
         }
-    },
-        [
-            listingData.region_id,
-            listingData.county_id,
-            listingData.municipality_id,
-            onRegionChange, onCountyChange,
-            onMunicipalityChange,
-            selectedRegion,
-            selectedCounty,
-            selectedMunicipality
-        ]
+    }, [
+        listingData.region_id,
+        listingData.county_id,
+        listingData.municipality_id,
+        onRegionChange,
+        onCountyChange,
+        onMunicipalityChange,
+        selectedRegion,
+        selectedCounty,
+        selectedMunicipality
+    ]);
+
+    const selectedRegionObj = useMemo(
+        () => regionsData.find(region => region.id === selectedRegion),
+        [regionsData, selectedRegion]
     );
 
-    const selectedRegionObj = useMemo(() => regionsData.find(region => region.id === selectedRegion), [regionsData, selectedRegion]);
+    const counties = useMemo(
+        () => selectedRegionObj?.counties || [],
+        [selectedRegionObj]
+    );
 
-    const counties = useMemo(() => selectedRegionObj?.counties || [], [selectedRegionObj]);
+    const selectedCountyObj = useMemo(
+        () => counties.find(county => county.id === selectedCounty),
+        [counties, selectedCounty]
+    );
 
-    const selectedCountyObj = useMemo(() => counties.find(county => county.id === selectedCounty), [counties, selectedCounty]);
+    const municipalities = useMemo(
+        () => selectedCountyObj?.municipalities || [],
+        [selectedCountyObj]
+    );
 
-    const municipalities = useMemo(() => selectedCountyObj?.municipalities || [], [selectedCountyObj]);
+    // Convert municipalities to AutoComplete options
+    const municipalityOptions = useMemo(() => {
+        return municipalities.map(municipality => ({
+            value: lng === "el" ? municipality.greekName : municipality.englishName,
+            label: lng === "el" ? municipality.greekName : municipality.englishName,
+            id: municipality.id,
+            greekName: municipality.greekName,
+        }));
+    }, [municipalities, lng]);
 
-    const handleSearchInputChange = (e) => {
-        const value = e.target.value;
-        setSearchInput(value);
+    // Filter municipalities based on search
+    const filteredOptions = useMemo(() => {
+        if (!municipalitySearch) return municipalityOptions;
+        return municipalityOptions.filter(option =>
+            option.label.toLowerCase().includes(municipalitySearch.toLowerCase())
+        );
+    }, [municipalityOptions, municipalitySearch]);
 
-        // Filter municipalities based on input
-        if (value) {
-            const filtered = municipalities.filter(municipality =>
-                municipality.greekName.toLowerCase().includes(value.toLowerCase()) ||
-                municipality.englishName.toLowerCase().includes(value.toLowerCase())
+    const handleRegionChange = (value) => {
+        onRegionChange(value);
+        setMunicipalitySearch("");
+    };
 
-            );
-            setFilteredMunicipalities(filtered);
-            setShowMunicipalityDropdown(true);
-        } else {
-            setFilteredMunicipalities([]);
-            setShowMunicipalityDropdown(false);
+    const handleCountyChange = (value) => {
+        onCountyChange(value);
+        setMunicipalitySearch("");
+    };
+
+    const handleMunicipalitySelect = (value, option) => {
+        if (option && option.id) {
+            onMunicipalityChange(option.id, option.greekName);
+            setMunicipalitySearch(value);
         }
     };
 
-    const handleMunicipalitySelect = (municipality) => {
-        onMunicipalityChange(municipality.id, municipality.greekName);
-        const name = lng === "el" ? municipality.greekName : municipality.englishName;
-
-        setSearchInput(name); // Set the selected municipality to the input field
-        setShowMunicipalityDropdown(false); // Close the dropdown
+    const handleMunicipalitySearch = (value) => {
+        setMunicipalitySearch(value);
     };
 
     return (
-        <Row className="justify-content flex-column">
-            {/* Region Dropdown */}
-            <Col md={6} className="mb-2 mx-auto d-flex justify-content-between flex-column">
-                <label htmlFor="region_id" className="mb-2">{t("regionOptions.region")}</label>
-                <select
-                    id="region_id"
-                    value={selectedRegion}
-                    name="region_id"
-                    onChange={e => onRegionChange(parseInt(e.target.value))}
-                    className="form-select"
+        <Row gutter={[16, 16]}>
+            {/* Region Select */}
+            <Col xs={24} md={8}>
+                <Form.Item
+                    label={
+                        <span>
+                            {t("regionOptions.region")}
+                        </span>
+                    }
+                    required
                 >
-                    <option value="">{t("regionOptions.selectRegion")}</option>
-                    {regionsData.map(region => (
-                        <option key={region.id} value={region.id}>
-                            {lng === "el" ? region.greekName : region.englishName}
-                        </option>
-                    ))}
-                </select>
+                    <Select
+                        value={selectedRegion || undefined}
+                        onChange={handleRegionChange}
+                        placeholder={t("regionOptions.selectRegion")}
+                        size="large"
+                        showSearch
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            option.children.toLowerCase().includes(input.toLowerCase())
+                        }
+                    >
+                        {regionsData.map(region => (
+                            <Option key={region.id} value={region.id}>
+                                {lng === "el" ? region.greekName : region.englishName}
+                            </Option>
+                        ))}
+                    </Select>
+                </Form.Item>
             </Col>
 
-            {/* County Dropdown */}
-            <Col md={6} className="mb-2 mx-auto d-flex justify-content-between flex-column">
+            {/* County Select */}
+            <Col xs={24} md={8}>
                 {selectedRegion && (
-                    <>
-                        <label htmlFor="county_id" className="mb-2">{selectedRegion === 1 ? t("regionOptions.sectors") : t("regionOptions.county")}</label>
-                        <select
-                            id="county_id"
-                            value={selectedCounty}
-                            name="county_id"
-                            onChange={e => onCountyChange(parseInt(e.target.value))}
-                            className="form-select"
+                    <Form.Item
+                        label={
+                            <span>
+                                {selectedRegion === 1 ? t("regionOptions.sectors") : t("regionOptions.county")}
+                            </span>
+                        }
+                        required
+                    >
+                        <Select
+                            value={selectedCounty || undefined}
+                            onChange={handleCountyChange}
+                            placeholder={t("regionOptions.selectCounty")}
+                            size="large"
+                            showSearch
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                                option.children.toLowerCase().includes(input.toLowerCase())
+                            }
                         >
-                            <option value="">{t("regionOptions.selectCounty")}</option>
                             {counties.map(county => (
-                                <option key={county.id} value={county.id}>
+                                <Option key={county.id} value={county.id}>
                                     {lng === "el" ? county.greekName : county.englishName}
-                                </option>
+                                </Option>
                             ))}
-                        </select>
-                    </>
+                        </Select>
+                    </Form.Item>
                 )}
             </Col>
 
-            {/* Municipality Dropdown */}
-            <Col md={6} className="mb-2 mx-auto d-flex justify-content-between flex-column">
+            {/* Municipality AutoComplete */}
+            <Col xs={24} md={8}>
                 {selectedCounty && (
-                    <>
-                        <label htmlFor="municipality_search" className="me-2">{t("regionOptions.municipality")}</label>
-                        <input
-                            id="municipality_search"
-                            type="text"
-                            value={searchInput}
-                            onChange={handleSearchInputChange}
+                    <Form.Item
+                        label={
+                            <span>
+
+                                {t("regionOptions.municipality")}
+                            </span>
+                        }
+                        required
+                    >
+                        <AutoComplete
+                            value={municipalitySearch}
+                            options={filteredOptions}
+                            onSelect={handleMunicipalitySelect}
+                            onSearch={handleMunicipalitySearch}
                             placeholder={t("regionOptions.selectMunicipality")}
-                            className={`${styles.Text}"form-control"`}
+                            size="large"
+                            filterOption={false}
                         />
-                        {showMunicipalityDropdown && (
-                            <ul className={`${styles.MuicipalityDropdown}`}>
-                                {filteredMunicipalities.map((municipality) => (
-                                    <li
-                                        key={municipality.id}
-                                        className={`${styles.MunicipalityDropdownLi} form-control`}
-                                        onClick={() => handleMunicipalitySelect(municipality)}
-                                    >
-                                        {lng === "el" ? municipality.greekName : municipality.englishName}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </>
+                    </Form.Item>
                 )}
             </Col>
         </Row>

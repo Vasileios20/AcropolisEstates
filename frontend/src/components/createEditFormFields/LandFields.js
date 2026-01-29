@@ -1,298 +1,290 @@
 import React from 'react';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Alert from 'react-bootstrap/Alert';
-import styles from '../../styles/ListingCreateEditForm.module.css';
-import { useTranslation } from 'react-i18next';
-import { AmenitiesLand } from './amenities/AmenitiesLand';
+import { Form, InputNumber, Select, Row, Col, Divider, Typography } from 'antd';
+import {
+    EnvironmentOutlined,
+    CompassOutlined,
+    EyeOutlined,
+    FireOutlined,
+    ThunderboltOutlined
+} from '@ant-design/icons';
 
+const { Option } = Select;
+const { Title } = Typography;
 
-const LandFields = (
-    {
-        listingData,
-        handleChange,
-        history,
-        errors,
-        create,
-        renderTextField,
-        handleAmenityChange,
-        selectedAmenities,
-    }) => {
+const LandFields = ({
+    listingData,
+    handleChange,
+    errors,
+    t,
+}) => {
+    const handleNumberChange = (name) => (value) => {
+        handleChange({
+            target: {
+                name: name,
+                value: value || "0",
+            },
+        });
+    };
 
-    const { t } = useTranslation();
+    const handleSelectChange = (name) => (value) => {
+        handleChange({
+            target: {
+                name: name,
+                value: value,
+            },
+        });
+    };
 
     return (
-        <>
-            <h2>{t("createEditForm.headers.landTechincal")}</h2>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="land_area">
-                        <Form.Label>{t("propertyDetails.landArea")} (m²)</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="land_area"
-                            value={listingData.land_area || ""}
-                            onChange={handleChange}
+        <div>
+            {/* Land Measurements */}
+            <Title level={5}>
+                <EnvironmentOutlined /> {t("createEditForm.headers.landMeasurements")}
+            </Title>
+            <Row gutter={[16, 16]}>
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={`${t("propertyDetails.landArea")} (m²)`}
+                        validateStatus={errors?.land_area ? "error" : ""}
+                        help={errors?.land_area?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.land_area || 0}
+                            onChange={handleNumberChange("land_area")}
+                            min={0}
+                            size="large"
                         />
-                    </Form.Group>
-                    {errors?.land_area?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="cover_coefficient">
-                        <Form.Label>{t("propertyDetails.cover_coefficient")} (%)</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="cover_coefficient"
-                            value={listingData.cover_coefficient || ""}
-                            onChange={handleChange}
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={`${t("propertyDetails.lengthOfFacade")} (m)`}
+                        validateStatus={errors?.length_of_facade ? "error" : ""}
+                        help={errors?.length_of_facade?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.length_of_facade || 0}
+                            onChange={handleNumberChange("length_of_facade")}
+                            min={0}
+                            size="large"
                         />
-                    </Form.Group>
-                    {errors?.cover_coefficient?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                    </Form.Item>
                 </Col>
             </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="building_coefficient">
-                        <Form.Label>{t("propertyDetails.building_coefficient")} (%)</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="building_coefficient"
-                            value={listingData.building_coefficient || ""}
-                            onChange={handleChange}
+
+            <Divider />
+
+            {/* Building Coefficients */}
+            <Title level={5}>
+                Building Coefficients
+            </Title>
+            <Row gutter={[16, 16]}>
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={`${t("propertyDetails.cover_coefficient")} (%)`}
+                        validateStatus={errors?.cover_coefficient ? "error" : ""}
+                        help={errors?.cover_coefficient?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.cover_coefficient || 0}
+                            onChange={handleNumberChange("cover_coefficient")}
+                            min={0}
+                            max={100}
+                            size="large"
                         />
-                    </Form.Group>
-                    {errors?.building_coefficient?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="length_of_facade">
-                        <Form.Label>{t("propertyDetails.lengthOfFacade")} (m)</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="length_of_facade"
-                            value={listingData.length_of_facade || ""}
-                            onChange={handleChange}
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={`${t("propertyDetails.building_coefficient")} (%)`}
+                        validateStatus={errors?.building_coefficient ? "error" : ""}
+                        help={errors?.building_coefficient?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.building_coefficient || 0}
+                            onChange={handleNumberChange("building_coefficient")}
+                            min={0}
+                            max={100}
+                            size="large"
                         />
-                    </Form.Group>
-                    {errors?.length_of_facade?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                    </Form.Item>
                 </Col>
             </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="orientation">
-                        <Form.Label>{t("propertyDetails.orientationTypes.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="orientation"
-                            value={listingData.orientation || ""}
-                            onChange={handleChange}
+
+            <Divider />
+
+            {/* Land Characteristics */}
+            <Title level={5}>
+                <CompassOutlined /> {t("createEditForm.headers.landCharacteristics")}
+            </Title>
+            <Row gutter={[16, 16]}>
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.orientationTypes.title")}
+                        validateStatus={errors?.orientation ? "error" : ""}
+                        help={errors?.orientation?.[0]}
+                    >
+                        <Select
+                            value={listingData.orientation || undefined}
+                            onChange={handleSelectChange("orientation")}
+                            placeholder={t("propertyDetails.orientationTypes.title")}
+                            suffixIcon={<CompassOutlined />}
+                            size="large"
                         >
-                            <option>---</option>
-                            <option value="north">{t("propertyDetails.orientationTypes.north")}</option>
-                            <option value="north_east">{t("propertyDetails.orientationTypes.north_east")}</option>
-                            <option value="east">{t("propertyDetails.orientationTypes.east")}</option>
-                            <option value="south_east">{t("propertyDetails.orientationTypes.south_east")}</option>
-                            <option value="south">{t("propertyDetails.orientationTypes.south")}</option>
-                            <option value="south_west">{t("propertyDetails.orientationTypes.south_west")}</option>
-                            <option value="west">{t("propertyDetails.orientationTypes.west")}</option>
-                            <option value="north_west">{t("propertyDetails.orientationTypes.north_west")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.orientation?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                            <Option value="north">{t("propertyDetails.orientationTypes.north")}</Option>
+                            <Option value="north_east">{t("propertyDetails.orientationTypes.north_east")}</Option>
+                            <Option value="east">{t("propertyDetails.orientationTypes.east")}</Option>
+                            <Option value="south_east">{t("propertyDetails.orientationTypes.south_east")}</Option>
+                            <Option value="south">{t("propertyDetails.orientationTypes.south")}</Option>
+                            <Option value="south_west">{t("propertyDetails.orientationTypes.south_west")}</Option>
+                            <Option value="west">{t("propertyDetails.orientationTypes.west")}</Option>
+                            <Option value="north_west">{t("propertyDetails.orientationTypes.north_west")}</Option>
+                        </Select>
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="view">
-                        <Form.Label>{t("propertyDetails.viewTypes.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="view"
-                            value={listingData.view || ""}
-                            onChange={handleChange}
+
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.viewTypes.title")}
+                        validateStatus={errors?.view ? "error" : ""}
+                        help={errors?.view?.[0]}
+                    >
+                        <Select
+                            value={listingData.view || undefined}
+                            onChange={handleSelectChange("view")}
+                            placeholder={t("propertyDetails.viewTypes.title")}
+                            suffixIcon={<EyeOutlined />}
+                            size="large"
                         >
-                            <option>---</option>
-                            <option value="sea">{t("propertyDetails.viewTypes.sea")}</option>
-                            <option value="mountain">{t("propertyDetails.viewTypes.mountain")}</option>
-                            <option value="city">{t("propertyDetails.viewTypes.city")}</option>
-                            <option value="other">{t("propertyDetails.viewTypes.other")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.view?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                            <Option value="sea">{t("propertyDetails.viewTypes.sea")}</Option>
+                            <Option value="mountain">{t("propertyDetails.viewTypes.mountain")}</Option>
+                            <Option value="city">{t("propertyDetails.viewTypes.city")}</Option>
+                            <Option value="other">{t("propertyDetails.viewTypes.other")}</Option>
+                        </Select>
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="slope">
-                        <Form.Label>{t("propertyDetails.slopeTypes.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="slope"
-                            value={listingData.slope || ""}
-                            onChange={handleChange}
+
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.slopeTypes.title")}
+                        validateStatus={errors?.slope ? "error" : ""}
+                        help={errors?.slope?.[0]}
+                    >
+                        <Select
+                            value={listingData.slope || undefined}
+                            onChange={handleSelectChange("slope")}
+                            placeholder={t("propertyDetails.slopeTypes.title")}
+                            size="large"
                         >
-                            <option>---</option>
-                            <option value="level">{t("propertyDetails.slopeTypes.level")}</option>
-                            <option value="view">{t("propertyDetails.slopeTypes.view")}</option>
-                            <option value="incline">{t("propertyDetails.slopeTypes.incline")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.slope?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                            <Option value="level">{t("propertyDetails.slopeTypes.level")}</Option>
+                            <Option value="view">{t("propertyDetails.slopeTypes.view")}</Option>
+                            <Option value="incline">{t("propertyDetails.slopeTypes.incline")}</Option>
+                        </Select>
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="zone">
-                        <Form.Label>{t("propertyDetails.zoneTypes.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="zone"
-                            value={listingData.zone || ""}
-                            onChange={handleChange}
+
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.zoneTypes.title")}
+                        validateStatus={errors?.zone ? "error" : ""}
+                        help={errors?.zone?.[0]}
+                    >
+                        <Select
+                            value={listingData.zone || undefined}
+                            onChange={handleSelectChange("zone")}
+                            placeholder={t("propertyDetails.zoneTypes.title")}
+                            size="large"
                         >
-                            <option>---</option>
-                            <option value="residential">{t("propertyDetails.zoneTypes.residential")}</option>
-                            <option value="commercial">{t("propertyDetails.zoneTypes.commercial")}</option>
-                            <option value="industrial">{t("propertyDetails.zoneTypes.industrial")}</option>
-                            <option value="agricultural">{t("propertyDetails.zoneTypes.agricultural")}</option>
-                            <option value="tourist">{t("propertyDetails.zoneTypes.tourist")}</option>
-                            <option value="mixed">{t("propertyDetails.zoneTypes.mixed")}</option>
-                            <option value="redevelopment">{t("propertyDetails.zoneTypes.redevelopment")}</option>
-                            <option value="other">{t("propertyDetails.zoneTypes.other")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.zone?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                            <Option value="residential">{t("propertyDetails.zoneTypes.residential")}</Option>
+                            <Option value="commercial">{t("propertyDetails.zoneTypes.commercial")}</Option>
+                            <Option value="industrial">{t("propertyDetails.zoneTypes.industrial")}</Option>
+                            <Option value="agricultural">{t("propertyDetails.zoneTypes.agricultural")}</Option>
+                            <Option value="tourist">{t("propertyDetails.zoneTypes.tourist")}</Option>
+                            <Option value="mixed">{t("propertyDetails.zoneTypes.mixed")}</Option>
+                            <Option value="redevelopment">{t("propertyDetails.zoneTypes.redevelopment")}</Option>
+                            <Option value="other">{t("propertyDetails.zoneTypes.other")}</Option>
+                        </Select>
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="distance_from_sea">
-                        <Form.Label>{t("propertyDetails.distanceFromSea")} (m)</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="distance_from_sea"
-                            value={listingData.distance_from_sea || ""}
-                            onChange={handleChange}
+
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={`${t("propertyDetails.distanceFromSea")} (m)`}
+                        validateStatus={errors?.distance_from_sea ? "error" : ""}
+                        help={errors?.distance_from_sea?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.distance_from_sea || 0}
+                            onChange={handleNumberChange("distance_from_sea")}
+                            min={0}
+                            size="large"
                         />
-                    </Form.Group>
-                    {errors?.distance_from_sea?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                    </Form.Item>
                 </Col>
             </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="power_type">
-                        <Form.Label>{t("propertyDetails.powerType.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="power_type"
-                            value={listingData.power_type || ""}
-                            onChange={handleChange}
+
+            <Divider />
+
+            {/* Utilities */}
+            <Title level={5}>
+                <ThunderboltOutlined /> {t("createEditForm.headers.utilities")}
+            </Title>
+            <Row gutter={[16, 16]}>
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.powerType.title")}
+                        validateStatus={errors?.power_type ? "error" : ""}
+                        help={errors?.power_type?.[0]}
+                    >
+                        <Select
+                            value={listingData.power_type || undefined}
+                            onChange={handleSelectChange("power_type")}
+                            placeholder={t("propertyDetails.powerType.title")}
+                            suffixIcon={<ThunderboltOutlined />}
+                            size="large"
                         >
-                            <option>---</option>
-                            <option value="electricity">{t("propertyDetails.powerType.electricity")}</option>
-                            <option value="gas">{t("propertyDetails.powerType.gas")}</option>
-                            <option value="natural_gas">{t("propertyDetails.powerType.natural_gas")}</option>
-                            <option value="heat_pump">{t("propertyDetails.powerType.heat_pump")}</option>
-                            <option value="other">{t("propertyDetails.heating_system.other")}</option>
-                            <option value="n/a">{t("propertyDetails.heating_system.n/a")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.power_type?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                            <Option value="electricity">{t("propertyDetails.powerType.electricity")}</Option>
+                            <Option value="gas">{t("propertyDetails.powerType.gas")}</Option>
+                            <Option value="natural_gas">{t("propertyDetails.powerType.natural_gas")}</Option>
+                            <Option value="heat_pump">{t("propertyDetails.powerType.heat_pump")}</Option>
+                            <Option value="other">{t("propertyDetails.heating_system.other")}</Option>
+                            <Option value="n/a">{t("propertyDetails.heating_system.n/a")}</Option>
+                        </Select>
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="heating_system">
-                        <Form.Label>{t("propertyDetails.heating_system.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="heating_system"
-                            value={listingData.heating_system || ""}
-                            onChange={handleChange}
+
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.heating_system.title")}
+                        validateStatus={errors?.heating_system ? "error" : ""}
+                        help={errors?.heating_system?.[0]}
+                    >
+                        <Select
+                            value={listingData.heating_system || undefined}
+                            onChange={handleSelectChange("heating_system")}
+                            placeholder={t("propertyDetails.heating_system.title")}
+                            suffixIcon={<FireOutlined />}
+                            size="large"
                         >
-                            <option>---</option>
-                            <option value="autonomous">{t("propertyDetails.heating_system.autonomous")}</option>
-                            <option value="central">{t("propertyDetails.heating_system.central")}</option>
-                            <option value="air_condition">{t("propertyDetails.heating_system.air_condition")}</option>
-                            <option value="fireplace">{t("propertyDetails.heating_system.fireplace")}</option>
-                            <option value="solar">{t("propertyDetails.heating_system.solar")}</option>
-                            <option value="geothermal">{t("propertyDetails.heating_system.geothermal")}</option>
-                            <option value="other">{t("propertyDetails.heating_system.other")}</option>
-                            <option value="n/a">{t("propertyDetails.heating_system.n/a")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.heating_system?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                            <Option value="autonomous">{t("propertyDetails.heating_system.autonomous")}</Option>
+                            <Option value="central">{t("propertyDetails.heating_system.central")}</Option>
+                            <Option value="air_condition">{t("propertyDetails.heating_system.air_condition")}</Option>
+                            <Option value="fireplace">{t("propertyDetails.heating_system.fireplace")}</Option>
+                            <Option value="solar">{t("propertyDetails.heating_system.solar")}</Option>
+                            <Option value="geothermal">{t("propertyDetails.heating_system.geothermal")}</Option>
+                            <Option value="other">{t("propertyDetails.heating_system.other")}</Option>
+                            <Option value="n/a">{t("propertyDetails.heating_system.n/a")}</Option>
+                        </Select>
+                    </Form.Item>
                 </Col>
             </Row>
-            <hr />
-            <Row className="justify-content-center mt-4">
-                <AmenitiesLand
-                    handleAmenityChange={handleAmenityChange}
-                    selectedAmenities={selectedAmenities}
-                    create={create}
-                />
-            </Row>
-        </>
-    )
-}
+        </div>
+    );
+};
 
 export default LandFields;

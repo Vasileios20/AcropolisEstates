@@ -1,13 +1,9 @@
 import React from "react";
-
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Alert from "react-bootstrap/Alert";
-import Modal from "react-bootstrap/Modal";
-
-import styles from "../../styles/ListingCreateEditForm.module.css";
+import { Form, Select, Modal } from 'antd';
+import { UserOutlined, PlusOutlined } from '@ant-design/icons';
 import OwnerCreateForm from "../../pages/admin/OwnerCreateForm";
+
+const { Option } = Select;
 
 const Owner = ({
     listingData,
@@ -18,55 +14,71 @@ const Owner = ({
     owners,
     errors,
 }) => {
-    return (
-        <Row className="justify-content-center">
-            <Col md={6}>
-                <Form.Group controlId="owner">
-                    <Form.Label>Owner</Form.Label>
-                    <Form.Control
-                        className={styles.Input}
-                        as="select"
-                        name="listing_owner"
-                        value={listingData.listing_owner}
-                        onChange={(e) => {
-                            handleChange(e);
-                            if (e.target.value === "create_new") {
-                                handleShow();
-                            }
-                        }}
-                    >
-                        <option>---</option>
-                        <option value="create_new">Create New Owner</option>
-                        {owners?.map((owner) => (
-                            <option key={owner.id} value={owner.id}>
-                                {owner.first_name} {owner.last_name}
-                            </option>
-                        ))}
-                    </Form.Control>
-                </Form.Group>
-                {listingData?.listing_owner === "create_new" && (
-                    <Modal
-                        show={show}
-                        onHide={handleClose}
-                        centered
-                    >
-                        <Modal.Header closeButton></Modal.Header>
-                        <Modal.Body
-                            className={`${styles.Modal}`}>
-                            <Row className="justify-content-center w-100">
-                                <OwnerCreateForm />
-                            </Row>
-                        </Modal.Body>
-                    </Modal>
-                )}
-                {errors?.listing_owner?.map((message, idx) => (
-                    <Alert className={styles.Input} variant="warning" key={idx}>
-                        {message}
-                    </Alert>
-                ))}
-            </Col>
-        </Row>
-    )
-}
+    const handleSelectChange = (value) => {
+        handleChange({
+            target: {
+                name: "listing_owner",
+                value: value,
+            },
+        });
+        if (value === "create_new") {
+            handleShow();
+        }
+    };
 
-export default Owner
+    return (
+        <>
+            <Form.Item
+                label="Owner"
+                validateStatus={errors?.listing_owner ? "error" : ""}
+                help={errors?.listing_owner?.[0]}
+                required
+            >
+                <Select
+                    value={listingData.listing_owner || undefined}
+                    onChange={handleSelectChange}
+                    placeholder="Select Owner"
+                    suffixIcon={<UserOutlined />}
+                    size="large"
+                    showSearch
+                    filterOption={(input, option) => {
+                        // Use the label prop for filtering
+                        const label = option?.label || '';
+                        return label.toLowerCase().includes(input.toLowerCase());
+                    }}
+                >
+                    <Option value="create_new" label="Create New Owner">
+                        <PlusOutlined /> Create New Owner
+                    </Option>
+                    {owners?.map((owner) => {
+                        const ownerName = `${owner.first_name} ${owner.last_name}`;
+                        return (
+                            <Option
+                                key={owner.id}
+                                value={owner.id}
+                                label={ownerName}
+                            >
+                                {ownerName}
+                            </Option>
+                        );
+                    })}
+                </Select>
+            </Form.Item>
+
+            {listingData?.listing_owner === "create_new" && (
+                <Modal
+                    title="Create New Owner"
+                    open={show}
+                    onCancel={handleClose}
+                    footer={null}
+                    centered
+                    width={600}
+                >
+                    <OwnerCreateForm />
+                </Modal>
+            )}
+        </>
+    );
+};
+
+export default Owner;

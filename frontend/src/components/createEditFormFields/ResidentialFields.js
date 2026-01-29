@@ -1,364 +1,323 @@
 import React from 'react';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Alert from 'react-bootstrap/Alert';
-import styles from '../../styles/ListingCreateEditForm.module.css';
-import { useTranslation } from 'react-i18next';
-import { AmenitiesResidential } from './amenities/AmenitiesResidential';
-import { useRouteFlags } from 'contexts/RouteProvider';
+import { Form, InputNumber, Select, Row, Col, Divider, Typography } from 'antd';
+import {
+    HomeOutlined,
+    BulbOutlined,
+    FireOutlined,
+    ThunderboltOutlined,
+    BuildOutlined
+} from '@ant-design/icons';
 
+const { Option } = Select;
+const { Title } = Typography;
 
-const ResidentialFields = (
-    {
-        listingData,
-        handleChange,
-        history,
-        errors,
-        renderTextField,
-        handleAmenityChange,
-        selectedAmenities,
-        create,
-    }) => {
-    const { t } = useTranslation();
-    const { shortTermListing } = useRouteFlags();
+const ResidentialFields = ({
+    listingData,
+    handleChange,
+    errors,
+    t,
+}) => {
+    const handleNumberChange = (name) => (value) => {
+        handleChange({
+            target: {
+                name: name,
+                value: value || "0",
+            },
+        });
+    };
+
+    const handleSelectChange = (name) => (value) => {
+        handleChange({
+            target: {
+                name: name,
+                value: value,
+            },
+        });
+    };
+
+    const currentYear = new Date().getFullYear();
+    const years = Array.from(
+        { length: currentYear - 1899 },
+        (_, i) => i + 1900
+    );
 
     return (
-        <>
-            <h2>{t('createEditForm.headers.residentialTechnical')}</h2>
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Form.Group controlId="floor_area">
-                        <Form.Label>{t("propertyDetails.floorArea")} (m²)</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="floor_area"
-                            value={listingData.floor_area || ""}
-                            onChange={handleChange}
+        <div>
+            {/* Area Section */}
+            <Title level={5}>
+                <HomeOutlined /> {t("createEditForm.headers.area")}
+            </Title>
+            <Row gutter={[16, 16]}>
+                <Col xs={24} md={8}>
+                    <Form.Item
+                        label={`${t("propertyDetails.floorArea")} (m²)`}
+                        validateStatus={errors?.floor_area ? "error" : ""}
+                        help={errors?.floor_area?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.floor_area || 0}
+                            onChange={handleNumberChange("floor_area")}
+                            min={0}
+                            size="large"
                         />
-                    </Form.Group>
-                    {errors?.floor_area?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="land_area">
-                        <Form.Label>{t("propertyDetails.landArea")} </Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="land_area"
-                            value={listingData.land_area || ""}
-                            onChange={handleChange}
+                <Col xs={24} md={8}>
+                    <Form.Item
+                        label={`${t("propertyDetails.landArea")} (m²)`}
+                        validateStatus={errors?.land_area ? "error" : ""}
+                        help={errors?.land_area?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.land_area || 0}
+                            onChange={handleNumberChange("land_area")}
+                            min={0}
+                            size="large"
                         />
-                    </Form.Group>
-                    {errors?.land_area?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                    </Form.Item>
                 </Col>
-            </Row>
-            {Object.entries(listingData).map(([fieldName]) => {
-                if (
-                    fieldName === "bedrooms" ||
-                    fieldName === "kitchens" ||
-                    fieldName === "bathrooms" ||
-                    fieldName === "wc" ||
-                    fieldName === "living_rooms" ||
-                    fieldName === "floor" ||
-                    (shortTermListing ? "" : fieldName === "levels")
-                ) {
-                    return (
-                        <Row className="justify-content-center" key={fieldName}>
-                            <Col md={6}>
-                                {renderTextField(fieldName, t(`propertyDetails.${fieldName.charAt(0).toLowerCase()}${fieldName.slice(1)}`))}
-                            </Col>
-                        </Row>
-                    );
-                }
-                return null;
-            })}
-            <Row className={shortTermListing ? "justify-content-center" : "d-none"}>
-                <Col md={6}>
-                    <Form.Group controlId="max_guests">
-                        <Form.Label>{t("propertyDetails.maxGuests")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="max_guests"
-                            value={listingData.max_guests || ""}
-                            onChange={handleChange}
+                <Col xs={24} md={8}>
+                    <Form.Item
+                        label={t("propertyDetails.levels")}
+                        validateStatus={errors?.levels ? "error" : ""}
+                        help={errors?.levels?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.levels || 0}
+                            onChange={handleNumberChange("levels")}
+                            min={0}
+                            size="large"
                         />
-                    </Form.Group>
-                    {errors?.max_guests?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
-                </Col>
-            </Row>
-            <Row className={shortTermListing ? "justify-content-center" : "d-none"}>
-                <Col md={6}>
-                    <Form.Group controlId="max_adults">
-                        <Form.Label>{t("propertyDetails.maxAdults")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="max_adults"
-                            value={listingData.max_adults || ""}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                    {errors?.max_adults?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
-                </Col>
-            </Row>
-            <Row className={shortTermListing ? "justify-content-center" : "d-none"}>
-                <Col md={6}>
-                    <Form.Group controlId="max_children">
-                        <Form.Label>{t("propertyDetails.maxChildren")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="max_children"
-                            value={listingData.max_children || ""}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                    {errors?.max_children?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                    </Form.Item>
                 </Col>
             </Row>
 
+            <Divider />
 
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="heating_system">
-                        <Form.Label>{t("propertyDetails.heating_system.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="heating_system"
-                            value={listingData.heating_system || ""}
-                            onChange={handleChange}
-                        >
-                            <option>---</option>
-                            <option value="autonomous">{t("propertyDetails.heating_system.autonomous")}</option>
-                            <option value="central">{t("propertyDetails.heating_system.central")}</option>
-                            <option value="air_condition">{t("propertyDetails.heating_system.air_condition")}</option>
-                            <option value="fireplace">{t("propertyDetails.heating_system.fireplace")}</option>
-                            <option value="solar">{t("propertyDetails.heating_system.solar")}</option>
-                            <option value="geothermal">{t("propertyDetails.heating_system.geothermal")}</option>
-                            <option value="other">{t("propertyDetails.heating_system.other")}</option>
-                            <option value="n/a">{t("propertyDetails.heating_system.n/a")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.heating_system?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+            {/* Rooms Section */}
+            <Title level={5}>
+                <BuildOutlined /> {t("createEditForm.headers.rooms")}
+            </Title>
+            <Row gutter={[16, 16]}>
+                <Col xs={12} md={6}>
+                    <Form.Item
+                        label={t("propertyDetails.bedrooms")}
+                        validateStatus={errors?.bedrooms ? "error" : ""}
+                        help={errors?.bedrooms?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.bedrooms || 0}
+                            onChange={handleNumberChange("bedrooms")}
+                            min={0}
+                            size="large"
+                        />
+                    </Form.Item>
+                </Col>
+                <Col xs={12} md={6}>
+                    <Form.Item
+                        label={t("propertyDetails.bathrooms")}
+                        validateStatus={errors?.bathrooms ? "error" : ""}
+                        help={errors?.bathrooms?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.bathrooms || 0}
+                            onChange={handleNumberChange("bathrooms")}
+                            min={0}
+                            size="large"
+                        />
+                    </Form.Item>
+                </Col>
+                <Col xs={12} md={6}>
+                    <Form.Item
+                        label={t("propertyDetails.wc")}
+                        validateStatus={errors?.wc ? "error" : ""}
+                        help={errors?.wc?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.wc || 0}
+                            onChange={handleNumberChange("wc")}
+                            min={0}
+                            size="large"
+                        />
+                    </Form.Item>
+                </Col>
+                <Col xs={12} md={6}>
+                    <Form.Item
+                        label={t("propertyDetails.floor")}
+                        validateStatus={errors?.floor ? "error" : ""}
+                        help={errors?.floor?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.floor || 0}
+                            onChange={handleNumberChange("floor")}
+                            min={0}
+                            size="large"
+                        />
+                    </Form.Item>
+                </Col>
+                <Col xs={12} md={6}>
+                    <Form.Item
+                        label={t("propertyDetails.kitchens")}
+                        validateStatus={errors?.kitchens ? "error" : ""}
+                        help={errors?.kitchens?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.kitchens || 0}
+                            onChange={handleNumberChange("kitchens")}
+                            min={0}
+                            size="large"
+                        />
+                    </Form.Item>
+                </Col>
+                <Col xs={12} md={6}>
+                    <Form.Item
+                        label={t("propertyDetails.living_rooms")}
+                        validateStatus={errors?.living_rooms ? "error" : ""}
+                        help={errors?.living_rooms?.[0]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            value={listingData.living_rooms || 0}
+                            onChange={handleNumberChange("living_rooms")}
+                            min={0}
+                            size="large"
+                        />
+                    </Form.Item>
                 </Col>
             </Row>
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="power_type">
-                        <Form.Label>{t("propertyDetails.powerType.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="power_type"
-                            value={listingData.power_type || ""}
-                            onChange={handleChange}
+
+            <Divider />
+
+            {/* Technical Details Section */}
+            <Title level={5}>
+                <FireOutlined /> {t("createEditForm.headers.technicalDetails")}
+            </Title>
+            <Row gutter={[16, 16]}>
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.heating_system.title")}
+                        validateStatus={errors?.heating_system ? "error" : ""}
+                        help={errors?.heating_system?.[0]}
+                    >
+                        <Select
+                            value={listingData.heating_system || undefined}
+                            onChange={handleSelectChange("heating_system")}
+                            placeholder={t("propertyDetails.heating_system.title")}
+                            suffixIcon={<FireOutlined />}
+                            size="large"
                         >
-                            <option>---</option>
-                            <option value="electricity">{t("propertyDetails.powerType.electricity")}</option>
-                            <option value="gas">{t("propertyDetails.powerType.gas")}</option>
-                            <option value="natural_gas">{t("propertyDetails.powerType.natural_gas")}</option>
-                            <option value="heat_pump">{t("propertyDetails.powerType.heat_pump")}</option>
-                            <option value="other">{t("propertyDetails.heating_system.other")}</option>
-                            <option value="n/a">{t("propertyDetails.heating_system.n/a")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.power_type?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                            <Option value="autonomous">{t("propertyDetails.heating_system.autonomous")}</Option>
+                            <Option value="central">{t("propertyDetails.heating_system.central")}</Option>
+                            <Option value="air_condition">{t("propertyDetails.heating_system.air_condition")}</Option>
+                            <Option value="fireplace">{t("propertyDetails.heating_system.fireplace")}</Option>
+                            <Option value="solar">{t("propertyDetails.heating_system.solar")}</Option>
+                            <Option value="geothermal">{t("propertyDetails.heating_system.geothermal")}</Option>
+                            <Option value="other">{t("propertyDetails.heating_system.other")}</Option>
+                            <Option value="n/a">{t("propertyDetails.heating_system.n/a")}</Option>
+                        </Select>
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="energy_class">
-                        <Form.Label>{t("propertyDetails.energyClass")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="energy_class"
-                            value={listingData.energy_class || ""}
-                            onChange={handleChange}
+
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.energyClass")}
+                        validateStatus={errors?.energy_class ? "error" : ""}
+                        help={errors?.energy_class?.[0]}
+                    >
+                        <Select
+                            value={listingData.energy_class || undefined}
+                            onChange={handleSelectChange("energy_class")}
+                            placeholder={t("propertyDetails.energyClass")}
+                            suffixIcon={<BulbOutlined />}
+                            size="large"
                         >
-                            <option>---</option>
                             {Array.from("ABCDEFG").map((letter) => (
-                                <option key={letter}>{letter}</option>
+                                <Option key={letter} value={letter}>{letter}</Option>
                             ))}
-                            <option value="to_be_issued">{t("propertyDetails.energyClassTypes.toBeIssued")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.energy_class?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                            <Option value="to_be_issued">{t("propertyDetails.energyClassTypes.toBeIssued")}</Option>
+                        </Select>
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="floor_type">
-                        <Form.Label>{t("propertyDetails.floorTypes.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="floor_type"
-                            value={listingData.floor_type || ""}
-                            onChange={handleChange}
+
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.powerType.title")}
+                        validateStatus={errors?.power_type ? "error" : ""}
+                        help={errors?.power_type?.[0]}
+                    >
+                        <Select
+                            value={listingData.power_type || undefined}
+                            onChange={handleSelectChange("power_type")}
+                            placeholder={t("propertyDetails.powerType.title")}
+                            suffixIcon={<ThunderboltOutlined />}
+                            size="large"
                         >
-                            <option>---</option>
-                            <option value="marble">{t("propertyDetails.floorTypes.marble")}</option>
-                            <option value="tile">{t("propertyDetails.floorTypes.tile")}</option>
-                            <option value="wooden">{t("propertyDetails.floorTypes.wooden")}</option>
-                            <option value="granite">{t("propertyDetails.floorTypes.granite")}</option>
-                            <option value="mosaic">{t("propertyDetails.floorTypes.mosaic")}</option>
-                            <option value="stone">{t("propertyDetails.floorTypes.stone")}</option>
-                            <option value="laminate">{t("propertyDetails.floorTypes.laminate")}</option>
-                            <option value="parquet">{t("propertyDetails.floorTypes.parquet")}</option>
-                            <option value="carpet">{t("propertyDetails.floorTypes.carpet")}</option>
-                            <option value="cement">{t("propertyDetails.floorTypes.cement")}</option>
-                            <option value="other">{t("propertyDetails.floorTypes.other")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.floor_type?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                            <Option value="electricity">{t("propertyDetails.powerType.electricity")}</Option>
+                            <Option value="gas">{t("propertyDetails.powerType.gas")}</Option>
+                            <Option value="natural_gas">{t("propertyDetails.powerType.natural_gas")}</Option>
+                            <Option value="heat_pump">{t("propertyDetails.powerType.heat_pump")}</Option>
+                            <Option value="other">{t("propertyDetails.heating_system.other")}</Option>
+                            <Option value="n/a">{t("propertyDetails.heating_system.n/a")}</Option>
+                        </Select>
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="type_of_glass">
-                        <Form.Label>{t("propertyDetails.glassType.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="type_of_glass"
-                            value={listingData.type_of_glass || ""}
-                            onChange={handleChange}
+
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.floorTypes.title")}
+                        validateStatus={errors?.floor_type ? "error" : ""}
+                        help={errors?.floor_type?.[0]}
+                    >
+                        <Select
+                            value={listingData.floor_type || undefined}
+                            onChange={handleSelectChange("floor_type")}
+                            placeholder={t("propertyDetails.floorTypes.title")}
+                            size="large"
                         >
-                            <option>---</option>
-                            <option value="single">{t("propertyDetails.glassType.single")}</option>
-                            <option value="double">{t("propertyDetails.glassType.double")}</option>
-                            <option value="triple">{t("propertyDetails.glassType.triple")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.type_of_glass?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                            <Option value="marble">{t("propertyDetails.floorTypes.marble")}</Option>
+                            <Option value="tile">{t("propertyDetails.floorTypes.tile")}</Option>
+                            <Option value="wooden">{t("propertyDetails.floorTypes.wooden")}</Option>
+                            <Option value="granite">{t("propertyDetails.floorTypes.granite")}</Option>
+                            <Option value="mosaic">{t("propertyDetails.floorTypes.mosaic")}</Option>
+                            <Option value="stone">{t("propertyDetails.floorTypes.stone")}</Option>
+                            <Option value="laminate">{t("propertyDetails.floorTypes.laminate")}</Option>
+                            <Option value="parquet">{t("propertyDetails.floorTypes.parquet")}</Option>
+                            <Option value="carpet">{t("propertyDetails.floorTypes.carpet")}</Option>
+                            <Option value="cement">{t("propertyDetails.floorTypes.cement")}</Option>
+                            <Option value="other">{t("propertyDetails.floorTypes.other")}</Option>
+                        </Select>
+                    </Form.Item>
                 </Col>
-            </Row>
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="opening_frames">
-                        <Form.Label>{t("propertyDetails.openingFrames.title")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="opening_frames"
-                            value={listingData.opening_frames || ""}
-                            onChange={handleChange}
+
+                <Col xs={24} md={12}>
+                    <Form.Item
+                        label={t("propertyDetails.yearBuilt")}
+                        validateStatus={errors?.construction_year ? "error" : ""}
+                        help={errors?.construction_year?.[0]}
+                    >
+                        <Select
+                            value={listingData.construction_year || undefined}
+                            onChange={handleSelectChange("construction_year")}
+                            placeholder={t("propertyDetails.yearBuilt")}
+                            showSearch
+                            size="large"
                         >
-                            <option>---</option>
-                            <option value="aluminium">{t("propertyDetails.openingFrames.aluminium")}</option>
-                            <option value="wooden">{t("propertyDetails.openingFrames.wooden")}</option>
-                            <option value="PVC">{t("propertyDetails.openingFrames.pvc")}</option>
-                            <option value="iron">{t("propertyDetails.openingFrames.iron")}</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.opening_frames?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
-                </Col>
-            </Row>
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="construction_year">
-                        <Form.Label>{t("propertyDetails.yearBuilt")}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            as="select"
-                            name="construction_year"
-                            value={listingData.construction_year || ""}
-                            onChange={handleChange}
-                        >
-                            {Array.from(
-                                { length: new Date().getFullYear() - 1899 },
-                                (_, i) => i + 1900
-                            ).map((year) => (
-                                <option key={year}>{year}</option>
+                            {years.reverse().map((year) => (
+                                <Option key={year} value={year}>{year}</Option>
                             ))}
-                        </Form.Control>
-                    </Form.Group>
-                    {errors?.construction_year?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
+                        </Select>
+                    </Form.Item>
                 </Col>
             </Row>
-            <Row className={"justify-content-center"}>
-                <Col md={6}>
-                    <Form.Group controlId="service_charge">
-                        <Form.Label>{t("propertyDetails.serviceCharge")} {listingData.currency === "---" ? "" : listingData.currency}</Form.Label>
-                        <Form.Control
-                            className={styles.Input}
-                            type="number"
-                            name="service_charge"
-                            value={listingData.service_charge || ""}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                    {errors?.service_charge?.map((message, idx) => (
-                        <Alert className={styles.Input} variant="warning" key={idx}>
-                            {message}
-                        </Alert>
-                    ))}
-                </Col>
-            </Row>
-            <hr />
-            <Row className="justify-content-center mt-4">
-                <AmenitiesResidential
-                    handleAmenityChange={handleAmenityChange}
-                    selectedAmenities={selectedAmenities}
-                    create={create}
-                />
-            </Row>
-        </>
+        </div>
     );
 };
 
