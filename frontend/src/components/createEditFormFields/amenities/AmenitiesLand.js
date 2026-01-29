@@ -1,94 +1,95 @@
-import React from 'react'
-import useFetchAmenities from '../../../hooks/useFetchAmenities'
+import React from 'react';
+import useFetchAmenities from '../../../hooks/useFetchAmenities';
 import { useTranslation } from 'react-i18next';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { AmenitiesTypeOfUse } from './AmenitiesStatusTypeOfUse';
-import { AmenitiesStatus } from './AmenitiesStatusTypeOfUse';
+import { Card, Checkbox, Row, Col, Typography, Divider, Space } from 'antd';
+import { EnvironmentOutlined } from '@ant-design/icons';
+import { AmenitiesTypeOfUse, AmenitiesStatus } from './AmenitiesStatusTypeOfUse';
 
+const { Title } = Typography;
 
-export const AmenitiesLand = (
-    {
-        handleAmenityChange,
-        selectedAmenities,
-        create
-    }) => {
-    const { amenities } = useFetchAmenities()
+export const AmenitiesLand = ({
+    handleAmenityChange,
+    selectedAmenities,
+    create
+}) => {
+    const { amenities } = useFetchAmenities();
     const { t } = useTranslation();
 
-    const amenitiesLand = amenities.map(amenity => {
-        if (amenity.name === 'property_consideration' ||
-            amenity.name === 'inside_the_settlement' ||
-            amenity.name === 'facade'
-        ) {
-            return amenity;
-        }
-        return null;
-    }).filter(amenity => amenity !== null);
-
-    const amenitiesLandTranslated = amenitiesLand.map(amenity => {
-        return {
+    // Land Amenities
+    const amenitiesLand = amenities
+        .filter(amenity => [
+            'property_consideration',
+            'inside_the_settlement',
+            'facade'
+        ].includes(amenity.name))
+        .map(amenity => ({
             ...amenity,
             name: t(`amenities.${amenity.name}`)
-        }
-    })
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name));
 
-    const amenitiesLandTranslatedSorted = amenitiesLandTranslated.sort((a, b) => {
-        return a.name.localeCompare(b.name);
-    })
-
-     const renderLabels = (amenities) => {
-        const columns = [[], [], [], []];
-        amenities.forEach((amenity, index) => {
-            columns[index % 4].push(amenity);
-        });
-        return columns.map((column, colIndex) => (
-            <Col key={colIndex} className="mx-auto p-2 text-start">
-                {column.slice(0, 10).map((amenity) => (
-                    <div key={amenity.id} className="ms-5 p-2">
-                        <label className="p-2 border shadow">
-                            <input
-                                className="m-1"
-                                type="checkbox"
-
-                                checked={selectedAmenities?.includes(amenity.id)}
-                                onChange={() => handleAmenityChange(amenity.id)}
-                            />
-                            {amenity.name.replace(/_/g, " ")}
-                        </label>
-                    </div>
+    const renderAmenityCheckboxes = (amenitiesList) => {
+        return (
+            <Row gutter={[16, 16]}>
+                {amenitiesList.map((amenity) => (
+                    <Col xs={24} sm={12} md={8} lg={6} key={amenity.id}>
+                        <Checkbox
+                            checked={selectedAmenities?.includes(amenity.id)}
+                            onChange={() => handleAmenityChange(amenity.id)}
+                        >
+                            <span style={{ fontSize: '14px' }}>
+                                {amenity.name.replace(/_/g, " ")}
+                            </span>
+                        </Checkbox>
+                    </Col>
                 ))}
-            </Col>
-        ));
-    }
+            </Row>
+        );
+    };
 
     return (
-        <>
-            <Container>
-                <Row className="justify-content-center mx-auto">
-                    <Col sm={12} className="m-auto text-center"><h4>{t('createEditForm.headers.land')}</h4></Col>
-                    <Col>
-                        <Row className="justify-content-center">
-                            {renderLabels(amenitiesLandTranslatedSorted)}
-                        </Row>
-                    </Col>
-                </Row>
-                <hr />
+        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            {/* Land Features */}
+            <Card
+                title={
+                    <Title level={5} style={{ margin: 0 }}>
+                        <EnvironmentOutlined style={{ marginRight: 8, color: '#52c41a' }} />
+                        {t('createEditForm.headers.land')}
+                    </Title>
+                }
+                bordered={false}
+                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+            >
+                {renderAmenityCheckboxes(amenitiesLand)}
+            </Card>
+
+            <Divider />
+
+            {/* Type of Use */}
+            <Card
+                bordered={false}
+                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+            >
                 <AmenitiesTypeOfUse
                     amenities={amenities}
                     create={create}
                     selectedAmenities={selectedAmenities}
                     handleAmenityChange={handleAmenityChange}
                 />
-                <hr />
+            </Card>
+
+            {/* Status */}
+            <Card
+                bordered={false}
+                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+            >
                 <AmenitiesStatus
                     amenities={amenities}
                     create={create}
                     selectedAmenities={selectedAmenities}
                     handleAmenityChange={handleAmenityChange}
                 />
-            </Container>
-        </>
-    )
-}
+            </Card>
+        </Space>
+    );
+};
