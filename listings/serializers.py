@@ -3,6 +3,9 @@ from .models import (
     Listing, Images, Amenities, Owner, OwnerFile,
     ShortTermListing, ShortTermImages, ShortTermPriceOverride
 )
+from .file_serializers import (
+    ListingFileListSerializer, ShortTermListingFileSerializer
+)
 from django.core.files.images import get_image_dimensions
 from .services import upload_to_backblaze
 from django.db.models import Max
@@ -159,9 +162,13 @@ class ListingSerializer(serializers.ModelSerializer):
         queryset=Amenities.objects.all(),
         source='amenities'
     )
+    files = ListingFileListSerializer(many=True, read_only=True)
 
     def get_is_owner(self, obj):
-        return self.context["request"].user == obj.agent_name
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            return request.user == obj.agent_name
+        return False
 
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
@@ -317,6 +324,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "county_id",
             "region_id",
             "listing_owner",
+            "files",
         ]
 
     def to_representation(self, instance):
@@ -391,9 +399,13 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
     vat_rate_display = serializers.SerializerMethodField()
     municipality_tax_rate_display = serializers.SerializerMethodField()
     service_fee_display = serializers.SerializerMethodField()
+    files = ShortTermListingFileSerializer(many=True, read_only=True)
 
     def get_is_owner(self, obj):
-        return self.context["request"].user == obj.agent_name
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            return request.user == obj.agent_name
+        return False
 
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
@@ -551,6 +563,7 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
             "vat_rate_display",
             "municipality_tax_rate_display",
             "service_fee_display",
+            "files",
         ]
 
     def to_representation(self, instance):

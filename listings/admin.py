@@ -9,7 +9,9 @@ from listings.models import (
     OwnerFile,
     ShortTermListing,
     ShortTermImages,
-    ShortTermSeasonalPrice
+    ShortTermSeasonalPrice,
+    ListingFile,
+    ShortTermListingFile,
 )
 from .forms import ImagesAdminForm, ListingLocationAdminForm
 from decimal import Decimal
@@ -44,6 +46,38 @@ class OwnerFileInline(admin.TabularInline):
 
 
 # ============================================================================
+# FILE INLINE ADMINS
+# ============================================================================
+
+class ListingFileInline(admin.TabularInline):
+    """Inline editor for listing files."""
+    model = ListingFile
+    extra = 1
+    fields = ('file', 'file_type', 'description', 'uploaded_by', 'uploaded_at')
+    readonly_fields = ('uploaded_at', 'uploaded_by')
+
+    def get_formset(self, request, obj=None, **kwargs):
+        """Customize formset display."""
+        formset = super().get_formset(request, obj, **kwargs)
+        formset.can_delete = True
+        return formset
+
+
+class ShortTermListingFileInline(admin.TabularInline):
+    """Inline editor for short-term listing files."""
+    model = ShortTermListingFile
+    extra = 1
+    fields = ('file', 'file_type', 'description', 'uploaded_by', 'uploaded_at')
+    readonly_fields = ('uploaded_at', 'uploaded_by')
+
+    def get_formset(self, request, obj=None, **kwargs):
+        """Customize formset display."""
+        formset = super().get_formset(request, obj, **kwargs)
+        formset.can_delete = True
+        return formset
+
+
+# ============================================================================
 # LISTING ADMINS
 # ============================================================================
 
@@ -52,6 +86,7 @@ class ListingAdmin(admin.ModelAdmin):
     """Admin interface for long-term property listings."""
     form = ListingLocationAdminForm
     change_form_template = "admin/listings/shortterm_change_form.html"
+    inlines = [ListingFileInline]
 
     list_display = (
         "id",
@@ -222,7 +257,7 @@ class ShortTermListingAdmin(admin.ModelAdmin):
     """Admin interface for short-term rental listings."""
     form = ListingLocationAdminForm
     change_form_template = "admin/listings/shortterm_change_form.html"
-    inlines = [ShortTermSeasonalPriceInline]
+    inlines = [ShortTermSeasonalPriceInline, ShortTermListingFileInline]
 
     list_display = (
         'id',
@@ -398,6 +433,51 @@ class ShortTermListingAdmin(admin.ModelAdmin):
         }
         js = ('listings/chained_location.js',)
 
+    def get_queryset(self, request):
+        """
+        Filter queryset based on user permissions.
+        Regular agents cannot see ShortTermListings.
+        """
+        qs = super().get_queryset(request)
+
+        # Superusers can see all
+        if request.user.is_superuser:
+            return qs
+
+        # Regular agents (staff but not superuser) cannot see
+        # short-term listings
+        if request.user.is_staff and not request.user.is_superuser:
+            return qs.none()
+
+        return qs
+
+    def has_view_permission(self, request, obj=None):
+        """Regular agents cannot view short-term listings."""
+        if request.user.is_superuser:
+            return True
+        # Hide from non-superuser staff
+        if request.user.is_staff:
+            return False
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        """Regular agents cannot change short-term listings."""
+        if request.user.is_superuser:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        """Regular agents cannot add short-term listings."""
+        if request.user.is_superuser:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        """Regular agents cannot delete short-term listings."""
+        if request.user.is_superuser:
+            return True
+        return False
+
 
 # ============================================================================
 # OTHER ADMINS
@@ -503,3 +583,207 @@ class ShortTermImagesAdmin(admin.ModelAdmin):
     list_filter = ("listing", "is_first")
     search_fields = ("listing__id",)
     ordering = ('listing', 'order')
+
+    def get_queryset(self, request):
+        """Regular agents cannot see short-term images."""
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.is_staff and not request.user.is_superuser:
+            return qs.none()
+        return qs
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+
+# ============================================================================
+# FILE ADMINS (Add at the end of the file)
+# ============================================================================
+
+@admin.register(ListingFile)
+class ListingFileAdmin(admin.ModelAdmin):
+    """Admin interface for listing files."""
+    list_display = (
+        'id',
+        'listing',
+        'file_name',
+        'file_type_badge',
+        'uploaded_by',
+        'uploaded_at',
+        'file_link'
+    )
+    list_filter = ('file_type', 'uploaded_at', 'uploaded_by')
+    search_fields = (
+        'listing__id',
+        'file_name',
+        'description',
+        'uploaded_by__username'
+    )
+    readonly_fields = ('uploaded_at', 'file_name', 'uploaded_by')
+
+    fieldsets = (
+        ('File Information', {
+            'fields': ('listing', 'file', 'file_name', 'file_type')
+        }),
+        ('Details', {
+            'fields': ('description', 'uploaded_by', 'uploaded_at')
+        }),
+    )
+
+    list_per_page = 25
+    date_hierarchy = 'uploaded_at'
+
+    def file_type_badge(self, obj):
+        """Display file type as colored badge."""
+        colors = {
+            'offer': '#28a745',
+            'contract': '#007bff',
+            'inspection': '#ffc107',
+            'note': '#6c757d',
+            'legal': '#dc3545',
+        }
+        color = colors.get(obj.file_type, '#17a2b8')
+        return format_html(
+            '<span style="background-color: {}; color: white; '
+            'padding: 3px 8px; border-radius: 3px; '
+            'font-size: 11px;">{}</span>',
+            color,
+            obj.get_file_type_display()
+        )
+    file_type_badge.short_description = 'Type'
+
+    def file_link(self, obj):
+        """Display clickable download link."""
+        if obj.file:
+            return format_html(
+                '<a href="{}" target="_blank" download>📥 Download</a>',
+                obj.file.url
+            )
+        return format_html('<span style="color: gray;">No file</span>')
+    file_link.short_description = 'Download'
+
+    def save_model(self, request, obj, form, change):
+        """Auto-set uploaded_by to current user if not set."""
+        if not obj.uploaded_by:
+            obj.uploaded_by = request.user
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(ShortTermListingFile)
+class ShortTermListingFileAdmin(admin.ModelAdmin):
+    """Admin interface for short-term listing files."""
+    list_display = (
+        'id',
+        'listing',
+        'file_name',
+        'file_type_badge',
+        'uploaded_by',
+        'uploaded_at',
+        'file_link'
+    )
+    list_filter = ('file_type', 'uploaded_at', 'uploaded_by')
+    search_fields = (
+        'listing__id',
+        'file_name',
+        'description',
+        'uploaded_by__username'
+    )
+    readonly_fields = ('uploaded_at', 'file_name', 'uploaded_by')
+
+    fieldsets = (
+        ('File Information', {
+            'fields': ('listing', 'file', 'file_name', 'file_type')
+        }),
+        ('Details', {
+            'fields': ('description', 'uploaded_by', 'uploaded_at')
+        }),
+    )
+
+    list_per_page = 25
+    date_hierarchy = 'uploaded_at'
+
+    def file_type_badge(self, obj):
+        """Display file type as colored badge."""
+        colors = {
+            'offer': '#28a745',
+            'contract': '#007bff',
+            'inspection': '#ffc107',
+            'note': '#6c757d',
+            'legal': '#dc3545',
+        }
+        color = colors.get(obj.file_type, '#17a2b8')
+        return format_html(
+            '<span style="background-color: {}; color: white; '
+            'padding: 3px 8px; border-radius: 3px; '
+            'font-size: 11px;">{}</span>',
+            color,
+            obj.get_file_type_display()
+        )
+    file_type_badge.short_description = 'Type'
+
+    def file_link(self, obj):
+        """Display clickable download link."""
+        if obj.file:
+            return format_html(
+                '<a href="{}" target="_blank" download>📥 Download</a>',
+                obj.file.url
+            )
+        return format_html('<span style="color: gray;">No file</span>')
+    file_link.short_description = 'Download'
+
+    def save_model(self, request, obj, form, change):
+        """Auto-set uploaded_by to current user if not set."""
+        if not obj.uploaded_by:
+            obj.uploaded_by = request.user
+        super().save_model(request, obj, form, change)
+
+    def get_queryset(self, request):
+        """
+        Filter queryset based on user permissions.
+        Regular agents cannot see ShortTermListingFiles.
+        """
+        qs = super().get_queryset(request)
+
+        # Superusers can see all
+        if request.user.is_superuser:
+            return qs
+
+        # Regular agents (staff but not superuser) cannot see short-term files
+        if request.user.is_staff and not request.user.is_superuser:
+            return qs.none()
+
+        return qs
+
+    def has_view_permission(self, request, obj=None):
+        """Regular agents cannot view short-term listing files."""
+        if request.user.is_superuser:
+            return True
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        """Regular agents cannot change short-term listing files."""
+        if request.user.is_superuser:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        """Regular agents cannot add short-term listing files."""
+        if request.user.is_superuser:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        """Regular agents cannot delete short-term listing files."""
+        if request.user.is_superuser:
+            return True
+        return False
