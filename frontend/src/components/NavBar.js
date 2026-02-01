@@ -3,7 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import styles from "../styles/NavBar.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import {
   useCurrentUser,
   useSetCurrentUser,
@@ -29,6 +29,7 @@ const NavBar = () => {
   const [scroll, setScroll] = useState(false);
   const { changeLanguage } = useContext(LanguageContext);
   const { t, i18n } = useTranslation();
+  const history = useHistory();
 
   useEffect(() => {
     const isMobileDevice = /Mobi/i.test(window.navigator.userAgent);
@@ -71,6 +72,7 @@ const NavBar = () => {
       await axios.post("dj-rest-auth/logout/");
       setCurrentUser(null);
       removeTokenTimestamp();
+      history.push("/");
     } catch (err) {
       // console.log(err);
     }
