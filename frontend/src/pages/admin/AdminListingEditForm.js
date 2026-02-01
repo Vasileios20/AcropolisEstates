@@ -511,10 +511,34 @@ function AdminListingEditForm() {
                 formData.append("amenities_ids", amenityId);
             });
 
-            // Append new images
-            uploadedImages.forEach((image) => {
-                formData.append("uploaded_images", image.file);
-                formData.append("image_orders", image.order);
+            // === EXISTING IMAGES (Order + Description) ===
+            if (existingImages.length > 0) {
+                existingImages.forEach((image) => {
+                    formData.append('existing_image_ids', image.id);
+                    formData.append('existing_image_orders', image.order);
+                    formData.append('existing_image_descriptions', image.description || "");  // ← SEND DESCRIPTION
+                });
+            }
+
+            // === DELETE IMAGES ===
+            if (imagesToDelete.length > 0) {
+                imagesToDelete.forEach((imageId) => {
+                    formData.append('images_to_delete', imageId);
+                });
+            }
+
+            // === NEW IMAGES (with descriptions) ===
+            if (uploadedImages.length > 0) {
+                uploadedImages.forEach((image) => {
+                    formData.append('uploaded_images', image.file);
+                    formData.append('image_orders', image.order);
+                    formData.append('image_descriptions', image.description || "");
+                });
+            }
+
+            // === AMENITIES ===
+            selectedAmenities.forEach((amenity) => {
+                formData.append("amenities_ids", parseInt(amenity, 10));
             });
 
             // Update listing
@@ -709,6 +733,10 @@ function AdminListingEditForm() {
                                 setUploadedImages={setUploadedImages}
                                 error={errors?.images}
                                 maxImages={40 - existingImages.length}
+                                existingImages={existingImages}
+                                setExistingImages={setExistingImages}
+                                imagesToDelete={imagesToDelete}
+                                setImagesToDelete={setImagesToDelete}
                             />
                         </div>
                     )}

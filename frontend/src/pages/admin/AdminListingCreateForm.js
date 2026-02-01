@@ -330,10 +330,13 @@ function AdminListingCreateForm() {
             formData.append("amenities_ids", parseInt(amenity, 10));
         });
 
-        uploadedImages.forEach((image) => {
-            formData.append("uploaded_images", image.file);
-            formData.append("image_orders", image.order);
-        });
+        if (uploadedImages.length > 0) {
+            uploadedImages.forEach((image) => {
+                formData.append('uploaded_images', image.file);
+                formData.append('image_orders', image.order);
+                formData.append('image_descriptions', image.description || "");
+            });
+        }
 
         try {
             const { data } = await axiosReq.post("/listings/", formData);

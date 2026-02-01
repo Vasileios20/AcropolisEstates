@@ -63,7 +63,7 @@ const ListingImages = ({ images = [{}], listing_id, amenities }) => {
                   <img
                     loading="lazy"
                     src={image.url}
-                    alt={image.id}
+                    alt={image.description || image.id}
                     className={styles.Image}
                     onClick={handleShow}
                   />
@@ -88,7 +88,7 @@ const ListingImages = ({ images = [{}], listing_id, amenities }) => {
             <img
               loading="lazy"
               src={imagesArray[0]?.is_first ? imagesArray[0]?.url : images[0]?.url}
-              alt={images[0]?.id}
+              alt={images[0]?.description || images[0]?.id}
               className={`img-fluid ${styles.Image}`}
               onClick={handleShow}
             />
@@ -103,7 +103,7 @@ const ListingImages = ({ images = [{}], listing_id, amenities }) => {
                   <img
                     loading="lazy"
                     src={image.url}
-                    alt={image.id}
+                    alt={image.description || image.id}
                     className={`img-fluid ${styles.Image}`}
                     onClick={handleShow}
                   />
@@ -146,7 +146,7 @@ const ListingImages = ({ images = [{}], listing_id, amenities }) => {
                   <div className={styles.ModalImageWrapper}>
                     <Image
                       src={image.url}
-                      alt={image.id}
+                      alt={image.description || image.id}
                       fluid
                       className={styles.ImagesModal}
                     />
