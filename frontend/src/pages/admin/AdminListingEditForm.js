@@ -18,7 +18,6 @@ import {
     Typography,
     Descriptions,
     Tag,
-    Divider,
     Spin
 } from 'antd';
 import {
@@ -295,48 +294,6 @@ function AdminListingEditForm() {
     const regionName = lng === 'el' ? regionNameGr : regionNameEn;
     const countyName = lng === 'el' ? countyNameGr : countyNameEn;
     const municipalityName = lng === 'el' ? municipalityNameGr : municipalityNameEn;
-
-    const handleDeleteExistingImage = (imageId) => {
-        setImagesToDelete([...imagesToDelete, imageId]);
-        setExistingImages(existingImages.filter(img => img.id !== imageId));
-    };
-
-    const handleReorderExistingImages = (dragIndex, hoverIndex) => {
-        const reorderedImages = [...existingImages];
-        const draggedImage = reorderedImages[dragIndex];
-
-        // Remove from old position
-        reorderedImages.splice(dragIndex, 1);
-        // Insert at new position
-        reorderedImages.splice(hoverIndex, 0, draggedImage);
-
-        // Update order property
-        const updatedImages = reorderedImages.map((img, index) => ({
-            ...img,
-            order: index + 1
-        }));
-
-        setExistingImages(updatedImages);
-    };
-
-    const handleDragStart = (e, index) => {
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', index);
-    };
-
-    const handleDragOver = (e) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-    };
-
-    const handleDrop = (e, dropIndex) => {
-        e.preventDefault();
-        const dragIndex = parseInt(e.dataTransfer.getData('text/html'), 10);
-
-        if (dragIndex !== dropIndex) {
-            handleReorderExistingImages(dragIndex, dropIndex);
-        }
-    };
 
     const validateStep = (step) => {
         const newErrors = {};
@@ -625,107 +582,6 @@ function AdminListingEditForm() {
                         <div>
                             <Title level={4}>{t("admin.listingsForms.propertyImagesOptional")}</Title>
 
-                            {/* Existing Images */}
-                            {existingImages.length > 0 && (
-                                <div style={{ marginBottom: '24px' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                                        <h5>{t("admin.listingsForms.currentImages", { count: existingImages.length })}</h5>
-                                        <Tag color="blue">{t("admin.listingsForms.dragImagesToReorder")}</Tag>
-                                    </div>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-                                        {existingImages.map((img, index) => (
-                                            <div
-                                                key={img.id}
-                                                draggable
-                                                onDragStart={(e) => handleDragStart(e, index)}
-                                                onDragOver={handleDragOver}
-                                                onDrop={(e) => handleDrop(e, index)}
-                                                style={{
-                                                    position: 'relative',
-                                                    width: '180px',
-                                                    cursor: 'move',
-                                                    border: '2px solid #d9d9d9',
-                                                    borderRadius: '8px',
-                                                    padding: '4px',
-                                                    backgroundColor: '#fff',
-                                                    transition: 'all 0.3s'
-                                                }}
-                                                onMouseEnter={(e) => e.currentTarget.style.borderColor = '#1890ff'}
-                                                onMouseLeave={(e) => e.currentTarget.style.borderColor = '#d9d9d9'}
-                                            >
-                                                <img
-                                                    src={img.url}
-                                                    alt={`Property ${img.order}`}
-                                                    style={{
-                                                        width: '100%',
-                                                        height: '150px',
-                                                        objectFit: 'cover',
-                                                        borderRadius: '4px',
-                                                        pointerEvents: 'none'
-                                                    }}
-                                                />
-
-                                                {/* Control buttons */}
-                                                <div style={{
-                                                    position: 'absolute',
-                                                    top: '8px',
-                                                    right: '8px',
-                                                    display: 'flex',
-                                                    gap: '4px'
-                                                }}>
-                                                    <Button
-                                                        danger
-                                                        size="small"
-                                                        icon={<CloseOutlined />}
-                                                        onClick={() => handleDeleteExistingImage(img.id)}
-                                                    />
-                                                </div>
-
-                                                {/* Order badge */}
-                                                <div style={{
-                                                    position: 'absolute',
-                                                    bottom: '8px',
-                                                    left: '8px',
-                                                    display: 'flex',
-                                                    gap: '4px'
-                                                }}>
-                                                    <Tag color="blue" style={{ margin: 0, fontWeight: 'bold' }}>
-                                                        #{index + 1}
-                                                    </Tag>
-                                                </div>
-
-                                                {/* Arrow buttons */}
-                                                <div style={{
-                                                    position: 'absolute',
-                                                    bottom: '8px',
-                                                    right: '8px',
-                                                    display: 'flex',
-                                                    gap: '4px'
-                                                }}>
-                                                    <Button
-                                                        size="small"
-                                                        disabled={index === 0}
-                                                        onClick={() => handleReorderExistingImages(index, index - 1)}
-                                                        style={{ padding: '0 8px' }}
-                                                    >
-                                                        ←
-                                                    </Button>
-                                                    <Button
-                                                        size="small"
-                                                        disabled={index === existingImages.length - 1}
-                                                        onClick={() => handleReorderExistingImages(index, index + 1)}
-                                                        style={{ padding: '0 8px' }}
-                                                    >
-                                                        →
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <Divider />
-                                </div>
-                            )}
-
                             {/* New Images Upload */}
                             <h5>{t("admin.listingsForms.addNewImages")}</h5>
                             <DragDropImageUpload
@@ -868,7 +724,7 @@ function AdminListingEditForm() {
                 <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'space-between' }}>
                     <Space>
                         {currentStep > 0 && <Button size="large" onClick={prevStep}>{t("admin.listingsForms.previous")}</Button>}
-                        <Button size="large" icon={<CloseOutlined />} onClick={() => history.goBack()}>{t("admin.listingsForms.cancel")}</Button>
+                        <Button size="large" icon={<CloseOutlined />} onClick={() => history.push(`/listings/${id}`)}>{t("admin.listingsForms.cancel")}</Button>
                     </Space>
 
                     {currentStep < 4 ? (

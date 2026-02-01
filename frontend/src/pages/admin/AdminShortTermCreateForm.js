@@ -60,6 +60,9 @@ function AdminShortTermListingCreateForm() {
         return map;
     }, {});
 
+    const [existingImages, setExistingImages] = useState([]);
+    const [imagesToDelete, setImagesToDelete] = useState([]);
+
     const { regionsData } = useFetchLocationData();
 
     const [currentStep, setCurrentStep] = useState(0);
@@ -412,7 +415,11 @@ function AdminShortTermListingCreateForm() {
                                 uploadedImages={uploadedImages}
                                 setUploadedImages={setUploadedImages}
                                 error={errors?.images}
-                                maxImages={20}
+                                maxImages={40}
+                                setExistingImages={setExistingImages}
+                                existingImages={existingImages}
+                                imagesToDelete={imagesToDelete}
+                                setImagesToDelete={setImagesToDelete}
                             />
                         </div>
                     )}
@@ -579,7 +586,7 @@ function AdminShortTermListingCreateForm() {
                 <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'space-between' }}>
                     <Space>
                         {currentStep > 0 && <Button size="large" onClick={prevStep}>{t("admin.listingsForms.previous")}</Button>}
-                        <Button size="large" icon={<CloseOutlined />} onClick={() => history.push('/admin/short-term-rentals')}>{t("admin.listingsForms.cancel")}</Button>
+                        <Button size="large" icon={<CloseOutlined />} onClick={() => history.push('/frontend/admin/short-term-listings')}>{t("admin.listingsForms.cancel")}</Button>
                     </Space>
 
                     {currentStep < 5 ? (

@@ -889,6 +889,7 @@
             "uploadImages": "Upload Property Images",
             "manageImages": "Manage Property Images",
             "cancel": "Cancel",
+            "addListing": "Add Property",
             "edit": "Edit",
             "continue": "Continue to Next Step",
             "images": "Images",
@@ -915,7 +916,12 @@
             "selected": "Selected Amenities:",
             "editListing": "Edit Property",
             "updateListing": "Update Property",
-            "reviewYourChanges": "Review Your Changes"
+            "reviewYourChanges": "Review Your Changes",
+            "createNewRental": "Create New Short-Term Rental",
+            "editRental": "Edit Short-Term Rental",
+            "submitRental": "Submit Short-Term Rental",
+            "updateRental": "Update Short-Term Rental",
+            "uploadPropertyImages": "Upload Short-Term Rental Images"
         },
         "dragAndDrop": {
             "primary": "Set as Primary Image",
@@ -929,7 +935,20 @@
             "uploadLimit": "Upload up to {{maxImages}} images.",
             "clickOrDragImages": "Click or drag and drop images here to upload.",
             "removeImage": "Remove Image",
-            "uploadedImages": "Uploaded Images"
+            "uploadedImages": "Uploaded Images",
+            "imageDescription": "Image Description",
+            "imageDescriptionPlaceholder": "Add a description for this image (used as alt text for accessibility)",
+            "of": "of",
+            "allImages": "All Images",
+            "existing": "Saved",
+            "editable": "Editable",
+            "maxImagesError": "Maximum {{maxImages}} images allowed",
+            "imagesUploadedSuccess": "{{count}} image(s) uploaded",
+            "imageRemoved": "Image removed",
+            "deleteConfirmTitle": "Delete Image?",
+            "deleteConfirmMessage": "This will permanently delete the image from the listing.",
+            "delete": "Delete",
+            "cancel": "Cancel"
         },
         "fileSelection": {
             "offer": "Offer",

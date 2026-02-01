@@ -64,6 +64,10 @@ function AdminListingCreateForm() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    //
+    const [existingImages, setExistingImages] = useState([]);
+    const [imagesToDelete, setImagesToDelete] = useState([]);
+
     // Fetch owners data
     const { owners, hasLoaded: ownersLoaded } = useFetchOwners();
 
@@ -374,7 +378,7 @@ function AdminListingCreateForm() {
         <div style={{ padding: '94px 24px 24px 24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
             <Card style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <Title level={2} style={{ textAlign: 'center', marginBottom: '32px' }}>
-                    {t("admin.listings.addListing")}
+                    {t("admin.listingsForms.addListing")}
                 </Title>
 
                 <Steps
@@ -423,6 +427,10 @@ function AdminListingCreateForm() {
                                 setUploadedImages={setUploadedImages}
                                 error={errors?.images}
                                 maxImages={20}
+                                setExistingImages={setExistingImages}
+                                existingImages={existingImages}
+                                imagesToDelete={imagesToDelete}
+                                setImagesToDelete={setImagesToDelete}
                             />
                         </div>
                     )}
@@ -590,7 +598,7 @@ function AdminListingCreateForm() {
                 <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'space-between' }}>
                     <Space>
                         {currentStep > 0 && <Button size="large" onClick={prevStep}>{t("admin.listingsForms.previous")}</Button>}
-                        <Button size="large" icon={<CloseOutlined />} onClick={() => history.goBack()}>{t("admin.listingsForms.cancel")}</Button>
+                        <Button size="large" icon={<CloseOutlined />} onClick={() => history.push('/frontend/admin/listings')}>{t("admin.listingsForms.cancel")}</Button>
                     </Space>
 
                     {currentStep < 5 ? (
