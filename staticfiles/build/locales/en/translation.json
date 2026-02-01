@@ -929,7 +929,20 @@
             "uploadLimit": "Upload up to {{maxImages}} images.",
             "clickOrDragImages": "Click or drag and drop images here to upload.",
             "removeImage": "Remove Image",
-            "uploadedImages": "Uploaded Images"
+            "uploadedImages": "Uploaded Images",
+            "imageDescription": "Image Description",
+            "imageDescriptionPlaceholder": "Add a description for this image (used as alt text for accessibility)",
+            "of": "of",
+            "allImages": "All Images",
+            "existing": "Saved",
+            "editable": "Editable",
+            "maxImagesError": "Maximum {{maxImages}} images allowed",
+            "imagesUploadedSuccess": "{{count}} image(s) uploaded",
+            "imageRemoved": "Image removed",
+            "deleteConfirmTitle": "Delete Image?",
+            "deleteConfirmMessage": "This will permanently delete the image from the listing.",
+            "delete": "Delete",
+            "cancel": "Cancel"
         },
         "fileSelection": {
             "offer": "Offer",
