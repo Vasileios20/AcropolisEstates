@@ -48,7 +48,7 @@ const AdminOwners = () => {
 
     const columns = [
         {
-            title: t('Name'),
+            title: t('admin.owner.name'),
             key: 'name',
             width: 200,
             sorter: (a, b) => {
@@ -65,9 +65,9 @@ const AdminOwners = () => {
             ),
         },
         {
-            title: t('Contact'),
+            title: t('admin.owner.contact'),
             key: 'contact',
-            width: 280,
+            width: 180,
             render: (_, record) => (
                 <Space orientation="vertical" size="small">
                     {record.email && (
@@ -86,7 +86,7 @@ const AdminOwners = () => {
             ),
         },
         {
-            title: t('Secondary Phone'),
+            title: t('admin.owner.secondaryPhone'),
             dataIndex: 'phone_2',
             key: 'phone_2',
             width: 150,
@@ -96,18 +96,19 @@ const AdminOwners = () => {
                     <a href={`tel:${phone}`}>{phone}</a>
                 </div>
             ) : (
-                <Tag color="default">{t('N/A')}</Tag>
+                <Tag color="default">{t('admin.owner.na')}</Tag>
             ),
         },
         {
-            title: t('Notes'),
+            title: t('admin.owner.notes'),
             dataIndex: 'notes',
             key: 'notes',
             ellipsis: true,
-            render: (notes) => notes || <Tag color="default">{t('No notes')}</Tag>,
+            width: 300,
+            render: (notes) => notes || <Tag color="default">{t('admin.owner.noNotes')}</Tag>,
         },
         {
-            title: t('Actions'),
+            title: t('admin.owner.actions'),
             key: 'actions',
             width: 100,
             fixed: 'right',
@@ -119,7 +120,7 @@ const AdminOwners = () => {
                     size="small"
                     style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                 >
-                    {t('View')}
+                    {t('admin.owner.view')}
                 </Button>
             ),
         },
@@ -154,7 +155,7 @@ const AdminOwners = () => {
                 gap: '16px'
             }}>
                 <Title level={2} style={{ margin: 0, color: '#1f1f1f' }}>
-                    {t('Owners Management')}
+                    {t('admin.owner.ownersManagement')}
                 </Title>
                 <Button
                     type="primary"
@@ -163,7 +164,7 @@ const AdminOwners = () => {
                     onClick={() => history.push('/frontend/admin/listings/owners/create')}
                     style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                 >
-                    {t('Add New Owner')}
+                    {t('admin.owner.addNewOwner')}
                 </Button>
             </div>
 
@@ -173,7 +174,7 @@ const AdminOwners = () => {
                     <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }}>
                         {owners?.length || 0}
                     </div>
-                    <div style={{ color: '#8c8c8c' }}>{t('Total Owners')}</div>
+                    <div style={{ color: '#8c8c8c' }}>{t('admin.owner.totalOwners')}</div>
                 </div>
             </Card>
 
@@ -181,7 +182,7 @@ const AdminOwners = () => {
             <Card>
                 <Space orientation="vertical" style={{ width: '100%', marginBottom: '16px' }}>
                     <Search
-                        placeholder={t('Search by name, email, phone, or notes...')}
+                        placeholder={t('admin.owner.searchPlaceholder')}
                         allowClear
                         enterButton={<SearchOutlined />}
                         size="large"
@@ -199,7 +200,7 @@ const AdminOwners = () => {
                     pagination={{
                         showSizeChanger: true,
                         showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} ${t('of')} ${total} ${t('owners')}`,
+                            `${range[0]}-${range[1]} ${t('admin.owner.of')} ${total} ${t('admin.owner.owners')}`,
                         onChange: (page, size) => {
                             setCurrentPage(page);
                             setPageSize(size);

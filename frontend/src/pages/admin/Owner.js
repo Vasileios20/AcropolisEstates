@@ -18,6 +18,7 @@ import Forbidden403 from "../errors/Forbidden403";
 import styles from "../../styles/Admin.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import useFetchOwners from "../../hooks/useFetchOwners";
+import { useTranslation } from "react-i18next";
 
 
 function OwnerPage() {
@@ -25,6 +26,7 @@ function OwnerPage() {
     const { id } = useParams();
     const currentUser = useCurrentUser();
     const userStatus = useUserStatus();
+    const { t } = useTranslation();
 
     const [ownersData, setOwnersData] = useState({
         id: "",
@@ -48,7 +50,7 @@ function OwnerPage() {
 
     const handleDeleteFile = async (fileId) => {
         try {
-            const confirmDelete = window.confirm("Are you sure you want to delete this file?");
+            const confirmDelete = window.confirm(t("admin.owner.confirmDelete"));
             if (confirmDelete) {
                 await axiosReq.delete(`/owners/${ownersData.id}/files/${fileId}/`);
                 const updatedFiles = ownersData.files.filter(file => file.id !== fileId);
@@ -58,7 +60,7 @@ function OwnerPage() {
                 }));
             }
         } catch (error) {
-            console.error("Error deleting file:", error.response?.data || error.message);
+            console.error(t("admin.owner.errorDeletingFile"), error.response?.data || error.message);
         }
     };
 
@@ -115,16 +117,16 @@ function OwnerPage() {
                                                 {ownersData?.first_name} {ownersData?.last_name}
                                             </Card.Title>
                                             <Card.Text>
-                                                Email: {ownersData?.email}
+                                                {t("admin.owner.email")}: {ownersData?.email}
                                                 <br />
-                                                Phone: {ownersData?.phone}
+                                                {t("admin.owner.phone")}: {ownersData?.phone}
                                                 <br />
-                                                Phone 2: {ownersData?.phone_2}
+                                                {t("admin.owner.secondaryPhone")}: {ownersData?.phone_2}
                                                 <br />
-                                                Notes: {ownersData?.notes}
+                                                {t("admin.owner.notes")}: {ownersData?.notes}
 
                                             </Card.Text>
-                                            <h5>Uploaded Files</h5>
+                                            <h5>{t("admin.owner.uploadedFiles")}</h5>
                                             <ol className={`${styles.OwnerList}`}>
                                                 {ownersData?.files && ownersData?.files.length > 0 ? (
                                                     ownersData?.files.map((file, index) => (
@@ -138,12 +140,12 @@ function OwnerPage() {
                                                                 size="sm"
                                                                 onClick={() => handleDeleteFile(file.id)}
                                                             >
-                                                                Delete
+                                                                {t("admin.owner.delete")}
                                                             </Button>
                                                         </li>
                                                     ))
                                                 ) : (
-                                                    <li>No files uploaded.</li>
+                                                    <li>{t("admin.owner.noFilesUploaded")}</li>
                                                 )}
                                             </ol>
                                         </Col>
@@ -153,18 +155,18 @@ function OwnerPage() {
                         </Col>
                         <Modal show={show} onHide={handleClose} centered size="md" className="text-center">
                             <Modal.Header closeButton className="text-dark border-dark" style={{ backgroundColor: 'rgba(132, 124, 61, 0.85)' }}>
-                                <Modal.Title>Delete Owner</Modal.Title>
+                                <Modal.Title>{t("admin.owner.deleteOwner")}</Modal.Title>
                             </Modal.Header>
                             <Modal.Body className="text-dark" style={{ backgroundColor: '#847c3d' }}>
-                                <p className="h3" > Are you sure you want to delete this Owner?</p>
-                                <p className="h5">This action cannot be undone.</p>
+                                <p className="h3" > {t("admin.owner.confirmDeleteOwner")}</p>
+                                <p className="h5">{t("admin.owner.cannotUndo")}</p>
                             </Modal.Body>
                             <Modal.Footer className="text-dark d-flex justify-content-center border-dark" style={{ backgroundColor: 'rgba(132, 124, 61, 0.85)' }}>
                                 <Button className={`${btnStyles.AngryOcean} ${btnStyles.Button}`} onClick={handleClose}>
-                                    Close
+                                    {t("admin.owner.close")}
                                 </Button>
                                 <Button className={`${btnStyles.Remove} ${btnStyles.Button}`} onClick={handleDelete}>
-                                    Delete Owner
+                                    {t("admin.owner.deleteOwner")}
                                 </Button>
                             </Modal.Footer>
                         </Modal>
@@ -176,3 +178,4 @@ function OwnerPage() {
 }
 
 export default OwnerPage;
+
