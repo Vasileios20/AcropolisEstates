@@ -3,6 +3,9 @@ from .models import (
     Listing, Images, Amenities, Owner, OwnerFile,
     ShortTermListing, ShortTermImages, ShortTermPriceOverride
 )
+from .file_serializers import (
+    ListingFileListSerializer, ShortTermListingFileSerializer
+)
 from django.core.files.images import get_image_dimensions
 from .services import upload_to_backblaze
 from django.db.models import Max
@@ -93,7 +96,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Images
-        fields = ["id", "listing", "url", "is_first", "order"]
+        fields = ["id", "listing", "url", "is_first", "order", "description"]
 
 
 class ListingSerializer(serializers.ModelSerializer):
@@ -159,16 +162,23 @@ class ListingSerializer(serializers.ModelSerializer):
         queryset=Amenities.objects.all(),
         source='amenities'
     )
+    files = ListingFileListSerializer(many=True, read_only=True)
 
     def get_is_owner(self, obj):
-        return self.context["request"].user == obj.agent_name
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            return request.user == obj.agent_name
+        return False
 
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
         amenities = validated_data.pop('amenities')
-        image_orders = self.context['request'].data.get('image_orders', [])
-        is_first_image_idx = int(
-            self.context['request'].data.get('is_first', 0))
+
+        # Get image metadata from request
+        request = self.context.get('request')
+        image_orders = request.data.getlist('image_orders', [])
+        image_descriptions = request.data.getlist('image_descriptions', [])
+        is_first_image_idx = int(request.data.get('is_first', 0))
 
         # Create the Listing object
         listing = Listing.objects.create(**validated_data)
@@ -180,13 +190,20 @@ class ListingSerializer(serializers.ModelSerializer):
             filename = generate_unique_filename(folder, listing.id, idx + 1)
             try:
                 file_url = upload_to_backblaze(uploaded_image, filename)
-                order = image_orders[idx] if idx < len(image_orders) else idx
+
+                # Get order and description for this image
+                order = int(image_orders[idx]) if idx < len(
+                    image_orders) else idx
                 is_first = (is_first_image_idx == idx)
+                description = image_descriptions[idx] if idx < len(
+                    image_descriptions) else ""
+
                 Images.objects.create(
                     listing=listing,
                     url=file_url,
                     is_first=is_first,
                     order=order,
+                    description=description,  # ← SAVE DESCRIPTION
                 )
             except Exception as e:
                 raise serializers.ValidationError(
@@ -197,7 +214,23 @@ class ListingSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
         amenities = validated_data.pop('amenities', None)
-        is_first_image_idx = self.context['request'].data.get('is_first', None)
+
+        # Get data from request
+        request = self.context.get('request')
+
+        # === EXISTING IMAGES DATA ===
+        existing_image_ids = request.data.getlist('existing_image_ids', [])
+        existing_image_orders = request.data.getlist(
+            'existing_image_orders', [])
+        existing_image_descriptions = request.data.getlist(
+            'existing_image_descriptions', [])
+
+        # === IMAGES TO DELETE ===
+        images_to_delete = request.data.getlist('images_to_delete', [])
+
+        # === NEW IMAGES DATA ===
+        new_image_orders = request.data.getlist('image_orders', [])
+        new_image_descriptions = request.data.getlist('image_descriptions', [])
 
         listing_owner = validated_data.pop("listing_owner", None)
         if listing_owner is not None:
@@ -207,48 +240,74 @@ class ListingSerializer(serializers.ModelSerializer):
         if amenities is not None:
             instance.amenities.set(amenities)
 
-        folder = "listings"
+        # === 1. DELETE IMAGES ===
+        if images_to_delete:
+            for image_id in images_to_delete:
+                try:
+                    image = Images.objects.get(
+                        id=int(image_id), listing=instance)
+                    # Optionally delete from Backblaze here
+                    image.delete()
+                except Images.DoesNotExist:
+                    pass
 
-        # Process uploaded images
+        # === 2. UPDATE EXISTING IMAGES (ORDER + DESCRIPTION) ===
+        if existing_image_ids:
+            for idx, image_id in enumerate(existing_image_ids):
+                try:
+                    image = Images.objects.get(
+                        id=int(image_id), listing=instance)
+
+                    # Update order
+                    if idx < len(existing_image_orders):
+                        image.order = int(existing_image_orders[idx])
+
+                    # Update description ← IMPORTANT!
+                    if idx < len(existing_image_descriptions):
+                        image.description = existing_image_descriptions[idx]
+
+                    # Update is_first based on order
+                    image.is_first = (image.order == 0)
+
+                    image.save()
+                except Images.DoesNotExist:
+                    pass
+                except (ValueError, TypeError) as e:
+                    raise serializers.ValidationError(
+                        f"Error updating image {image_id}: {str(e)}")
+
+        # === 3. ADD NEW IMAGES ===
+        folder = "listings"
         if uploaded_images:
-            existing_images = instance.images.all()
-            max_order = existing_images.aggregate(
-                max_order=Max('order'))['max_order'] or 0
+            # Get the max order from ALL remaining images
+            max_order = instance.images.aggregate(
+                max_order=Max('order')
+            )['max_order'] or -1
 
             for idx, uploaded_image in enumerate(uploaded_images):
                 filename = generate_unique_filename(
                     folder, instance.id, max_order + idx + 1)
                 try:
-                    # Upload to Backblaze and get file URL
                     file_url = upload_to_backblaze(uploaded_image, filename)
 
-                    # Create a new image with the next order value
+                    # Get order and description
+                    order = int(new_image_orders[idx]) if idx < len(
+                        new_image_orders) else (max_order + idx + 1)
+                    description = new_image_descriptions[idx] if idx < len(
+                        new_image_descriptions) else ""
+
                     Images.objects.create(
                         listing=instance,
                         url=file_url,
-                        is_first=False,
-                        order=max_order + idx + 1,
+                        is_first=(order == 0),
+                        order=order,
+                        description=description,  # ← SAVE DESCRIPTION
                     )
                 except Exception as e:
                     raise serializers.ValidationError(
                         f"File upload failed: {str(e)}")
 
-        if is_first_image_idx is not None:
-            try:
-                is_first_image_idx = int(is_first_image_idx)
-                # Reset all images' `is_first` flag and set the specified one
-                instance.images.update(is_first=False)
-                if 0 <= is_first_image_idx < instance.images.count():
-                    image_to_set_first = instance.images.order_by('order')[
-                        is_first_image_idx
-                    ]
-                    image_to_set_first.is_first = True
-                    image_to_set_first.save()
-            except (ValueError, TypeError, IndexError):
-                raise serializers.ValidationError(
-                    "Invalid value for 'is_first' index.")
-
-        # Call the parent class update method for the rest of the data
+        # Call the parent class update method
         return super().update(instance, validated_data)
 
     class Meta:
@@ -317,6 +376,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "county_id",
             "region_id",
             "listing_owner",
+            "files",
         ]
 
     def to_representation(self, instance):
@@ -337,7 +397,7 @@ class ShortTermImagesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShortTermImages
-        fields = ["id", "listing", "url", "is_first", "order"]
+        fields = ["id", "listing", "url", "is_first", "order", "description"]
 
 
 class ShortTermPriceOverrideSerializer(serializers.ModelSerializer):
@@ -391,9 +451,13 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
     vat_rate_display = serializers.SerializerMethodField()
     municipality_tax_rate_display = serializers.SerializerMethodField()
     service_fee_display = serializers.SerializerMethodField()
+    files = ShortTermListingFileSerializer(many=True, read_only=True)
 
     def get_is_owner(self, obj):
-        return self.context["request"].user == obj.agent_name
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            return request.user == obj.agent_name
+        return False
 
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", [])
@@ -401,6 +465,8 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
         image_orders = self.context['request'].data.get('image_orders', [])
         is_first_image_idx = int(
             self.context['request'].data.get('is_first', 0))
+        descriptions = self.context['request'].data.get(
+            'image_descriptions', [])
 
         # Create the Listing object
         listing = ShortTermListing.objects.create(**validated_data)
@@ -415,11 +481,14 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
                     uploaded_image, filename)
                 order = image_orders[idx] if idx < len(image_orders) else idx
                 is_first = (is_first_image_idx == idx)
+                description = (
+                    descriptions[idx] if idx < len(descriptions) else "")
                 ShortTermImages.objects.create(
                     listing=listing,
                     url=file_url,
                     is_first=is_first,
                     order=order,
+                    description=description,
                 )
             except Exception as e:
                 raise serializers.ValidationError(
@@ -431,6 +500,8 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
         uploaded_images = validated_data.pop("uploaded_images", [])
         amenities = validated_data.pop('amenities', None)
         is_first_image_idx = self.context['request'].data.get('is_first', None)
+        descriptions = self.context['request'].data.get(
+            'image_descriptions', [])
 
         listing_owner = validated_data.pop("listing_owner", None)
         if listing_owner is not None:
@@ -461,6 +532,9 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
                         url=file_url,
                         is_first=False,
                         order=max_order + idx + 1,
+                        description=descriptions[idx] if idx < len(
+                            descriptions
+                        ) else "",
                     )
                 except Exception as e:
                     raise serializers.ValidationError(
@@ -551,6 +625,7 @@ class ShortTermListingSerializer(serializers.ModelSerializer):
             "vat_rate_display",
             "municipality_tax_rate_display",
             "service_fee_display",
+            "files",
         ]
 
     def to_representation(self, instance):

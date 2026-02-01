@@ -377,22 +377,6 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ListingSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["agent_name", "type", "price", "sale_type", "sub_type"]
-
-    search_fields = [
-        "agent_name__username",
-        "municipality",
-        "municipality_gr",
-        "county",
-        "county_gr",
-        "price",
-        "postcode",
-        "sale_type",
-        "type",
-        "sub_type",
-    ]
-
 
 class DeleteImageView(generics.DestroyAPIView):
     """
@@ -531,16 +515,6 @@ class ShortTermListingDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = ShortTermListing.objects.all()
     serializer_class = ShortTermListingSerializer
     permission_classes = [IsAdminUserOrReadOnly]
-
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["agent_name", "price"]
-
-    search_fields = [
-        "agent_name__username",
-        "municipality",
-        "price",
-        "postcode"
-    ]
 
 
 class DeleteShortTermImages(generics.DestroyAPIView):

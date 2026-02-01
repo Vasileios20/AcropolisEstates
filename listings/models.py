@@ -4,6 +4,7 @@ from datetime import datetime
 from django.core.exceptions import ValidationError
 from decimal import Decimal
 from django.utils.translation import gettext_lazy as _
+from .file_models import ListingFile, ShortTermListingFile  # noqa: F401
 
 
 class Owner(models.Model):
@@ -351,6 +352,7 @@ class Images(models.Model):
     url = models.URLField(max_length=255, blank=True, null=True)
     is_first = models.BooleanField(default=False, null=True)
     order = models.PositiveIntegerField(default=0, null=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"{self.listing}'s image"
@@ -522,6 +524,7 @@ class ShortTermImages(models.Model):
     url = models.URLField(max_length=255, blank=True, null=True)
     is_first = models.BooleanField(default=False, null=True)
     order = models.PositiveIntegerField(default=0, null=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"{self.listing}'s image"
