@@ -914,9 +914,15 @@
             "totalImages": "Συνολικές Εικόνες: {{count}}/{{max}}",
             "new": " Καινούργιες Εικόνες",
             "selected": "Επιλεγμένες Παροχές:",
+            "addListing": "Προσθήκη Ακινήτου",
             "editListing": "Επεξεργασία Ακινήτου",
             "updateListing": "Ενημέρωση Ακινήτου",
-            "reviewYourChanges": "Ανασκόπηση των Αλλαγών σας"
+            "reviewYourChanges": "Ανασκόπηση των Αλλαγών σας",
+            "createNewRental": "Δημιουργία Νέας Βραχυχρόνιας Μίσθωσης",
+            "editRental": "Επεξεργασία Βραχυχρόνιας Μίσθωσης",
+            "updateRental": "Ενημέρωση Βραχυχρόνιας Μίσθωσης",
+            "reviewYourRentalChanges": "Ανασκόπηση των Αλλαγών σας στη Βραχυχρόνια Μίσθωση",
+            "uploadPropertyImages": "Μεταφόρτωση Εικόνων Ακινήτου"
         },
         "dragAndDrop": {
             "primary": "Κύρια Εικόνα",
@@ -930,7 +936,22 @@
             "uploadLimit": "Μεταφόρτωση έως και {{maxImages}} εικόνες.",
             "clickOrDragImages": "Κάντε κλικ ή σύρετε και αποθέστε εικόνες εδώ για μεταφόρτωση.",
             "removeImage": "Αφαίρεση Εικόνας",
-            "uploadedImages": "Μεταφορτωμένες Εικόνες"
+            "uploadedImages": "Μεταφορτωμένες Εικόνες",
+            "imageDescription": "Περιγραφή Εικόνας",
+            "imageDescriptionPlaceholder": "Προσθέστε μια περιγραφή για αυτήν την εικόνα (χρησιμοποιείται ως εναλλακτικό κείμενο για προσβασιμότητα)",
+            "of": "από",
+            "allImages": "Όλες οι Εικόνες",
+            "existing": "Αποθηκευμένη",
+            "editable": "Επεξεργάσιμη",
+            "maxImagesError": "Επιτρέπονται μέχρι {{maxImages}} εικόνες",
+            "imagesUploadedSuccess": "{{count}} εικόνα/ες μεταφορτώθηκαν",
+            "imageRemoved": "Η εικόνα αφαιρέθηκε",
+            "deleteConfirmTitle": "Διαγραφή Εικόνας;",
+            "deleteConfirmMessage": "Αυτό θα διαγράψει οριστικά την εικόνα από την καταχώρηση.",
+            "delete": "Διαγραφή",
+            "cancel": "Ακύρωση"
+
+
         },
         "fileSelection": {
             "offer": "Προσφορά",

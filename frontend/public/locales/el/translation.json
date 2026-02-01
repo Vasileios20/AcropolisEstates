@@ -914,9 +914,15 @@
             "totalImages": "Συνολικές Εικόνες: {{count}}/{{max}}",
             "new": " Καινούργιες Εικόνες",
             "selected": "Επιλεγμένες Παροχές:",
+            "addListing": "Προσθήκη Ακινήτου",
             "editListing": "Επεξεργασία Ακινήτου",
             "updateListing": "Ενημέρωση Ακινήτου",
-            "reviewYourChanges": "Ανασκόπηση των Αλλαγών σας"
+            "reviewYourChanges": "Ανασκόπηση των Αλλαγών σας",
+            "createNewRental": "Δημιουργία Νέας Βραχυχρόνιας Μίσθωσης",
+            "editRental": "Επεξεργασία Βραχυχρόνιας Μίσθωσης",
+            "updateRental": "Ενημέρωση Βραχυχρόνιας Μίσθωσης",
+            "reviewYourRentalChanges": "Ανασκόπηση των Αλλαγών σας στη Βραχυχρόνια Μίσθωση",
+            "uploadPropertyImages": "Μεταφόρτωση Εικόνων Ακινήτου"
         },
         "dragAndDrop": {
             "primary": "Κύρια Εικόνα",
