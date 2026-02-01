@@ -1,7 +1,13 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Table, Input, Space, Button, Tag, Typography, Card, Row, Col } from 'antd';
-import { SearchOutlined, EyeOutlined, CheckCircleOutlined, StarOutlined } from '@ant-design/icons';
+import {
+    SearchOutlined,
+    EyeOutlined,
+    CheckCircleOutlined,
+    StarOutlined,
+    FolderOpenOutlined
+} from '@ant-design/icons';
 import useFetchAllListings from '../../hooks/useFetchAllListings';
 import useFetchLocationData from '../../hooks/useFetchLocationData';
 import { useRedirect } from '../../hooks/useRedirect';
@@ -9,6 +15,7 @@ import useUserStatus from '../../hooks/useUserStatus';
 import Forbidden403 from '../errors/Forbidden403';
 import { useTranslation } from "react-i18next";
 import Asset from '../../components/Asset';
+import ListingFilesDrawer from '../../components/ListingFilesDrawer';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -18,6 +25,9 @@ export default function AdminListingsAntD() {
     const userStatus = useUserStatus();
     const { t, i18n } = useTranslation();
     const lng = i18n.language;
+
+    const [filesDrawerVisible, setFilesDrawerVisible] = useState(false);
+    const [selectedListingId, setSelectedListingId] = useState(null);
 
     const { regionsData } = useFetchLocationData();
     const { listings, hasLoaded } = useFetchAllListings();
@@ -97,6 +107,16 @@ export default function AdminListingsAntD() {
         setSortedInfo(sorter);
     };
 
+    const handleOpenFiles = (listingId) => {
+        setSelectedListingId(listingId);
+        setFilesDrawerVisible(true);
+    };
+
+    const handleCloseFilesDrawer = () => {
+        setFilesDrawerVisible(false);
+        setSelectedListingId(null);
+    };
+
     const columns = [
         {
             title: "ID",
@@ -166,7 +186,7 @@ export default function AdminListingsAntD() {
                 key: 'address_street_gr',
                 sorter: (a, b) => (a.address_street_gr || '').localeCompare(b.address_street_gr || ''),
                 sortOrder: sortedInfo.columnKey === 'address_street_gr' ? sortedInfo.order : null,
-                render: (address) => address || '-',
+                render: (address, record) => `${address} ${record.address_number || ''}` || '-',
             } :
             {
                 title: t('propertyDetails.address'),
@@ -174,17 +194,17 @@ export default function AdminListingsAntD() {
                 key: 'address_street',
                 sorter: (a, b) => (a.address_street || '').localeCompare(b.address_street || ''),
                 sortOrder: sortedInfo.columnKey === 'address_street' ? sortedInfo.order : null,
-                render: (address) => address || '-',
+                render: (address, record) => `${address} ${record.address_number || ''}` || '-',
             },
 
-        {
-            title: t('propertyDetails.address_number'),
-            dataIndex: 'address_number',
-            key: 'address_number',
-            sorter: (a, b) => (a.address_number || '').localeCompare(b.address_number || ''),
-            sortOrder: sortedInfo.columnKey === 'address_number' ? sortedInfo.order : null,
-            render: (address) => address || '-',
-        },
+        // {
+        //     title: t('propertyDetails.address_number'),
+        //     dataIndex: 'address_number',
+        //     key: 'address_number',
+        //     sorter: (a, b) => (a.address_number || '').localeCompare(b.address_number || ''),
+        //     sortOrder: sortedInfo.columnKey === 'address_number' ? sortedInfo.order : null,
+        //     render: (address) => address || '-',
+        // },
         {
             title: t('propertyDetails.typeSale'),
             dataIndex: 'sale_type',
@@ -200,22 +220,22 @@ export default function AdminListingsAntD() {
                 return <Tag color={color}>{t(`propertyDetails.type${saleType === 'rent' ? 'Rent' : 'Sale'}`)}</Tag>;
             },
         },
-        {
-            title: t('propertyDetails.floorArea'),
-            dataIndex: 'floor_area',
-            key: 'floor_area',
-            sorter: (a, b) => (a.floor_area || 0) - (b.floor_area || 0),
-            sortOrder: sortedInfo.columnKey === 'floor_area' ? sortedInfo.order : null,
-            render: (area) => area ? `${area} m²` : '-',
-        },
-        {
-            title: t('propertyDetails.landArea'),
-            dataIndex: 'land_area',
-            key: 'land_area',
-            sorter: (a, b) => (a.land_area || 0) - (b.land_area || 0),
-            sortOrder: sortedInfo.columnKey === 'land_area' ? sortedInfo.order : null,
-            render: (area) => area ? `${area} m²` : '-',
-        },
+        // {
+        //     title: t('propertyDetails.floorArea'),
+        //     dataIndex: 'floor_area',
+        //     key: 'floor_area',
+        //     sorter: (a, b) => (a.floor_area || 0) - (b.floor_area || 0),
+        //     sortOrder: sortedInfo.columnKey === 'floor_area' ? sortedInfo.order : null,
+        //     render: (area) => area ? `${area} m²` : '-',
+        // },
+        // {
+        //     title: t('propertyDetails.landArea'),
+        //     dataIndex: 'land_area',
+        //     key: 'land_area',
+        //     sorter: (a, b) => (a.land_area || 0) - (b.land_area || 0),
+        //     sortOrder: sortedInfo.columnKey === 'land_area' ? sortedInfo.order : null,
+        //     render: (area) => area ? `${area} m²` : '-',
+        // },
         {
             title: t('propertyDetails.price'),
             dataIndex: 'price',
@@ -259,18 +279,44 @@ export default function AdminListingsAntD() {
         {
             title: t('propertyDetails.actions.title'),
             key: 'actions',
-            width: 120,
+            width: 200,  // ✅ Increased width for two buttons
             fixed: 'right',
             render: (_, record) => (
-                <Button
-                    type="primary"
-                    icon={<EyeOutlined />}
-                    onClick={() => history.push(`/listings/${record.id}`)}
-                    size="small"
-                    style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
-                >
-                    {t('propertyDetails.actions.viewListing')}
-                </Button>
+                <Space>
+                    {/* ✅ NEW FILES BUTTON */}
+                    <Button
+                        type="default"
+                        icon={<FolderOpenOutlined />}
+                        onClick={() => handleOpenFiles(record.id)}
+                        size="small"
+                        title={t('View Files')}
+                    >
+                        {/* Show file count badge if files exist */}
+                        {record.files?.length > 0 && (
+                            <span style={{
+                                background: '#ff4d4f',
+                                borderRadius: '10px',
+                                padding: '0 6px',
+                                color: 'white',
+                                fontSize: '12px',
+                                marginLeft: '4px'
+                            }}>
+                                {record.files.length}
+                            </span>
+                        )}
+                    </Button>
+
+                    {/* ✅ EXISTING VIEW BUTTON */}
+                    <Button
+                        type="primary"
+                        icon={<EyeOutlined />}
+                        onClick={() => history.push(`/listings/${record.id}`)}
+                        size="small"
+                        style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
+                    >
+                        {t('propertyDetails.actions.viewListing')}
+                    </Button>
+                </Space>
             ),
         },
     ];
@@ -293,97 +339,105 @@ export default function AdminListingsAntD() {
     }
 
     return (
-        <div style={{ padding: '64px 24px 24px 24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
-            {/* Header */}
-            <Title level={2} style={{ marginBottom: '24px', color: '#1f1f1f' }}>
-                {t('admin.listings.title')}
-            </Title>
+        <>
+            <div style={{ padding: '64px 24px 24px 24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+                {/* Header */}
+                <Title level={2} style={{ marginBottom: '24px', color: '#1f1f1f' }}>
+                    {t('admin.listings.title')}
+                </Title>
 
-            {/* Stats Cards */}
-            <Row gutter={16} style={{ marginBottom: '24px' }}>
-                <Col xs={24} sm={12} md={6} lg={5}>
-                    <Card>
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }}>
-                                {stats.total}
+                {/* Stats Cards */}
+                <Row gutter={16} style={{ marginBottom: '24px' }}>
+                    <Col xs={24} sm={12} md={6} lg={5}>
+                        <Card>
+                            <div style={{ textAlign: 'center' }}>
+                                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }}>
+                                    {stats.total}
+                                </div>
+                                <div style={{ color: '#8c8c8c' }}>{t('admin.listings.totalListings')}</div>
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>{t('admin.listings.totalListings')}</div>
-                        </div>
-                    </Card>
-                </Col>
-                <Col xs={24} sm={12} md={6} lg={5}>
-                    <Card>
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }}>
-                                {stats.approved}
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} md={6} lg={5}>
+                        <Card>
+                            <div style={{ textAlign: 'center' }}>
+                                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }}>
+                                    {stats.approved}
+                                </div>
+                                <div style={{ color: '#8c8c8c' }}>{t('admin.listings.approved')}</div>
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>{t('admin.listings.approved')}</div>
-                        </div>
-                    </Card>
-                </Col>
-                <Col xs={24} sm={12} md={6} lg={5}>
-                    <Card>
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#faad14' }}>
-                                {stats.featured}
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} md={6} lg={5}>
+                        <Card>
+                            <div style={{ textAlign: 'center' }}>
+                                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#faad14' }}>
+                                    {stats.featured}
+                                </div>
+                                <div style={{ color: '#8c8c8c' }}>{t('admin.listings.featured')}</div>
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>{t('admin.listings.featured')}</div>
-                        </div>
-                    </Card>
-                </Col>
-                <Col xs={24} sm={12} md={6} lg={5}>
-                    <Card>
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#ff4d4f' }}>
-                                {stats.pending}
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} md={6} lg={5}>
+                        <Card>
+                            <div style={{ textAlign: 'center' }}>
+                                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#ff4d4f' }}>
+                                    {stats.pending}
+                                </div>
+                                <div style={{ color: '#8c8c8c' }}>{t('admin.listings.pending')}</div>
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>{t('admin.listings.pending')}</div>
-                        </div>
-                    </Card>
-                </Col>
-                <Col xs={24} sm={12} md={6} lg={4}>
-                    <Card>
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }}>
-                                {stats.sold}
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} md={6} lg={4}>
+                        <Card>
+                            <div style={{ textAlign: 'center' }}>
+                                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }}>
+                                    {stats.sold}
+                                </div>
+                                <div style={{ color: '#8c8c8c' }}>{t('admin.listings.sold')}</div>
                             </div>
-                            <div style={{ color: '#8c8c8c' }}>{t('admin.listings.sold')}</div>
-                        </div>
-                    </Card>
-                </Col>
-            </Row>
+                        </Card>
+                    </Col>
+                </Row>
 
-            {/* Search and Table Card */}
-            <Card>
-                <Space orientation="vertical" style={{ width: '100%', marginBottom: '16px' }}>
-                    <Search
-                        placeholder={t('admin.listings.searchPlaceholder')}
-                        allowClear
-                        enterButton={<SearchOutlined />}
-                        size="large"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                        style={{ maxWidth: '600px' }}
+                {/* Search and Table Card */}
+                <Card>
+                    <Space orientation="vertical" style={{ width: '100%', marginBottom: '16px' }}>
+                        <Search
+                            placeholder={t('admin.listings.searchPlaceholder')}
+                            allowClear
+                            enterButton={<SearchOutlined />}
+                            size="large"
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                            style={{ maxWidth: '600px' }}
+                        />
+                    </Space>
+
+                    <Table
+                        columns={columns}
+                        dataSource={filteredListings}
+                        rowKey="id"
+                        onChange={handleTableChange}
+                        scroll={{ x: 1500 }}
+                        pagination={{
+                            pageSize: 20,
+                            showSizeChanger: true,
+                            showTotal: (total, range) =>
+                                `${range[0]}-${range[1]} ${t('of')} ${total} ${t('admin.listings.listings')}`,
+                        }}
+                        rowClassName={(record, index) =>
+                            index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+                        }
                     />
-                </Space>
-
-                <Table
-                    columns={columns}
-                    dataSource={filteredListings}
-                    rowKey="id"
-                    onChange={handleTableChange}
-                    scroll={{ x: 1500 }}
-                    pagination={{
-                        pageSize: 20,
-                        showSizeChanger: true,
-                        showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} ${t('of')} ${total} ${t('admin.listings.listings')}`,
-                    }}
-                    rowClassName={(record, index) =>
-                        index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
-                    }
-                />
-            </Card>
-        </div>
+                </Card>
+            </div>
+            <ListingFilesDrawer
+                visible={filesDrawerVisible}
+                onClose={handleCloseFilesDrawer}
+                listingId={selectedListingId}
+                isShortTerm={false}
+            />
+        </>
     );
 }

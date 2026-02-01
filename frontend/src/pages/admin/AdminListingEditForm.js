@@ -45,6 +45,7 @@ import ResidentialFields from "components/createEditFormFields/ResidentialFields
 import CommercialFields from "components/createEditFormFields/CommercialFields";
 import LandFields from "components/createEditFormFields/LandFields";
 import useFetchLocationData from "hooks/useFetchLocationData";
+import ListingFilesSection from "../../components/ListingFilesSection";
 
 const { Title } = Typography;
 
@@ -864,6 +865,10 @@ function AdminListingEditForm() {
                         </Button>
                     )}
                 </div>
+                <ListingFilesSection
+                    listingId={id}
+                    isShortTerm={false}
+                />
             </Card>
         </div>
     );
