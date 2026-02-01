@@ -33,8 +33,6 @@ urlpatterns = [
         views.ListingAvailabilityView.as_view(),
         name="listing-availability",
     ),
-
-    # Listing Files - NEW
     path("listings/<int:listing_id>/files/",
          ListingFileViewSet.as_view({'get': 'list', 'post': 'create'}),
          name='listing-files-list'),
@@ -49,8 +47,6 @@ urlpatterns = [
     path("listings/<int:listing_id>/files/<int:pk>/download/",
          ListingFileViewSet.as_view({'get': 'download'}),
          name='listing-files-download'),
-
-    # Short Term Listing Files - NEW
     path("short-term-listings/<int:listing_id>/files/",
          ShortTermListingFileViewSet.as_view(
              {'get': 'list', 'post': 'create'}),

@@ -487,11 +487,23 @@ class ShortTermListingAdmin(admin.ModelAdmin):
 class ImagesAdmin(admin.ModelAdmin):
     """Admin interface for listing images."""
     form = ImagesAdminForm
-    list_display = ("id", "listing", "is_first", "order")
+    list_display = ("id", "listing", "is_first", "order", "description")
     list_filter = ("listing", "is_first")
     search_fields = ("listing__id",)
     list_per_page = 25
     ordering = ('listing', 'order')
+
+    fieldsets = (
+        ('Image Details', {
+            'fields': (
+                'listing',
+                'url',
+                'is_first',
+                'order',
+                'description',
+            ),
+        }),
+    )
 
 
 @admin.register(Amenities)
@@ -583,6 +595,18 @@ class ShortTermImagesAdmin(admin.ModelAdmin):
     list_filter = ("listing", "is_first")
     search_fields = ("listing__id",)
     ordering = ('listing', 'order')
+
+    fieldsets = (
+        ('Image Details', {
+            'fields': (
+                'listing',
+                'url',
+                'is_first',
+                'order',
+                'description',
+            ),
+        }),
+    )
 
     def get_queryset(self, request):
         """Regular agents cannot see short-term images."""
