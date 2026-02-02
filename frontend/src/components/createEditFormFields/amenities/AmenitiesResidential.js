@@ -76,7 +76,7 @@ export const AmenitiesResidential = ({
     };
 
     return (
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+        <Space orientation="vertical" size="large" style={{ width: '100%' }}>
             {/* Property Features */}
             <Card
                 title={
@@ -85,7 +85,7 @@ export const AmenitiesResidential = ({
                         {t('createEditForm.headers.residential')}
                     </Title>
                 }
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 {renderAmenityCheckboxes(amenitiesResidentialProperty)}

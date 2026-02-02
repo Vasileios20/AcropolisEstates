@@ -381,7 +381,7 @@ const ShortTermListing = ({ setShowCookieBanner, nonEssentialConsent, ...props }
               </div>
 
               <Button
-                variant="primary"
+                bordered="primary"
                 className={btnStyles.AngryOcean}
                 onClick={handleShow}
                 style={{

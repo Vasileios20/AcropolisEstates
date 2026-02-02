@@ -44,7 +44,6 @@ import ResidentialFields from "components/createEditFormFields/ResidentialFields
 import CommercialFields from "components/createEditFormFields/CommercialFields";
 import LandFields from "components/createEditFormFields/LandFields";
 import useFetchLocationData from "hooks/useFetchLocationData";
-import ListingFilesSection from "../../components/ListingFilesSection";
 
 const { Title } = Typography;
 
@@ -303,19 +302,32 @@ function AdminListingEditForm() {
                 // Images are now optional - user can skip this step
                 break;
             case 1:
-                if (!listingData.price) newErrors.price = ["Price is required"];
-                if (!listingData.listing_owner) newErrors.listing_owner = ["Owner is required"];
+                if (!listingData.type) newErrors.type = [t("admin.listingsForms.stepErrors.typeIsRequired")];
+                if (!listingData.sale_type) newErrors.sale_type = [t("admin.listingsForms.stepErrors.saleTypeIsRequired")];
+                if (!listingData.price) newErrors.price = [t("admin.listingsForms.stepErrors.priceIsRequired")];
+                if (!listingData.listing_owner) newErrors.listing_owner = [t("admin.listingsForms.stepErrors.ownerIsRequired")];
+                if (!listingData.description) newErrors.description = [t("admin.listingsForms.stepErrors.descriptionIsRequired")];
+                if (!listingData.description_gr) newErrors.description_gr = [t("admin.listingsForms.stepErrors.descriptionIsRequired")];
                 break;
             case 2:
-                if (!listingData.region_id) newErrors.region_id = ["Region is required"];
-                if (!listingData.county_id) newErrors.county_id = ["County is required"];
-                if (!listingData.municipality_id) newErrors.municipality_id = ["Municipality is required"];
+                if (!listingData.region_id) newErrors.region_id = [t("admin.listingsForms.stepErrors.regionIsRequired")];
+                if (!listingData.county_id) newErrors.county_id = [t("admin.listingsForms.stepErrors.countyIsRequired")];
+                if (!listingData.municipality_id) newErrors.municipality_id = [t("admin.listingsForms.stepErrors.municipalityIsRequired")];
+                if (!listingData.latitude || listingData.latitude === "0.0") newErrors.latitude = [t("admin.listingsForms.stepErrors.latitudeIsRequired")];
+                if (!listingData.longitude || listingData.longitude === "0.0") newErrors.longitude = [t("admin.listingsForms.stepErrors.longitudeIsRequired")];
                 break;
             case 3:
-                if (!listingData.floor_area) newErrors.floor_area = ["Floor area is required"];
-                if (listingData.type === 'residential' && !listingData.bedrooms) {
-                    newErrors.bedrooms = ["Number of bedrooms is required"];
+                if (listingData.type === 'residential' && !listingData.floor_area) {
+                    newErrors.floor_area = [t("admin.listingsForms.stepErrors.floorAreaIsRequired")];
                 }
+                if (listingData.type === 'commercial' && !listingData.floor_area) {
+                    newErrors.floor_area = [t("admin.listingsForms.stepErrors.floorAreaIsRequired")];
+                }
+                if (listingData.type === 'land' && !listingData.land_area) {
+                    newErrors.land_area = [t("admin.listingsForms.stepErrors.landAreaIsRequired")];
+                }
+                break;
+            case 4:
                 break;
             default:
                 break;
@@ -600,7 +612,7 @@ function AdminListingEditForm() {
                     {/* Step 1: Basic Info */}
                     {currentStep === 1 && (
                         <div>
-                            <Title level={4}>{t("admin.listingsForms.basicInformation")}</Title>
+                            <Title level={4}>{t("admin.listingsForms.basicInfo")}</Title>
                             <Owner
                                 listingData={listingData}
                                 handleChange={handleChange}
@@ -652,7 +664,7 @@ function AdminListingEditForm() {
                     {/* Step 3: Technical Details & Amenities */}
                     {currentStep === 3 && (
                         <div>
-                            <Title level={4}>{t("admin.listingsForms.technicalDetailsAmenities")}</Title>
+                            <Title level={4}>{t("admin.listingsForms.technicalDetails")}</Title>
                             {listingData.type === 'residential' && (
                                 <ResidentialFields
                                     listingData={listingData}
@@ -749,10 +761,6 @@ function AdminListingEditForm() {
                         </Button>
                     )}
                 </div>
-                <ListingFilesSection
-                    listingId={id}
-                    isShortTerm={false}
-                />
             </Card>
         </div>
     );

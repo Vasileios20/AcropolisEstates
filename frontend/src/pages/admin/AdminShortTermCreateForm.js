@@ -203,31 +203,28 @@ function AdminShortTermListingCreateForm() {
 
         switch (step) {
             case 0:
-                if (uploadedImages.length === 0) {
-                    newErrors.images = ["Please upload at least one image"];
-                }
                 break;
             case 1:
-                if (!listingData.price) newErrors.price = ["Price is required"];
-                if (!listingData.listing_owner) newErrors.listing_owner = ["Owner is required"];
-                if (!listingData.title) newErrors.title = ["Title is required"];
-                if (!listingData.title_gr) newErrors.title_gr = ["Title is required"];
-                if (!listingData.description) newErrors.description = ["Description is required"];
-                if (!listingData.description_gr) newErrors.description_gr = ["Description is required"];
+                if (!listingData.price) newErrors.price = [t("admin.listingsForms.stepErrors.priceIsRequired")];
+                if (!listingData.listing_owner) newErrors.listing_owner = [t("admin.listingsForms.stepErrors.ownerIsRequired")];
+                if (!listingData.title) newErrors.title = [t("admin.listingsForms.stepErrors.titleIsRequired")];
+                if (!listingData.title_gr) newErrors.title_gr = [t("admin.listingsForms.stepErrors.titleIsRequiredGr")];
+                if (!listingData.description) newErrors.description = [t("admin.listingsForms.stepErrors.descriptionIsRequired")];
+                if (!listingData.description_gr) newErrors.description_gr = [t("admin.listingsForms.stepErrors.descriptionIsRequiredGr")];
                 break;
             case 2:
-                if (!listingData.region_id) newErrors.region_id = ["Region is required"];
-                if (!listingData.county_id) newErrors.county_id = ["County is required"];
-                if (!listingData.municipality_id) newErrors.municipality_id = ["Municipality is required"];
+                if (!listingData.region_id) newErrors.region_id = [t("admin.listingsForms.stepErrors.regionIsRequired")];
+                if (!listingData.county_id) newErrors.county_id = [t("admin.listingsForms.stepErrors.countyIsRequired")];
+                if (!listingData.municipality_id) newErrors.municipality_id = [t("admin.listingsForms.stepErrors.municipalityIsRequired")];
+                if (!listingData.latitude || listingData.latitude === "0.0") newErrors.latitude = [t("admin.listingsForms.stepErrors.latitudeIsRequired")];
+                if (!listingData.longitude || listingData.longitude === "0.0") newErrors.longitude = [t("admin.listingsForms.stepErrors.longitudeIsRequired")];
                 break;
             case 3:
-                if (!listingData.floor_area) newErrors.floor_area = ["Floor area is required"];
-                if (!listingData.max_guests) newErrors.max_guests = ["Max guests is required"];
-                if (!listingData.max_adults) newErrors.max_adults = ["Max adults is required"];
-                if (!listingData.max_children) newErrors.max_children = ["Max children is required"];
+                if (!listingData.max_guests) newErrors.max_guests = [t("admin.listingsForms.stepErrors.maxGuestsIsRequired")];
+                if (!listingData.max_adults) newErrors.max_adults = [t("admin.listingsForms.stepErrors.maxAdultsIsRequired")];
+                if (!listingData.max_children) newErrors.max_children = [t("admin.listingsForms.stepErrors.maxChildrenIsRequired")];
                 break;
             case 4:
-                // No required fields on review step
                 break;
             default:
                 break;
@@ -348,6 +345,7 @@ function AdminShortTermListingCreateForm() {
         { title: t("admin.listingsForms.basicInfo"), icon: <InfoCircleOutlined /> },
         { title: t("admin.listingsForms.location"), icon: <EnvironmentOutlined /> },
         { title: t("admin.listingsForms.details"), icon: <ToolOutlined /> },
+        { title: t("admin.listingsForms.amenities"), icon: <ToolOutlined /> },
         { title: t("admin.listingsForms.review"), icon: <CheckCircleOutlined /> },
     ];
 
@@ -593,8 +591,7 @@ function AdminShortTermListingCreateForm() {
                         <Button
                             type="primary"
                             size="large"
-                            onClick={nextStep}
-                            disabled={currentStep === 0 && uploadedImages.length === 0}
+                            onClick={nextStep}                        
                             style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                         >
                             {t("admin.listingsForms.continue")}

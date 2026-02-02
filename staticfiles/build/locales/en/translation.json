@@ -154,6 +154,7 @@
         "owner": "Owner",
         "title": "{{sale_type}} {{type}}",
         "rentalTitle": "Rental Title",
+        "rentalTitleGr": "Rental Title (Gr)",
         "description": "Description",
         "description_gr": "Περιγραφή",
         "location": "Location",
@@ -635,7 +636,15 @@
             "commercialBuildingTechnical": "Commercial Building Characteristics",
             "commercialBuildingFeatures": "Commercial Building Features",
             "type_of_use": "Type of Use",
-            "status": "Status"
+            "status": "Status",
+            "rooms": "Rooms and Areas",
+            "landMeasurements": "Land Measurements",
+            "residentialMeasurements": "Residential Measurements",
+            "commercialMeasurements": "Commercial Measurements",
+            "landCharacteristics": "Land Characteristics",
+            "residentialCharacteristics": "Residential Characteristics",
+            "commercialCharacteristics": "Commercial Characteristics",
+            "utilities": "Utilities"
         }
     },
     "sortOrder": {
@@ -921,7 +930,28 @@
             "editRental": "Edit Short-Term Rental",
             "submitRental": "Submit Short-Term Rental",
             "updateRental": "Update Short-Term Rental",
-            "uploadPropertyImages": "Upload Short-Term Rental Images"
+            "uploadPropertyImages": "Upload Short-Term Rental Images",
+            "submit": "Submit",
+            "stepErrors": {
+                "priceIsRequired": "Price is required",
+                "ownerIsRequired": "Owner is required",
+                "titleIsRequired": "Title is required",
+                "titleIsRequiredGr": "Title (Greek) is required",
+                "descriptionIsRequired": "Description is required",
+                "descriptionIsRequiredGr": "Description (Greek) is required",
+                "regionIsRequired": "Region is required",
+                "countyIsRequired": "County is required",
+                "municipalityIsRequired": "Municipality is required",
+                "latitudeIsRequired": "Latitude is required",
+                "longitudeIsRequired": "Longitude is required",
+                "maxGuestsIsRequired": "Max guests is required",
+                "maxAdultsIsRequired": "Max adults is required",
+                "maxChildrenIsRequired": "Max children is required",
+                "typeIsRequired": "Type is required",
+                "saleTypeIsRequired": "Sale type is required",
+                "floorAreaIsRequired": "Floor area is required",
+                "landAreaIsRequired": "Land area is required"
+            }
         },
         "dragAndDrop": {
             "primary": "Set as Primary Image",
@@ -1021,11 +1051,29 @@
             "searchPlaceholder": "Search Owners",
             "of": "of",
             "owners": "Owners",
-            "email": "Email"
+            "email": "Email",
+            "errorDeletingFile": "Error deleting file",
+            "phone": "Phone",
+            "uploadedFiles": "Uploaded Files",
+            "noFilesUploaded": "No files uploaded yet",
+            "deleteOwner": "Delete Owner",
+            "confirmDeleteOwner": "Confirm Owner Deletion",
+            "cannotUndo": "This action cannot be undone",
+            "close": "Close"
         }
     },
     "mapMarker": {
         "noLocation": "No Location Available",
         "description": "We apologize, but we do not have information about the location of this property. <1>Contact</1> us for more details."
+    },
+    "brochure":{
+        "title": "Property Brochure - Listing #{{id}}",
+        "downloadPdf": "Download Brochure",
+        "generatingPdf": "Generating Brochure...",
+        "loadingPdf": "Loading Brochure...",
+        "error": "Failed to generate brochure. Please try again later.",
+        "downloadSuccess": "Brochure downloaded successfully.",
+        "noDescription": "No description available for this property.",
+        "viewPdf": "View Brochure PDF"
     }
 }

@@ -153,7 +153,7 @@
         "typeSale": "Πώληση",
         "owner": "Ιδιοκτήτης",
         "title": "{{sale_type}} {{type}}",
-        "rentalTitle": "Τίτλος Βραχυχρόνιας Μίσθωσης",
+        "rentalTitle": "Τίτλος Ακινήτου (Aγγλικά)",
         "rentalTitleGr": "Τίτλος Ακινήτου",
         "description_gr": "Περιγραφή",
         "location": "Τοποθεσία",
@@ -635,7 +635,15 @@
             "commercialBuildingTechnical": "Τεχνικά Χαρακτηριστικά Κτιρίου",
             "commercialBuildingFeatures": "Χαρακτηριστικά Κτιρίου",
             "type_of_use": "Τύπος Χρήσης",
-            "status": "Κατάσταση"
+            "status": "Κατάσταση",
+            "rooms": "Δωμάτια και Χώροι",
+            "landMeasurements": "Μετρήσεις Οικοπέδου",
+            "residentialMeasurements": "Μετρήσεις Κατοικίας",
+            "commercialMeasurements": "Μετρήσεις Εμπορικού",
+            "landCharacteristics": "Χαρακτηριστικά Οικοπέδου",
+            "residentialCharacteristics": "Χαρακτηριστικά Κατοικίας",
+            "commercialCharacteristics": "Χαρακτηριστικά Εμπορικού",
+            "utilities": "Υπηρεσίες"
         }
     },
     "sortOrder": {
@@ -922,7 +930,28 @@
             "editRental": "Επεξεργασία Βραχυχρόνιας Μίσθωσης",
             "updateRental": "Ενημέρωση Βραχυχρόνιας Μίσθωσης",
             "reviewYourRentalChanges": "Ανασκόπηση των Αλλαγών σας στη Βραχυχρόνια Μίσθωση",
-            "uploadPropertyImages": "Μεταφόρτωση Εικόνων Ακινήτου"
+            "uploadPropertyImages": "Μεταφόρτωση Εικόνων Ακινήτου",
+            "submit": "Δημιουργία Ακινήτου",
+            "stepErrors": {
+                "priceIsRequired": "Η τιμή είναι υποχρεωτική",
+                "ownerIsRequired": "Ο ιδιοκτήτης είναι υποχρεωτικός",
+                "titleIsRequired": "Ο τίτλος είναι υποχρεωτικός",
+                "titleIsRequiredGr": "Ο τίτλος (Ελληνικά) είναι υποχρεωτικός",
+                "descriptionIsRequired": "Η περιγραφή είναι υποχρεωτική",
+                "descriptionIsRequiredGr": "Η περιγραφή (Ελληνικά) είναι υποχρεωτική",
+                "regionIsRequired": "Η περιφέρεια είναι υποχρεωτική",
+                "countyIsRequired": "Ο νομός είναι υποχρεωτικός",
+                "municipalityIsRequired": "Ο δήμος είναι υποχρεωτικός",
+                "latitudeIsRequired": "Το γεωγραφικό πλάτος είναι υποχρεωτικό",
+                "longitudeIsRequired": "Το γεωγραφικό μήκος είναι υποχρεωτικό",
+                "maxGuestsIsRequired": "Ο μέγιστος αριθμός επισκεπτών είναι υποχρεωτικός",
+                "maxAdultsIsRequired": "Ο μέγιστος αριθμός ενηλίκων είναι υποχρεωτικός",
+                "maxChildrenIsRequired": "Ο μέγιστος αριθμός παιδιών είναι υποχρεωτικός",
+                "typeIsRequired": "Ο τύπος ακινήτου είναι υποχρεωτικός",
+                "saleTypeIsRequired": "Ο τύπος πώλησης είναι υποχρεωτικός",
+                "floorAreaIsRequired": "Η επιφάνεια ορόφου είναι υποχρεωτική",
+                "landAreaIsRequired": "Η επιφάνεια γης είναι υποχρεωτική"
+            }
         },
         "dragAndDrop": {
             "primary": "Κύρια Εικόνα",
@@ -950,8 +979,6 @@
             "deleteConfirmMessage": "Αυτό θα διαγράψει οριστικά την εικόνα από την καταχώρηση.",
             "delete": "Διαγραφή",
             "cancel": "Ακύρωση"
-
-
         },
         "fileSelection": {
             "offer": "Προσφορά",
@@ -1038,5 +1065,15 @@
     "mapMarker": {
         "noLocation": "Ο χάρτης δεν είναι διαθέσιμος",
         "description": "Λυπούμαστε, αλλά δεν έχουμε πληροφορίες σχετικά με την τοποθεσία αυτού του ακινήτου. <1>Επικοινωνήστε</1> μαζί μας για περισσότερες λεπτομέρειες."
+    },
+    "brochure": {
+        "title": "Φυλλάδιο Ακινήτου - Καταχώρηση #{{id}}",
+        "downloadPdf": "Λήψη Φυλλαδίου",
+        "loadingPdf": "Φόρτωση Φυλλαδίου...",
+        "generatingPdf": "Δημιουργία Φυλλαδίου...",
+        "error": "Αποτυχία δημιουργίας φυλλαδίου. Παρακαλώ δοκιμάστε ξανά αργότερα.",
+        "downloadSuccess": "Το φυλλάδιο λήφθηκε με επιτυχία.",
+        "noDescription": "Δεν υπάρχει διαθέσιμη περιγραφή για αυτό το ακίνητο.",
+        "viewPdf": "Προβολή Φυλλαδίου PDF"
     }
 }

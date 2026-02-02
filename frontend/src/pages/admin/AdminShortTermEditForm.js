@@ -273,7 +273,7 @@ function AdminShortTermEditForm() {
     const countyName = lng === 'el' ? countyNameGr : countyNameEn;
     const municipalityName = lng === 'el' ? municipalityNameGr : municipalityNameEn;
 
-    
+
     const validateStep = (step) => {
         const newErrors = {};
 
@@ -282,19 +282,24 @@ function AdminShortTermEditForm() {
                 // Images are now optional - user can skip this step
                 break;
             case 1:
-                if (!listingData.price) newErrors.price = ["Price is required"];
-                if (!listingData.listing_owner) newErrors.listing_owner = ["Owner is required"];
+                if (!listingData.price) newErrors.price = [t("admin.listingsForms.stepErrors.priceIsRequired")];
+                if (!listingData.listing_owner) newErrors.listing_owner = [t("admin.listingsForms.stepErrors.ownerIsRequired")];
+                if (!listingData.title) newErrors.title = [t("admin.listingsForms.stepErrors.titleIsRequired")];
+                if (!listingData.title_gr) newErrors.title_gr = [t("admin.listingsForms.stepErrors.titleIsRequiredGr")];
+                if (!listingData.description) newErrors.description = [t("admin.listingsForms.stepErrors.descriptionIsRequired")];
+                if (!listingData.description_gr) newErrors.description_gr = [t("admin.listingsForms.stepErrors.descriptionIsRequiredGr")];
                 break;
             case 2:
-                if (!listingData.region_id) newErrors.region_id = ["Region is required"];
-                if (!listingData.county_id) newErrors.county_id = ["County is required"];
-                if (!listingData.municipality_id) newErrors.municipality_id = ["Municipality is required"];
+                if (!listingData.region_id) newErrors.region_id = [t("admin.listingsForms.stepErrors.regionIsRequired")];
+                if (!listingData.county_id) newErrors.county_id = [t("admin.listingsForms.stepErrors.countyIsRequired")];
+                if (!listingData.municipality_id) newErrors.municipality_id = [t("admin.listingsForms.stepErrors.municipalityIsRequired")];
+                if (!listingData.latitude || listingData.latitude === "0.0") newErrors.latitude = [t("admin.listingsForms.stepErrors.latitudeIsRequired")];
+                if (!listingData.longitude || listingData.longitude === "0.0") newErrors.longitude = [t("admin.listingsForms.stepErrors.longitudeIsRequired")];
                 break;
             case 3:
-                if (!listingData.floor_area) newErrors.floor_area = ["Floor area is required"];
-                if (!listingData.max_guests) newErrors.max_guests = ["Max guests is required"];
-                if (!listingData.max_adults) newErrors.max_adults = ["Max adults is required"];
-                if (!listingData.max_children) newErrors.max_children = ["Max children is required"];
+                if (!listingData.max_guests) newErrors.max_guests = [t("admin.listingsForms.stepErrors.maxGuestsIsRequired")];
+                if (!listingData.max_adults) newErrors.max_adults = [t("admin.listingsForms.stepErrors.maxAdultsIsRequired")];
+                if (!listingData.max_children) newErrors.max_children = [t("admin.listingsForms.stepErrors.maxChildrenIsRequired")];
                 break;
             default:
                 break;
@@ -650,7 +655,7 @@ function AdminShortTermEditForm() {
                                 selectedAmenities={selectedAmenities}
                             />
                             <Card
-                                bordered={false}
+                                variant={false}
                                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', marginTop: '24px' }}
                             >
                                 <ApprovedFeatureCheckbox

@@ -2,10 +2,22 @@
     background-color: rgba(77, 103, 101, 0.1);
     box-sizing: border-box;
 }
+.Listing__table {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-/* .BrochureLogo {
-    background-color: rgba(77, 103, 101, 0.1);
-} */
+.Image,
+.ImageWrapper {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.Image:hover,
+.ImageWrapper:hover {
+    transform: scale(1.02);
+}
 
 .ContainerWrapper {
    position: relative;

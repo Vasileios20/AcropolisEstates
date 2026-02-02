@@ -206,6 +206,7 @@ const LocationFields = ({
                         label={t("propertyDetails.latitude")}
                         validateStatus={errors?.latitude ? "error" : ""}
                         help={errors?.latitude?.[0]}
+                        required
                     >
                         <Input
                             type="number"
@@ -215,6 +216,7 @@ const LocationFields = ({
                             onChange={handleChange}
                             placeholder="e.g., 37.9838"
                             size="large"
+                            required
                         />
                     </Form.Item>
                 </Col>
@@ -223,6 +225,7 @@ const LocationFields = ({
                         label={t("propertyDetails.longitude")}
                         validateStatus={errors?.longitude ? "error" : ""}
                         help={errors?.longitude?.[0]}
+                        required
                     >
                         <Input
                             type="number"
@@ -232,6 +235,7 @@ const LocationFields = ({
                             onChange={handleChange}
                             placeholder="e.g., 23.7275"
                             size="large"
+                            required
                         />
                     </Form.Item>
                 </Col>
