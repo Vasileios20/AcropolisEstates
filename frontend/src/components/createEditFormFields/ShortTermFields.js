@@ -75,6 +75,7 @@ const ShortTermFields = (
                             name="max_guests"
                             value={listingData.max_guests || ""}
                             onChange={handleChange}
+                            isInvalid={!!errors?.max_guests}
                         />
                     </Form.Group>
                     {errors?.max_guests?.map((message, idx) => (
@@ -94,6 +95,7 @@ const ShortTermFields = (
                             name="max_adults"
                             value={listingData.max_adults || ""}
                             onChange={handleChange}
+                            isInvalid={!!errors?.max_adults}
                         />
                     </Form.Group>
                     {errors?.max_adults?.map((message, idx) => (
@@ -113,6 +115,7 @@ const ShortTermFields = (
                             name="max_children"
                             value={listingData.max_children || ""}
                             onChange={handleChange}
+                            isInvalid={!!errors?.max_children}
                         />
                     </Form.Group>
                     {errors?.max_children?.map((message, idx) => (

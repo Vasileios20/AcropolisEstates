@@ -75,7 +75,7 @@ export const AmenitiesCommercial = ({
     };
 
     return (
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+        <Space orientation="vertical" size="large" style={{ width: '100%' }}>
             {/* Property Features */}
             <Card
                 title={
@@ -83,7 +83,7 @@ export const AmenitiesCommercial = ({
                         {t('createEditForm.headers.commercial')}
                     </Title>
                 }
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 {renderAmenityCheckboxes(amenitiesCommercialProperty)}
@@ -96,7 +96,7 @@ export const AmenitiesCommercial = ({
                         {t('createEditForm.headers.commercialBuildingFeatures')}
                     </Title>
                 }
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 {renderAmenityCheckboxes(amenitiesCommercialBuilidingFeatures)}
@@ -109,7 +109,7 @@ export const AmenitiesCommercial = ({
                         {t('createEditForm.headers.commercialBuildingTechnical')}
                     </Title>
                 }
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 {renderAmenityCheckboxes(amenitiesCommercialBuilidingCharacteristics)}
@@ -119,7 +119,7 @@ export const AmenitiesCommercial = ({
 
             {/* Type of Use */}
             <Card
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 <AmenitiesTypeOfUse
@@ -132,7 +132,7 @@ export const AmenitiesCommercial = ({
 
             {/* Status */}
             <Card
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 <AmenitiesStatus

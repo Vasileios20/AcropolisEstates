@@ -48,7 +48,7 @@ export const AmenitiesLand = ({
     };
 
     return (
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+        <Space orientation="vertical" size="large" style={{ width: '100%' }}>
             {/* Land Features */}
             <Card
                 title={
@@ -57,7 +57,7 @@ export const AmenitiesLand = ({
                         {t('createEditForm.headers.land')}
                     </Title>
                 }
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 {renderAmenityCheckboxes(amenitiesLand)}
@@ -67,7 +67,7 @@ export const AmenitiesLand = ({
 
             {/* Type of Use */}
             <Card
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 <AmenitiesTypeOfUse
@@ -80,7 +80,7 @@ export const AmenitiesLand = ({
 
             {/* Status */}
             <Card
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 <AmenitiesStatus

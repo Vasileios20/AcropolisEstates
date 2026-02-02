@@ -23,6 +23,7 @@ const Description = ({
                 <Form.Item
                     validateStatus={errors?.description ? "error" : ""}
                     help={errors?.description?.[0]}
+                    required
                 >
                     <TextArea
                         rows={6}
@@ -30,6 +31,7 @@ const Description = ({
                         value={listingData.description}
                         onChange={handleChange}
                         placeholder={t("propertyDetails.description")}
+                        required
                     />
                 </Form.Item>
             ),
@@ -46,6 +48,7 @@ const Description = ({
                 <Form.Item
                     validateStatus={errors?.description_gr ? "error" : ""}
                     help={errors?.description_gr?.[0]}
+                    required
                 >
                     <TextArea
                         rows={6}
