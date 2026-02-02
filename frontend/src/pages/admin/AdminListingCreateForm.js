@@ -217,17 +217,32 @@ function AdminListingCreateForm() {
             case 0:
                 break;
             case 1:
-                if (!listingData.type) newErrors.type = ["Type is required"];
-                if (!listingData.sale_type) newErrors.sale_type = ["Sale type is required"];
-                if (!listingData.price) newErrors.price = ["Price is required"];
-                if (!listingData.listing_owner) newErrors.listing_owner = ["Owner is required"];
+                if (!listingData.type) newErrors.type = [t("admin.listingsForms.stepErrors.typeIsRequired")];
+                if (!listingData.sale_type) newErrors.sale_type = [t("admin.listingsForms.stepErrors.saleTypeIsRequired")];
+                if (!listingData.price) newErrors.price = [t("admin.listingsForms.stepErrors.priceIsRequired")];
+                if (!listingData.listing_owner) newErrors.listing_owner = [t("admin.listingsForms.stepErrors.ownerIsRequired")];
+                if (!listingData.description) newErrors.description = [t("admin.listingsForms.stepErrors.descriptionIsRequired")];
+                if (!listingData.description_gr) newErrors.description_gr = [t("admin.listingsForms.stepErrors.descriptionIsRequired")];
                 break;
             case 2:
-                if (!listingData.region_id) newErrors.region_id = ["Region is required"];
-                if (!listingData.county_id) newErrors.county_id = ["County is required"];
-                if (!listingData.municipality_id) newErrors.municipality_id = ["Municipality is required"];
+                if (!listingData.region_id) newErrors.region_id = [t("admin.listingsForms.stepErrors.regionIsRequired")];
+                if (!listingData.county_id) newErrors.county_id = [t("admin.listingsForms.stepErrors.countyIsRequired")];
+                if (!listingData.municipality_id) newErrors.municipality_id = [t("admin.listingsForms.stepErrors.municipalityIsRequired")];
+                if (!listingData.latitude || listingData.latitude === "0.0") newErrors.latitude = [t("admin.listingsForms.stepErrors.latitudeIsRequired")];
+                if (!listingData.longitude || listingData.longitude === "0.0") newErrors.longitude = [t("admin.listingsForms.stepErrors.longitudeIsRequired")];
                 break;
             case 3:
+                if (listingData.type === 'residential' && !listingData.floor_area) {
+                    newErrors.floor_area = [t("admin.listingsForms.stepErrors.floorAreaIsRequired")];
+                }
+                if (listingData.type === 'commercial' && !listingData.floor_area) {
+                    newErrors.floor_area = [t("admin.listingsForms.stepErrors.floorAreaIsRequired")];
+                }
+                if (listingData.type === 'land' && !listingData.land_area) {
+                    newErrors.land_area = [t("admin.listingsForms.stepErrors.landAreaIsRequired")];
+                }
+                break;
+            case 4:
                 break;
             default:
                 break;
@@ -442,11 +457,11 @@ function AdminListingCreateForm() {
                             <Owner
                                 listingData={listingData}
                                 handleChange={handleChange}
-                                owners={owners}
-                                errors={errors}
-                                show={show}
                                 handleShow={handleShow}
                                 handleClose={handleClose}
+                                show={show}
+                                owners={owners}
+                                errors={errors}
                             />
                             <TypeSaleSub
                                 listingData={listingData}
