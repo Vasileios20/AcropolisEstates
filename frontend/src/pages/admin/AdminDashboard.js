@@ -210,21 +210,21 @@ const AdminDashboard = () => {
                                     title={t('propertyDetails.types.residential')}
                                     value={stats.residential}
                                     styles={{ value: { color: '#1890ff' } }}
-                                        />
+                                />
                             </Col>
                             <Col span={8}>
                                 <Statistic
                                     title={t('propertyDetails.types.commercial')}
                                     value={stats.commercial}
                                     styles={{ value: { color: '#52c41a' } }}
-                                        />
+                                />
                             </Col>
                             <Col span={8}>
                                 <Statistic
                                     title={t('propertyDetails.types.land')}
                                     value={stats.land}
                                     styles={{ value: { color: '#faad14' } }}
-                                        />
+                                />
                             </Col>
                         </Row>
                     </Card>
@@ -265,21 +265,21 @@ const AdminDashboard = () => {
                                     title={t('admin.dashboard.total')}
                                     value={shortTermStats.total}
                                     styles={{ value: { color: '#fa8c16' } }}
-                                        />
+                                />
                             </Col>
                             <Col span={8}>
                                 <Statistic
                                     title={t('admin.dashboard.approved')}
                                     value={shortTermStats.approved}
                                     styles={{ value: { color: '#52c41a' } }}
-                                        />
+                                />
                             </Col>
                             <Col span={8}>
                                 <Statistic
                                     title={t('admin.dashboard.pending')}
                                     value={shortTermStats.pending}
                                     styles={{ value: { color: '#ff4d4f' } }}
-                                        />
+                                />
                             </Col>
                         </Row>
                     </Card>
@@ -296,14 +296,14 @@ const AdminDashboard = () => {
                                     title={t('admin.dashboard.totalBookings')}
                                     value={bookingsStats.total}
                                     styles={{ value: { color: '#722ed1' } }}
-                                        />
+                                />
                             </Col>
                             <Col span={12}>
                                 <Statistic
                                     title={t('admin.dashboard.pendingConfirmation')}
                                     value={bookingsStats.pending}
                                     styles={{ value: { color: '#ff4d4f' } }}
-                                        />
+                                />
                             </Col>
                         </Row>
                     </Card>
@@ -324,16 +324,6 @@ const AdminDashboard = () => {
                             style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                         >
                             {t('admin.dashboard.addNewListing')}
-                        </Button>
-                    </Link>
-                    <Link to="/frontend/admin/listings/owners/create">
-                        <Button
-                            type="primary"
-                            size="large"
-                            icon={<UserOutlined />}
-                            style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
-                        >
-                            {t('admin.dashboard.addNewOwner')}
                         </Button>
                     </Link>
                     <Link to="/frontend/admin/listings">

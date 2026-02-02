@@ -156,7 +156,7 @@ const SortableImageItem = ({
                         />
                     </div>
                 </div>
-                <Space direction="vertical" size="small">
+                <Space orientation="vertical" size="small">
                     {index > 0 && (
                         <Button
                             size="small"
