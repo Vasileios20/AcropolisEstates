@@ -6,7 +6,9 @@ import {
     EyeOutlined,
     CheckCircleOutlined,
     StarOutlined,
-    FolderOpenOutlined
+    FolderOpenOutlined,
+    EditOutlined,
+    FileOutlined
 } from '@ant-design/icons';
 import useFetchAllListings from '../../hooks/useFetchAllListings';
 import useFetchLocationData from '../../hooks/useFetchLocationData';
@@ -16,6 +18,7 @@ import Forbidden403 from '../errors/Forbidden403';
 import { useTranslation } from "react-i18next";
 import Asset from '../../components/Asset';
 import ListingFilesDrawer from '../../components/ListingFilesDrawer';
+import BrochureModal from 'components/BrochureModal';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -29,12 +32,19 @@ export default function AdminListingsAntD() {
     const [filesDrawerVisible, setFilesDrawerVisible] = useState(false);
     const [selectedListingId, setSelectedListingId] = useState(null);
 
+    const [brochureModalVisible, setBrochureModalVisible] = useState(false);
+
     const { regionsData } = useFetchLocationData();
     const { listings, hasLoaded } = useFetchAllListings();
     const [searchText, setSearchText] = useState('');
     const [filteredInfo, setFilteredInfo] = useState({});
     const [sortedInfo, setSortedInfo] = useState({});
     const history = useHistory();
+
+    const handleOpenBrochure = (listingId) => {
+        setSelectedListingId(listingId);
+        setBrochureModalVisible(true);
+    };
 
     // Build municipality lookup
     const allMunicipalities = useMemo(() => {
@@ -306,16 +316,26 @@ export default function AdminListingsAntD() {
                         )}
                     </Button>
 
-                    {/* ✅ EXISTING VIEW BUTTON */}
                     <Button
                         type="primary"
                         icon={<EyeOutlined />}
                         onClick={() => history.push(`/listings/${record.id}`)}
                         size="small"
                         style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
-                    >
-                        {t('propertyDetails.actions.viewListing')}
-                    </Button>
+                    />
+                    <Button
+                        type="primary"
+                        icon={<EditOutlined />}
+                        onClick={() => history.push(`/frontend/admin/listings/${record.id}/edit`)}
+                        size="small"
+                        style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
+                    />
+                    <Button
+                        icon={<FileOutlined />}
+                        onClick={() => handleOpenBrochure(record.id)}
+                        title={t('brochure.viewPdf')}
+                        size="small"
+                    />
                 </Space>
             ),
         },
@@ -437,6 +457,12 @@ export default function AdminListingsAntD() {
                 onClose={handleCloseFilesDrawer}
                 listingId={selectedListingId}
                 isShortTerm={false}
+            />
+            <BrochureModal
+                listingId={selectedListingId}
+                visible={brochureModalVisible}
+                onClose={() => setBrochureModalVisible(false)}
+                endpoint="listings"
             />
         </>
     );
