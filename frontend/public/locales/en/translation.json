@@ -926,6 +926,7 @@
             "editListing": "Edit Property",
             "updateListing": "Update Property",
             "reviewYourChanges": "Review Your Changes",
+            "reviewYourListing": "Review Your Property",
             "createNewRental": "Create New Short-Term Rental",
             "editRental": "Edit Short-Term Rental",
             "submitRental": "Submit Short-Term Rental",
@@ -1034,6 +1035,14 @@
             "noFilesUploadedYet": "No files uploaded yet"
         },
         "owner": {
+            "title": "Owner Management",
+            "ownerDetails": "Owner Details",
+            "addOwner": "Add Owner",
+            "editOwner": "Edit Owner",
+            "updateOwner": "Update Owner",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "phone2": "Secondary Phone",
             "name": "Name",
             "contact": "Contact",
             "secondaryPhone": "Secondary Phone",
@@ -1059,7 +1068,9 @@
             "deleteOwner": "Delete Owner",
             "confirmDeleteOwner": "Confirm Owner Deletion",
             "cannotUndo": "This action cannot be undone",
-            "close": "Close"
+            "close": "Close",
+            "cancel": "Cancel",
+            "fileUploadInstructions": "Upload files related to the owner, such as contracts, identification documents, or other relevant information."
         }
     },
     "mapMarker": {
