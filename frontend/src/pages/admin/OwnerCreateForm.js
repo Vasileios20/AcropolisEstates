@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import styles from '../../styles/Admin.module.css';
 import btnStyles from '../../styles/Button.module.css';
+import { useTranslation } from 'react-i18next';
 
 const OwnerCreateForm = () => {
     const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const OwnerCreateForm = () => {
     });
     const [files, setFiles] = useState([]); // State for multiple files
     const history = useHistory();
+    const { t } = useTranslation();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -64,116 +66,116 @@ const OwnerCreateForm = () => {
 
         try {
             const response = await axiosReq.post('/listings/owners/', data);
-            history.location.pathname === '/frontend/admin/listings/owners/create' ? history.push(`/frontend/admin/listings/owners/${response.data.id}`) : history.go(0); ;
+            history.location.pathname === '/frontend/admin/listings/owners/create' ? history.push(`/frontend/admin/listings/owners/${response.data.id}`) : history.go(0);;
         } catch (error) {
             console.error('Error adding owner:', error.response?.data || error.message);
         }
     };
 
     return (
-       
-                <Form onSubmit={handleSubmit} className="mx-auto border shadow p-4 rounded">
-                    <p className="text-center h3">Add Owner</p>
-                    <Form.Group controlId="formFirstName">
-                        <Form.Label>First Name</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="first_name"
-                            value={formData.first_name}
-                            onChange={handleChange}
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formLastName">
-                        <Form.Label>Last Name</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="last_name"
-                            value={formData.last_name}
-                            onChange={handleChange}
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formEmail">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formPhone">
-                        <Form.Label>Phone</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formPhone2">
-                        <Form.Label>Phone 2</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="phone_2"
-                            value={formData.phone_2}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
 
-                    <Form.Group controlId="formNotes">
-                        <Form.Label>Notes</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            name="notes"
-                            value={formData.notes || ''}
-                            onChange={handleChange}
-                            rows={3}
-                        />
-                    </Form.Group>
+        <Form onSubmit={handleSubmit} className="mx-auto border shadow p-4 rounded">
+            <p className="text-center h3">{t("admin.owner.addOwner")}</p>
+            <Form.Group controlId="formFirstName">
+                <Form.Label>{t("admin.owner.firstName")}</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="first_name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    required
+                />
+            </Form.Group>
+            <Form.Group controlId="formLastName">
+                <Form.Label>{t("admin.owner.lastName")}</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    required
+                />
+            </Form.Group>
+            <Form.Group controlId="formEmail">
+                <Form.Label>{t("admin.owner.email")}</Form.Label>
+                <Form.Control
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                />
+            </Form.Group>
+            <Form.Group controlId="formPhone">
+                <Form.Label>{t("admin.owner.phone")}</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                />
+            </Form.Group>
+            <Form.Group controlId="formPhone2">
+                <Form.Label>{t("admin.owner.phone2")}</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="phone_2"
+                    value={formData.phone_2}
+                    onChange={handleChange}
+                />
+            </Form.Group>
 
-                    <Form.Group controlId="formFileUpload" className="mt-3">
-                        <Form.Label>
-                            <div className={styles.FileUploadContainer}
-                                onDragOver={handleDragOver}
-                                onDrop={handleDrop}
-                            >
-                                <Form.Control
-                                    type="file"
-                                    name="files"
-                                    onChange={handleFileChange}
-                                    multiple
-                                    className={styles.FileInput}
-                                />
-                                <div className={styles.FileUploadLabel}>
-                                    <span>Click to select files or drag and drop here</span>
-                                </div>
-                            </div>
-                        </Form.Label>
-                        {files.length > 0 && (
-                            <ListGroup className={styles.FileList}>
-                                {files.map((file, index) => (
-                                    <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
-                                        {file.name}
-                                        <Button
-                                            variant="danger"
-                                            size="sm"
-                                            onClick={() => handleFileRemove(index)}
-                                        >
-                                            Remove
-                                        </Button>
-                                    </ListGroup.Item>
-                                ))}
-                            </ListGroup>
-                        )}
-                    </Form.Group>
-                    <Button  type="submit" className={`${btnStyles.AngryOcean} ${btnStyles.Button}`}>
-                        Add Owner
-                    </Button>
-                </Form>
-        
+            <Form.Group controlId="formNotes">
+                <Form.Label>{t("admin.owner.notes")}</Form.Label>
+                <Form.Control
+                    as="textarea"
+                    name="notes"
+                    value={formData.notes || ''}
+                    onChange={handleChange}
+                    rows={3}
+                />
+            </Form.Group>
+
+            <Form.Group controlId="formFileUpload" className="mt-3">
+                <Form.Label>
+                    <div className={styles.FileUploadContainer}
+                        onDragOver={handleDragOver}
+                        onDrop={handleDrop}
+                    >
+                        <Form.Control
+                            type="file"
+                            name="files"
+                            onChange={handleFileChange}
+                            multiple
+                            className={styles.FileInput}
+                        />
+                        <div className={styles.FileUploadLabel}>
+                            <span>{t("admin.owner.fileUploadInstructions")}</span>
+                        </div>
+                    </div>
+                </Form.Label>
+                {files.length > 0 && (
+                    <ListGroup className={styles.FileList}>
+                        {files.map((file, index) => (
+                            <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
+                                {file.name}
+                                <Button
+                                    variant="danger"
+                                    size="sm"
+                                    onClick={() => handleFileRemove(index)}
+                                >
+                                    {t("admin.owner.remove")}
+                                </Button>
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
+                )}
+            </Form.Group>
+            <Button type="submit" className={`${btnStyles.AngryOcean} ${btnStyles.Button}`}>
+                {t("admin.owner.addOwner")}
+            </Button>
+        </Form>
+
     );
 };
 

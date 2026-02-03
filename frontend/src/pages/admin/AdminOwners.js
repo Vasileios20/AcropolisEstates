@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Table, Input, Button, Typography, Card, Space, Tag } from 'antd';
+import { Table, Input, Button, Typography, Card, Space, Tag, Modal } from 'antd';
 import {
     SearchOutlined,
     EyeOutlined,
@@ -14,6 +14,7 @@ import Forbidden403 from '../errors/Forbidden403';
 import { useTranslation } from 'react-i18next';
 import useFetchOwners from '../../hooks/useFetchOwners';
 import Asset from '../../components/Asset';
+import OwnerCreateForm from 'pages/admin/OwnerCreateForm';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -28,6 +29,10 @@ const AdminOwners = () => {
     const [searchText, setSearchText] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(15);
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
 
     // Filter owners based on search
     const filteredOwners = useMemo(() => {
@@ -161,11 +166,21 @@ const AdminOwners = () => {
                     type="primary"
                     icon={<PlusOutlined />}
                     size="large"
-                    onClick={() => history.push('/frontend/admin/listings/owners/create')}
+                    onClick={handleShow}
                     style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                 >
                     {t('admin.owner.addNewOwner')}
                 </Button>
+                <Modal
+                    title={t('admin.owner.addOwner')}
+                    open={show}
+                    onCancel={handleClose}
+                    footer={null}
+                    centered
+                    width={600}
+                >
+                    <OwnerCreateForm />
+                </Modal>
             </div>
 
             {/* Stats Card */}

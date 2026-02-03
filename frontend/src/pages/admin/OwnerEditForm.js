@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import styles from '../../styles/Admin.module.css';
 import btnStyles from '../../styles/Button.module.css';
+import { useTranslation } from 'react-i18next';
 
 const OwnerEditForm = () => {
     const { id } = useParams(); // Get owner ID from the URL
@@ -22,6 +23,7 @@ const OwnerEditForm = () => {
     const [existingFiles, setExistingFiles] = useState([]); // For files from the server
     const [newFiles, setNewFiles] = useState([]); // For newly added files
     const history = useHistory();
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchOwnerData = async () => {
@@ -113,9 +115,9 @@ const OwnerEditForm = () => {
         <Container className="mt-5 pt-5">
             <Row>
                 <Form onSubmit={handleSubmit} className="col-6 mx-auto border shadow p-4 rounded">
-                    <p className="text-center h3">Edit Owner</p>
+                    <p className="text-center h3">{t("admin.owner.editOwner")}</p>
                     <Form.Group controlId="formFirstName">
-                        <Form.Label>First Name</Form.Label>
+                        <Form.Label>{t("admin.owner.firstName")}</Form.Label>
                         <Form.Control
                             type="text"
                             name="first_name"
@@ -125,7 +127,7 @@ const OwnerEditForm = () => {
                         />
                     </Form.Group>
                     <Form.Group controlId="formLastName">
-                        <Form.Label>Last Name</Form.Label>
+                        <Form.Label>{t("admin.owner.lastName")}</Form.Label>
                         <Form.Control
                             type="text"
                             name="last_name"
@@ -135,7 +137,7 @@ const OwnerEditForm = () => {
                         />
                     </Form.Group>
                     <Form.Group controlId="formEmail">
-                        <Form.Label>Email</Form.Label>
+                        <Form.Label>{t("admin.owner.email")}</Form.Label>
                         <Form.Control
                             type="email"
                             name="email"
@@ -145,7 +147,7 @@ const OwnerEditForm = () => {
                         />
                     </Form.Group>
                     <Form.Group controlId="formPhone">
-                        <Form.Label>Phone</Form.Label>
+                        <Form.Label>{t("admin.owner.phone")}</Form.Label>
                         <Form.Control
                             type="text"
                             name="phone"
@@ -155,7 +157,7 @@ const OwnerEditForm = () => {
                         />
                     </Form.Group>
                     <Form.Group controlId="formPhone2">
-                        <Form.Label>Phone 2</Form.Label>
+                        <Form.Label>{t("admin.owner.phone2")}</Form.Label>
                         <Form.Control
                             type="text"
                             name="phone_2"
@@ -165,7 +167,7 @@ const OwnerEditForm = () => {
                     </Form.Group>
 
                     <Form.Group controlId="formNotes">
-                        <Form.Label>Notes</Form.Label>
+                        <Form.Label>{t("admin.owner.notes")}</Form.Label>
                         <Form.Control
                             as="textarea"
                             name="notes"
@@ -190,7 +192,7 @@ const OwnerEditForm = () => {
                                     className={styles.FileInput}
                                 />
                                 <div className={styles.FileUploadLabel}>
-                                    <span>Click to select files or drag and drop here</span>
+                                    <span>{t("admin.owner.fileUploadInstructions")}</span>
                                 </div>
                             </div>
                         </Form.Label>
@@ -208,7 +210,7 @@ const OwnerEditForm = () => {
                                             size="sm"
                                             onClick={() => handleDeleteFile(file.id)}
                                         >
-                                            Delete
+                                            {t("admin.owner.delete")}
                                         </Button>
                                     </ListGroup.Item>
                                 ))}
@@ -229,7 +231,7 @@ const OwnerEditForm = () => {
                                             size="sm"
                                             onClick={() => handleRemoveNewFile(index)}
                                         >
-                                            Remove
+                                            {t("admin.owner.remove")}
                                         </Button>
                                     </ListGroup.Item>
                                 ))}
@@ -241,7 +243,7 @@ const OwnerEditForm = () => {
                         type="submit"
                         className={`${btnStyles.AngryOcean} ${btnStyles.Button} mt-3`}
                     >
-                        Update Owner
+                        {t("admin.owner.updateOwner")}
                     </Button>
                 </Form>
             </Row>

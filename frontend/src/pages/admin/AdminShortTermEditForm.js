@@ -113,7 +113,10 @@ function AdminShortTermEditForm() {
     const { t, i18n } = useTranslation();
     const lng = i18n?.language;
     const { owners, hasLoaded: ownersLoaded } = useFetchOwners();
-
+    const owner = owners.reduce((map, owner) => {
+        map[owner.id] = `${owner.first_name} ${owner.last_name}`;
+        return map;
+    }, {});
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -189,6 +192,13 @@ function AdminShortTermEditForm() {
         };
         handleMount();
     }, [id, history]);
+
+    const handleChecked = (e) => {
+        setListingData({
+            ...listingData,
+            [e.target.name]: e.target.checked,
+        });
+    };
 
     const handleChange = (e) => {
         setListingData({
@@ -557,6 +567,7 @@ function AdminShortTermEditForm() {
                             <Title level={4}>{t("admin.listingsForms.basicInfo")}</Title>
                             <AgentOwner
                                 listingData={listingData}
+                                handleChecked={handleChecked}
                                 handleChange={handleChange}
                                 handleShow={handleShow}
                                 handleClose={handleClose}
@@ -661,6 +672,7 @@ function AdminShortTermEditForm() {
                                 <ApprovedFeatureCheckbox
                                     listingData={listingData}
                                     handleChange={handleChange}
+                                    handleChecked={handleChecked}
                                     errors={errors}
                                     t={t}
                                 />
@@ -688,7 +700,7 @@ function AdminShortTermEditForm() {
                                     <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(1)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.maxGuests")}>{listingData.max_guests || '-'}</Descriptions.Item>
-                                <Descriptions.Item label={t("propertyDetails.owner")}>{listingData.listing_owner || '-'}</Descriptions.Item>
+                                <Descriptions.Item label={t("propertyDetails.owner")}>{owner[listingData.listing_owner] || '-'}</Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.location")} span={2}>
                                     {t("regionOptions.region")}: {regionName}, {t("regionOptions.county")}: {countyName}, {t("regionOptions.municipality")}: {municipalityName || '-'}
                                     <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(2)}>{t("admin.listingsForms.edit")}</Button>
