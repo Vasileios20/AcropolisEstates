@@ -44,6 +44,10 @@ import ResidentialFields from "components/createEditFormFields/ResidentialFields
 import CommercialFields from "components/createEditFormFields/CommercialFields";
 import LandFields from "components/createEditFormFields/LandFields";
 import useFetchLocationData from "hooks/useFetchLocationData";
+import { AmenitiesResidential } from "components/createEditFormFields/amenities/AmenitiesResidential";
+import { AmenitiesCommercial } from "components/createEditFormFields/amenities/AmenitiesCommercial";
+import { AmenitiesLand } from "components/createEditFormFields/amenities/AmenitiesLand";
+import { ApprovedFeatureCheckbox } from "components/createEditFormFields/ApprovedFeatureCheckbox";
 
 const { Title } = Typography;
 
@@ -117,6 +121,10 @@ function AdminListingEditForm() {
     const { t, i18n } = useTranslation();
     const lng = i18n?.language;
     const { owners, hasLoaded: ownersLoaded } = useFetchOwners();
+    const owner = owners.reduce((map, owner) => {
+        map[owner.id] = `${owner.first_name} ${owner.last_name}`;
+        return map;
+    }, {});
 
     useEffect(() => {
         const handleMount = async () => {
@@ -214,6 +222,13 @@ function AdminListingEditForm() {
         };
         handleMount();
     }, [id, history]);
+
+    const handleChecked = (e) => {
+        setListingData({
+            ...listingData,
+            [e.target.name]: e.target.checked,
+        });
+    };
 
     const handleChange = (e) => {
         setListingData({
@@ -530,6 +545,7 @@ function AdminListingEditForm() {
         { title: t("admin.listingsForms.basicInfo"), icon: <InfoCircleOutlined /> },
         { title: t("admin.listingsForms.location"), icon: <EnvironmentOutlined /> },
         { title: t("admin.listingsForms.details"), icon: <ToolOutlined /> },
+        { title: t("admin.listingsForms.amenities"), icon: <SaveOutlined /> },
         { title: t("admin.listingsForms.review"), icon: <CheckCircleOutlined /> },
     ];
 
@@ -616,6 +632,7 @@ function AdminListingEditForm() {
                             <Owner
                                 listingData={listingData}
                                 handleChange={handleChange}
+                                handleChecked={handleChecked}
                                 owners={owners}
                                 errors={errors}
                             />
@@ -701,8 +718,47 @@ function AdminListingEditForm() {
                         </div>
                     )}
 
-                    {/* Step 4: Review */}
+                    {/* Step 4: Amenities */}
                     {currentStep === 4 && (
+                        <div>
+                            <Title level={4}>{t("admin.listingsForms.technicalDetails")}</Title>
+                            {listingData.type === 'residential' && (
+                                <AmenitiesResidential
+                                    handleAmenityChange={handleAmenityChange}
+                                    selectedAmenities={selectedAmenities}
+                                    create={true}
+                                />
+                            )}
+                            {listingData.type === 'commercial' && (
+                                <AmenitiesCommercial
+                                    handleAmenityChange={handleAmenityChange}
+                                    selectedAmenities={selectedAmenities}
+                                    create={true}
+                                />
+                            )}
+                            {listingData.type === 'land' && (
+                                <AmenitiesLand
+                                    handleAmenityChange={handleAmenityChange}
+                                    selectedAmenities={selectedAmenities}
+                                    create={true}
+                                />
+                            )}
+                            <Card
+                                variant={false}
+                                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', marginTop: '24px' }}
+                            >
+                                <ApprovedFeatureCheckbox
+                                    listingData={listingData}
+                                    handleChecked={handleChecked}
+                                    errors={errors}
+                                    t={t}
+                                />
+                            </Card>
+                        </div>
+                    )}
+
+                    {/* Step 5: Review */}
+                    {currentStep === 5 && (
                         <div>
                             <Title level={4} style={{ textAlign: 'center' }}>{t("admin.listingsForms.reviewYourChanges")}</Title>
                             <Descriptions bordered column={2} style={{ marginTop: '24px' }}>
@@ -718,9 +774,9 @@ function AdminListingEditForm() {
                                     {listingData.currency} {listingData.price || '-'}
                                     <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(1)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
-                                <Descriptions.Item label={t("propertyDetails.owner")}>{listingData.listing_owner || '-'}</Descriptions.Item>
+                                <Descriptions.Item label={t("propertyDetails.owner")}>{owner[listingData.listing_owner] || '-'}</Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.location")} span={2}>
-                                    {t("propertyDetails.region")}: {regionName}, {t("regionOptions.county")}: {countyName}, {t("regionOptions.municipality")}: {municipalityName || '-'}
+                                    {t("regionOptions.region")}: {regionName}, {t("regionOptions.county")}: {countyName}, {t("regionOptions.municipality")}: {municipalityName || '-'}
                                     <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(2)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
                                 <Descriptions.Item label={t("amenities.title")} span={2}>
@@ -739,7 +795,7 @@ function AdminListingEditForm() {
                         <Button size="large" icon={<CloseOutlined />} onClick={() => history.push(`/listings/${id}`)}>{t("admin.listingsForms.cancel")}</Button>
                     </Space>
 
-                    {currentStep < 4 ? (
+                    {currentStep < 5 ? (
                         <Button
                             type="primary"
                             size="large"

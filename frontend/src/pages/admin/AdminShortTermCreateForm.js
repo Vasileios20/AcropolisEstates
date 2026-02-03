@@ -122,6 +122,13 @@ function AdminShortTermListingCreateForm() {
 
     const [errors, setErrors] = useState({});
 
+    const handleChecked = (e) => {
+        setListingData({
+            ...listingData,
+            [e.target.name]: e.target.checked,
+        });
+    };
+
     const handleChange = (e) => {
         setListingData({
             ...listingData,
@@ -533,12 +540,12 @@ function AdminShortTermListingCreateForm() {
 
                                 />
                                 <Card
-                                    bordered={false}
+                                    variant={false}
                                     style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', marginTop: '24px' }}
                                 >
                                     <ApprovedFeatureCheckbox
                                         listingData={listingData}
-                                        handleChange={handleChange}
+                                        handleChecked={handleChecked}
                                         errors={errors}
                                         t={t}
                                     />
@@ -591,7 +598,7 @@ function AdminShortTermListingCreateForm() {
                         <Button
                             type="primary"
                             size="large"
-                            onClick={nextStep}                        
+                            onClick={nextStep}
                             style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
                         >
                             {t("admin.listingsForms.continue")}

@@ -99,7 +99,7 @@ export const AmenitiesResidential = ({
                         {t('createEditForm.headers.residentialBuildingFeatures')}
                     </Title>
                 }
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 {renderAmenityCheckboxes(amenitiesResidentialBuilidingFeatures)}
@@ -113,7 +113,7 @@ export const AmenitiesResidential = ({
                         {t('createEditForm.headers.residentialBuildingTechnical')}
                     </Title>
                 }
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 {renderAmenityCheckboxes(amenitiesResidentialBuilidingCharacteristics)}
@@ -123,7 +123,7 @@ export const AmenitiesResidential = ({
 
             {/* Type of Use */}
             <Card
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 <AmenitiesTypeOfUse
@@ -136,7 +136,7 @@ export const AmenitiesResidential = ({
 
             {/* Status */}
             <Card
-                bordered={false}
+                variant={false}
                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             >
                 <AmenitiesStatus

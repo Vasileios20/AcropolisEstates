@@ -70,7 +70,10 @@ function AdminListingCreateForm() {
 
     // Fetch owners data
     const { owners, hasLoaded: ownersLoaded } = useFetchOwners();
-
+    const owner = owners.reduce((map, owner) => {
+        map[owner.id] = `${owner.first_name} ${owner.last_name}`;
+        return map;
+    }, {});
     // Location data
     const { regionsData } = useFetchLocationData();
 
@@ -132,6 +135,13 @@ function AdminListingCreateForm() {
     });
 
     const [errors, setErrors] = useState({});
+
+    const handleChecked = (e) => {
+        setListingData({
+            ...listingData,
+            [e.target.name]: e.target.checked,
+        });
+    };
 
     const handleChange = (e) => {
         setListingData({
@@ -567,12 +577,12 @@ function AdminListingCreateForm() {
                                 />
                             )}
                             <Card
-                                bordered={false}
+                                variant={false}
                                 style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', marginTop: '24px' }}
                             >
                                 <ApprovedFeatureCheckbox
                                     listingData={listingData}
-                                    handleChange={handleChange}
+                                    handleChecked={handleChecked}
                                     errors={errors}
                                     t={t}
                                 />
@@ -586,7 +596,7 @@ function AdminListingCreateForm() {
                             <Title level={4} style={{ textAlign: 'center' }}>{t("admin.listingsForms.reviewYourListing")}</Title>
                             <Descriptions bordered column={2} style={{ marginTop: '24px' }}>
                                 <Descriptions.Item label={t("admin.listingsForms.images")} span={2}>
-                                    <Tag color="blue">{uploadedImages.length} images</Tag>
+                                    <Tag color="blue">{uploadedImages.length} {t("admin.listingsForms.images")}</Tag>
                                     <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(0)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.type")}>{listingData.type || '-'}</Descriptions.Item>
@@ -595,9 +605,9 @@ function AdminListingCreateForm() {
                                     {listingData.currency} {listingData.price || '-'}
                                     <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(1)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
-                                <Descriptions.Item label={t("propertyDetails.owner")}>{listingData.listing_owner || '-'}</Descriptions.Item>
+                                <Descriptions.Item label={t("propertyDetails.owner")}>{owner[listingData.listing_owner] || '-'}</Descriptions.Item>
                                 <Descriptions.Item label={t("propertyDetails.location")} span={2}>
-                                    {t("propertyDetails.region")}: {regionName}, {t("regionOptions.county")}: {countyName}, {t("regionOptions.municipality")}: {municipalityName || '-'}
+                                    {t("regionOptions.region")}: {regionName}, {t("regionOptions.county")}: {countyName}, {t("regionOptions.municipality")}: {municipalityName || '-'}
                                     <Button type="link" size="small" icon={<EditOutlined />} onClick={() => goToStep(2)}>{t("admin.listingsForms.edit")}</Button>
                                 </Descriptions.Item>
                                 <Descriptions.Item label={t("amenities.title")} span={2}>
