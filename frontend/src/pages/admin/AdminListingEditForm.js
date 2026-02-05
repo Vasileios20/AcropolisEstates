@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 
 import styles from "../../styles/ListingCreateEditForm.module.css";
-import { axiosReq } from "../../api/axiosDefaults";
+import { axiosReq, axiosRes } from "../../api/axiosDefaults";
 import { useRedirect } from "../../hooks/useRedirect";
 import useUserStatus from "../../hooks/useUserStatus";
 import useFetchOwners from "hooks/useFetchOwners";
@@ -18,7 +18,8 @@ import {
     Typography,
     Descriptions,
     Tag,
-    Spin
+    Spin,
+    Popconfirm
 } from 'antd';
 import {
     PictureOutlined,
@@ -29,7 +30,8 @@ import {
     SaveOutlined,
     CloseOutlined,
     EditOutlined,
-    LockOutlined
+    LockOutlined,
+    DeleteOutlined,
 } from '@ant-design/icons';
 import { App } from 'antd';
 
@@ -396,6 +398,15 @@ function AdminListingEditForm() {
         </Form.Group>
     );
 
+    const handleDelete = async () => {
+        try {
+            await axiosRes.delete(`/listings/${id}/`);
+            history.push("/listings");
+        } catch (err) {
+            // console.log(err);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -608,6 +619,17 @@ function AdminListingEditForm() {
                     {/* Step 0: Images */}
                     {currentStep === 0 && (
                         <div>
+                            <Popconfirm
+                                title={t("admin.listingsForms.confirmDelete")}
+                                onConfirm={handleDelete}
+                                okText={t("admin.listingsForms.yes")}
+                                cancelText={t("admin.listingsForms.no")}
+                            >
+                                <Button danger icon={<DeleteOutlined />} size="small"
+                                    style={{ marginLeft: 'auto', display: 'block' , padding: '4px 10px' }}>
+                                    {t("admin.listingsForms.deleteListing")}
+                                </Button>
+                            </Popconfirm>
                             <Title level={4}>{t("admin.listingsForms.propertyImagesOptional")}</Title>
 
                             {/* New Images Upload */}

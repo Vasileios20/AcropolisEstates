@@ -52,11 +52,8 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
     const description = lng === "el" ? props.description_gr : props.description;
     const { regionsData } = useFetchLocationData();
 
-    // Safe image access with fallback
-    const getImage = (index) => {
-        return images?.[index]?.url || null;
-    };
-
+    // Safe image access
+    const getImage = (index) => images?.[index]?.url || null;
     const primaryImage = getImage(0);
     const secondaryImage1 = getImage(1);
     const secondaryImage2 = getImage(2);
@@ -71,7 +68,7 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
     const getMapImageUrl = (latitude, longitude) => {
         const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
         if (!latitude || !longitude || !API_KEY) return null;
-        return `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=13&size=600x350&maptype=roadmap&markers=color:brown%7Clabel:A%7C${latitude},${longitude}&key=${API_KEY}`;
+        return `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=13&size=600x300&maptype=roadmap&markers=color:brown%7Clabel:A%7C${latitude},${longitude}&key=${API_KEY}`;
     };
 
     const mapImageUrl = getMapImageUrl(listing?.latitude, listing?.longitude);
@@ -86,7 +83,6 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
     const saleType = typeReady && props.sale_type === "rent"
         ? t("propertyDetails.typeRent")
         : t("propertyDetails.typeSale");
-
     const translatedType = typeReady && t(`propertyDetails.types.${props.type}`);
     const translatedSubType = typeReady && t(`propertyDetails.subTypes.${props.sub_type}`);
 
@@ -102,163 +98,148 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
         if (props.floor === 0) return t("propertyDetails.floorValue.ground");
         if (props.floor === null) return t("propertyDetails.floorValue.na");
 
-        const suffixes = {
-            1: "first",
-            2: "second",
-            3: "third",
-        };
-
+        const suffixes = { 1: "first", 2: "second", 3: "third" };
         const suffix = suffixes[props.floor] || "th";
-        return (
-            <span>
-                {props.floor}<sup>{t(`propertyDetails.floorValue.${suffix}`)}</sup>
-            </span>
-        );
+        return <span>{props.floor}<sup>{t(`propertyDetails.floorValue.${suffix}`)}</sup></span>;
     };
 
     const floorValue = getFloorValue();
-
-    // Energy class
     const energy_classValue = energy_class === "to_be_issued"
         ? t("propertyDetails.energyClassTypes.toBeIssued")
         : energy_class;
-
     const land_areaValue = land_area === "" || land_area === null || land_area === 0
         ? "N/A"
         : `${land_area} m²`;
 
-    // Icon displays for different property types
+    // Property icons - NO ICONS VERSION
     const PropertyIcons = () => {
         if (type === "land") {
             return (
                 <div className={`${listingStyles.Listing__fontawsome} d-flex`}>
-                    <p>
-                        <i className="fa-solid fa-ruler-combined">
-                            <span className="ps-1">{land_area}</span>
-                        </i> m²
-                    </p>
+                    <p>{land_area} m²</p>
                 </div>
             );
         }
-
         if (type === "commercial") {
             return (
                 <div className={`${listingStyles.Listing__fontawsome} d-flex`}>
-                    <p>
-                        <i className="fa-solid fa-ruler-combined">
-                            <span className="ps-1">{floor_area}</span>
-                        </i> m²
-                    </p>
+                    <p>{floor_area} m²</p>
                 </div>
             );
         }
-
         // Residential
         return (
-            <div className={`${listingStyles.Listing__fontawsome} d-flex`}>
+            <div className={`${listingStyles.Listing__fontawsome} d-flex gap-3`}>
+                <p>{bedrooms} {t("propertyDetails.bed")}</p>
+                <p>{bathrooms} {t("propertyDetails.bath")}</p>
                 <p>
-                    <i className="fa-solid fa-bed me-3"> {bedrooms}</i>
-                </p>
-                <p>
-                    <i className="fa-solid fa-bath me-3"> {bathrooms}</i>
-                </p>
-                <p className={listingStyles.Listing__levels}>
-                    {props.sub_type === "maisonette" ? (
-                        <i className="fa-solid fa-bars"> {levels}</i>
-                    ) : (
-                        <i className="fa-solid fa-stairs">
-                            <span className={lng === "el" ? styles.Listing__floorValue : styles.Listing__floorValueEn}>
-                                {floorValue}
-                            </span>
-                        </i>
-                    )}
+                    {props.sub_type === "maisonette"
+                        ? `${levels} ${t("propertyDetails.levels")}`
+                        : floorValue
+                    }
                 </p>
             </div>
         );
     };
 
-    // Table data generators
-    const createTableRow = (features) => (
-        <table className={`${styles.Listing__table} shadow`}>
+    // Compact table with only essential fields
+    const createCompactTable = (features) => (
+        <table className={`${styles.Listing__table} shadow`} style={{ fontSize: '11px' }}>
             <tbody>
                 {features.filter(f => f.value !== null && f.value !== undefined && f.value !== "").map((feature, index) => (
                     <tr key={index}>
-                        <td className={styles.tdWidth}>{feature.label}</td>
-                        <td>{feature.value}</td>
+                        <td className={styles.tdWidth} style={{ padding: '4px 8px' }}>{feature.label}</td>
+                        <td style={{ padding: '4px 8px' }}>{feature.value}</td>
                     </tr>
                 ))}
             </tbody>
         </table>
     );
 
-    const residentialTableData = createTableRow([
-        { label: t("propertyDetails.price"), value: `${currency} ${priceValue}` },
-        { label: t("propertyDetails.floorArea"), value: floor_area ? `${floor_area} m²` : null },
-        { label: t("propertyDetails.landArea"), value: land_areaValue },
-        { label: t("propertyDetails.floorLevel"), value: type === "residential" && props.sub_type !== "maisonette" ? floorValue : t("propertyDetails.floorValue.ground") },
-        { label: t("propertyDetails.bedrooms"), value: bedrooms },
-        { label: t("propertyDetails.kitchens"), value: kitchens },
-        { label: t("propertyDetails.bathrooms"), value: bathrooms },
-        { label: t("propertyDetails.wc"), value: wc },
-        { label: t("propertyDetails.livingRooms"), value: living_rooms },
-        { label: t("propertyDetails.levels"), value: levels },
-        { label: t("propertyDetails.heating_system.title"), value: heating_system ? t(`propertyDetails.heating_system.${heating_system}`) : null },
-        { label: t("propertyDetails.energyClass"), value: energy_classValue },
-        { label: t("propertyDetails.floorTypes.title"), value: floor_type ? t(`propertyDetails.floorTypes.${floor_type}`) : null },
-        { label: t("propertyDetails.openingFrames.title"), value: opening_frames ? t(`propertyDetails.openingFrames.${opening_frames}`) : null },
-        { label: t("propertyDetails.yearBuilt"), value: construction_year },
-    ]);
+    // Get table data based on type
+    const getTableData = () => {
+        if (type === "residential") {
+            return createCompactTable([
+                { label: t("propertyDetails.price"), value: `${currency} ${priceValue}` },
+                { label: t("propertyDetails.floorArea"), value: floor_area ? `${floor_area} m²` : null },
+                { label: t("propertyDetails.bedrooms"), value: bedrooms },
+                { label: t("propertyDetails.bathrooms"), value: bathrooms },
+                { label: t("propertyDetails.floorLevel"), value: type === "residential" && props.sub_type !== "maisonette" ? floorValue : t("propertyDetails.floorValue.ground") },
+                { label: t("propertyDetails.heating_system.title"), value: heating_system ? t(`propertyDetails.heating_system.${heating_system}`) : null },
+                { label: t("propertyDetails.energyClass"), value: energy_classValue },
+                { label: t("propertyDetails.yearBuilt"), value: construction_year },
+            ]);
+        }
 
-    const landTableData = createTableRow([
-        { label: t("propertyDetails.price"), value: `${currency} ${priceValue}` },
-        { label: t("propertyDetails.landArea"), value: `${land_area} m²` },
-        { label: t("propertyDetails.cover_coefficient"), value: cover_coefficient ? `${cover_coefficient} %` : null },
-        { label: t("propertyDetails.building_coefficient"), value: building_coefficient ? `${building_coefficient} %` : null },
-        { label: t("propertyDetails.lengthOfFacade"), value: length_of_facade ? `${length_of_facade} m` : null },
-        { label: t("propertyDetails.orientationTypes.title"), value: orientation ? t(`propertyDetails.orientationTypes.${orientation}`) : null },
-        { label: t("propertyDetails.viewTypes.title"), value: view ? t(`propertyDetails.viewTypes.${view}`) : null },
-        { label: t("propertyDetails.zoneTypes.title"), value: zone ? t(`propertyDetails.zoneTypes.${zone}`) : null },
-        { label: t("propertyDetails.slopeTypes.title"), value: slope ? t(`propertyDetails.slopeTypes.${slope}`) : null },
-        { label: t("propertyDetails.distanceFromSea"), value: distance_from_sea ? `${distance_from_sea} m` : null },
-    ]);
+        if (type === "land") {
+            return createCompactTable([
+                { label: t("propertyDetails.price"), value: `${currency} ${priceValue}` },
+                { label: t("propertyDetails.landArea"), value: `${land_area} m²` },
+                { label: t("propertyDetails.cover_coefficient"), value: cover_coefficient ? `${cover_coefficient} %` : null },
+                { label: t("propertyDetails.building_coefficient"), value: building_coefficient ? `${building_coefficient} %` : null },
+                { label: t("propertyDetails.zoneTypes.title"), value: zone ? t(`propertyDetails.zoneTypes.${zone}`) : null },
+                { label: t("propertyDetails.distanceFromSea"), value: distance_from_sea ? `${distance_from_sea} m` : null },
+            ]);
+        }
 
-    const commercialTableData = createTableRow([
-        { label: t("propertyDetails.price"), value: `${currency} ${priceValue}` },
-        { label: t("propertyDetails.floorArea"), value: floor_area ? `${floor_area} m²` : null },
-        { label: t("propertyDetails.landArea"), value: land_area ? `${land_area} m²` : null },
-        { label: t("propertyDetails.floorLevel"), value: floorValue },
-        { label: t("propertyDetails.levels"), value: levels },
-        { label: t("propertyDetails.rooms"), value: rooms },
-        { label: t("propertyDetails.bathrooms"), value: bathrooms },
-        { label: t("propertyDetails.wc"), value: wc },
-        { label: t("propertyDetails.heating_system.title"), value: heating_system ? t(`propertyDetails.heating_system.${heating_system}`) : null },
-        { label: t("propertyDetails.energyClass"), value: energy_classValue },
-        { label: t("propertyDetails.powerType.title"), value: power_type ? t(`propertyDetails.powerType.${power_type}`) : null },
-        { label: t("propertyDetails.yearBuilt"), value: construction_year },
-    ]);
+        // Commercial
+        return createCompactTable([
+            { label: t("propertyDetails.price"), value: `${currency} ${priceValue}` },
+            { label: t("propertyDetails.floorArea"), value: floor_area ? `${floor_area} m²` : null },
+            { label: t("propertyDetails.rooms"), value: rooms },
+            { label: t("propertyDetails.floorLevel"), value: floorValue },
+            { label: t("propertyDetails.heating_system.title"), value: heating_system ? t(`propertyDetails.heating_system.${heating_system}`) : null },
+            { label: t("propertyDetails.energyClass"), value: energy_classValue },
+            { label: t("propertyDetails.yearBuilt"), value: construction_year },
+        ]);
+    };
 
-
+    // Amenities component - compact version
     const AmenitiesSection = () => {
         if (!amenitiesList || amenitiesList.length === 0) return null;
 
+        const displayAmenities = amenitiesList.slice(0, 12);
+
         return (
-            <div className="col-12 px-4 my-3">
-                <h3>{t("amenities.title")}</h3>
-                <div className="d-flex flex-wrap gap-2">
-                    {amenitiesList.map((amenity, idx) => (
+            <div style={{ marginTop: '12px' }}>
+                <h5 style={{
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    marginBottom: '8px',
+                    color: '#847c3d'
+                }}>
+                    {t("propertyDetails.amenities")}
+                </h5>
+                <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '6px'
+                }}>
+                    {displayAmenities.map((amenity, idx) => (
                         <span
                             key={idx}
                             style={{
                                 backgroundColor: '#847c3d',
                                 color: '#fff',
-                                padding: '4px 12px',
+                                padding: '3px 10px',
                                 borderRadius: '4px',
-                                fontSize: '12px',
+                                fontSize: '10px',
+                                fontWeight: 500,
+                                whiteSpace: 'nowrap',
                             }}
                         >
                             {lng === "el" ? amenity.name_gr : amenity.name}
                         </span>
                     ))}
+                    {amenitiesList.length > 12 && (
+                        <span style={{
+                            padding: '3px 10px',
+                            fontSize: '10px',
+                            color: '#666',
+                        }}>
+                            +{amenitiesList.length - 12} {t("propertyDetails.more")}
+                        </span>
+                    )}
                 </div>
             </div>
         );
@@ -268,16 +249,15 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
     const generatePDF = async () => {
         const input = pdfRef.current;
         if (!input) {
-            message.error('Unable to generate PDF');
+            message.error(t('brochure.errorGenerate'));
             return;
         }
 
         setIsGenerating(true);
-        message.loading(t('brochure.generatingPdf'), 0);
+        message.loading(t('brochure.generating'), 0);
 
         try {
             await new Promise(resolve => setTimeout(resolve, 1000));
-
             const canvas = await html2canvas(input, {
                 useCORS: true,
                 allowTaint: true,
@@ -297,7 +277,6 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
             } else {
                 let heightLeft = imgHeight;
                 let position = 0;
-
                 while (heightLeft > 0) {
                     pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
                     heightLeft -= pageHeight;
@@ -310,9 +289,8 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
 
             const filename = `listing_AE000${listing?.id}_${new Date().getTime()}.pdf`;
             pdf.save(filename);
-
             message.destroy();
-            message.success(t('brochure.downloadSuccess'));
+            message.success(t('brochure.success'));
         } catch (error) {
             console.error('PDF generation error:', error);
             message.destroy();
@@ -322,8 +300,8 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
         }
     };
 
-    // Fallback image component
-    const ImagePlaceholder = ({ text = "No Image" }) => (
+    // Image placeholder
+    const ImagePlaceholder = ({ text }) => (
         <div style={{
             width: '100%',
             height: '100%',
@@ -335,7 +313,7 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
             fontSize: '14px',
             fontWeight: 500,
         }}>
-            {text}
+            {text || t('brochure.noImage')}
         </div>
     );
 
@@ -361,12 +339,12 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
                                 <div className="col-6 pe-3 d-flex flex-column mt-auto">
                                     <div>
                                         <div className={styles.ImageWrapper} style={{ backgroundImage: secondaryImage2 ? `url(${secondaryImage2})` : 'none' }}>
-                                            {!secondaryImage2 && <ImagePlaceholder text="Image 2" />}
+                                            {!secondaryImage2 && <ImagePlaceholder text={t('brochure.image2')} />}
                                         </div>
                                     </div>
                                     <div>
                                         <div className={styles.ImageWrapper} style={{ backgroundImage: secondaryImage1 ? `url(${secondaryImage1})` : 'none' }}>
-                                            {!secondaryImage1 && <ImagePlaceholder text="Image 3" />}
+                                            {!secondaryImage1 && <ImagePlaceholder text={t('brochure.image3')} />}
                                         </div>
                                     </div>
                                 </div>
@@ -385,9 +363,7 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
                                                 </>
                                             )}
                                         </div>
-                                        <p className="h5">
-                                            ID: AE000{id}, {t("propertyDetails.price")}: {currency} {priceValue}
-                                        </p>
+                                        <p className="h5">ID: AE000{id}, {t("propertyDetails.price")}: {currency} {priceValue}</p>
                                     </div>
                                 </div>
                                 <div className={`col-4 ms-auto me-5 ${styles.TextSize}`}>
@@ -397,54 +373,80 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
                         </div>
                     </div>
 
-                    {/* PAGE 2 */}
-                    <div style={{ height: "210mm", width: "297mm", background: "transparent" }} className={`d-flex flex-column align-items-center justify-content-between m-0 p-0 ${styles.ContainerWrapper}`}>
-                        {/* Description */}
-                        <div className="col-12 p-4">
+                    {/* PAGE 2 - OPTIMIZED LAYOUT */}
+                    <div style={{ height: "210mm", width: "297mm", background: "transparent", position: 'relative' }} className={`d-flex flex-column m-0 p-0 ${styles.ContainerWrapper}`}>
+                        {/* Description - Compact */}
+                        <div className="col-12 px-4 pt-3 pb-2">
                             <div className={styles.BrochureDescription}>
-                                <p className="h2">
+                                <p className="h3" style={{ marginBottom: '8px', fontSize: '20px' }}>
                                     {lng === "el" ? t("propertyDetails.description_gr") : t("propertyDetails.description")}
                                 </p>
-                                <p style={{ whiteSpace: 'pre-wrap' }}>{description || t("brochure.noDescription")}</p>
+                                <p style={{
+                                    whiteSpace: 'pre-wrap',
+                                    fontSize: '12px',
+                                    lineHeight: '1.4',
+                                    maxHeight: '80px',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis'
+                                }}>
+                                    {description || t("brochure.noDescription")}
+                                </p>
                             </div>
                         </div>
 
-                        {/* <AmenitiesSection /> */}
-
-                        {/* Details Table & Map */}
-                        <div className="d-flex col-12 justify-content-around mb-auto">
-                            <div className="col-4 ps-5">
-                                {type === "residential" && residentialTableData}
-                                {type === "commercial" && commercialTableData}
-                                {type === "land" && landTableData}
+                        {/* Table, Amenities & Map */}
+                        <div className="d-flex col-12 px-4" style={{ flex: 1, minHeight: 0 }}>
+                            {/* Left column - Table + Amenities */}
+                            <div className="col-5 pe-3" style={{ display: 'flex', flexDirection: 'column' }}>
+                                {getTableData()}
+                                <AmenitiesSection />
                             </div>
-                            <div className="col-7">
+
+                            {/* Right column - Map */}
+                            <div className="col-7 ps-2">
                                 {mapImageUrl ? (
                                     <img
                                         loading="lazy"
                                         src={mapImageUrl}
-                                        alt="Property location map"
+                                        alt={t('brochure.mapAlt')}
                                         className={styles.ImageMap}
+                                        style={{
+                                            width: '100%',
+                                            height: 'auto',
+                                            maxHeight: '320px',
+                                            objectFit: 'cover',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                                        }}
                                         onError={(e) => {
                                             e.target.style.display = 'none';
                                         }}
                                     />
                                 ) : (
-                                    <div className={styles.ImageMap} style={{
+                                    <div style={{
+                                        width: '100%',
+                                        height: '320px',
                                         backgroundColor: '#f0f0f0',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        color: '#999'
+                                        color: '#999',
+                                        borderRadius: '8px'
                                     }}>
-                                        Map unavailable
+                                        {t('brochure.mapUnavailable')}
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        {/* Footer */}
-                        <div className={`d-flex w-100 justify-content-between mt-auto px-2 ${styles.Footer} ${styles.OliveBg} ${styles.FooterPosition}`} style={{ width: "297.5mm" }}>
+                        {/* Footer - Fixed at bottom */}
+                        <div className={`d-flex w-100 justify-content-between px-2 ${styles.Footer} ${styles.OliveBg} ${styles.FooterPosition}`} style={{
+                            width: "297.5mm",
+                            marginTop: 'auto',
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0
+                        }}>
                             <div className="col-5 pe-0">
                                 <p className="m-0 border-end border-dark me-3">
                                     {t("footer.contact.address")} {t("footer.contact.city")}
@@ -458,9 +460,7 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
                                 </p>
                             </div>
                             <div className="col-3">
-                                <p className="m-0 w-100">
-                                    {t("footer.contact.phone")}
-                                </p>
+                                <p className="m-0 w-100">{t("footer.contact.phone")}</p>
                             </div>
                         </div>
                     </div>
@@ -489,12 +489,12 @@ const Brochure = ({ mapImage, amenitiesList, showDownloadButton = true, ...props
                     {isGenerating ? (
                         <>
                             <Spin size="small" />
-                            {t("brochure.generatingPdf")}
+                            {t('brochure.generating')}
                         </>
                     ) : (
                         <>
                             <DownloadOutlined />
-                            {t("brochure.downloadPdf")}
+                            {t('brochure.download')}
                         </>
                     )}
                 </button>

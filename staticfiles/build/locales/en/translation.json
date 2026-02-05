@@ -201,6 +201,10 @@
         "maxGuests": "Max Guests",
         "maxAdults": "Max Adults",
         "maxChildren": "Max Children",
+        "bed": "Bed",
+        "bath": "Bath",
+        "more": "more",
+        "amenities": "Amenities",
         "types": {
             "title": "Type",
             "residential": "Residential",
@@ -887,6 +891,7 @@
             "pending": "Pending Approval",
             "sold": "Sold Listings",
             "searchPlaceholder": "Search by Listing ID, Title, or Address",
+            "addListing": "Add New Listing",
             "listings": "Listings",
             "rentals": "Short-Term Rentals"
         },
@@ -894,6 +899,7 @@
             "createTitle": "Create New Property",
             "editTitle": "Edit Property",
             "submitListing": "Submit Property",
+            "deleteListing": "Delete Property",
             "updateButton": "Update Property",
             "uploadImages": "Upload Property Images",
             "manageImages": "Manage Property Images",
@@ -1077,7 +1083,7 @@
         "noLocation": "No Location Available",
         "description": "We apologize, but we do not have information about the location of this property. <1>Contact</1> us for more details."
     },
-    "brochure":{
+    "brochure": {
         "title": "Property Brochure - Listing #{{id}}",
         "downloadPdf": "Download Brochure",
         "generatingPdf": "Generating Brochure...",
@@ -1085,6 +1091,15 @@
         "error": "Failed to generate brochure. Please try again later.",
         "downloadSuccess": "Brochure downloaded successfully.",
         "noDescription": "No description available for this property.",
-        "viewPdf": "View Brochure PDF"
+        "viewPdf": "View Brochure PDF",
+        "generating": "Generating PDF...",
+        "download": "Download Brochure",
+        "success": "PDF downloaded successfully!",
+        "errorGenerate": "Unable to generate PDF",
+        "noImage": "No Image",
+        "image2": "Image 2",
+        "image3": "Image 3",
+        "mapAlt": "Property location map",
+        "mapUnavailable": "Map unavailable"
     }
 }
