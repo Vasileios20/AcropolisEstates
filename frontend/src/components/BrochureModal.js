@@ -42,7 +42,7 @@ const BrochureModal = ({ listingId, visible, onClose, endpoint = 'listings' }) =
             footer={null}
             width="95vw"
             style={{ top: 20, paddingTop: "20px" }}
-            bodyStyle={{
+            styles={{
                 padding: 0,
                 maxHeight: '90vh',
                 overflow: 'auto',
@@ -61,7 +61,7 @@ const BrochureModal = ({ listingId, visible, onClose, endpoint = 'listings' }) =
                     {t("brochure.title", { id: listingId })}
                 </div>
             }
-            destroyOnClose
+            destroyOnHidden
         >
             {loading ? (
                 <div style={{

@@ -250,7 +250,7 @@ const ListingFilesDrawer = ({ visible, onClose, listingId, isShortTerm = false }
                     <Button icon={<CloseOutlined />} onClick={onClose} type="text" />
                 </div>
             }
-            width={1000}
+            size={1000}
             onClose={onClose}
             open={visible}
             closable={false}
