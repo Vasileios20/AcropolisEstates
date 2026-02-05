@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Table, Input, Space, Button, Tag, Typography, Card, Row, Col } from 'antd';
 import {
     SearchOutlined,
@@ -8,7 +8,8 @@ import {
     StarOutlined,
     FolderOpenOutlined,
     EditOutlined,
-    FileOutlined
+    FileOutlined,
+    PlusCircleOutlined
 } from '@ant-design/icons';
 import useFetchAllListings from '../../hooks/useFetchAllListings';
 import useFetchLocationData from '../../hooks/useFetchLocationData';
@@ -19,6 +20,8 @@ import { useTranslation } from "react-i18next";
 import Asset from '../../components/Asset';
 import ListingFilesDrawer from '../../components/ListingFilesDrawer';
 import BrochureModal from 'components/BrochureModal';
+import useFetchOwners from 'hooks/useFetchOwners';
+import { formatPriceValue } from 'utils/formatting';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -40,6 +43,12 @@ export default function AdminListingsAntD() {
     const [filteredInfo, setFilteredInfo] = useState({});
     const [sortedInfo, setSortedInfo] = useState({});
     const history = useHistory();
+
+    const { owners } = useFetchOwners();
+    const owner = owners.reduce((map, owner) => {
+        map[owner.id] = `${owner.first_name} ${owner.last_name}`;
+        return map;
+    }, {});
 
     const handleOpenBrochure = (listingId) => {
         setSelectedListingId(listingId);
@@ -206,15 +215,6 @@ export default function AdminListingsAntD() {
                 sortOrder: sortedInfo.columnKey === 'address_street' ? sortedInfo.order : null,
                 render: (address, record) => `${address} ${record.address_number || ''}` || '-',
             },
-
-        // {
-        //     title: t('propertyDetails.address_number'),
-        //     dataIndex: 'address_number',
-        //     key: 'address_number',
-        //     sorter: (a, b) => (a.address_number || '').localeCompare(b.address_number || ''),
-        //     sortOrder: sortedInfo.columnKey === 'address_number' ? sortedInfo.order : null,
-        //     render: (address) => address || '-',
-        // },
         {
             title: t('propertyDetails.typeSale'),
             dataIndex: 'sale_type',
@@ -230,22 +230,6 @@ export default function AdminListingsAntD() {
                 return <Tag color={color}>{t(`propertyDetails.type${saleType === 'rent' ? 'Rent' : 'Sale'}`)}</Tag>;
             },
         },
-        // {
-        //     title: t('propertyDetails.floorArea'),
-        //     dataIndex: 'floor_area',
-        //     key: 'floor_area',
-        //     sorter: (a, b) => (a.floor_area || 0) - (b.floor_area || 0),
-        //     sortOrder: sortedInfo.columnKey === 'floor_area' ? sortedInfo.order : null,
-        //     render: (area) => area ? `${area} m²` : '-',
-        // },
-        // {
-        //     title: t('propertyDetails.landArea'),
-        //     dataIndex: 'land_area',
-        //     key: 'land_area',
-        //     sorter: (a, b) => (a.land_area || 0) - (b.land_area || 0),
-        //     sortOrder: sortedInfo.columnKey === 'land_area' ? sortedInfo.order : null,
-        //     render: (area) => area ? `${area} m²` : '-',
-        // },
         {
             title: t('propertyDetails.price'),
             dataIndex: 'price',
@@ -253,7 +237,7 @@ export default function AdminListingsAntD() {
             sorter: (a, b) => (a.price || 0) - (b.price || 0),
             sortOrder: sortedInfo.columnKey === 'price' ? sortedInfo.order : null,
             render: (price, record) => price
-                ? `${record.currency || '€'}${price.toLocaleString()}`
+                ? `${record.currency || '€'}${formatPriceValue(price).replace(/,/g, '.')} ${record.sale_type === 'rent' ? `/${t('month')}` : ''}`
                 : '-',
         },
         {
@@ -285,6 +269,41 @@ export default function AdminListingsAntD() {
                     )}
                 </Space>
             ),
+        },
+        {
+            title: t('propertyDetails.owner'),
+            dataIndex: 'listing_owner',
+            key: 'listing_owner',
+            sorter: (a, b) => {
+                const ownerA = owner[a.listing_owner] || '';
+                const ownerB = owner[b.listing_owner] || '';
+                return ownerA.localeCompare(ownerB);
+            },
+            sortOrder: sortedInfo.columnKey === 'listing_owner' ? sortedInfo.order : null,
+            render: (listing_owner) => (
+                <Space size="middle"
+                    onMouseEnter={(e) => {
+                        if (owner[listing_owner]) {
+                            e.currentTarget.style.backgroundColor = '#cdfffb';
+                            e.currentTarget.style.color = '#fff';
+                            e.currentTarget.style.transition = 'background-color 0.3s, color 0.3s';
+                            e.currentTarget.style.borderRadius = '4px';
+                            e.currentTarget.style.padding = '0 4px';
+                        }
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'inherit';
+                        e.currentTarget.style.color = 'inherit';
+                        e.currentTarget.style.transition = 'background-color 0.3s, color 0.3s';
+                        e.currentTarget.style.borderRadius = '0';
+                        e.currentTarget.style.padding = '0';
+                    }}
+                >
+                    <Link to={`/frontend/admin/listings/owners/${listing_owner}`}>
+                        {owner[listing_owner] || t('N/A')}
+                    </Link>
+                </Space>
+            )
         },
         {
             title: t('propertyDetails.actions.title'),
@@ -362,9 +381,22 @@ export default function AdminListingsAntD() {
         <>
             <div style={{ padding: '64px 24px 24px 24px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
                 {/* Header */}
-                <Title level={2} style={{ marginBottom: '24px', color: '#1f1f1f' }}>
-                    {t('admin.listings.title')}
-                </Title>
+                <Row>
+                    <Title level={2} style={{ marginBottom: '24px', color: '#1f1f1f' }}>
+                        {t('admin.listings.title')}
+                    </Title>
+
+                    <Link to="/admin/listings/create" style={{ marginLeft: 'auto' }}>
+                        <Button
+                            type="primary"
+                            size="large"
+                            icon={<PlusCircleOutlined />}
+                            style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
+                        >
+                            {t('admin.dashboard.addNewListing')}
+                        </Button>
+                    </Link>
+                </Row>
 
                 {/* Stats Cards */}
                 <Row gutter={16} style={{ marginBottom: '24px' }}>
