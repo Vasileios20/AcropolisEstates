@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Table, Input, Space, Button, Tag, Typography, Card, Row, Col } from 'antd';
 import {
     SearchOutlined,
@@ -42,7 +42,6 @@ export default function AdminListingsAntD() {
     const [searchText, setSearchText] = useState('');
     const [filteredInfo, setFilteredInfo] = useState({});
     const [sortedInfo, setSortedInfo] = useState({});
-    const history = useHistory();
 
     const { owners } = useFetchOwners();
     const owner = owners.reduce((map, owner) => {
@@ -335,20 +334,22 @@ export default function AdminListingsAntD() {
                         )}
                     </Button>
 
-                    <Button
-                        type="primary"
-                        icon={<EyeOutlined />}
-                        onClick={() => history.push(`/listings/${record.id}`)}
-                        size="small"
-                        style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
-                    />
-                    <Button
-                        type="primary"
-                        icon={<EditOutlined />}
-                        onClick={() => history.push(`/frontend/admin/listings/${record.id}/edit`)}
-                        size="small"
-                        style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
-                    />
+                    <Link to={`/listings/${record.id}`}>
+                        <Button
+                            type="primary"
+                            icon={<EyeOutlined />}
+                            size="small"
+                            style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
+                        />
+                    </Link>
+                    <Link to={`/frontend/admin/listings/${record.id}/edit`}>
+                        <Button
+                            type="primary"
+                            icon={<EditOutlined />}
+                            size="small"
+                            style={{ backgroundColor: '#847c3d', borderColor: '#847c3d' }}
+                        />
+                    </Link>
                     <Button
                         icon={<FileOutlined />}
                         onClick={() => handleOpenBrochure(record.id)}
@@ -356,6 +357,7 @@ export default function AdminListingsAntD() {
                         size="small"
                     />
                 </Space>
+
             ),
         },
     ];
